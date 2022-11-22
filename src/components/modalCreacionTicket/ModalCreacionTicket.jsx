@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 
+const SERVER_NAME = "http://localhost:3000";
 
 
 
@@ -43,6 +44,12 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
     const [TicketData, setTicketData] = useState(TicketNulo);
 
     const [clientes, setClientes] = useState();
+
+    const [productos, setProductos] = useState();
+
+    const [versiones, setVersiones] = useState();
+
+    const [compras, setCompras] = useState();
 
 
     const handleConfirmarCreacion = () => {
@@ -88,7 +95,52 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
             setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
         }
 
+        const getProductos = async () => {
+            axios
+                .get(SERVER_NAME + "/productos/", {
+                })
+                .then((res) => {
+                    setProductos(res.data.productos);
+
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getVersiones = async () => {
+            axios
+                .get(SERVER_NAME + "/versiones/", {
+                })
+                .then((res) => {
+                    setVersiones(res.data.versiones);
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getCompras = async () => {
+            axios
+                .get(SERVER_NAME + "/compras/", {
+                })
+                .then((res) => {
+                    setCompras(res.data.compras);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+
+
+
+        getProductos();
+        getVersiones();
         getClientes();
+        getCompras();
 
     }, []);
 
@@ -262,9 +314,14 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
+                                        {productos ?
+                                            productos.map((producto) => (
+                                                <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>{producto.nombre}</Dropdown.Item>
+                                            )) : null}
+
+                                        {/* <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
                                         <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                        <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
