@@ -1,24 +1,23 @@
 .container-title {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: flex-start;
     flex-direction: column;
     background-color: white;
-    padding-bottom: 2%;
-
+    padding-top: 75px;
 }
 
-.container-cards {
-    position: relative;
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.tabla-productos {
+    padding-top: 1%;
+}
+
+.v-center {
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-direction: column;
-
-    background-color: white;
-}
-
-.row-cards {
-    padding-bottom: 3%;
 }

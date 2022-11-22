@@ -1,0 +1,10 @@
+.h-end {
+    display: flex;
+    align-items: flex-end;
+}
+
+.modalContent1 {
+    width: 85vw;
+    /* Occupy the 90% of the screen width */
+    max-width: 95vw;
+}

@@ -28,7 +28,7 @@ const NavbarSoporte = () => {
                 <Nav.Link href="/tickets-en-curso">Tickets en Curso</Nav.Link>
                 <Nav.Link href="/tickets-resueltos">Tickets Resueltos</Nav.Link>
                 <Nav.Link href="/crear-ticket">Crear Ticket</Nav.Link>
-                <Nav.Link href="/crear-producto-y-version">Crear Producto y Versión</Nav.Link>
+                <Nav.Link href="/crear-producto-y-version">Productos y Versiónes</Nav.Link>
 
             </Nav>
 
