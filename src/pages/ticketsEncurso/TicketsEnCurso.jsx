@@ -41,11 +41,12 @@ const TicketsEnCurso = () => {
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
     const handleDropdownEnCursoCerrado = (e) => {
-        if (e.target.name === "En curso") {
-            setShowEnTicketsEnCurso("En Curso");
-        } else if (e.target.name === "Cerrados") {
-            setShowEnTicketsEnCurso("Cerrados");
-        }
+        // if (e.target.name === "En curso") {
+        //     setShowEnTicketsEnCurso("En Curso");
+        // } else if (e.target.name === "Cerrados") {
+        //     setShowEnTicketsEnCurso("Cerrados");
+        // }
+        setShowEnTicketsEnCurso(e.target.name);
     };
 
 
