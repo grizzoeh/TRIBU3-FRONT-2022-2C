@@ -21,7 +21,7 @@ import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 
 const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
-    const TicketViejo = {
+    const TicketNulo = {
         "titulo": null,
         "categoria": null,
         "criticidad": null,
@@ -40,7 +40,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         "notas": null,
     }
 
-    const [ticketEditable, setTicketEditable] = useState(TicketViejo);
+    const [TicketData, setTicketData] = useState(TicketNulo);
+
+    const [clientes, setClientes] = useState();
 
 
     const handleConfirmarCreacion = () => {
@@ -51,20 +53,44 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     const onChangeTicketEditable = (e) => {
 
-        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.value });
+        setTicketData({ ...TicketData, [e.target.name]: e.target.value });
     }
 
     const handleDropdownChange = (e) => {
-        console.log(e);
-        console.log(e.target.value);
-        console.log(e.target.name);
-        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML });
+
+        setTicketData({ ...TicketData, [e.target.name]: e.target.innerHTML });
     }
 
     const handleClose = () => {
         onChangeshowCreacionModal(false);
     }
 
+    useEffect(() => {
+
+        const getClientes = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        }
+
+        getClientes();
+
+    }, []);
 
 
     return (
@@ -92,7 +118,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.categoria ? ticketEditable.categoria : "Seleccionar"}
+                                        {TicketData.categoria ? TicketData.categoria : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
@@ -110,13 +136,15 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.criticidad ? ticketEditable.criticidad : "Seleccionar"}
+                                        {TicketData.criticidad ? TicketData.criticidad : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Baja</Dropdown.Item>
+                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Media</Dropdown.Item>
+                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Alta</Dropdown.Item>
+                                        <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Crítica</Dropdown.Item>
+
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -126,13 +154,17 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.estado ? ticketEditable.estado : "Seleccionar"}
+                                        {TicketData.estado ? TicketData.estado : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
+                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
+                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
+                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
+                                        <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
+
+
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -173,13 +205,18 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.nombreCliente ? ticketEditable.nombreCliente : "Seleccionar"}
+                                        {TicketData.nombreCliente ? TicketData.nombreCliente : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
+                                        {clientes ?
+                                            clientes.map((cliente) => (
+                                                <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                            )) : null}
+
+                                        {/* <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
                                         <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                        <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -187,24 +224,28 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                 <h4> Medio de Contacto:</h4>
                             </Col>
                             <Col>
-                                <Dropdown >
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.medioContacto ? ticketEditable.medioContacto : "Seleccionar"}
-                                    </Dropdown.Toggle>
+                                <Form.Control type="text" name="medioContactoCliente" placeholder="Mail o Tel" onChange={(e) => onChangeTicketEditable(e)} />
 
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item name="medioContacto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="medioContacto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="medioContacto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
 
                             </Col>
-                            {/* <Col>
-                            <h4> Correo:  {ticketEditable.correo} </h4>
-                        </Col> */}
+
+
+
+
                         </Row>
 
+                        <Row className="mt-5">
+                            <Col>
+                                <h4> Cuit:</h4>
+                            </Col>
+                            <Col>
+                                {TicketData.nombreCliente ?
+                                    clientes.filter((cliente) => cliente["razon social"] === TicketData.nombreCliente).map((cliente) => (
+                                        <h4 key={cliente.id} >{cliente.CUIT}</h4>
+                                    )) : null}
+
+                            </Col>
+                        </Row>
 
                         <Row className="mt-5">
                             <h4> Información Producto: </h4>
@@ -217,7 +258,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.nombreProducto ? ticketEditable.nombreProducto : "Seleccionar"}
+                                        {TicketData.nombreProducto ? TicketData.nombreProducto : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
@@ -233,13 +274,13 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.version ? ticketEditable.version : "Seleccionar"}
+                                        {TicketData.versionProducto ? TicketData.versionProducto : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                        <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
+                                        <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
+                                        <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -251,20 +292,14 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                         </Row>
 
                         <Row className="mt-3">
-                            <Col>
-                                <h4> Nombre: </h4>
-                            </Col>
-                            <Col>
-                                <Form.Control type="text" name="nombreAsesor" placeholder="Nombre Asesor" onChange={(e) => onChangeTicketEditable(e)} />
 
-                            </Col>
                             <Col>
                                 <h4> Area:</h4>
                             </Col>
                             <Col>
                                 <Dropdown >
                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {ticketEditable.areaAsesor ? ticketEditable.areaAsesor : "Seleccionar"}
+                                        {TicketData.areaAsesor ? TicketData.areaAsesor : "Seleccionar"}
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
@@ -275,6 +310,25 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                 </Dropdown>
 
                             </Col>
+
+                            <Col>
+                                <h4> Nombre: </h4>
+                            </Col>
+                            <Col>
+                                <Dropdown >
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                        {TicketData.nombreAsesor ? TicketData.nombreAsesor : "Seleccionar"}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
+                                        <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
+                                        <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+
+                            </Col>
+
 
                         </Row>
 
