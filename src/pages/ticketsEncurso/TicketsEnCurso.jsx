@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./ticketsEnCurso.css";
 import Container from 'react-bootstrap/Container';
@@ -11,15 +11,25 @@ import ModalInfoTicketEnCurso2 from "../../components/modalInfoTicketEnCurso/Mod
 import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreacionTicket";
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
+import axios from "axios";
+
+const SERVER_NAME = "http://localhost:3000";
 
 const TicketsEnCurso = () => {
 
 
-    const [showTicketModal, setShowTicketModal] = useState(false);
+    const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
 
-    const onChangeshowTicketModal = (newSomeState) => {
-        setShowTicketModal(newSomeState);
+    const onChangeshowTicketModalEnCurso = (newSomeState) => {
+        setShowTicketModalEncurso(newSomeState);
+    };
+
+    const [showTicketModalCerrado, setShowTicketModalCerrado] = useState(false);
+
+
+    const onChangeshowTicketModalCerrado = (newSomeState) => {
+        setShowTicketModalCerrado(newSomeState);
     };
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
@@ -31,7 +41,6 @@ const TicketsEnCurso = () => {
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
     const handleDropdownEnCursoCerrado = (e) => {
-        console.log(e.target.name);
         if (e.target.name === "En curso") {
             setShowEnTicketsEnCurso("En Curso");
         } else if (e.target.name === "Cerrados") {
@@ -39,14 +48,53 @@ const TicketsEnCurso = () => {
         }
     };
 
-    const cardInfo = {
-        "id": 1,
-        "titulo": "Problema con el servidor",
-        "nombreCliente": "Juan Perez",
-        "severidad": "Alta",
-        "estado": "En curso",
 
-    }
+
+    const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
+    const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
+
+
+
+    useEffect(() => {
+
+        const getDataEnCurso = async () => {
+            const send_data = { type: 'enCurso' };
+            axios
+                .get(SERVER_NAME + "/tickets/", {
+                    params: send_data,
+                })
+                .then((res) => {
+                    setTicketsEnCursoData(res.data.tickets);
+
+                })
+                .catch((err) => {
+                    console.log("Errorxd: ", err); // FIXME TOAST
+                });
+
+        };
+
+        const getDataCerrados = async () => {
+            const send_data = { type: "resueltos" };
+            axios
+                .get(SERVER_NAME + "/tickets/", {
+                    params: send_data,
+                })
+                .then((res) => {
+                    setTicketsCerradosData(res.data.tickets);
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+        }
+
+        getDataEnCurso();
+        getDataCerrados();
+
+
+
+    }, []);
 
 
 
@@ -92,126 +140,135 @@ const TicketsEnCurso = () => {
 
                 {showEnTicketsEnCurso === "En Curso" ? (
 
-                    <Row className="row-cards">
-                        <Col>
-                            <Card style={{ width: '22rem' }}>
-                                <Card.Body>
-                                    <Card.Title>
-                                        <Row>
-                                            <Col>
-                                                Ticket  #{cardInfo.id}
-                                            </Col>
+                    <Row className="row-cards mt-4">
+                        {ticketsEnCursoData.length > 0 ?
+                            ticketsEnCursoData.map((ticketEnCurso) => (
 
-                                        </Row>
+                                <Col key={ticketEnCurso.id} className="mt-3">
+                                    <Card style={{ width: '22rem' }}>
+                                        <Card.Body>
+                                            <Card.Title>
+                                                <Row>
+                                                    <Col>
+                                                        Ticket  #{ticketEnCurso.id}
+                                                    </Col>
 
-                                        <Row className="mt-2">
-                                            <Col>
-                                                {cardInfo.titulo}
-                                            </Col>
+                                                </Row>
 
-                                        </Row>
-                                    </Card.Title>
-                                    <Card.Text>
-                                        <Row>
-                                            <Col xs={5}>
-                                                <h5>Cliente: </h5>
-                                            </Col>
-                                            <Col>
-                                                {cardInfo.nombreCliente}
-                                            </Col>
+                                                <Row className="mt-2">
+                                                    <Col>
+                                                        {ticketEnCurso.titulo}
+                                                    </Col>
 
-                                        </Row>
-                                        <Row>
-                                            <Col xs={5}>
-                                                <h5>Severidad: </h5>
-                                            </Col>
-                                            <Col>
-                                                {cardInfo.severidad}
-                                            </Col>
+                                                </Row>
+                                            </Card.Title>
+                                            <Card.Text>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h5>Cliente: </h5>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.nombreCliente}
+                                                    </Col>
 
-                                        </Row>
-                                        <Row>
-                                            <Col xs={5}>
-                                                <h5>Estado: </h5>
-                                            </Col>
-                                            <Col>
-                                                {cardInfo.estado}
-                                            </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h5>Severidad: </h5>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.criticidad}
+                                                    </Col>
 
-                                        </Row>
-                                    </Card.Text>
-                                    <Button variant="primary" onClick={() => setShowTicketModal(true)}>TicketInfo</Button>
+                                                </Row>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h5>Estado: </h5>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.estado}
+                                                    </Col>
 
-                                    {showTicketModal ? (
-                                        <ModalInfoTicketEnCurso numeroTicket="1" onChangeshowTicketModal={onChangeshowTicketModal} />
+                                                </Row>
+                                            </Card.Text>
+                                            <Button variant="primary" onClick={() => setShowTicketModalEncurso(true)}>TicketInfo</Button>
+
+                                            {showTicketModalEnCurso ? (
+                                                <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
+                                            ) :
+                                                (null
+                                                )}
+
+                                        </Card.Body>
+                                    </Card>
+
+                                    {showCreacionModal ? (
+                                        <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
                                     ) :
                                         (null
                                         )}
 
-                                </Card.Body>
-                            </Card>
+                                </Col>
 
-                            {showCreacionModal ? (
-                                <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
-                            ) :
-                                (null
-                                )}
+                            )) : <h3>Cargando...</h3>}
 
-                        </Col>
 
                     </Row>
                 ) : (
-                    <Row className="row-cards">
-                        <Col>
-                            <Card style={{ width: '22rem' }}>
-                                <Card.Body>
-                                    <Card.Title>
-                                        <Row>
-                                            <Col>
-                                                Ticket  #{cardInfo.id}
-                                            </Col>
+                    <Row className="row-cards mt-4">
+                        {ticketsCerradosData.length > 0 ?
+                            ticketsCerradosData.map((ticketCerrado) => (
+                                <Col className="mt-3">
+                                    <Card style={{ width: '22rem' }}>
+                                        <Card.Body>
+                                            <Card.Title>
+                                                <Row>
+                                                    <Col>
+                                                        Ticket  #{ticketCerrado.id}
+                                                    </Col>
 
-                                        </Row>
+                                                </Row>
 
-                                        <Row className="mt-2">
-                                            <Col>
-                                                {cardInfo.titulo}
-                                            </Col>
+                                                <Row className="mt-2">
+                                                    <Col>
+                                                        {ticketCerrado.titulo}
+                                                    </Col>
 
-                                        </Row>
-                                    </Card.Title>
-                                    <Card.Text>
-                                        <Row>
-                                            <Col xs={5}>
-                                                <h5>Cliente: </h5>
-                                            </Col>
-                                            <Col>
-                                                {cardInfo.nombreCliente}
-                                            </Col>
+                                                </Row>
+                                            </Card.Title>
+                                            <Card.Text>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h5>Cliente: </h5>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketCerrado.nombreCliente}
+                                                    </Col>
 
-                                        </Row>
-                                        <Row>
-                                            <Col xs={5}>
-                                                <h5>Severidad: </h5>
-                                            </Col>
-                                            <Col>
-                                                {cardInfo.severidad}
-                                            </Col>
+                                                </Row>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h5>Severidad: </h5>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketCerrado.criticidad}
+                                                    </Col>
 
-                                        </Row>
+                                                </Row>
 
-                                    </Card.Text>
-                                    <Button variant="primary" onClick={() => setShowTicketModal(true)}>TicketInfo</Button>
+                                            </Card.Text>
+                                            <Button variant="primary" onClick={() => setShowTicketModalCerrado(true)}>TicketInfo</Button>
 
-                                    {showTicketModal ? (
-                                        <ModalTicketCerrado numeroTicket="1" onChangeshowTicketModal={onChangeshowTicketModal} />
-                                    ) :
-                                        (null
-                                        )}
+                                            {showTicketModalCerrado ? (
+                                                <ModalTicketCerrado data={ticketCerrado} numeroTicket={ticketCerrado.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
+                                            ) :
+                                                (null
+                                                )}
 
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            )) : <h3>Cargando...</h3>}
 
                     </Row>
                 )}

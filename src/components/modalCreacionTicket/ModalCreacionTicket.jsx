@@ -22,15 +22,19 @@ import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     const TicketViejo = {
+        "titulo": null,
+        "categoria": null,
         "criticidad": null,
         "estado": null,
         "fechaCreacion": null,
         "descripcion": null,
+        "idCliente": null,
         "nombreCliente": null,
-        "medioContacto": null,
-        "correo": null,
+        "medioContactoCliente": null,
+        "idProducto": null,
         "nombreProducto": null,
-        "version": null,
+        "versionProducto": null,
+        "idAsesor": null,
         "nombreAsesor": null,
         "areaAsesor": null,
         "notas": null,
@@ -73,6 +77,31 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                 <Modal.Body>
 
                     <div className="div-body-infoticket">
+
+                        <Row className="mt-4">
+                            <Col xs={1}>
+                                <h4> Título: </h4>
+                            </Col>
+                            <Col>
+                                <Form.Control type="text" name="titulo" onChange={(e) => onChangeTicketEditable(e)} />
+                            </Col>
+
+                            <Col>
+                                <h4>Categoría:</h4>
+                            </Col>
+                            <Col>
+                                <Dropdown >
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                        {ticketEditable.categoria ? ticketEditable.categoria : "Seleccionar"}
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                        <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Consulta</Dropdown.Item>
+                                        <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Col>
+                        </Row>
 
                         <Row className="mt-4">
                             <Col>

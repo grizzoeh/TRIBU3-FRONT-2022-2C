@@ -18,7 +18,7 @@ import Form from 'react-bootstrap/Form';
 
 
 
-const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
+const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado }) => {
 
     const TicketInfo = {
         "titulo": "Problema con el servidor",
@@ -45,7 +45,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
     const [show, setShow] = useState(true);
 
     const handleClose = () => {
-        onChangeshowTicketModal(false)
+        onChangeshowTicketModalCerrado(false)
 
     };
 
