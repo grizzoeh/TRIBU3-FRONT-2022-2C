@@ -10,6 +10,7 @@ import SpacerLine from "../../components/spacerLine/spacerLine";
 import Col from 'react-bootstrap/Col';
 import ModalProductoNuevo from "../../components/modalProductoNuevo/modalProductoNuevo";
 import ModalGestionVersion from "../../components/modalGestionVersion/modalGestionVersion";
+import ModalEditarProducto from "../../components/modalEditarProducto/modalEditarProducto";
 
 const CrearProductoYVersion = () => {
 
@@ -59,8 +60,8 @@ const CrearProductoYVersion = () => {
                                 </td>
                                 <td>
                                     <Row>
-                                        <Col sm={2}><Button variant="secondary" size="sm">Editar</Button></Col>
-                                        <Col sm={2}><Button variant="danger" size="sm">Eliminar</Button></Col>
+                                        <ModalEditarProducto/>
+                                        <Col sm={2}><Button variant="danger" size="sm">Deprecar</Button></Col>
                                     </Row>
                                 </td>
                             </tr>
@@ -73,8 +74,8 @@ const CrearProductoYVersion = () => {
                                 </td>
                                 <td>
                                     <Row>
-                                        <Col sm={2}><Button variant="secondary" size="sm">Editar</Button></Col>
-                                        <Col sm={2}><Button variant="danger" size="sm">Eliminar</Button></Col>
+                                        <ModalEditarProducto/>
+                                        <Col sm={2}><Button variant="danger" size="sm">Deprecar</Button></Col>
                                     </Row>
                                 </td>
                             </tr>

@@ -9,6 +9,7 @@ import Form from 'react-bootstrap/Form';
 import ModalVersionNueva from '../modalVersionNueva/modalVersionNueva';
 import SpacerLine from '../spacerLine/spacerLine';
 import Container from 'react-bootstrap/Container';
+import ModalEditarVersion from '../modalEditarVersion/modalEditarVersion';
 
 function ModalGestionVersion() {
     
@@ -54,8 +55,8 @@ function ModalGestionVersion() {
                                     <td>Activa</td>
                                     <td>
                                         <Row>
-                                            <Col sm={4}><Button variant="secondary" size="sm">Editar</Button></Col>
-                                            <Col sm={4}><Button variant="danger" size="sm">Reprocar</Button></Col>
+                                            <ModalEditarVersion/>
+                                            <Col sm={2}><Button variant="danger" size="sm">Reprocar</Button></Col>
                                         </Row>
                                     </td>
                                 </tr>
@@ -65,8 +66,8 @@ function ModalGestionVersion() {
                                     <td>Activa</td>
                                     <td>
                                         <Row>
-                                            <Col sm={4}><Button variant="secondary" size="sm">Editar</Button></Col>
-                                            <Col sm={4}><Button variant="danger" size="sm">Reprocar</Button></Col>
+                                            <ModalEditarVersion/>
+                                            <Col sm={2}><Button variant="danger" size="sm">Reprocar</Button></Col>
                                         </Row>
                                     </td>
                                 </tr>
@@ -76,8 +77,8 @@ function ModalGestionVersion() {
                                     <td>Activa</td>
                                     <td>
                                         <Row>
-                                            <Col sm={4}><Button variant="secondary" size="sm">Editar</Button></Col>
-                                            <Col sm={4}><Button variant="danger" size="sm">Reprocar</Button></Col>
+                                            <ModalEditarVersion/>
+                                            <Col sm={2}><Button variant="danger" size="sm">Reprocar</Button></Col>
                                         </Row>
                                     </td>
                                 </tr>

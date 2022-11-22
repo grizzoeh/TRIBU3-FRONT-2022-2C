@@ -4,7 +4,7 @@
 }
 
 .modalContent1 {
-    width: 85vw;
+    width: 70vw;
     /* Occupy the 90% of the screen width */
-    max-width: 95vw;
+    max-width: 75vw;
 }
