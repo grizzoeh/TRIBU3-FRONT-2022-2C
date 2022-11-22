@@ -10,6 +10,7 @@ import ModalInfoTicketEnCurso from "../../components/modalInfoTicketEnCurso/Moda
 import ModalInfoTicketEnCurso2 from "../../components/modalInfoTicketEnCurso/ModalInfoTicketEnCurso";
 import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreacionTicket";
 import Dropdown from 'react-bootstrap/Dropdown';
+import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 
 const TicketsEnCurso = () => {
 
@@ -66,8 +67,12 @@ const TicketsEnCurso = () => {
 
 
                 </Row>
+
+            </Container>
+
+            <Container className="container-filters">
                 <Row>
-                    <Col xs={12}>
+                    <Col xs={1}>
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                 {showEnTicketsEnCurso}
@@ -81,13 +86,11 @@ const TicketsEnCurso = () => {
                     </Col>
                 </Row>
 
-
             </Container>
-
 
             <Container className="container-cards">
 
-                {showEnTicketsEnCurso === "En Curso" ?
+                {showEnTicketsEnCurso === "En Curso" ? (
 
                     <Row className="row-cards">
                         <Col>
@@ -157,7 +160,61 @@ const TicketsEnCurso = () => {
                         </Col>
 
                     </Row>
-                    : null}
+                ) : (
+                    <Row className="row-cards">
+                        <Col>
+                            <Card style={{ width: '22rem' }}>
+                                <Card.Body>
+                                    <Card.Title>
+                                        <Row>
+                                            <Col>
+                                                Ticket  #{cardInfo.id}
+                                            </Col>
+
+                                        </Row>
+
+                                        <Row className="mt-2">
+                                            <Col>
+                                                {cardInfo.titulo}
+                                            </Col>
+
+                                        </Row>
+                                    </Card.Title>
+                                    <Card.Text>
+                                        <Row>
+                                            <Col xs={5}>
+                                                <h5>Cliente: </h5>
+                                            </Col>
+                                            <Col>
+                                                {cardInfo.nombreCliente}
+                                            </Col>
+
+                                        </Row>
+                                        <Row>
+                                            <Col xs={5}>
+                                                <h5>Severidad: </h5>
+                                            </Col>
+                                            <Col>
+                                                {cardInfo.severidad}
+                                            </Col>
+
+                                        </Row>
+
+                                    </Card.Text>
+                                    <Button variant="primary" onClick={() => setShowTicketModal(true)}>TicketInfo</Button>
+
+                                    {showTicketModal ? (
+                                        <ModalTicketCerrado numeroTicket="1" onChangeshowTicketModal={onChangeshowTicketModal} />
+                                    ) :
+                                        (null
+                                        )}
+
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                    </Row>
+                )}
 
             </Container>
 
