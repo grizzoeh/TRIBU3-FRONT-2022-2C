@@ -57,7 +57,6 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
 
     const crearTicket = async () => {
-        console.log(TicketData);
         axios.post(SERVER_NAME + "/tickets", TicketData)
             .then((data) => {
                 if (data.data.ok) {

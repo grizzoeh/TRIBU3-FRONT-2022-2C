@@ -55,6 +55,37 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     // const handleShow = () => onChangeshowTicketModalEnCurso(true);
 
     const handleConfirmarEdicion = () => {
+
+        const ticketEditado = {
+            id: ticketEditable.id,
+            titulo: ticketEditable.titulo,
+            categoria: ticketEditable.categoria,
+            criticidad: ticketEditable.criticidad,
+            estado: ticketEditable.estado,
+            fechaCreacion: ticketEditable.fechaCreacion,
+            idCliente: ticketEditable.idCliente,
+            descripcion: ticketEditable.descripcion,
+            medioContactoCliente: ticketEditable.medioContactoCliente,
+            idProducto: ticketEditable.idProducto,
+            idAsesor: ticketEditable.idAsesor,
+            nombreAsesor: ticketEditable.nombreAsesor,
+            areaAsesor: ticketEditable.areaAsesor,
+            notas: ticketEditable.notas,
+            idVersion: ticketEditable.idVersion,
+        }
+
+
+
+        axios.patch(SERVER_NAME + "/tickets/ticket", ticketEditado)
+            .then((data) => {
+                if (data.data.ok) {
+                    console.log("Ticket editado");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
         setEditMode(false);
     }
     const handleCancelarEdicion = () => {
@@ -566,8 +597,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     {editMode ? (
                         // DENTRO DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col xs={1}><Button onClick={handleCancelarEdicion}> Cancelar </Button> </Col>
-                            <Col> <Button onClick={handleConfirmarEdicion}>Confirmar</Button> </Col>
+                            <Col ><Button onClick={handleCancelarEdicion}> Cancelar </Button> </Col>
+                            <Col xs={18}> <Button onClick={handleConfirmarEdicion}>Confirmar</Button> </Col>
                         </Fragment>
 
                     ) : (
@@ -578,14 +609,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
+                            <Col xs={1}>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                            </Col>
                         </Fragment>
 
+
                     )}
-                    <Col xs={1}>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                    </Col>
+
                     {showReporteFinalModal ? (
                         <ModalReporteFinal numeroTicket="1" onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} />) :
                         (
