@@ -25,10 +25,15 @@ const NavbarRecursos = () => {
             </Nav>
 
             <Nav className="me-auto">
-                <Nav.Link href="/cargar-horas">Cargar horas</Nav.Link>
-                <Nav.Link href="/modificar-carga">Modificar carga de horas</Nav.Link>
-                <Nav.Link href="/consultar-carga">Consultar carga</Nav.Link>
-
+                <NavDropdown title="Horas" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/cargar-horas">Cargar</NavDropdown.Item>
+                    <NavDropdown.Item href="/modificar-carga-horas">Modificar</NavDropdown.Item> 
+                    <NavDropdown.Item href="/eliminar-carga-horas">Eliminar</NavDropdown.Item>
+                </NavDropdown>
+                <NavDropdown title="Consultar" id="collasible-nav-dropdown">
+                    <NavDropdown.Item href="/consultar-carga">Carga de Horas</NavDropdown.Item>
+                    <NavDropdown.Item href="/consultar-reportes-por-proyecto">Reportes</NavDropdown.Item>                            
+                </NavDropdown>
             </Nav>
 
 

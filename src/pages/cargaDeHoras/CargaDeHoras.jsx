@@ -12,21 +12,6 @@ const CargaDeHoras = () => {
     return (
         <Fragment>
 
-
-
-            <Container className="container-title">
-
-                <Row>
-                    <Col >
-                        <h1>Cargar Horas</h1>
-                    </Col>
-
-
-                </Row>
-
-            </Container>
-
-
             <Container className="container-cards">
 
                 <ModalCreacionCargaHoras />

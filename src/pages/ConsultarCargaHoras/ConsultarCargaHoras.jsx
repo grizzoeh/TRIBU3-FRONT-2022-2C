@@ -1,13 +1,11 @@
 import React, { Fragment, useState } from "react";
-import "./InformacionCargaHoras.css";
+import "./ConsultarCargaHoras.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ModalInformacionCargaHoras from "../../components/modalInformacionCargaHoras/ModalInformacionCargaHoras";
 
 const InformacionCargaDeHoras = () => {
-
-
 
     return (
         <Fragment>

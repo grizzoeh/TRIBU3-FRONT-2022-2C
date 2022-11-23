@@ -10,19 +10,21 @@ const CargaDeHoras = lazy(() => import("../pages/cargaDeHoras/CargaDeHoras"));
 
 const ModificacionCargaHoras = lazy(() => import("../pages/modificacionCargaHoras/ModificacionCargaHoras"));
 
-const InformacionCargaHoras = lazy(() => import("../pages/informacionCargaHoras/InformacionCargaHoras"));
+const ConsultarCargaHoras = lazy(() => import("../pages/ConsultarCargaHoras/ConsultarCargaHoras"));
 
+const ConsultarReportes = lazy(() => import("../pages/ConsultarReportes/ConsultarReportes"));
+
+const EliminarCargaHoras = lazy(() => import("../pages/EliminarCargaHoras/EliminarCargaHoras"));
 const RecursosRouter = () => {
     return (
         <Router>
             <Suspense fallback={<h1 className="text-center">Loading...</h1>}>
                 <Routes>
                     <Route path="/cargar-horas" element={<CargaDeHoras />} />
-                    <Route path="/modificar-carga" element={<ModificacionCargaHoras />} />
-                    <Route path="/consultar-carga" element={<InformacionCargaHoras />} />
-
-                    {/* <Route path="*" element={<Navigate to="/ticketsEnCurso" />} /> */}
-
+                    <Route path="/modificar-carga-horas" element={<ModificacionCargaHoras />} />
+                    <Route path="/consultar-carga" element={<ConsultarCargaHoras />} />
+                    <Route path="/eliminar-carga-horas" element={<EliminarCargaHoras />} />
+                    <Route path="/consultar-reportes-por-proyecto" element={<ConsultarReportes />} />
                 </Routes>
             </Suspense>
         </Router>
