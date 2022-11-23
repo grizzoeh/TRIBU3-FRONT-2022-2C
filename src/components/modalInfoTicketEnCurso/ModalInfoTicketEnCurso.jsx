@@ -13,13 +13,20 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
-
-
+const SERVER_NAME = "http://localhost:3000";
 
 
 
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data }) => {
+
+    const [clientes, setClientes] = useState();
+
+    const [productos, setProductos] = useState();
+
+    const [versiones, setVersiones] = useState();
+
+    const [compras, setCompras] = useState();
 
     const [TicketViejo, setTicketViejo] = useState(data);
 
@@ -69,6 +76,82 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     const onChangeshowCreacionTareaModal = (newSomeState) => {
         setShowCreacionTareaModal(newSomeState);
     };
+
+
+    useEffect(() => {
+
+        const getClientes = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        }
+
+        const getProductos = async () => {
+            axios
+                .get(SERVER_NAME + "/productos/", {
+                })
+                .then((res) => {
+                    setProductos(res.data.productos);
+
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getVersiones = async () => {
+            axios
+                .get(SERVER_NAME + "/versiones/", {
+                })
+                .then((res) => {
+                    setVersiones(res.data.versiones);
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getCompras = async () => {
+            axios
+                .get(SERVER_NAME + "/compras/", {
+                })
+                .then((res) => {
+                    setCompras(res.data.compras);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+
+
+
+        getProductos();
+        getVersiones();
+        getClientes();
+        getCompras();
+
+
+    }, []);
+
+
 
 
     return (
@@ -179,6 +262,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                     <Dropdown >
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                             {ticketEditable.nombreCliente}
+
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
@@ -360,7 +444,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                     <h4> Nombre:  </h4>
                                 </Col>
                                 <Col>
-                                    {ticketEditable.nombreCliente}
+
+                                    {clientes ?
+                                        clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                        : null}
+
+                                    {/* {ticketEditable.nombreCliente} */}
                                 </Col>
 
                                 <Col>
@@ -382,14 +471,18 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                     <h4> Nombre: </h4>
                                 </Col>
                                 <Col>
-                                    {ticketEditable.nombreProducto}
+                                    {productos ?
+                                        productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                        : null}
                                 </Col>
 
                                 <Col>
                                     <h4> Versión:   </h4>
                                 </Col>
                                 <Col>
-                                    {ticketEditable.versionProducto}
+                                    {versiones ?
+                                        versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                        : null}
                                 </Col>
 
                             </Row>
