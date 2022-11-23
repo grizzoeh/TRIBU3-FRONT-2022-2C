@@ -30,14 +30,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         "fechaCreacion": null,
         "descripcion": null,
         "idCliente": null,
-        "nombreCliente": null,
         "medioContactoCliente": null,
         "idProducto": null,
-        "nombreProducto": null,
-        "versionProducto": null,
         "idAsesor": null,
-        "nombreAsesor": null,
-        "areaAsesor": null,
         "notas": null,
     }
 
@@ -50,6 +45,12 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
     const [versiones, setVersiones] = useState();
 
     const [compras, setCompras] = useState();
+
+    const [idClienteFilter, setIdClienteFilter] = useState();
+
+    const [idProductoFilter, setIdProductoFilter] = useState();
+
+
 
 
     const handleConfirmarCreacion = () => {
@@ -71,6 +72,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
     const handleClose = () => {
         onChangeshowCreacionModal(false);
     }
+
+
+
 
     useEffect(() => {
 
@@ -263,12 +267,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                     <Dropdown.Menu>
                                         {clientes ?
                                             clientes.map((cliente) => (
-                                                <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                                <Dropdown.Item name="nombreCliente" onClick={(e) => { handleDropdownChange(e); getProductosCliente(cliente.id) }}>{cliente["razon social"]}</Dropdown.Item>
                                             )) : null}
 
-                                        {/* <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item> */}
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
@@ -314,14 +315,22 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu>
-                                        {productos ?
-                                            productos.map((producto) => (
-                                                <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>{producto.nombre}</Dropdown.Item>
-                                            )) : null}
 
-                                        {/* <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                        <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item> */}
+                                        {
+                                            compras ?
+                                                compras.filter((compra) => compra['idClienteFilter'] == idClienteFilter)
+                                                    .map((compra) => (
+
+
+
+                                                        <Dropdown.Item name="nombreProducto" onClick={(e) => { handleDropdownChange(e); setIdProductoFilter(productos[compra['idClienteFilter']['idProducto']]) }}>{productos[compra['idClienteFilter']['idProducto']].nombreProducto}</Dropdown.Item>)) : null
+
+
+
+                                        }
+
+
+
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </Col>
