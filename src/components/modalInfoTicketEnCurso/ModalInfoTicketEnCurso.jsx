@@ -20,6 +20,8 @@ const SERVER_NAME = "http://localhost:3000";
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data }) => {
 
+
+
     const [clientes, setClientes] = useState();
 
     const [productos, setProductos] = useState();
@@ -37,6 +39,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
 
     const [show, setShow] = useState(true);
+
+    const [idClienteFilter, setIdClienteFilter] = useState(data.idCliente);
+
+    const [idProductoFilter, setIdProductoFilter] = useState(data.idProducto);
+
+    const [productosDelCliente, setProductosDelCliente] = useState([]);
 
     const handleClose = () => {
         onChangeshowTicketModalEnCurso(false)
@@ -76,6 +84,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     const onChangeshowCreacionTareaModal = (newSomeState) => {
         setShowCreacionTareaModal(newSomeState);
     };
+
+    const getProductosDelCliente = (idCliente) => {
+        compras?.filter((compra) => compra.idCliente === idCliente).map((compra) => {
+
+            if (!productosDelCliente.includes(compra.idProducto)) {
+                productosDelCliente.push(compra.idProducto);
+            }
+
+        });
+    }
 
 
     useEffect(() => {
@@ -265,14 +283,19 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                 <Col>
                                     <Dropdown >
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.nombreCliente}
+                                            {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                            }
 
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreCliente" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            {clientes ?
+                                                clientes.map((cliente) => (
+                                                    <Dropdown.Item name="nombreCliente" onClick={(e) => {
+                                                        setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
+                                                        setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]); console.log(ticketEditable)
+                                                    }}>{cliente["razon social"]}</Dropdown.Item>
+                                                )) : null}
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -301,13 +324,17 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                 <Col>
                                     <Dropdown >
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.nombreProducto}
+                                            {productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                            }
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            {
+                                                productosDelCliente && productos ?
+                                                    productosDelCliente.map((producto) => (
+                                                        <Dropdown.Item onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idProducto']: productos[producto - 1]['id'] }); setIdProductoFilter(producto - 1) }}>{productos[producto - 1]["nombre"]}</Dropdown.Item>
+                                                    )) : null
+                                            }
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -317,13 +344,18 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                 <Col>
                                     <Dropdown >
                                         <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.versionProducto}
+                                            {versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                            }
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="versionProducto" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            {compras && productos && versiones ?
+                                                compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter + 1)
+                                                    .map((compra) => (
+                                                        //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                        <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones[compra['idVersion'] - 1]['nombre']}</Dropdown.Item>)) : null
+
+                                            }
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
