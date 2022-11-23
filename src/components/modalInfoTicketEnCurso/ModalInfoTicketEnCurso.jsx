@@ -109,6 +109,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     setProductos(res.data.productos);
 
 
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -202,9 +203,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Baja</Dropdown.Item>
+                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Media</Dropdown.Item>
+                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Alta</Dropdown.Item>
+                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Crítica</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -218,9 +220,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
+                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
+                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
+                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
+                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -230,10 +234,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
                             <Row className="mt-4">
                                 <Col>
-                                    <h4>Fecha de creación:</h4>
+                                    <h4>Fecha de creación: </h4>
                                 </Col>
                                 <Col xs={9}>
-                                    <Form.Control type="text" name="fechaCreacion" value={ticketEditable.fechaCreacion} onChange={(e) => onChangeTicketEditable(e)} />
+                                    <Form.Control type="date" name="fechaCreacion" value={ticketEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeTicketEditable(e)} />
 
                                 </Col>
 
@@ -360,9 +364,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Another action</Dropdown.Item>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Something else</Dropdown.Item>
+                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
+                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
+                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Col>
@@ -447,6 +451,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
                                     {clientes ?
                                         clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+
                                         : null}
 
                                     {/* {ticketEditable.nombreCliente} */}
