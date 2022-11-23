@@ -32,6 +32,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         "idCliente": null,
         "medioContactoCliente": null,
         "idProducto": null,
+        "idAsesor": 1,
+        "nombreAsesor": null,
+        "areaAsesor": null,
         "notas": null,
         "idVersion": null,
     }
@@ -53,6 +56,22 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
     const [productosDelCliente, setProductosDelCliente] = useState([]);
 
 
+    const crearTicket = async () => {
+        console.log(TicketData);
+        axios.post(SERVER_NAME + "/tickets", TicketData)
+            .then((data) => {
+                if (data.data.ok) {
+                    console.log("Ticket creado");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+
+
+
     const getProductosDelCliente = (idCliente) => {
         compras?.filter((compra) => compra.idCliente === idCliente).map((compra) => {
 
@@ -67,7 +86,9 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     const handleConfirmarCreacion = () => {
 
-        onChangeshowCreacionModal(false);
+
+        //onChangeshowCreacionModal(false);
+        crearTicket();
 
     }
 
@@ -271,7 +292,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                 <h4>Fecha de creación:</h4>
                             </Col>
                             <Col xs={9}>
-                                <Form.Control type="text" name="fechaCreacion" placeholder="Ej: 18/12/2022" onChange={(e) => onChangeTicketEditable(e)} />
+                                <Form.Control type="date" name="fechaCreacion" placeholder="Ej: 18/12/2022" onChange={(e) => onChangeTicketEditable(e)} />
 
                             </Col>
 

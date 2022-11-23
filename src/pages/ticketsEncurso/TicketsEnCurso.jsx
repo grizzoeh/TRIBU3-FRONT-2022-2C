@@ -46,7 +46,7 @@ const TicketsEnCurso = () => {
         // } else if (e.target.name === "Cerrados") {
         //     setShowEnTicketsEnCurso("Cerrados");
         // }
-        setShowEnTicketsEnCurso(e.target.name);
+
     };
 
 
