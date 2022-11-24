@@ -179,6 +179,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                 });
         }
 
+
+        getProductos();
+        getVersiones();
+        getClientes();
+        getCompras();
+
+
+    }, []);
+
+    useEffect(() => {
         const makeDictionarProductsByClient = async () => {
             const dict = {};
             compras?.map((compra) => {
@@ -198,19 +208,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
             });
             setDicci(dict);
         }
-
-
-
-
-
-        getProductos();
-        getVersiones();
-        getClientes();
-        getCompras();
         makeDictionarProductsByClient();
-
-
-    }, []);
+    }, [dicci]);
 
 
 
@@ -436,7 +435,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         : null}
 
 
-                                                    <Dropdown.Item>xdddd</Dropdown.Item>
+                                                    <Dropdown.Item>xddd</Dropdown.Item>
 
 
 
