@@ -20,7 +20,7 @@ const SERVER_NAME = "http://localhost:3000";
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data }) => {
 
-
+    console.log(data);
 
     const [clientes, setClientes] = useState();
 

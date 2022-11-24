@@ -20,10 +20,14 @@ const TicketsEnCurso = () => {
 
     const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
+    const [clientes, setClientes] = useState();
+
+
     const [filters, setFilters] = useState({
         "categoria": "Todas",
         "estado": "Todos",
         "criticidad": "Todas",
+        "cliente": "Todos",
     });
 
     const onChangeshowTicketModalEnCurso = (newSomeState) => {
@@ -110,8 +114,30 @@ const TicketsEnCurso = () => {
 
         }
 
+        const getClientes = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        }
+
         getDataEnCurso();
         getDataCerrados();
+        getClientes();
 
 
 
@@ -218,6 +244,27 @@ const TicketsEnCurso = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
+
+                    <Col>
+                        <h4>Cliente:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["cliente"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
+                                {clientes?.map((cliente) => {
+                                    return (
+                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                    )
+                                })}
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
                 </Row>
 
             </Container>
@@ -227,9 +274,20 @@ const TicketsEnCurso = () => {
                 {showEnTicketsEnCurso === "En Curso" ? (
 
                     <Row className="row-cards mt-4">
-                        {ticketsEnCursoData.length > 0 ?
-                            ticketsEnCursoData.map((ticketEnCurso) => (
+                        {ticketsEnCursoData.length > 0 && clientes ?
 
+                            ticketsEnCursoData.filter(
+                                (ticket) => {
+                                    //apply filters with categoria, criticidad and estado
+                                    return (
+                                        (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
+                                        (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
+                                        (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
+                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                    );
+                                }
+
+                            ).map((ticketEnCurso) => (
                                 <Col key={ticketEnCurso.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
@@ -264,7 +322,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Severidad: </h5>
+                                                        <h5>Criticidad: </h5>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.criticidad}
@@ -309,7 +367,18 @@ const TicketsEnCurso = () => {
                 ) : (
                     <Row className="row-cards mt-4">
                         {ticketsCerradosData.length > 0 ?
-                            ticketsCerradosData.map((ticketCerrado) => (
+                            ticketsCerradosData.filter(
+                                (ticket) => {
+                                    //apply filters with categoria, criticidad and estado
+                                    return (
+                                        (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
+                                        (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
+                                        (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
+                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                    );
+                                }
+
+                            ).map((ticketCerrado) => (
                                 <Col className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
