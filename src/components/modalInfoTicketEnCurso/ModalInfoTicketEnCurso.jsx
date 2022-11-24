@@ -180,6 +180,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
         }
 
 
+
         getProductos();
         getVersiones();
         getClientes();
@@ -251,7 +252,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="categoria" onClick={(e) => { handleDropdownChange(e); console.log("id filter" + idClienteFilter) }}>Consulta</Dropdown.Item>
+                                                    <Dropdown.Item name="categoria" onClick={(e) => { handleDropdownChange(e); }}>Consulta</Dropdown.Item>
                                                     <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
