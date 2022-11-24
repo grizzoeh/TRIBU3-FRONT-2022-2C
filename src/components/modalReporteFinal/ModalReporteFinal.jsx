@@ -34,9 +34,12 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
     const [idAsesorResolutor, setIdAsesorResolutor] = useState(1);
 
+
     const onChangeReporteFinal = (e) => {
 
         setReporte(e.target.value);
+        setTicketData({ ...TicketData, ["reporteFinal"]: e.target.value });
+
     }
 
     const [show, setShow] = useState(true);
@@ -48,7 +51,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
     const handleEnviar = async () => {
 
-        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: nombreAsesorResolutor, ["areaAsesorResolutor"]: areaAsesorResolutor, ["reporteFinal"]: reporte, ["fechaCierre"]: fechaCierre, idAsesorResolutor: idAsesorResolutor });
+
 
         axios.post(SERVER_NAME + "/tickets/ticket/resuelto", TicketData)
             .then((data) => {
@@ -86,14 +89,20 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
     const handleDropdownChangeNombre = (e) => {
         setNombreAsesorResolutor(e.target.innerHTML);
+        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["idAsesorResolutor"]: 1 });
+
     }
 
     const handleDropdownChangeArea = (e) => {
         setAreaAsesorResolutor(e.target.innerHTML);
+        setTicketData({ ...TicketData, ["areaAsesorResolutor"]: e.target.innerHTML });
+
     }
 
     const onChangeFechaCierre = (e) => {
         setFechaCierre(e.target.value);
+        setTicketData({ ...TicketData, ["fechaCierre"]: e.target.value });
+
     }
 
 
@@ -128,7 +137,6 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                 })
                 .then((res) => {
                     setTicketData(res.data.ticket);
-                    console.log(res.data.ticket);
 
                 })
                 .catch((err) => {
@@ -221,9 +229,13 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                         </Button>
                     </Col>
                     <Col>
-                        <Button variant="primary" onClick={handleEnviar}>
-                            Enviar Reporte Final y Resolver
-                        </Button>
+                        {nombreAsesorResolutor && fechaCierre && areaAsesorResolutor && reporte && idAsesorResolutor ?
+                            <Button variant="primary" onClick={handleEnviar}>
+                                Enviar Reporte Final y Resolver
+                            </Button>
+                            : <h4> cargando...</h4>
+                        }
+
                     </Col>
                 </Modal.Footer>
             </Modal>

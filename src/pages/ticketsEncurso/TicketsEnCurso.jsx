@@ -54,6 +54,8 @@ const TicketsEnCurso = () => {
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
 
+    const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
+
 
 
     useEffect(() => {
@@ -192,10 +194,10 @@ const TicketsEnCurso = () => {
 
                                                 </Row>
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => setShowTicketModalEncurso(true)}>TicketInfo</Button>
+                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>TicketInfo</Button>
 
                                             {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
+                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
                                             ) :
                                                 (null
                                                 )}
@@ -203,11 +205,13 @@ const TicketsEnCurso = () => {
                                         </Card.Body>
                                     </Card>
 
-                                    {showCreacionModal ? (
-                                        <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
-                                    ) :
-                                        (null
-                                        )}
+                                    {
+                                        showCreacionModal ? (
+                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
+                                        ) :
+                                            (null
+                                            )
+                                    }
 
                                 </Col>
 
@@ -261,7 +265,7 @@ const TicketsEnCurso = () => {
                                             <Button variant="primary" onClick={() => setShowTicketModalCerrado(true)}>TicketInfo</Button>
 
                                             {showTicketModalCerrado ? (
-                                                <ModalTicketCerrado data={ticketCerrado} numeroTicket={ticketCerrado.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
+                                                <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
                                             ) :
                                                 (null
                                                 )}
