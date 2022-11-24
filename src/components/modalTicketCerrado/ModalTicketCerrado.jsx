@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
+const SERVER_NAME = "http://localhost:3000";
 
 
 
@@ -41,7 +42,14 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
 
     const [TicketData, setTicketData] = useState(data);
 
+    const [clientes, setClientes] = useState();
 
+
+    const [productos, setProductos] = useState();
+
+    const [versiones, setVersiones] = useState();
+
+    const [compras, setCompras] = useState();
 
     const [show, setShow] = useState(true);
 
@@ -51,7 +59,79 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
     };
 
 
+    useEffect(() => {
 
+        const getClientes = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        }
+
+        const getProductos = async () => {
+            axios
+                .get(SERVER_NAME + "/productos/", {
+                })
+                .then((res) => {
+                    setProductos(res.data.productos);
+
+
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getVersiones = async () => {
+            axios
+                .get(SERVER_NAME + "/versiones/", {
+                })
+                .then((res) => {
+                    setVersiones(res.data.versiones);
+
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        const getCompras = async () => {
+            axios
+                .get(SERVER_NAME + "/compras/", {
+                })
+                .then((res) => {
+                    setCompras(res.data.compras);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+
+
+
+        getProductos();
+        getVersiones();
+        getClientes();
+        getCompras();
+
+
+    }, []);
 
 
 
@@ -133,8 +213,10 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                 <h4> Nombre:  </h4>
                             </Col>
                             <Col>
-                                {TicketData.nombreCliente}
-                            </Col>
+                                {clientes ?
+                                    clientes.filter(cliente => cliente.id === TicketData.idCliente)[0]['razon social']
+
+                                    : null}                            </Col>
 
                             <Col>
                                 <h4> Medio de Contacto: </h4>
@@ -155,14 +237,18 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                 <h4> Nombre: </h4>
                             </Col>
                             <Col>
-                                {TicketData.nombreProducto}
+                                {productos ?
+                                    productos.filter(producto => producto.id === TicketData.idProducto)[0]['nombre']
+                                    : null}
                             </Col>
 
                             <Col>
                                 <h4> Versión:   </h4>
                             </Col>
                             <Col>
-                                {TicketData.versionProducto}
+                                {versiones ?
+                                    versiones.filter(version => version.id === TicketData.idVersion)[0]['nombre']
+                                    : null}
                             </Col>
 
                         </Row>
