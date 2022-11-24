@@ -173,6 +173,51 @@ const TicketsEnCurso = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
+
+                    <Col>
+                        <h4>Criticidad:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["criticidad"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Baja</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Media</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Alta</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Crítica</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Estado:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["estado"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
                 </Row>
 
             </Container>
