@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import ButtonGroup from '@mui/material/ButtonGroup';
@@ -30,7 +31,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             </div>
 
             <div>
-                <Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
+                <Calendar id='calendario' onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
             </div>
         </container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
