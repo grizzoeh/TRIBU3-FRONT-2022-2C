@@ -421,7 +421,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                             )) : null} */}
                                                     {dicci ?
                                                         dicci[idClienteFilter]?.map((idProducto) => (
-                                                            <Dropdown.Item name="nombreProducto" >
+                                                            <Dropdown.Item name="nombreProducto" onClick={
+                                                                (e) => {
+                                                                    setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto });
+                                                                    setIdProductoFilter(idProducto);
+                                                                }
+                                                            } >
                                                                 {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
 
                                                             </Dropdown.Item>
@@ -431,7 +436,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         : null}
 
 
-                                                    <Dropdown.Item>xddd</Dropdown.Item>
+                                                    <Dropdown.Item>xdddd</Dropdown.Item>
 
 
 
