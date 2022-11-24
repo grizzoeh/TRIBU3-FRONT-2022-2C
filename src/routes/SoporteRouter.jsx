@@ -4,6 +4,7 @@ import {
     Route,
     BrowserRouter as Router,
 } from "react-router-dom";
+import Clientes from "../pages/clientes/Clientes";
 //import ProtectedRoute from "./ProtectedRoute";
 
 const TicketsEnCurso = lazy(() => import("../pages/ticketsEncurso/TicketsEnCurso"));
@@ -24,8 +25,7 @@ const SoporteRouter = () => {
                     <Route path="/tickets-resueltos" element={<TicketsCerrados />} />
                     <Route path="/crear-ticket" element={<CrearTicket />} />
                     <Route path="/crear-producto-y-version" element={<CrearProductoYVersion />} />
-
-
+                    <Route path="/clientes" element={<Clientes/>} />
                     {/* <Route path="*" element={<Navigate to="/ticketsEnCurso" />} /> */}
 
                 </Routes>

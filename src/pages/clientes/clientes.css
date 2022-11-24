@@ -1,0 +1,23 @@
+.container-title {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: white;
+    padding-top: 75px;
+}
+
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.tabla-clientes {
+    padding-top: 1%;
+}
+
+.v-center {
+    display: flex;
+    align-items: center;
+}
