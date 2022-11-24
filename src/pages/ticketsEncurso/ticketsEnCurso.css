@@ -9,11 +9,16 @@
 
 }
 
+.btn-ticket {
+    margin-left: 20px;
+
+}
+
 .container-filters {
     position: relative;
     display: flex;
     justify-content: left;
-    align-items: left;
+    align-items: center;
     flex-direction: column;
     background-color: white;
 
@@ -22,10 +27,9 @@
 .container-cards {
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
     flex-direction: column;
-
     background-color: white;
 }
 

@@ -12,6 +12,7 @@ import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreac
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 import axios from "axios";
+import { display } from "@mui/system";
 
 const SERVER_NAME = "http://localhost:3000";
 
@@ -103,22 +104,17 @@ const TicketsEnCurso = () => {
 
     return (
         <Fragment>
-
-
-
             <Container className="container-title">
-
-                <Row>
-                    <Col xs={10}>
+                <table>
+                <tr>
+                    <th>
                         <h1>Tickets en Curso</h1>
-                    </Col>
-                    < Col xs={2}>
-                        <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button>
-                    </Col>
-
-
-                </Row>
-
+                    </th>
+                    <th>
+                        <Button className="btn-ticket" variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button>
+                    </th>
+                </tr>
+                </table>
             </Container>
 
             <Container className="container-filters">
@@ -142,13 +138,13 @@ const TicketsEnCurso = () => {
             <Container className="container-cards">
 
                 {showEnTicketsEnCurso === "En Curso" ? (
-
                     <Row className="row-cards mt-4">
                         {ticketsEnCursoData.length > 0 ?
                             ticketsEnCursoData.map((ticketEnCurso) => (
 
                                 <Col key={ticketEnCurso.id} className="mt-3">
-                                    <Card style={{ width: '22rem' }}>
+                                    <div class="d-flex justify-content-center">
+                                    <Card style={{ width: '22rem'}}>
                                         <Card.Body>
                                             <Card.Title>
                                                 <Row>
@@ -212,11 +208,10 @@ const TicketsEnCurso = () => {
                                             (null
                                             )
                                     }
-
+                                </div>
                                 </Col>
 
                             )) : <h3>Cargando...</h3>}
-
 
                     </Row>
                 ) : (
