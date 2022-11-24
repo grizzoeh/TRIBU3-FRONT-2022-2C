@@ -41,11 +41,11 @@ const TicketsEnCurso = () => {
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
     const handleDropdownEnCursoCerrado = (e) => {
-        // if (e.target.name === "En curso") {
-        //     setShowEnTicketsEnCurso("En Curso");
-        // } else if (e.target.name === "Cerrados") {
-        //     setShowEnTicketsEnCurso("Cerrados");
-        // }
+        if (e.target.name === "En curso") {
+            setShowEnTicketsEnCurso("En Curso");
+        } else if (e.target.name === "Cerrados") {
+            setShowEnTicketsEnCurso("Cerrados");
+        }
 
     };
 
@@ -130,7 +130,9 @@ const TicketsEnCurso = () => {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                {showEnTicketsEnCurso === "En Curso" ? <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item> : <Dropdown.Item name="En Curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>}
+                                <Dropdown.Item name="En curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>
+                                <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item>
+
 
                             </Dropdown.Menu>
                         </Dropdown>
@@ -262,7 +264,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => setShowTicketModalCerrado(true)}>TicketInfo</Button>
+                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>TicketInfo</Button>
 
                                             {showTicketModalCerrado ? (
                                                 <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
