@@ -216,373 +216,464 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Row>
-                                <Col xs={1}>
-                                    <h4> Título: </h4>
-                                </Col>
-                                <Col>
-                                    <Form.Control type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
-                                </Col>
-
-                                <Col>
-                                    <h4>Categoría:</h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.categoria}
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Consulta</Dropdown.Item>
-                                            <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                            </Row>
-
                             <Row className="mt-4">
+
                                 <Col>
-                                    <h4>Criticidad:</h4>
+                                    <Row>
+                                        <Col xs={2}>
+                                            <h4> Título: </h4>
+                                        </Col>
+                                        <Col xs={9}>
+                                            <Form.Control type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+
+                                        <Col xs={3}>
+                                            <h4>Categoría:</h4>
+                                        </Col>
+                                        <Col >
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {ticketEditable.categoria}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Consulta</Dropdown.Item>
+                                                    <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col xs={3}>
+                                            <h4>Criticidad:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {ticketEditable.criticidad}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Baja</Dropdown.Item>
+                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Media</Dropdown.Item>
+                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Alta</Dropdown.Item>
+                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Crítica</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col xs={3}>
+                                            <h4>Estado:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {ticketEditable.estado}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
+                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
+                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
+                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
+                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+
+                                    </Row>
+
+
+                                    <Row className="mt-4">
+                                        <Col xs={4}>
+                                            <h4>Fecha de creación: </h4>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Form.Control type="date" name="fechaCreacion" value={ticketEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeTicketEditable(e)} />
+
+                                        </Col>
+
+                                    </Row>
+
+
+                                    <Row className="mt-4">
+                                        <h4> Descripción </h4>
+                                    </Row>
+                                    <Row className="mt-1">
+
+                                        <textarea className="box-descripcion" name="descripcion" value={ticketEditable.descripcion} onChange={(e) => onChangeTicketEditable(e)} />
+
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <h4> Notas </h4>
+                                    </Row>
+                                    <Row className="mt-1">
+                                        <textarea className="box-notas" name="notas" value={ticketEditable.notas} onChange={(e) => onChangeTicketEditable(e)} />
+
+                                    </Row>
+
                                 </Col>
+
                                 <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.criticidad}
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Baja</Dropdown.Item>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Media</Dropdown.Item>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Alta</Dropdown.Item>
-                                            <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Crítica</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                                <Col >
-                                    <h4>Estado:</h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.estado}
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
-                                            <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-
-                            </Row>
 
 
-                            <Row className="mt-4">
-                                <Col>
-                                    <h4>Fecha de creación: </h4>
-                                </Col>
-                                <Col xs={9}>
-                                    <Form.Control type="date" name="fechaCreacion" value={ticketEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeTicketEditable(e)} />
+                                    <Row >
+                                        <h3 className="titulo-subrayado"> Información Cliente: </h3>
+                                    </Row>
 
-                                </Col>
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Nombre:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    }
 
-                            </Row>
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    {clientes ?
+                                                        clientes.map((cliente) => (
+                                                            <Dropdown.Item name="nombreCliente" onClick={(e) => {
+                                                                setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
+                                                                setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]); console.log(ticketEditable)
+                                                            }}>{cliente["razon social"]}</Dropdown.Item>
+                                                        )) : null}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col>
+                                            <h4> Medio de Contacto:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Form.Control type="text" name="medioContactoCliente" value={ticketEditable.medioContactoCliente} onChange={(e) => onChangeTicketEditable(e)} />
 
 
-                            <Row className="mt-3">
-                                <h4> Descripción </h4>
-                            </Row>
-                            <Row>
-                                <textarea className="box-descripcion" name="descripcion" value={ticketEditable.descripcion} onChange={(e) => onChangeTicketEditable(e)} />
+                                        </Col>
 
+                                    </Row>
 
-                            </Row>
+                                    <Row className="mt-2">
 
-
-                            <Row className="mt-3">
-                                <h4> Información Cliente: </h4>
-                            </Row>
-
-                            <Row className="mt-2">
-                                <Col>
-                                    <h4> Nombre:</h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
-                                            }
-
-                                        </Dropdown.Toggle>
-
-                                        <Dropdown.Menu>
+                                        <Col>
+                                            <h4> CUIT: </h4>
+                                        </Col>
+                                        <Col>
                                             {clientes ?
-                                                clientes.map((cliente) => (
-                                                    <Dropdown.Item name="nombreCliente" onClick={(e) => {
-                                                        setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
-                                                        setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]); console.log(ticketEditable)
-                                                    }}>{cliente["razon social"]}</Dropdown.Item>
-                                                )) : null}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                                <Col>
-                                    <h4> Medio de Contacto:</h4>
-                                </Col>
-                                <Col>
-                                    <Form.Control type="text" name="medioContactoCliente" value={ticketEditable.medioContactoCliente} onChange={(e) => onChangeTicketEditable(e)} />
+                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+
+                                                : null}
+
+                                        </Col>
+
+                                    </Row>
 
 
-                                </Col>
-                                {/* <Col>
-                            <h4> Correo:  {ticketEditable.correo} </h4>
-                        </Col> */}
-                            </Row>
 
+                                    <Row className="mt-4">
+                                        <h3 className="titulo-subrayado"> Información Producto: </h3>
+                                    </Row>
 
-                            <Row className="mt-4">
-                                <h4> Información Producto: </h4>
-                            </Row>
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Nombre: </h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                                    }
+                                                </Dropdown.Toggle>
 
-                            <Row className="mt-2">
-                                <Col>
-                                    <h4> Nombre: </h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
-                                            }
-                                        </Dropdown.Toggle>
+                                                <Dropdown.Menu>
+                                                    {
+                                                        productosDelCliente && productos ?
+                                                            productosDelCliente.map((producto) => (
+                                                                <Dropdown.Item onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idProducto']: productos[producto - 1]['id'] }); setIdProductoFilter(producto - 1) }}>{productos[producto - 1]["nombre"]}</Dropdown.Item>
+                                                            )) : null
+                                                    }
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                    </Row>
 
-                                        <Dropdown.Menu>
-                                            {
-                                                productosDelCliente && productos ?
-                                                    productosDelCliente.map((producto) => (
-                                                        <Dropdown.Item onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idProducto']: productos[producto - 1]['id'] }); setIdProductoFilter(producto - 1) }}>{productos[producto - 1]["nombre"]}</Dropdown.Item>
-                                                    )) : null
-                                            }
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
-                                <Col>
-                                    <h4> Versión:</h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
-                                            }
-                                        </Dropdown.Toggle>
+                                    <Row className="mt-4">
+                                        <Col>
+                                            <h4> Versión:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                                    }
+                                                </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            {compras && productos && versiones ?
-                                                compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter + 1)
-                                                    .map((compra) => (
-                                                        //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                        <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones[compra['idVersion'] - 1]['nombre']}</Dropdown.Item>)) : null
+                                                <Dropdown.Menu>
+                                                    {compras && productos && versiones ?
+                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter + 1)
+                                                            .map((compra) => (
+                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                                <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones[compra['idVersion'] - 1]['nombre']}</Dropdown.Item>)) : null
 
-                                            }
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </Col>
+                                                    }
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
 
-                            </Row>
+                                    </Row>
 
-                            <Row className="mt-5">
-                                <h4> Información asesor: </h4>
-                            </Row>
+                                    <Row className="mt-5">
+                                        <h3 className="titulo-subrayado"> Información asesor: </h3>
+                                    </Row>
 
-                            <Row className="mt-2">
+                                    <Row className="mt-2">
 
-                                <Col>
-                                    <h4> Area:</h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.areaAsesor}
-                                        </Dropdown.Toggle>
+                                        <Col>
+                                            <h4> Area:</h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {ticketEditable.areaAsesor}
+                                                </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Soporte</Dropdown.Item>
-                                            <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Proyectos</Dropdown.Item>
-                                            <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Recursos</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Soporte</Dropdown.Item>
+                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Proyectos</Dropdown.Item>
+                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Recursos</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
 
-                                </Col>
+                                        </Col>
+                                    </Row>
 
-                                <Col>
-                                    <h4> Nombre: </h4>
-                                </Col>
-                                <Col>
-                                    <Dropdown >
-                                        <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                            {ticketEditable.nombreAsesor}
-                                        </Dropdown.Toggle>
+                                    <Row className="mt-4">
 
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
-                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
-                                        </Dropdown.Menu>
-                                    </Dropdown>
+                                        <Col>
+                                            <h4> Nombre: </h4>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                    {ticketEditable.nombreAsesor}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
+                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
+                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+
+                                    </Row>
+
                                 </Col>
 
                             </Row>
 
-                            <Row className="mt-4">
-                                <h4> Notas </h4>
-                            </Row>
-                            <Row className="mt-2">
-                                <textarea className="box-notas" name="notas" value={ticketEditable.notas} onChange={(e) => onChangeTicketEditable(e)} />
 
-                            </Row>
 
 
                         </div>
                     ) : (
                         // FUERA DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Row className="mt-1">
-                                <Col>
-                                    <h4> Título: </h4>
-                                </Col>
-                                <Col xs={6}>
-                                    {ticketEditable.titulo}
-                                </Col>
-                                <Col>
-                                    <h4> Categoría: </h4>
-                                </Col>
-                                <Col >
-                                    {ticketEditable.categoria}
-                                </Col>
-                            </Row>
                             <Row className="mt-4">
-                                <Col >
-                                    <h4>Criticidad:   </h4>
-                                </Col>
+
                                 <Col>
-                                    {ticketEditable.criticidad}
+
+                                    <Row className="mt-1">
+                                        <Col>
+                                            <h4> Título: </h4>
+                                        </Col>
+                                        <Col xs={6}>
+                                            {ticketEditable.titulo}
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Categoría: </h4>
+                                        </Col>
+                                        <Col >
+                                            {ticketEditable.categoria}
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-4">
+                                        <Col >
+                                            <h4>Criticidad:   </h4>
+                                        </Col>
+                                        <Col>
+                                            {ticketEditable.criticidad}
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-2">
+
+                                        <Col >
+                                            <h4>Estado: </h4>
+                                        </Col>
+                                        <Col >
+                                            {ticketEditable.estado}
+                                        </Col>
+
+                                    </Row>
+
+
+                                    <Row className="mt-3">
+                                        <Col >
+                                            <h4>Fecha de creación:</h4>
+                                        </Col>
+                                        <Col >
+                                            {ticketEditable.fechaCreacion}
+                                        </Col>
+
+                                    </Row>
+
+
+                                    <Row className="mt-3">
+                                        <h4> Descripción </h4>
+                                    </Row>
+                                    <Row className="mt-3">
+                                        <Col xs={11}>
+                                            <p className="linea-box">
+                                                {ticketEditable.descripcion}
+                                            </p>
+                                        </Col>
+                                    </Row>
+
+
+                                    <Row className="mt-2">
+                                        <h4> Notas </h4>
+                                    </Row>
+                                    <Row className="mt-3">
+                                        <Col xs={11}>
+                                            <p className="linea-box">
+                                                {ticketEditable.notas}
+                                            </p>
+                                        </Col>
+                                    </Row>
+
                                 </Col>
 
-                                <Col >
-                                    <h4>Estado: </h4>
-                                </Col>
-                                <Col >
-                                    {ticketEditable.estado}
+                                <Col>
+
+
+                                    <Row className="mt-1">
+                                        <h3 className="titulo-subrayado"> Información Cliente: </h3>
+                                    </Row>
+
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Nombre:  </h4>
+                                        </Col>
+                                        <Col>
+
+                                            {clientes ?
+                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+
+                                                : null}
+
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-2">
+
+                                        <Col>
+                                            <h4> Medio de Contacto: </h4>
+                                        </Col>
+                                        <Col>
+                                            {ticketEditable.medioContactoCliente}
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-2">
+
+                                        <Col>
+                                            <h4> CUIT: </h4>
+                                        </Col>
+                                        <Col>
+                                            {clientes ?
+                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+
+                                                : null}
+
+                                        </Col>
+
+                                    </Row>
+
+
+
+                                    <Row className="mt-4">
+                                        <h3 className="titulo-subrayado"> Información Producto: </h3>
+                                    </Row>
+
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Nombre: </h4>
+                                        </Col>
+                                        <Col>
+                                            {productos ?
+                                                productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                                : null}
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-2">
+
+                                        <Col>
+                                            <h4> Versión:   </h4>
+                                        </Col>
+                                        <Col>
+                                            {versiones ?
+                                                versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                                : null}
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <h3 className="titulo-subrayado"> Información asesor: </h3>
+                                    </Row>
+
+                                    <Row>
+                                        <Col>
+                                            <h4> Nombre:</h4>
+                                        </Col>
+                                        <Col>
+                                            {ticketEditable.nombreAsesor}
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-2">
+                                        <Col>
+                                            <h4> Area:  </h4>
+                                        </Col>
+
+                                        <Col>
+                                            {ticketEditable.areaAsesor}
+                                        </Col>
+
+                                    </Row>
+
                                 </Col>
 
                             </Row>
 
-
-                            <Row className="mt-3">
-                                <Col >
-                                    <h4>Fecha de creación:</h4>
-                                </Col>
-                                <Col >
-                                    {ticketEditable.fechaCreacion}
-                                </Col>
-
-                            </Row>
-
-
-                            <Row className="mt-3">
-                                <h4> Descripción </h4>
-                            </Row>
-                            <Row className="mt-2">
-                                <p>
-                                    {ticketEditable.descripcion}
-                                </p>
-                            </Row>
-
-
-                            <Row className="mt-4">
-                                <h4> Información Cliente: </h4>
-                            </Row>
-
-                            <Row className="mt-2">
-                                <Col>
-                                    <h4> Nombre:  </h4>
-                                </Col>
-                                <Col>
-
-                                    {clientes ?
-                                        clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
-
-                                        : null}
-
-                                    {/* {ticketEditable.nombreCliente} */}
-                                </Col>
-
-                                <Col>
-                                    <h4> Medio de Contacto: </h4>
-                                </Col>
-                                <Col>
-                                    {ticketEditable.medioContactoCliente}
-                                </Col>
-
-                            </Row>
-
-
-                            <Row className="mt-4">
-                                <h4> Información Producto: </h4>
-                            </Row>
-
-                            <Row className="mt-2">
-                                <Col>
-                                    <h4> Nombre: </h4>
-                                </Col>
-                                <Col>
-                                    {productos ?
-                                        productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
-                                        : null}
-                                </Col>
-
-                                <Col>
-                                    <h4> Versión:   </h4>
-                                </Col>
-                                <Col>
-                                    {versiones ?
-                                        versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
-                                        : null}
-                                </Col>
-
-                            </Row>
-
-                            <Row className="mt-4">
-                                <h4> Información asesor: </h4>
-                            </Row>
-
-                            <Row>
-                                <Col>
-                                    <h4> Nombre:</h4>
-                                </Col>
-                                <Col>
-                                    {ticketEditable.nombreAsesor}
-                                </Col>
-                                <Col>
-                                    <h4> Area:  </h4>
-                                </Col>
-                                <Col>
-                                    {ticketEditable.areaAsesor}
-                                </Col>
-
-                            </Row>
-
-                            <Row className="mt-4">
-                                <h4> Notas </h4>
-                            </Row>
-                            <Row className="mt-3">
-                                <p>
-                                    {ticketEditable.notas}
-                                </p>
-                            </Row>
 
 
                         </div>

@@ -51,3 +51,15 @@
     height: 200px;
 
 }
+
+.titulo-subrayado {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+}
+
+.linea-box {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 7px;
+
+}

@@ -316,7 +316,7 @@ const TicketsEnCurso = () => {
                                                         <h5>Cliente: </h5>
                                                     </Col>
                                                     <Col>
-                                                        {ticketEnCurso.nombreCliente}
+                                                        {clientes[ticketEnCurso.idCliente - 1]["razon social"]}
                                                     </Col>
 
                                                 </Row>
@@ -407,7 +407,7 @@ const TicketsEnCurso = () => {
                                                         <h5>Cliente: </h5>
                                                     </Col>
                                                     <Col>
-                                                        {ticketCerrado.nombreCliente}
+                                                        {clientes[ticketCerrado.idCliente - 1]["razon social"]}
                                                     </Col>
 
                                                 </Row>
