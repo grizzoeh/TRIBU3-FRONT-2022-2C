@@ -30,6 +30,8 @@ const NavbarSoporte = () => {
                 <Nav.Link href="/crear-ticket">Crear Ticket</Nav.Link>
                 <Nav.Link href="/crear-producto-y-version">Crear Producto y Versión</Nav.Link>
 
+                <Nav.Link href="/proyectos">Proyectos</Nav.Link>
+
             </Nav>
 
 
