@@ -18,7 +18,7 @@ import Form from 'react-bootstrap/Form';
 
 
 
-const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
+const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data }) => {
 
     const TicketInfo = {
         "titulo": "Problema con el servidor",
@@ -39,13 +39,14 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
         "reporteFinal": " Rep Final Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel",
     }
 
+    const [TicketData, setTicketData] = useState(data);
 
 
 
     const [show, setShow] = useState(true);
 
     const handleClose = () => {
-        onChangeshowTicketModal(false)
+        onChangeshowTicketModalCerrado(false)
 
     };
 
@@ -68,16 +69,28 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
                             <Col>
                                 <h4> Título: </h4>
                             </Col>
-                            <Col xs={11}>
-                                <h4> {TicketInfo.titulo} </h4>
+                            <Col >
+                                {TicketData.titulo}
+                            </Col>
+                            <Col>
+                                <h4> Categoría: </h4>
+                            </Col>
+                            <Col >
+                                {TicketData.categoria}
                             </Col>
                         </Row>
                         <Row className="mt-4">
                             <Col >
-                                <h4>Criticidad:  {TicketInfo.criticidad} </h4>
+                                <h4>Criticidad:   </h4>
+                            </Col>
+                            <Col>
+                                {TicketData.criticidad}
                             </Col>
                             <Col >
-                                <h4>Estado: {TicketInfo.estado} </h4>
+                                <h4>Estado: </h4>
+                            </Col>
+                            <Col >
+                                {TicketData.estado}
                             </Col>
 
                         </Row>
@@ -85,7 +98,17 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
 
                         <Row className="mt-3">
                             <Col >
-                                <h4>Fecha de creación: {TicketInfo.fechaCreacion} </h4>
+                                <h4>Fecha de creación:</h4>
+                            </Col>
+                            <Col >
+                                {TicketData.fechaCreacion}
+                            </Col>
+
+                            <Col >
+                                <h4>Fecha de cierre: </h4>
+                            </Col>
+                            <Col >
+                                {TicketData.fechaCierre}
                             </Col>
 
                         </Row>
@@ -96,7 +119,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
                         </Row>
                         <Row className="mt-2">
                             <p>
-                                {TicketInfo.descripcion}
+                                {TicketData.descripcion}
                             </p>
                         </Row>
 
@@ -107,14 +130,19 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
 
                         <Row className="mt-2">
                             <Col>
-                                <h4> Nombre: {TicketInfo.nombreCliente} </h4>
+                                <h4> Nombre:  </h4>
                             </Col>
                             <Col>
-                                <h4> Medio de Contacto: {TicketInfo.medioContacto} </h4>
+                                {TicketData.nombreCliente}
+                            </Col>
+
+                            <Col>
+                                <h4> Medio de Contacto: </h4>
                             </Col>
                             <Col>
-                                <h4> Correo:  {TicketInfo.correo} </h4>
+                                {TicketData.medioContactoCliente}
                             </Col>
+
                         </Row>
 
 
@@ -124,10 +152,17 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
 
                         <Row className="mt-2">
                             <Col>
-                                <h4> Nombre:  {TicketInfo.nombreProducto} </h4>
+                                <h4> Nombre: </h4>
                             </Col>
                             <Col>
-                                <h4> Versión:  {TicketInfo.version} </h4>
+                                {TicketData.nombreProducto}
+                            </Col>
+
+                            <Col>
+                                <h4> Versión:   </h4>
+                            </Col>
+                            <Col>
+                                {TicketData.versionProducto}
                             </Col>
 
                         </Row>
@@ -138,10 +173,16 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
 
                         <Row>
                             <Col>
-                                <h4> Nombre: {TicketInfo.nombreAsesor} </h4>
+                                <h4> Nombre:</h4>
                             </Col>
                             <Col>
-                                <h4> Area:  {TicketInfo.areaAsesor} </h4>
+                                {TicketData.nombreAsesor}
+                            </Col>
+                            <Col>
+                                <h4> Area:  </h4>
+                            </Col>
+                            <Col>
+                                {TicketData.areaAsesor}
                             </Col>
 
                         </Row>
@@ -152,10 +193,16 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
 
                         <Row>
                             <Col>
-                                <h4> Nombre: {TicketInfo.nombreAsesorResolutor} </h4>
+                                <h4> Nombre:</h4>
                             </Col>
                             <Col>
-                                <h4> Area:  {TicketInfo.areaAsesorResolutor} </h4>
+                                {TicketData.nombreAsesorResolutor}
+                            </Col>
+                            <Col>
+                                <h4> Area:  </h4>
+                            </Col>
+                            <Col>
+                                {TicketData.areaAsesorResolutor}
                             </Col>
 
                         </Row>
@@ -165,7 +212,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
                         </Row>
                         <Row className="mt-3">
                             <p>
-                                {TicketInfo.notas}
+                                {TicketData.notas}
                             </p>
                         </Row>
 
@@ -174,7 +221,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModal }) => {
                         </Row>
                         <Row className="mt-3">
                             <p>
-                                {TicketInfo.reporteFinal}
+                                {TicketData.reporteFinal}
                             </p>
                         </Row>
 

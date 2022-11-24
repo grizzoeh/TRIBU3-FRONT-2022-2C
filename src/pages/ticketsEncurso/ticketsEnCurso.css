@@ -9,6 +9,16 @@
 
 }
 
+.container-filters {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex-direction: column;
+    background-color: white;
+
+}
+
 .container-cards {
     position: relative;
     display: flex;
