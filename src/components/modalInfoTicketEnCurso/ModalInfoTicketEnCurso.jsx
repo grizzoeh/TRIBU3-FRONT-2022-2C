@@ -44,7 +44,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
     const [idProductoFilter, setIdProductoFilter] = useState(data.idProducto);
 
-    const [productosDelCliente, setProductosDelCliente] = useState([]);
+    const [dicci, setDicci] = useState();
 
     const handleClose = () => {
         onChangeshowTicketModalEnCurso(false)
@@ -114,15 +114,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
         setShowCreacionTareaModal(newSomeState);
     };
 
-    const getProductosDelCliente = (idCliente) => {
-        compras?.filter((compra) => compra.idCliente === idCliente).map((compra) => {
 
-            if (!productosDelCliente.includes(compra.idProducto)) {
-                productosDelCliente.push(compra.idProducto);
-            }
-
-        });
-    }
 
 
     useEffect(() => {
@@ -187,6 +179,26 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                 });
         }
 
+        const makeDictionarProductsByClient = async () => {
+            const dict = {};
+            compras?.map((compra) => {
+                if (!dict[compra.idCliente]) {
+                    dict[compra.idCliente] = [];
+
+                }
+                if (
+                    !dict[compra.idCliente].includes(compra.idProducto)
+                ) {
+                    dict[compra.idCliente].push(compra.idProducto);
+                }
+
+
+
+
+            });
+            setDicci(dict);
+        }
+
 
 
 
@@ -195,6 +207,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
         getVersiones();
         getClientes();
         getCompras();
+        makeDictionarProductsByClient();
 
 
     }, []);
@@ -345,7 +358,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item name="nombreCliente" onClick={(e) => {
                                                                 setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
-                                                                setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]);
+                                                                setIdClienteFilter(cliente["id"]);
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
@@ -398,14 +411,27 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {
+                                                    {/* {
                                                         productos ?
                                                             compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
                                                                 <Dropdown.Item name="nombreProducto" onClick={(e) => {
                                                                     setTicketEditable({ ...ticketEditable, ['idProducto']: compra["idProducto"] });
                                                                     setIdProductoFilter(compra["idProducto"]);
                                                                 }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
-                                                            )) : null}
+                                                            )) : null} */}
+                                                    {dicci ?
+                                                        dicci[idClienteFilter]?.map((idProducto) => (
+                                                            <Dropdown.Item name="nombreProducto" >
+                                                                {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
+
+                                                            </Dropdown.Item>
+                                                        ))
+
+
+                                                        : null}
+
+
+                                                    <Dropdown.Item>xddd</Dropdown.Item>
 
 
 
@@ -413,7 +439,24 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
+
                                     </Row>
+                                    {/* <Button onClick={console.log(Array
+                                        .from(new Set(compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
+                                            productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']
+                                        )))))}>asd</Button> */}
+
+                                    <Button onClick={dicci[1] ? console.log("dic", dicci[1]) :
+                                        console.log("no")
+                                    }>loll</Button>
+
+
+
+
+
+
+
+
 
                                     <Row className="mt-4">
                                         <Col>
