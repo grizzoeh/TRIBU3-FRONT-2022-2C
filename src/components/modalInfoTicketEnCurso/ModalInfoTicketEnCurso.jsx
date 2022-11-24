@@ -620,12 +620,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     )}
 
                     {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroTicket="1" onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} />) :
+                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} />) :
                         (
                             null)}
 
                     {showCreacionTareaModal ? (
-                        <ModalCreacionTarea numeroTicket="1" onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} />) :
+                        <ModalCreacionTarea numeroTicket={numeroTicket} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} />) :
                         (
                             null)}
                 </Modal.Footer>
