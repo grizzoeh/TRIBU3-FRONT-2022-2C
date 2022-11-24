@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./crearProductoYVersion.css";
 import Container from 'react-bootstrap/Container';
@@ -11,8 +11,30 @@ import Col from 'react-bootstrap/Col';
 import ModalProductoNuevo from "../../components/modalProductoNuevo/modalProductoNuevo";
 import ModalGestionVersion from "../../components/modalGestionVersion/modalGestionVersion";
 import ModalEditarProducto from "../../components/modalEditarProducto/modalEditarProducto";
+import axios from "axios";
 
 const CrearProductoYVersion = () => {
+
+    const SERVER_NAME = "http://localhost:3000";
+    const [productos, setProductos] = useState([]);
+    const [IdProductoAGestionar, setIdProductoAGestionar] = useState();
+
+    useEffect(() => {
+        const getProductos = async () => {
+            axios
+                .get(SERVER_NAME + "/productos/", {
+                })
+                .then((res) => {
+                    setProductos(res.data.productos);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        getProductos();
+    }, [])
+
 
     return (
         <Fragment>
@@ -46,17 +68,19 @@ const CrearProductoYVersion = () => {
                             <tr>
                                 <th>Product_ID</th>
                                 <th>Nombre del Producto</th>
+                                <th>Estado</th>
                                 <th>Versiones</th>
                                 <th>Acciones</th>
                             </tr> 
                         </thead>
                         <tbody>
-
+                            {productos.length > 0 ? productos.map((producto) => (
                             <tr>
-                                <td>1</td>
-                                <td>PsaGestiones</td>
+                                <td>{producto.id}</td>
+                                <td>{producto.nombre}</td>
+                                <td>{producto.estado}</td>
                                 <td>
-                                    <ModalGestionVersion />
+                                    <ModalGestionVersion producto ={producto}/>
                                 </td>
                                 <td>
                                     <Row>
@@ -64,25 +88,7 @@ const CrearProductoYVersion = () => {
                                         <Col sm={2}><Button variant="danger" size="sm">Deprecar</Button></Col>
                                     </Row>
                                 </td>
-                            </tr>
-
-                            <tr>
-                                <td>2</td>
-                                <td>PsaCalculator</td>
-                                <td>
-                                    <ModalGestionVersion />
-                                </td>
-                                <td>
-                                    <Row>
-                                        <ModalEditarProducto/>
-                                        <Col sm={2}><Button variant="danger" size="sm">Deprecar</Button></Col>
-                                    </Row>
-                                </td>
-                            </tr>
-
-                            
-
-
+                            </tr>)) : <h3>vacio</h3>}
                         </tbody>
                     </Table>
                 </Row>

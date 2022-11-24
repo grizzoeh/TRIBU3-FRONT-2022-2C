@@ -33,9 +33,11 @@ function ModalVersionesAdquiridas() {
                         <Col className="v-center"><Button variant="secondary" size="1">Aplicar</Button></Col>
                         <Col className="v-center"><ModalAsociarVersion/></Col>
                     </Row>
+
                     <Container>
                         <SpacerLine color="black"></SpacerLine>
                     </Container>
+                    
                     <Row>
                         <Table productos>
                             <thead>

@@ -11,7 +11,7 @@ import SpacerLine from '../spacerLine/spacerLine';
 import Container from 'react-bootstrap/Container';
 import ModalEditarVersion from '../modalEditarVersion/modalEditarVersion';
 
-function ModalGestionVersion() {
+function ModalGestionVersion(producto) {
     
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -21,9 +21,8 @@ function ModalGestionVersion() {
         <>
             <Button variant="secondary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} >
-
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones de [Producto]: </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones de {producto["producto"].nombre}: </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
