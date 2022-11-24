@@ -20,6 +20,15 @@ const TicketsEnCurso = () => {
 
     const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
+    const [clientes, setClientes] = useState();
+
+
+    const [filters, setFilters] = useState({
+        "categoria": "Todas",
+        "estado": "Todos",
+        "criticidad": "Todas",
+        "cliente": "Todos",
+    });
 
     const onChangeshowTicketModalEnCurso = (newSomeState) => {
         setShowTicketModalEncurso(newSomeState);
@@ -41,20 +50,33 @@ const TicketsEnCurso = () => {
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
     const handleDropdownEnCursoCerrado = (e) => {
-        // if (e.target.name === "En curso") {
-        //     setShowEnTicketsEnCurso("En Curso");
-        // } else if (e.target.name === "Cerrados") {
-        //     setShowEnTicketsEnCurso("Cerrados");
-        // }
+        if (e.target.name === "En curso") {
+            setShowEnTicketsEnCurso("En Curso");
+        } else if (e.target.name === "Cerrados") {
+            setShowEnTicketsEnCurso("Cerrados");
+        }
 
     };
 
+    const handleDropdownFilter = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
+
+        console.log("filters", filters);
+
+
+    };
 
 
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
+
+    const [categoriaFilter, setCategoriaFilter] = useState("Todas");
+
+    const [severidadFilter, setSeveridadFilter] = useState("Todas");
+
+    const [estadoFilter, setEstadoFilter] = useState("Todos");
 
 
 
@@ -92,8 +114,30 @@ const TicketsEnCurso = () => {
 
         }
 
+        const getClientes = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        }
+
         getDataEnCurso();
         getDataCerrados();
+        getClientes();
 
 
 
@@ -123,14 +167,100 @@ const TicketsEnCurso = () => {
 
             <Container className="container-filters">
                 <Row>
-                    <Col xs={1}>
+                    <Col >
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                 {showEnTicketsEnCurso}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                {showEnTicketsEnCurso === "En Curso" ? <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item> : <Dropdown.Item name="En Curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>}
+                                <Dropdown.Item name="En curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>
+                                <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item>
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <h4>Categoría:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["categoria"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Reclamo</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Consulta</Dropdown.Item>
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Criticidad:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["criticidad"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Baja</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Media</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Alta</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Crítica</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Estado:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["estado"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Cliente:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["cliente"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
+                                {clientes?.map((cliente) => {
+                                    return (
+                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                    )
+                                })}
 
                             </Dropdown.Menu>
                         </Dropdown>
@@ -144,9 +274,20 @@ const TicketsEnCurso = () => {
                 {showEnTicketsEnCurso === "En Curso" ? (
 
                     <Row className="row-cards mt-4">
-                        {ticketsEnCursoData.length > 0 ?
-                            ticketsEnCursoData.map((ticketEnCurso) => (
+                        {ticketsEnCursoData.length > 0 && clientes ?
 
+                            ticketsEnCursoData.filter(
+                                (ticket) => {
+                                    //apply filters with categoria, criticidad and estado
+                                    return (
+                                        (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
+                                        (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
+                                        (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
+                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                    );
+                                }
+
+                            ).map((ticketEnCurso) => (
                                 <Col key={ticketEnCurso.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
@@ -155,6 +296,9 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         Ticket  #{ticketEnCurso.id}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.categoria}
+                                                    </Col>
 
                                                 </Row>
 
@@ -162,6 +306,7 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketEnCurso.titulo}
                                                     </Col>
+
 
                                                 </Row>
                                             </Card.Title>
@@ -177,7 +322,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Severidad: </h5>
+                                                        <h5>Criticidad: </h5>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.criticidad}
@@ -222,7 +367,18 @@ const TicketsEnCurso = () => {
                 ) : (
                     <Row className="row-cards mt-4">
                         {ticketsCerradosData.length > 0 ?
-                            ticketsCerradosData.map((ticketCerrado) => (
+                            ticketsCerradosData.filter(
+                                (ticket) => {
+                                    //apply filters with categoria, criticidad and estado
+                                    return (
+                                        (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
+                                        (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
+                                        (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
+                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                    );
+                                }
+
+                            ).map((ticketCerrado) => (
                                 <Col className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
@@ -238,6 +394,10 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketCerrado.titulo}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketCerrado.categoria}
+                                                    </Col>
+
 
                                                 </Row>
                                             </Card.Title>
@@ -262,7 +422,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => setShowTicketModalCerrado(true)}>TicketInfo</Button>
+                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>TicketInfo</Button>
 
                                             {showTicketModalCerrado ? (
                                                 <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
