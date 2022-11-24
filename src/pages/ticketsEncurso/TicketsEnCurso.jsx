@@ -20,6 +20,11 @@ const TicketsEnCurso = () => {
 
     const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
+    const [filters, setFilters] = useState({
+        "categoria": "Todas",
+        "estado": "Todos",
+        "criticidad": "Todas",
+    });
 
     const onChangeshowTicketModalEnCurso = (newSomeState) => {
         setShowTicketModalEncurso(newSomeState);
@@ -49,12 +54,25 @@ const TicketsEnCurso = () => {
 
     };
 
+    const handleDropdownFilter = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
+
+        console.log("filters", filters);
+
+
+    };
 
 
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
+
+    const [categoriaFilter, setCategoriaFilter] = useState("Todas");
+
+    const [severidadFilter, setSeveridadFilter] = useState("Todas");
+
+    const [estadoFilter, setEstadoFilter] = useState("Todos");
 
 
 
@@ -123,7 +141,7 @@ const TicketsEnCurso = () => {
 
             <Container className="container-filters">
                 <Row>
-                    <Col xs={1}>
+                    <Col >
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                 {showEnTicketsEnCurso}
@@ -132,6 +150,24 @@ const TicketsEnCurso = () => {
                             <Dropdown.Menu>
                                 <Dropdown.Item name="En curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>
                                 <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item>
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <h4>Categoría:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["categoria"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Reclamo</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Consulta</Dropdown.Item>
 
 
                             </Dropdown.Menu>
@@ -157,6 +193,9 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         Ticket  #{ticketEnCurso.id}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.categoria}
+                                                    </Col>
 
                                                 </Row>
 
@@ -164,6 +203,7 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketEnCurso.titulo}
                                                     </Col>
+
 
                                                 </Row>
                                             </Card.Title>
@@ -240,6 +280,10 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketCerrado.titulo}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketCerrado.categoria}
+                                                    </Col>
+
 
                                                 </Row>
                                             </Card.Title>
