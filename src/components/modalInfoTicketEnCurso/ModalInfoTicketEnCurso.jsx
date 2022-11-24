@@ -156,8 +156,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     setProductos(res.data.productos);
 
 
-
-
                 })
                 .catch((err) => {
                     console.log(err);
@@ -188,6 +186,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                     console.log(err);
                 });
         }
+
 
 
 
@@ -369,7 +368,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                     <Row className="mt-2">
 
                                         <Col>
-                                            <h4> CUIT: </h4>
+                                            <h4 > CUIT: </h4>
                                         </Col>
                                         <Col>
                                             {clientes ?
@@ -400,11 +399,17 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
                                                 <Dropdown.Menu>
                                                     {
-                                                        productosDelCliente && productos ?
-                                                            productosDelCliente.map((producto) => (
-                                                                <Dropdown.Item onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idProducto']: productos[producto - 1]['id'] }); setIdProductoFilter(producto - 1) }}>{productos[producto - 1]["nombre"]}</Dropdown.Item>
-                                                            )) : null
-                                                    }
+                                                        productos ?
+                                                            compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
+                                                                <Dropdown.Item name="nombreProducto" onClick={(e) => {
+                                                                    setTicketEditable({ ...ticketEditable, ['idProducto']: compra["idProducto"] });
+                                                                    setIdProductoFilter(compra["idProducto"]);
+                                                                }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
+                                                            )) : null}
+
+
+
+
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
@@ -423,7 +428,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
                                                 <Dropdown.Menu>
                                                     {compras && productos && versiones ?
-                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter + 1)
+                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
                                                             .map((compra) => (
                                                                 //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
                                                                 <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones[compra['idVersion'] - 1]['nombre']}</Dropdown.Item>)) : null
