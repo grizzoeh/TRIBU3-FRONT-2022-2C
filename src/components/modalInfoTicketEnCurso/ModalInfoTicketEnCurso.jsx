@@ -20,7 +20,6 @@ const SERVER_NAME = "http://localhost:3000";
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data }) => {
 
-    console.log(data);
 
     const [clientes, setClientes] = useState();
 
@@ -41,6 +40,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     const [show, setShow] = useState(true);
 
     const [idClienteFilter, setIdClienteFilter] = useState(data.idCliente);
+
 
     const [idProductoFilter, setIdProductoFilter] = useState(data.idProducto);
 
@@ -98,9 +98,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     }
 
     const handleDropdownChange = (e) => {
-        console.log(e);
-        console.log(e.target.value);
-        console.log(e.target.name);
+
         setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML });
     }
 
@@ -156,6 +154,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                 })
                 .then((res) => {
                     setProductos(res.data.productos);
+
 
 
 
@@ -221,7 +220,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                 <Col>
                                     <Row>
                                         <Col xs={2}>
-                                            <h4> Título: </h4>
+                                            <h4 > Título: </h4>
                                         </Col>
                                         <Col xs={9}>
                                             <Form.Control type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
@@ -241,7 +240,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Consulta</Dropdown.Item>
+                                                    <Dropdown.Item name="categoria" onClick={(e) => { handleDropdownChange(e); console.log("id filter" + idClienteFilter) }}>Consulta</Dropdown.Item>
                                                     <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
@@ -347,7 +346,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item name="nombreCliente" onClick={(e) => {
                                                                 setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
-                                                                setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]); console.log(ticketEditable)
+                                                                setIdClienteFilter(cliente["id"]); getProductosDelCliente(cliente["id"]);
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
@@ -395,7 +394,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                                    {productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                                    {productos?.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
                                                     }
                                                 </Dropdown.Toggle>
 
@@ -418,7 +417,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                                    {versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                                    {versiones?.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
                                                     }
                                                 </Dropdown.Toggle>
 
@@ -720,7 +719,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                         (
                             null)}
                 </Modal.Footer>
-            </Modal>
+            </Modal >
         </>
     )
 }
