@@ -21,6 +21,11 @@ const TicketsEnCurso = () => {
 
     const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
+    const [filters, setFilters] = useState({
+        "categoria": "Todas",
+        "estado": "Todos",
+        "criticidad": "Todas",
+    });
 
     const onChangeshowTicketModalEnCurso = (newSomeState) => {
         setShowTicketModalEncurso(newSomeState);
@@ -42,20 +47,33 @@ const TicketsEnCurso = () => {
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
     const handleDropdownEnCursoCerrado = (e) => {
-        // if (e.target.name === "En curso") {
-        //     setShowEnTicketsEnCurso("En Curso");
-        // } else if (e.target.name === "Cerrados") {
-        //     setShowEnTicketsEnCurso("Cerrados");
-        // }
+        if (e.target.name === "En curso") {
+            setShowEnTicketsEnCurso("En Curso");
+        } else if (e.target.name === "Cerrados") {
+            setShowEnTicketsEnCurso("Cerrados");
+        }
 
     };
 
+    const handleDropdownFilter = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
+
+        console.log("filters", filters);
+
+
+    };
 
 
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
+
+    const [categoriaFilter, setCategoriaFilter] = useState("Todas");
+
+    const [severidadFilter, setSeveridadFilter] = useState("Todas");
+
+    const [estadoFilter, setEstadoFilter] = useState("Todos");
 
 
 
@@ -119,14 +137,79 @@ const TicketsEnCurso = () => {
 
             <Container className="container-filters">
                 <Row>
-                    <Col xs={1}>
+                    <Col >
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                 {showEnTicketsEnCurso}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
-                                {showEnTicketsEnCurso === "En Curso" ? <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item> : <Dropdown.Item name="En Curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>}
+                                <Dropdown.Item name="En curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>
+                                <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item>
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+                    <Col>
+                        <h4>Categoría:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["categoria"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Reclamo</Dropdown.Item>
+                                <Dropdown.Item name="categoria" onClick={(e) => handleDropdownFilter(e)}>Consulta</Dropdown.Item>
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Criticidad:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["criticidad"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Baja</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Media</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Alta</Dropdown.Item>
+                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Crítica</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Estado:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["estado"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
+
+
 
                             </Dropdown.Menu>
                         </Dropdown>
@@ -151,6 +234,9 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         Ticket  #{ticketEnCurso.id}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketEnCurso.categoria}
+                                                    </Col>
 
                                                 </Row>
 
@@ -158,6 +244,7 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketEnCurso.titulo}
                                                     </Col>
+
 
                                                 </Row>
                                             </Card.Title>
@@ -233,6 +320,10 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketCerrado.titulo}
                                                     </Col>
+                                                    <Col>
+                                                        {ticketCerrado.categoria}
+                                                    </Col>
+
 
                                                 </Row>
                                             </Card.Title>
@@ -257,7 +348,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => setShowTicketModalCerrado(true)}>TicketInfo</Button>
+                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>TicketInfo</Button>
 
                                             {showTicketModalCerrado ? (
                                                 <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
