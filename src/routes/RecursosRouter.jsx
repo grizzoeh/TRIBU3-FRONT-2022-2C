@@ -8,6 +8,8 @@ import {
 
 const CargaDeHoras = lazy(() => import("../pages/cargaDeHoras/CargaDeHoras"));
 
+const CargaDeHorasProyecto = lazy(() => import("../pages/cargaDeHorasProyecto/CargaDeHorasProyecto"));
+
 const ModificacionCargaHoras = lazy(() => import("../pages/modificacionCargaHoras/ModificacionCargaHoras"));
 
 const ConsultarCargaHoras = lazy(() => import("../pages/ConsultarCargaHoras/ConsultarCargaHoras"));
@@ -21,6 +23,7 @@ const RecursosRouter = () => {
             <Suspense fallback={<h1 className="text-center">Loading...</h1>}>
                 <Routes>
                     <Route path="/cargar-horas" element={<CargaDeHoras />} />
+                    <Route path="/cargar-horas/proyectos" element={<CargaDeHorasProyecto />} />
                     <Route path="/modificar-carga-horas" element={<ModificacionCargaHoras />} />
                     <Route path="/consultar-carga" element={<ConsultarCargaHoras />} />
                     <Route path="/eliminar-carga-horas" element={<EliminarCargaHoras />} />

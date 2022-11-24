@@ -28,8 +28,8 @@ const ModalCreacionCargaDeHoras = () => {
             <div id="page">
                 <h2 id="titulo">Seleccionar Categoria</h2>
                 <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                    <NavDropdown.Item id="dropdown-item">
-                        <a href='#cargar-horas-proyecto' onClick='Proyecto' id='tuma'>
+                    <NavDropdown.Item id="dropdown-item" href='/cargar-horas/proyectos'>
+                        <a  onClick='Proyecto' id='tuma'>
                             Proyecto
                         </a>
                     </NavDropdown.Item>
@@ -42,20 +42,6 @@ const ModalCreacionCargaDeHoras = () => {
                 </NavDropdown>
             </div>
             
-            <div id='cargar-horas-proyecto'>
-                    <h2 id="titulo">Seleccionar Proyecto</h2>
-                    <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                        <NavDropdown.Item href="/cargar-horas-proyecto" id="dropdown-item">Proyecto A</NavDropdown.Item>
-                        <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Proyecto B</NavDropdown.Item>
-                    </NavDropdown>
-            </div>
-            <div id='cargar-horas-licencia'>
-                    <h2 id="titulo">Seleccionar Licencia</h2>
-                    <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                        <NavDropdown.Item href="/cargar-horas-proyecto" id="dropdown-item">Proyecto A</NavDropdown.Item>
-                        <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Proyecto B</NavDropdown.Item>
-                    </NavDropdown>
-            </div>
         </container>
     
     );
