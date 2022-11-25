@@ -436,7 +436,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         : null}
 
 
-                                                    <Dropdown.Item>xddd</Dropdown.Item>
 
 
 
@@ -479,7 +478,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                                         compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
                                                             .map((compra) => (
                                                                 //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones[compra['idVersion'] - 1]['nombre']}</Dropdown.Item>)) : null
+                                                                <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
 
                                                     }
                                                 </Dropdown.Menu>
