@@ -12,7 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
-const SERVER_NAME = "http://localhost:3000";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
@@ -23,7 +23,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
     const [reporte, setReporte] = useState("");
     const [nombreAsesorResolutor, setNombreAsesorResolutor] = useState("");
-    const [areaAsesorResolutor, setAreaAsesorResolutor] = useState("");
+    const [areaAsesorResolutor, setAreaAsesorResolutor] = useState(1);
 
 
     const [recursos, setRecursos] = useState();
@@ -53,7 +53,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
 
 
-        axios.post(SERVER_NAME + "/tickets/ticket/resuelto", TicketData)
+        axios.post(SERVER_NAME_SOPORTE + "/tickets/ticket/resuelto", TicketData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket creado");
@@ -68,7 +68,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
             type: "enCurso"
         }
 
-        axios.delete(SERVER_NAME + "/tickets/ticket/", { data: send_data_for_delete })
+        axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket eliminado");
@@ -90,14 +90,11 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
     const handleDropdownChangeNombre = (e) => {
         setNombreAsesorResolutor(e.target.innerHTML);
         setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["idAsesorResolutor"]: 1 });
+        setTicketData({ ...TicketData, ["areaAsesorResolutor"]: 1 });
 
     }
 
-    const handleDropdownChangeArea = (e) => {
-        setAreaAsesorResolutor(e.target.innerHTML);
-        setTicketData({ ...TicketData, ["areaAsesorResolutor"]: e.target.innerHTML });
 
-    }
 
     const onChangeFechaCierre = (e) => {
         setFechaCierre(e.target.value);
@@ -132,7 +129,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
             const send_data = { type: 'enCurso', id: numeroTicket }
 
             axios
-                .get(SERVER_NAME + "/tickets/ticket", {
+                .get(SERVER_NAME_SOPORTE + "/tickets/ticket", {
                     params: send_data,
                 })
                 .then((res) => {
@@ -166,23 +163,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
                     <Row className="mt-4">
 
-                        <Col>
-                            <h4> Area:</h4>
-                        </Col>
-                        <Col>
-                            <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                    {areaAsesorResolutor ? areaAsesorResolutor : "Seleccionar"}
-                                </Dropdown.Toggle>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item name="area" onClick={(e) => handleDropdownChangeArea(e)}>Soporte</Dropdown.Item>
-                                    <Dropdown.Item name="area" onClick={(e) => handleDropdownChangeArea(e)}>Recursos</Dropdown.Item>
-                                    <Dropdown.Item name="area" onClick={(e) => handleDropdownChangeArea(e)}>Proyectos</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-
-                        </Col>
 
                         <Col>
                             <h4> Nombre: </h4>
