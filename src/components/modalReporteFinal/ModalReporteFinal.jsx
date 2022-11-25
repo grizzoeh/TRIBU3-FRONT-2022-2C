@@ -12,7 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
-const SERVER_NAME = "http://localhost:3000";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
@@ -53,7 +53,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
 
 
-        axios.post(SERVER_NAME + "/tickets/ticket/resuelto", TicketData)
+        axios.post(SERVER_NAME_SOPORTE + "/tickets/ticket/resuelto", TicketData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket creado");
@@ -68,7 +68,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
             type: "enCurso"
         }
 
-        axios.delete(SERVER_NAME + "/tickets/ticket/", { data: send_data_for_delete })
+        axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket eliminado");
@@ -129,7 +129,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
             const send_data = { type: 'enCurso', id: numeroTicket }
 
             axios
-                .get(SERVER_NAME + "/tickets/ticket", {
+                .get(SERVER_NAME_SOPORTE + "/tickets/ticket", {
                     params: send_data,
                 })
                 .then((res) => {

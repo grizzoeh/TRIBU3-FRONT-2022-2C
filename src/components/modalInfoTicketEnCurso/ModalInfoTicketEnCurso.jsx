@@ -13,7 +13,8 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
-const SERVER_NAME = "http://localhost:3000";
+
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
@@ -76,7 +77,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
 
 
-        axios.patch(SERVER_NAME + "/tickets/ticket", ticketEditado)
+        axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket editado");
@@ -142,7 +143,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
         const getProductos = async () => {
             axios
-                .get(SERVER_NAME + "/productos/", {
+                .get(SERVER_NAME_SOPORTE + "/productos/", {
                 })
                 .then((res) => {
                     setProductos(res.data.productos);
@@ -156,7 +157,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
         const getVersiones = async () => {
             axios
-                .get(SERVER_NAME + "/versiones/", {
+                .get(SERVER_NAME_SOPORTE + "/versiones/", {
                 })
                 .then((res) => {
                     setVersiones(res.data.versiones);
@@ -169,7 +170,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
         const getCompras = async () => {
             axios
-                .get(SERVER_NAME + "/compras/", {
+                .get(SERVER_NAME_SOPORTE + "/compras/", {
                 })
                 .then((res) => {
                     setCompras(res.data.compras);

@@ -12,7 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
-const SERVER_NAME = "http://localhost:3000";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) => {
@@ -65,7 +65,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
             "proyecto": proyectoSeleccionado,
         }
 
-        axios.post(SERVER_NAME + "/tickets", send_tarea)
+        axios.post(SERVER_NAME_SOPORTE + "/tickets", send_tarea)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Tarea creada");

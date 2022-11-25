@@ -13,7 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 import axios from "axios";
 
-const SERVER_NAME = "http://localhost:3000";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 const TicketsEnCurso = () => {
 
@@ -85,7 +85,7 @@ const TicketsEnCurso = () => {
         const getDataEnCurso = async () => {
             const send_data = { type: 'enCurso' };
             axios
-                .get(SERVER_NAME + "/tickets/", {
+                .get(SERVER_NAME_SOPORTE + "/tickets/", {
                     params: send_data,
                 })
                 .then((res) => {
@@ -101,7 +101,7 @@ const TicketsEnCurso = () => {
         const getDataCerrados = async () => {
             const send_data = { type: "resueltos" };
             axios
-                .get(SERVER_NAME + "/tickets/", {
+                .get(SERVER_NAME_SOPORTE + "/tickets/", {
                     params: send_data,
                 })
                 .then((res) => {
