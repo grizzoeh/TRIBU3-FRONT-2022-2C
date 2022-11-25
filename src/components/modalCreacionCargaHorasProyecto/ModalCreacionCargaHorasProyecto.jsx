@@ -39,6 +39,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                 <NavDropdown title="Seleccionar" id="collasible-dropdown">
                                     <NavDropdown.Item href="/cargar-horas-proyecto" id="dropdown-item">Tarea A</NavDropdown.Item>
                                     <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Tarea B</NavDropdown.Item>
+                                    <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Tarea C</NavDropdown.Item>
                                     </NavDropdown>
                             </div>}
             </div>
