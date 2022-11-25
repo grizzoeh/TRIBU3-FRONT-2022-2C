@@ -60,8 +60,11 @@ function ModalVersionNueva(idProducto) {
                     <Row className="campo">
                         <Col><h6>Nombre de version:</h6></Col>
                         <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre de la version" onChange={(e) => onChangeVersionEditable(e)}/></Col>
-                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)}/></Col>
                     </Row> 
+                    <Row className="campo">
+                        <Col><h6>Fecha Release:</h6></Col>
+                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)}/></Col>
+                    </Row>
                     <Row className="campo">
                         <Col><h6>Estado de la version:</h6></Col>
                         <Col>
