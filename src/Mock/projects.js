@@ -26,5 +26,33 @@ export default [
         AssignedTo: 'Javi',
         StateId: 3,
         StateLabel: 'En Desarrollo'
+    },
+    {
+        Name: 'Argentina',
+        Description: 'En Prueba',
+        AssignedTo: 'Juan',
+        StateId: 4,
+        StateLabel: 'En prueba'
+    },
+    {
+        Name: 'Iran',
+        Description: 'En post produccion',
+        AssignedTo: 'Miguel',
+        StateId: 6,
+        StateLabel: 'En Post produccion'
+    },
+    {
+        Name: 'Mexico',
+        Description: 'En Prueba',
+        AssignedTo: 'Juan',
+        StateId: 5,
+        StateLabel: 'En Produccion'
+    },
+    {
+        Name: 'Poland',
+        Description: 'En sdfsadf',
+        AssignedTo: 'Miguel',
+        StateId: 7,
+        StateLabel: 'Finalizado'
     }
 ];

@@ -1,20 +1,25 @@
 import { useState } from "react";
+import Form from "react-bootstrap/Form";
 
 export default function NewProject() {
   const [projectData, setProjectData] = useState({
     name: "",
     description: "",
     assignedTo: "",
+    fechaInicio: "",
+    fechaDeFin: "",
   });
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     // TODO: Delete.
-    alert(`{name: ${projectData.name}, description: ${projectData.description}, assignedTo: ${projectData.assignedTo}}`);
+    alert(
+      `{name: ${projectData.name}, description: ${projectData.description}, assignedTo: ${projectData.assignedTo}, fechaInicio: ${projectData.fechaInicio}, fechaDeFin: ${projectData.fechaInicio}}`
+    );
 
     // TODO: Call API [POST].
-    setProjectData({ name: "", description: "", assignedTo: "" });
+    setProjectData({ name: "", description: "", assignedTo: "", fechaInicio: "", fechaInicio: "" });
   };
 
   return (
@@ -58,12 +63,27 @@ export default function NewProject() {
         <br />
         <br />
 
-        {/* To do: Implement calendar. */}
         <label>Fecha de inicio:</label>
+        <Form.Control
+          type="text"
+          name="fechaDeInicio"
+          placeholder="Ej: 18/12/2022"
+          onChange={(e) =>
+            setProjectData({ ...projectData, fechaInicio: e.target.value })
+          }
+        />
         <br />
         <br />
 
         <label>Fecha de fin:</label>
+        <Form.Control
+          type="text"
+          name="fechaDeFin"
+          placeholder="Ej: 18/12/2023"
+          onChange={(e) =>
+            setProjectData({ ...projectData, fechaDeFin: e.target.value })
+          }
+        />
         <br />
         <br />
 
@@ -72,10 +92,6 @@ export default function NewProject() {
 
       <br />
       <br />
-
-      <a href="/projectsModule/project/dashboard">
-        <button>Cancelar</button>
-      </a>
     </>
   );
 }
