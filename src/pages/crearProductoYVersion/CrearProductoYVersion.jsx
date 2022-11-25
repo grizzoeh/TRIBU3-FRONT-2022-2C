@@ -11,13 +11,15 @@ import Col from 'react-bootstrap/Col';
 import ModalProductoNuevo from "../../components/modalProductoNuevo/modalProductoNuevo";
 import ModalGestionVersion from "../../components/modalGestionVersion/modalGestionVersion";
 import ModalEditarProducto from "../../components/modalEditarProducto/modalEditarProducto";
+import BotonDeprecarProducto from "../../components/botonDeprecarProducto/BotonDeprecarProducto";
+import BotonActivarProducto from "../../components/botonActivarProducto/BotonActivarProducto";
 import axios from "axios";
 
 const CrearProductoYVersion = () => {
 
     const SERVER_NAME = "http://localhost:3000";
     const [productos, setProductos] = useState([]);
-    const [IdProductoAGestionar, setIdProductoAGestionar] = useState();
+
 
     useEffect(() => {
         const getProductos = async () => {
@@ -75,20 +77,38 @@ const CrearProductoYVersion = () => {
                         </thead>
                         <tbody>
                             {productos.length > 0 ? productos.map((producto) => (
-                            <tr>
-                                <td>{producto.id}</td>
-                                <td>{producto.nombre}</td>
-                                <td>{producto.estado}</td>
-                                <td>
-                                    <ModalGestionVersion producto ={producto}/>
-                                </td>
-                                <td>
-                                    <Row>
-                                        <ModalEditarProducto/>
-                                        <Col sm={2}><Button variant="danger" size="sm">Deprecar</Button></Col>
-                                    </Row>
-                                </td>
-                            </tr>)) : <h3>vacio</h3>}
+                                producto.estado == "Activo" ? (
+                                <tr>
+                                    <td>{producto.id}</td>
+                                    <td>{producto.nombre}</td>
+                                    <td>{producto.estado}</td>
+                                    <td>
+                                        <ModalGestionVersion producto={producto}/>
+                                    </td>
+                                    <td>
+                                        <Row>
+                                            <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                            <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                        </Row>
+                                    </td>
+                                </tr>
+                                ) : (
+                                <tr>
+                                    <td>{producto.id}</td>
+                                    <td>{producto.nombre}</td>
+                                    <td>{producto.estado}</td>
+                                    <td>
+                                        <ModalGestionVersion producto ={producto}/>
+                                    </td>
+                                    <td>
+                                        <Row>
+                                            <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                            <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
+                                        </Row>
+                                    </td>
+                                </tr>          
+                                )
+                            )) : <Row className="centered">No existen productos</Row>}
                         </tbody>
                     </Table>
                 </Row>

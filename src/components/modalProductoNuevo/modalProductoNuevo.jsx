@@ -36,7 +36,7 @@ function ModalProductoNuevo() {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto creado");
-                    handleClose()
+                    handleClose();
                 }
             })
             .catch((error) => {

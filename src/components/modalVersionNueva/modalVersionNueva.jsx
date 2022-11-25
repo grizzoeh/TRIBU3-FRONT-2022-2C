@@ -8,12 +8,14 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function ModalVersionNueva() {
+function ModalVersionNueva(idProducto) {
     
     const VersionNula = {
         "nombre":null,
-        "idProducto":null,
-        "estado":null
+        "idProducto":idProducto.idProducto,
+        "estado":null,
+        "fechaRelease":null,
+        "fechaDeprecacion":null
     }
 
     const [VersionData, setVersionData] = useState(VersionNula);
@@ -29,15 +31,17 @@ function ModalVersionNueva() {
     }
     
     const handleDropdownChange = (e) => {
-        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML });
+        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML }); 
     }
 
     const crearVersion = async () => {
+        console.log(VersionData);
         axios.post(SERVER_NAME + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version creada");
-                    handleClose()
+                    window.location.reload();
+                    handleClose();
                 }
             })
             .catch((error) => {
@@ -56,6 +60,7 @@ function ModalVersionNueva() {
                     <Row className="campo">
                         <Col><h6>Nombre de version:</h6></Col>
                         <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre de la version" onChange={(e) => onChangeVersionEditable(e)}/></Col>
+                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)}/></Col>
                     </Row> 
                     <Row className="campo">
                         <Col><h6>Estado de la version:</h6></Col>
@@ -74,7 +79,7 @@ function ModalVersionNueva() {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
-                    <Button className="h-end" variant="primary" onClick={handleClose}>Crear Version</Button>
+                    <Button className="h-end" variant="primary" onClick={crearVersion}>Crear Version</Button>
                 </Modal.Footer>
             </Modal>
         </>
