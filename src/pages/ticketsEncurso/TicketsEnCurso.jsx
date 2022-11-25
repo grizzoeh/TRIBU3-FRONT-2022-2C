@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./ticketsEnCurso.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -7,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ModalInfoTicketEnCurso from "../../components/modalInfoTicketEnCurso/ModalInfoTicketEnCurso";
-import ModalInfoTicketEnCurso2 from "../../components/modalInfoTicketEnCurso/ModalInfoTicketEnCurso";
 import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreacionTicket";
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
@@ -72,11 +70,7 @@ const TicketsEnCurso = () => {
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
 
-    const [categoriaFilter, setCategoriaFilter] = useState("Todas");
 
-    const [severidadFilter, setSeveridadFilter] = useState("Todas");
-
-    const [estadoFilter, setEstadoFilter] = useState("Todos");
 
 
 
