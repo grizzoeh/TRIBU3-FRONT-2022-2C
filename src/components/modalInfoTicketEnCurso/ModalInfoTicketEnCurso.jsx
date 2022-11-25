@@ -451,9 +451,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                             productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']
                                         )))))}>asd</Button> */}
 
-                                    <Button onClick={dicci[1] ? console.log("dic", dicci[1]) :
+                                    {/* <Button onClick={dicci[1] ? console.log("dic", dicci[1]) :
                                         console.log("no")
-                                    }>loll</Button>
+                                    }>loll</Button> */}
 
 
 
@@ -492,26 +492,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         <h3 className="titulo-subrayado"> Información asesor: </h3>
                                     </Row>
 
-                                    <Row className="mt-2">
 
-                                        <Col>
-                                            <h4> Area:</h4>
-                                        </Col>
-                                        <Col>
-                                            <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                                    {ticketEditable.areaAsesor}
-                                                </Dropdown.Toggle>
-
-                                                <Dropdown.Menu>
-                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Soporte</Dropdown.Item>
-                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Proyectos</Dropdown.Item>
-                                                    <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Recursos</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-
-                                        </Col>
-                                    </Row>
 
                                     <Row className="mt-4">
 
@@ -590,7 +571,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                             <h4>Fecha de creación:</h4>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.fechaCreacion}
+                                            {ticketEditable.fechaCreacion.slice(0, 10)}
                                         </Col>
 
                                     </Row>
@@ -711,16 +692,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
                                         </Col>
                                     </Row>
 
-                                    <Row className="mt-2">
-                                        <Col>
-                                            <h4> Area:  </h4>
-                                        </Col>
 
-                                        <Col>
-                                            {ticketEditable.areaAsesor}
-                                        </Col>
-
-                                    </Row>
 
                                 </Col>
 

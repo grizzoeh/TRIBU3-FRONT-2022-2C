@@ -34,7 +34,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         "idProducto": null,
         "idAsesor": 1,
         "nombreAsesor": null,
-        "areaAsesor": null,
+        "areaAsesor": 1,
         "notas": null,
         "idVersion": null,
     }
@@ -291,7 +291,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                 <h4>Fecha de creación:</h4>
                             </Col>
                             <Col xs={9}>
-                                <Form.Control type="date" name="fechaCreacion" placeholder="Ej: 18/12/2022" onChange={(e) => onChangeTicketEditable(e)} />
+                                <Form.Control type="date" name="fechaCreacion" onChange={(e) => onChangeTicketEditable(e)} />
 
                             </Col>
 
@@ -427,24 +427,6 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                         </Row>
 
                         <Row className="mt-3">
-
-                            <Col>
-                                <h4> Area:</h4>
-                            </Col>
-                            <Col>
-                                <Dropdown >
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                        {TicketData.areaAsesor ? TicketData.areaAsesor : "Seleccionar"}
-                                    </Dropdown.Toggle>
-
-                                    <Dropdown.Menu>
-                                        <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Soporte</Dropdown.Item>
-                                        <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Proyectos</Dropdown.Item>
-                                        <Dropdown.Item name="areaAsesor" onClick={(e) => handleDropdownChange(e)}>Recursos</Dropdown.Item>
-                                    </Dropdown.Menu>
-                                </Dropdown>
-
-                            </Col>
 
                             <Col>
                                 <h4> Nombre: </h4>

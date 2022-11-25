@@ -21,24 +21,7 @@ const SERVER_NAME = "http://localhost:3000";
 
 const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data }) => {
 
-    const TicketInfo = {
-        "titulo": "Problema con el servidor",
-        "criticidad": "Alta",
-        "estado": "Cerrado",
-        "fechaCreacion": "12/12/2021",
-        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel",
-        "nombreCliente": "Juan Perez",
-        "medioContacto": "Mail",
-        "correo": "hola@gmail.com",
-        "nombreProducto": "PsaNeitor 3000",
-        "version": "4.4.2",
-        "nombreAsesor": "Paulo Dybala",
-        "areaAsesor": "Soporte",
-        "nombreAsesorResolutor": "Lionel Messi",
-        "areaAsesorResolutor": "Marketing",
-        "notas": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel",
-        "reporteFinal": " Rep Final Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc velLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel",
-    }
+
 
     const [TicketData, setTicketData] = useState(data);
 
@@ -188,7 +171,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                         <h4>Fecha de creación:</h4>
                                     </Col>
                                     <Col >
-                                        {TicketData.fechaCreacion}
+                                        {TicketData.fechaCreacion.slice(0, 10)}
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
@@ -197,7 +180,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                         <h4>Fecha de cierre: </h4>
                                     </Col>
                                     <Col >
-                                        {TicketData.fechaCierre}
+                                        {TicketData.fechaCierre.slice(0, 10)}
                                     </Col>
 
                                 </Row>
@@ -324,15 +307,6 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                     </Col>
                                 </Row>
 
-                                <Row className="mt-2">
-                                    <Col>
-                                        <h4> Area:  </h4>
-                                    </Col>
-                                    <Col>
-                                        {TicketData.areaAsesor}
-                                    </Col>
-
-                                </Row>
 
                                 <Row className="mt-4">
                                     <h3 className="titulo-subrayado"> Información resolutor: </h3>
@@ -348,15 +322,7 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
                                     </Col>
                                 </Row>
 
-                                <Row className="mt-2">
-                                    <Col>
-                                        <h4> Area:  </h4>
-                                    </Col>
-                                    <Col>
-                                        {TicketData.areaAsesorResolutor}
-                                    </Col>
 
-                                </Row>
 
                             </Col>
                         </Row>
