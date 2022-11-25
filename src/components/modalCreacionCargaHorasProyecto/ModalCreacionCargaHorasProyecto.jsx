@@ -17,30 +17,35 @@ import 'react-calendar/dist/Calendar.css';
 
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
-    const [dropdownText, setdropdownText] = useState('Seleccionar')
     const [isShown, setIsShown] = useState(false);
+    
+    const [dropdownProjectText, setdropdownProjectText] = useState('Seleccionar')
+    const changeDropdownProjectText = (text) => setdropdownProjectText(text);
 
-    const changeDropdownText = (text) => setdropdownText(text);
+    const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
+    const changeDropdownTareaText = (text) => setdropdownTareaText(text);
+
     const handleClick = event => {
-        setIsShown(current => !current);
+        setIsShown(true);
     }
+    const Proyectos = ['Proyecto A', 'Proyecto B', 'Proyecto C']
+    const listProyectos = Proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); changeDropdownProjectText(proyecto)}}>{proyecto}</NavDropdown.Item>)
+
+    const Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
+    const listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item" onClick={() => setdropdownTareaText(tarea)}>{tarea}</NavDropdown.Item>)
 
     return (
         <container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo">Seleccionar Proyecto</h2> 
-                <NavDropdown title={dropdownText} id="collasible-dropdown">
-                    <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); changeDropdownText("Proyecto A")}}>Proyecto A</NavDropdown.Item> 
-                    
-                    <NavDropdown.Item id="dropdown-item" onClick={() => changeDropdownText("Calendario Test")}>Calendario Test</NavDropdown.Item>
+                <NavDropdown title={dropdownProjectText} id="collasible-dropdown">
+                    {listProyectos}
                 </NavDropdown>
                 {isShown && <div id='cargar-horas-licencia'>
                                 <h2 id="titulo">Seleccionar Tarea</h2>
-                                <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                                    <NavDropdown.Item href="/cargar-horas-proyecto" id="dropdown-item">Tarea A</NavDropdown.Item>
-                                    <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Tarea B</NavDropdown.Item>
-                                    <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Tarea C</NavDropdown.Item>
-                                    </NavDropdown>
+                                <NavDropdown title={dropdownTareaText} id="collasible-dropdown">
+                                    {listTareas}   
+                                </NavDropdown>
                             </div>}
             </div>
 

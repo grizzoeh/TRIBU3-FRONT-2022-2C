@@ -1,0 +1,42 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 750px; */
+    width: 100vw;
+    top: 100px;
+    background-color: white;
+}
+
+#titulo{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#collasible-dropdown{
+  border-width: 1px;
+  border: solid;
+  text-align: center;
+  width: 300px;
+  border: 1px solid rgb(2, 2, 2);
+  text-align: center ;
+  transform: translate(167%, 0);
+  
+}
+
+#dropdown-item {
+  width: 300px;
+  text-align: center ;
+}
+
+#tuma{
+    width: 300px;
+  text-align: center ;
+}
+
+#page {
+  align-items: center;
+  text-align: center;
+}

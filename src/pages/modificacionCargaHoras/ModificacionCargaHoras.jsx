@@ -18,7 +18,7 @@ const ModificacionCargaDeHoras = () => {
 
                 <Row>
                     <Col >
-                        <h1>Modificar carga de horas</h1>
+                        <h1>Test</h1>
                     </Col>
 
 
