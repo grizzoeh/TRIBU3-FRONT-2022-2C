@@ -14,20 +14,33 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
+
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
     const [dropdownText, setdropdownText] = useState('Seleccionar')
+    const [isShown, setIsShown] = useState(false);
 
     const changeDropdownText = (text) => setdropdownText(text);
+    const handleClick = event => {
+        setIsShown(current => !current);
+    }
 
     return (
         <container>
             <div id='cargar-horas-licencia'>
-                <h2 id="titulo">Seleccionar Proyecto</h2>
+                <h2 id="titulo">Seleccionar Proyecto</h2> 
                 <NavDropdown title={dropdownText} id="collasible-dropdown">
-                    <NavDropdown.Item id="dropdown-item" onClick={() => changeDropdownText("Proyecto A")}>Proyecto A</NavDropdown.Item> 
+                    <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); changeDropdownText("Proyecto A")}}>Proyecto A</NavDropdown.Item> 
+                    
                     <NavDropdown.Item id="dropdown-item" onClick={() => changeDropdownText("Calendario Test")}>Calendario Test</NavDropdown.Item>
                 </NavDropdown>
+                {isShown && <div id='cargar-horas-licencia'>
+                                <h2 id="titulo">Seleccionar Tarea</h2>
+                                <NavDropdown title="Seleccionar" id="collasible-dropdown">
+                                    <NavDropdown.Item href="/cargar-horas-proyecto" id="dropdown-item">Tarea A</NavDropdown.Item>
+                                    <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Tarea B</NavDropdown.Item>
+                                    </NavDropdown>
+                            </div>}
             </div>
 
             <div>
