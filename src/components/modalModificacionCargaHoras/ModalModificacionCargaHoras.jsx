@@ -14,60 +14,40 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 
-class ShowTarea extends React.Component {
-    render () {
-        const listTareas = this.props.Tareas.map(tarea => <NavDropdown.Item id="dropdown-item" onClick={() => this.props.setdropdownTareaText(tarea)}>{tarea}</NavDropdown.Item>)
+import TextField from '@mui/material/TextField';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
-        return (
-            <div id='cargar-horas-licencia'>
-            <h2 id="titulo">Seleccionar Tarea</h2>
-            <NavDropdown title={this.props.dropdownTareaText} id="collasible-dropdown">
-                {listTareas}   
-            </NavDropdown>
-            </div>
-        );
-    };     
-};
-
-class MostrarProyecto extends React.Component {
-    render () {
-        
-
-        const handleClick = event => {
-            this.props.setIsShown(true);
-        }
-        
-        const Proyectos = ['Proyecto A', 'Proyecto B', 'Proyecto C', 'Proyecto D']
-        const Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
-        const listProyectos = Proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); this.props.setdropdownProjectText(proyecto)}}>{proyecto}</NavDropdown.Item>)
-
-        let TareasProps = {
-            dropdownTareaText: this.props.dropdownTareaText,
-            setdropdownTareaText: this.props.setdropdownTareaText,
-            Tareas: Tareas /*manda lista de tareas */
-        }
-
-        return (
-            <div id='cargar-horas-licencia'>
-                <h2 id="titulo">Seleccionar Proyecto</h2> 
-                <NavDropdown title={this.props.dropdownProjectText} id="collasible-dropdown">
-                    {listProyectos}
-                </NavDropdown>
-                {this.props.isShown && <ShowTarea {...TareasProps} />}
-            </div>
-
-        )
-    }
-};
-
-class MostrarCalendario extends React.Component {
-    render() {
+class MostrarCargasCreadas extends React.Component{
+    render(){
         return(
-            <container>
-                <div>
-                    <Calendar onChange={this.props.onChange} value={this.props.value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
-                </div>
-            </container>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Id</TableCell>
+                            <TableCell>Estado</TableCell>
+                            <TableCell>Fecha</TableCell>
+                            <TableCell>Empleado</TableCell>
+                            <TableCell>Legajo</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>1</TableCell>
+                            <TableCell>En espera de aprobacion</TableCell>
+                            <TableCell>25/11/2022</TableCell>
+                            <TableCell>Mario Reccuzzo</TableCell>
+                            <TableCell>1</TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </TableContainer>
         )
     }
 }
@@ -75,31 +55,14 @@ class MostrarCalendario extends React.Component {
 const ModalModificacionCargaHoras = () => {
     const [value, onChange] = useState(new Date()); 
     const [isShown, setIsShown] = useState(false);
-    const [dropdownProjectText, setdropdownProjectText] = useState('Seleccionar') /*Talvez tiene que estar en las class */
-    const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar'); /*Ver como meter useState en class para meterlo ahi en vez de por props*/
-
-    let CalendarProps = {
-        value: value,
-        onChange: onChange,
-    };
-
-    let ProyectoProps ={ /*props de proyectos, ultimos 2 son de tareas */
-        isShown: isShown,
-        setIsShown: setIsShown,
-        dropdownProjectText: dropdownProjectText,
-        setdropdownProjectText: setdropdownProjectText,
-        dropdownTareaText: dropdownTareaText,
-        setdropdownTareaText: setdropdownTareaText
-    };
 
     return (
         <container>
             <div>
-                <MostrarProyecto {...ProyectoProps}/>
+                <TextField id="outlined-basic" label="Buscar Carga de Horas por Id" variant="outlined" sx={{ minWidth: 650 }}/>
             </div>
-            
             <div>
-                <MostrarCalendario {...CalendarProps}/>
+                <MostrarCargasCreadas></MostrarCargasCreadas>
             </div>
         </container>
     );

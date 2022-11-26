@@ -17,11 +17,9 @@ const ModificacionCargaDeHoras = () => {
             <Container className="container-title">
 
                 <Row>
-                    <Col >
-                        <h1>Test</h1>
+                    <Col>
+                        <h2>Modificar carga de horas</h2>
                     </Col>
-
-
                 </Row>
 
             </Container>
