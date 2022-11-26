@@ -22,19 +22,36 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useNavigate } from "react-router-dom";
 
+function navegarACargaDeHorasPorId(id){
+    
+}
 
 const ModalModificacionCargaHoras = () => {
     const [value, onChange] = useState(new Date()); 
     const [isShown, setIsShown] = useState(false);
-    const [cargasHoras, setCargasHoras] = useState([]);
+    //const [cargasHoras, setCargasHoras] = useState([]);
 
-    fetch("http://localhost:8080/recursos/carga/getAllCargas")
+    const navigate = useNavigate();
+    
+    function createData(id, fecha, legajo) {
+        return { id, fecha, legajo };
+      }
+      
+      const cargasHoras = [
+        createData(1,'26/11/2022',1),
+        createData(2,'26/11/2022',1),
+        createData(3,'27/11/2022',6),
+        createData(4,'28/11/2022',9)
+      ];
+
+    /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
     .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
-    /*.then((result)=>{
+    .then((result)=>{
         setCargasHoras(result);
     })*/
-    /* Falta terminar de ver como extraer la informacion del back */
+    /* Falta terminar de ver como extraer la informacion del back, el fetch falla. Puede ser por la caida de la base de datos*/
     return (
         <container>
             <div>
@@ -45,10 +62,9 @@ const ModalModificacionCargaHoras = () => {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Id</TableCell>
-                                <TableCell>Fecha</TableCell>
-                                <TableCell>Empleado</TableCell>
-                                <TableCell>Legajo</TableCell>
+                                <TableCell align="left">Id</TableCell>
+                                <TableCell align="right">Fecha</TableCell>
+                                <TableCell align="right">Legajo</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -56,10 +72,9 @@ const ModalModificacionCargaHoras = () => {
                                 <TableRow
                                     key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    onClick={() => navigate("/")}
                                     >
-                                    <TableCell component="th" scope="row">
-                                        {carga.Id}
-                                    </TableCell>
+                                    <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
                                     <TableCell align="right">{carga.fecha}</TableCell>
                                     <TableCell align="right">{carga.legajo}</TableCell>
                                 </TableRow>
