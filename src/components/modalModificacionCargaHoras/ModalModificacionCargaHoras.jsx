@@ -23,80 +23,50 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-class FilasDeCargasHoras extends React.Component{
-    /* Idea: Obtener una lista de Filas, que cada una obtenga la informacion de las cargas de horas realizadas. Devolver un TableBody*/
-
-    function createData(id, estado, fecha, empleadoNombre, legajo) {
-        return {id, estado, fecha, empleadoNombre, legajo};
-      }
-      
-    function obtenerCargasDeHoras(){
-        fetch()
-    }
-
-    reder(){
-        return(
-            <TableBody>
-                {rows.map((row) => (
-                    <TableRow
-                        key={row.name}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                        <TableCell component="th" scope="row">
-                            {row.Id}
-                        </TableCell>
-                        <TableCell align="right">{row.Estado}</TableCell>
-                        <TableCell align="right">{row.Fecha}</TableCell>
-                        <TableCell align="right">{row.Empleado}</TableCell>
-                        <TableCell align="right">{row.Legajo}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        )
-    }
-}
-
-class MostrarCargasCreadas extends React.Component{
-    render(){
-        return(
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Estado</TableCell>
-                            <TableCell>Fecha</TableCell>
-                            <TableCell>Empleado</TableCell>
-                            <TableCell>Legajo</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell>1</TableCell>
-                            <TableCell>En espera de aprobacion</TableCell>
-                            <TableCell>25/11/2022</TableCell>
-                            <TableCell>Mario Reccuzzo</TableCell>
-                            <TableCell>1</TableCell>
-                        </TableRow>
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        )
-    }
-}
 
 const ModalModificacionCargaHoras = () => {
     const [value, onChange] = useState(new Date()); 
     const [isShown, setIsShown] = useState(false);
     const [cargasHoras, setCargasHoras] = useState([]);
 
+    fetch("http://localhost:8080/recursos/carga/getAllCargas")
+    .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
+    /*.then((result)=>{
+        setCargasHoras(result);
+    })*/
+    /* Falta terminar de ver como extraer la informacion del back */
     return (
         <container>
             <div>
                 <TextField id="outlined-basic" label="Buscar Carga de Horas por Id" variant="outlined" sx={{ minWidth: 650 }}/>
             </div>
             <div>
-                <MostrarCargasCreadas></MostrarCargasCreadas>
+                <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Id</TableCell>
+                                <TableCell>Fecha</TableCell>
+                                <TableCell>Empleado</TableCell>
+                                <TableCell>Legajo</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {cargasHoras.map((carga) => (
+                                <TableRow
+                                    key={carga.codigo_carga}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                    <TableCell component="th" scope="row">
+                                        {carga.Id}
+                                    </TableCell>
+                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="right">{carga.legajo}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
         </container>
     );
