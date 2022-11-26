@@ -1,17 +1,17 @@
 import { React, Fragment } from 'react';
 import './App.css';
-import NavbarSoporte from './components/navbarSoporte/NavbarSoporte';
 import SoporteRouter from './routes/SoporteRouter';
 import ProyectoRouter from './routes/ProyectoRouter';
+import IndexRouter from './routes/IndexRouter';
 
 
 function App() {
   return (
     //insert navbar compnent
     <Fragment>
-      <NavbarSoporte></NavbarSoporte>
+      <IndexRouter />
       <SoporteRouter></SoporteRouter>
-      <ProyectoRouter/>
+      <ProyectoRouter />
     </Fragment>
   );
 }
