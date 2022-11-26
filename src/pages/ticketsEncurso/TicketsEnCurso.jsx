@@ -77,7 +77,7 @@ const TicketsEnCurso = () => {
                 params: send_data,
             })
             .then((res) => {
-                setTicketsEnCursoData(res.data.tickets, getDataEnCurso());
+                setTicketsEnCursoData(res.data.tickets);
 
             })
             .catch((err) => {
