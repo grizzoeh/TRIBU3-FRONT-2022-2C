@@ -23,6 +23,39 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+class FilasDeCargasHoras extends React.Component{
+    /* Idea: Obtener una lista de Filas, que cada una obtenga la informacion de las cargas de horas realizadas. Devolver un TableBody*/
+
+    function createData(id, estado, fecha, empleadoNombre, legajo) {
+        return {id, estado, fecha, empleadoNombre, legajo};
+      }
+      
+    function obtenerCargasDeHoras(){
+        fetch()
+    }
+
+    reder(){
+        return(
+            <TableBody>
+                {rows.map((row) => (
+                    <TableRow
+                        key={row.name}
+                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                        >
+                        <TableCell component="th" scope="row">
+                            {row.Id}
+                        </TableCell>
+                        <TableCell align="right">{row.Estado}</TableCell>
+                        <TableCell align="right">{row.Fecha}</TableCell>
+                        <TableCell align="right">{row.Empleado}</TableCell>
+                        <TableCell align="right">{row.Legajo}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        )
+    }
+}
+
 class MostrarCargasCreadas extends React.Component{
     render(){
         return(
@@ -55,6 +88,7 @@ class MostrarCargasCreadas extends React.Component{
 const ModalModificacionCargaHoras = () => {
     const [value, onChange] = useState(new Date()); 
     const [isShown, setIsShown] = useState(false);
+    const [cargasHoras, setCargasHoras] = useState([]);
 
     return (
         <container>

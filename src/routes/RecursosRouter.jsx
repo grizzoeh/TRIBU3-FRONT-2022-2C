@@ -17,6 +17,8 @@ const ConsultarCargaHoras = lazy(() => import("../pages/ConsultarCargaHoras/Cons
 const ConsultarReportes = lazy(() => import("../pages/ConsultarReportes/ConsultarReportes"));
 
 const EliminarCargaHoras = lazy(() => import("../pages/EliminarCargaHoras/EliminarCargaHoras"));
+
+const CrearCategoria = lazy(() => import("../pages/crearCategoria/CrearCategoria"));
 const RecursosRouter = () => {
     return (
         <Router>
@@ -28,6 +30,7 @@ const RecursosRouter = () => {
                     <Route path="/consultar-carga" element={<ConsultarCargaHoras />} />
                     <Route path="/eliminar-carga-horas" element={<EliminarCargaHoras />} />
                     <Route path="/consultar-reportes-por-proyecto" element={<ConsultarReportes />} />
+                    <Route path="/crear-categoria" element={<CrearCategoria />} />
                 </Routes>
             </Suspense>
         </Router>
