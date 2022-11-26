@@ -70,43 +70,43 @@ const TicketsEnCurso = () => {
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
 
+    const getDataEnCurso = async () => {
+        const send_data = { type: 'enCurso' };
+        axios
+            .get(SERVER_NAME_SOPORTE + "/tickets/", {
+                params: send_data,
+            })
+            .then((res) => {
+                setTicketsEnCursoData(res.data.tickets, getDataEnCurso());
 
+            })
+            .catch((err) => {
+                console.log("Errorxd: ", err); // FIXME TOAST
+            });
+
+    };
+
+    const getDataCerrados = async () => {
+        const send_data = { type: "resueltos" };
+        axios
+            .get(SERVER_NAME_SOPORTE + "/tickets/", {
+                params: send_data,
+            })
+            .then((res) => {
+                setTicketsCerradosData(res.data.tickets);
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+    }
 
 
 
     useEffect(() => {
 
-        const getDataEnCurso = async () => {
-            const send_data = { type: 'enCurso' };
-            axios
-                .get(SERVER_NAME_SOPORTE + "/tickets/", {
-                    params: send_data,
-                })
-                .then((res) => {
-                    setTicketsEnCursoData(res.data.tickets);
 
-                })
-                .catch((err) => {
-                    console.log("Errorxd: ", err); // FIXME TOAST
-                });
-
-        };
-
-        const getDataCerrados = async () => {
-            const send_data = { type: "resueltos" };
-            axios
-                .get(SERVER_NAME_SOPORTE + "/tickets/", {
-                    params: send_data,
-                })
-                .then((res) => {
-                    setTicketsCerradosData(res.data.tickets);
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-
-        }
 
         const getClientes = async () => {
             // axios
@@ -336,7 +336,8 @@ const TicketsEnCurso = () => {
                                             <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>TicketInfo</Button>
 
                                             {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
+                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} getDataEnCurso={getDataEnCurso} getDataCerrado={getDataCerrados} />
+
                                             ) :
                                                 (null
                                                 )}
