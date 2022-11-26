@@ -28,6 +28,8 @@ const NavbarSoporte = () => {
                 <Nav.Link href="/tickets-en-curso">Tickets</Nav.Link>
                 <Nav.Link href="/crear-producto-y-version">Crear Producto y Versión</Nav.Link>
 
+                <Nav.Link href="/proyectos">Proyectos</Nav.Link>
+
             </Nav>
 
 
