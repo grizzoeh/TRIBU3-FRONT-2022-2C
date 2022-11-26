@@ -3,27 +3,27 @@ import StateContainer from "./StateContainer";
 // To do: Fetch projects from API.
 import MockProjects from "../../../../Mock/projects";
 
-export default function Body() {
-  let projectWithoutState = MockProjects.filter(
-    (project) => project.StateId === 1
+export default function Body({projects}) {
+  let projectWithoutState = projects.filter(
+    (project) => project.status === "pendiente"
   );
-  let projectInAnalysis = MockProjects.filter(
-    (project) => project.StateId === 2
+  let projectInAnalysis = projects.filter(
+    (project) => project.status === 2
   );
-  let projectInProgress = MockProjects.filter(
-    (project) => project.StateId === 3
+  let projectInProgress = projects.filter(
+    (project) => project.status === 3
   );
-  let projectInTesting = MockProjects.filter(
-    (project) => project.StateId === 4
+  let projectInTesting = projects.filter(
+    (project) => project.status === 4
   );
-  let projectInProduction = MockProjects.filter(
-    (project) => project.StateId === 5
+  let projectInProduction = projects.filter(
+    (project) => project.status === 5
   );
-  let projectInPostProduction = MockProjects.filter(
-    (project) => project.StateId === 6
+  let projectInPostProduction = projects.filter(
+    (project) => project.status === 6
   );
-  let projectInFinished = MockProjects.filter(
-    (project) => project.StateId === 7
+  let projectInFinished = projects.filter(
+    (project) => project.status === 7
   );
 
   return (

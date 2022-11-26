@@ -1,8 +1,27 @@
-import Header from './header';
-import Body from './body';
+import React, { useEffect, useState } from "react";
+import Header from "./header";
+import Body from "./body";
 import { Chart } from "react-google-charts";
+import axios from "axios";
 
 export default function Dashboard() {
+  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
+  const [proyectos, setProyectos] = useState([]);
+
+  useEffect(() => {
+    const getProyectos = async () => {
+      axios
+        .get(SERVER_NAME + "/psa/projects/", {})
+        .then((res) => {
+          setProyectos(res.data);
+        })
+        .catch((err) => {
+          alert('Se produjo un error al consultar los proyectos', err);
+        });
+    };
+
+    getProyectos();
+  }, []);
 
   const columns = [
     { type: "string", label: "Task ID" },
@@ -14,7 +33,7 @@ export default function Dashboard() {
     { type: "number", label: "Percent Complete" },
     { type: "string", label: "Dependencies" },
   ];
-  
+
   const rows = [
     [
       "toTrain",
@@ -26,7 +45,16 @@ export default function Dashboard() {
       100,
       null,
     ],
-    ["music", "Listen to music", "music", null, null, 70 * 60 * 1000, 100, null],
+    [
+      "music",
+      "Listen to music",
+      "music",
+      null,
+      null,
+      70 * 60 * 1000,
+      100,
+      null,
+    ],
     [
       "wait",
       "Wait for train",
@@ -53,15 +81,16 @@ export default function Dashboard() {
 
   return (
     <>
-      <Header/>
-      <Body/>
+      <Header />
+      <Body projects={proyectos}/>
+
       <Chart
-      chartType="Gantt"
-      width="100%"
-      height="50%"
-      data={data}
-      options={options}
-    />
+        chartType="Gantt"
+        width="100%"
+        height="50%"
+        data={data}
+        options={options}
+      />
     </>
   );
 }

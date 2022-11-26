@@ -1,4 +1,4 @@
-import Card from './card';
+import Card from "./card";
 
 export default function StateContainer({ stateName, projects }) {
   return (
@@ -6,13 +6,7 @@ export default function StateContainer({ stateName, projects }) {
       <h3>{stateName}</h3>
 
       {projects.map((project) => {
-        return (
-          <Card
-            title={project.title}
-            description={project.Description}
-            AssignedTo={project.AssignedTo}
-          />
-        );
+        return <Card project={project} />;
       })}
     </section>
   );

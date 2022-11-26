@@ -1,25 +1,51 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
+import axios from "axios";
 
 export default function NewProject() {
+  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
+
   const [projectData, setProjectData] = useState({
     name: "",
     description: "",
-    assignedTo: "",
-    fechaInicio: "",
-    fechaDeFin: "",
+    type: "",
+    estimated_start_date: "",
+    estimated_finalization_date: "",
+    project_manager: "",
+    resources: [123],
+    stakeholders: [213124]
   });
+
+  const createProject = async () => {
+    axios
+      .post(SERVER_NAME + "/psa/projects/", projectData)
+      .then((data) => {
+        debugger
+        if (data.status === 200) {
+          alert("Nuevo proyecto creado");
+          // TODO: redirect to project dashboard
+        }
+      })
+      .catch((err) => {
+        alert("Se produjo un error al consultar los proyectos", err);
+      });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // TODO: Delete.
-    alert(
-      `{name: ${projectData.name}, description: ${projectData.description}, assignedTo: ${projectData.assignedTo}, fechaInicio: ${projectData.fechaInicio}, fechaDeFin: ${projectData.fechaInicio}}`
-    );
+    createProject();
 
-    // TODO: Call API [POST].
-    setProjectData({ name: "", description: "", assignedTo: "", fechaInicio: "", fechaInicio: "" });
+    setProjectData({
+      name: "",
+      description: "",
+      type: "",
+      estimated_start_date: "",
+      estimated_finalization_date: "",
+      project_manager: "",
+      resources: [], // TODO: fill
+      stakeholders: [] // TODO: fill
+    });
   };
 
   return (
@@ -41,7 +67,7 @@ export default function NewProject() {
         <br />
         <br />
 
-        <label>Tipo:</label>
+        <label>Description:</label>
         <input
           type="text"
           value={projectData.description}
@@ -52,12 +78,12 @@ export default function NewProject() {
         <br />
         <br />
 
-        <label>Descripcion:</label>
+        <label>Tipo:</label>
         <input
           type="text"
-          value={projectData.assignedTo}
+          value={projectData.type}
           onChange={(e) =>
-            setProjectData({ ...projectData, assignedTo: e.target.value })
+            setProjectData({ ...projectData, type: e.target.value })
           }
         />
         <br />
@@ -69,7 +95,7 @@ export default function NewProject() {
           name="fechaDeInicio"
           placeholder="Ej: 18/12/2022"
           onChange={(e) =>
-            setProjectData({ ...projectData, fechaInicio: e.target.value })
+            setProjectData({ ...projectData, estimated_start_date: e.target.value })
           }
         />
         <br />
@@ -81,7 +107,18 @@ export default function NewProject() {
           name="fechaDeFin"
           placeholder="Ej: 18/12/2023"
           onChange={(e) =>
-            setProjectData({ ...projectData, fechaDeFin: e.target.value })
+            setProjectData({ ...projectData, estimated_finalization_date: e.target.value })
+          }
+        />
+        <br />
+        <br />
+
+        <label>Project manager:</label>
+        <input
+          type="text"
+          value={projectData.project_manager}
+          onChange={(e) =>
+            setProjectData({ ...projectData, project_manager: e.target.value })
           }
         />
         <br />
