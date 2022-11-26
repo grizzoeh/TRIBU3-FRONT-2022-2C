@@ -15,7 +15,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data, getDataCerrados, getDataEnCurso }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data }) => {
 
 
     const [clientes, setClientes] = useState();
@@ -84,8 +84,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
         setEditMode(false);
 
 
-        getDataEnCurso();
-        getDataCerrados();
 
     }
     const handleCancelarEdicion = () => {

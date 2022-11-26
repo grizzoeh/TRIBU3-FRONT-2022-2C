@@ -336,7 +336,7 @@ const TicketsEnCurso = () => {
                                             <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>TicketInfo</Button>
 
                                             {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} getDataEnCurso={getDataEnCurso} getDataCerrado={getDataCerrados} />
+                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
 
                                             ) :
                                                 (null
