@@ -1,15 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import "./modalInfoTicketEnCurso.css";
-import Button2 from '@mui/material/Button';
 import axios from "axios";
-import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
@@ -30,11 +26,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
     const [compras, setCompras] = useState();
 
-    const [TicketViejo, setTicketViejo] = useState(data);
 
     const [ticketEditable, setTicketEditable] = useState(data);
 
-    // const [show, setShow] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
 

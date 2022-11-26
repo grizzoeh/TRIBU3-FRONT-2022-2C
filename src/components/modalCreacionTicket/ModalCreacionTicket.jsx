@@ -1,18 +1,13 @@
 import React, { Fragment, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import "./modalCreacionTicket.css";
-import Button2 from '@mui/material/Button';
 import axios from "axios";
-import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
-import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
+
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -112,17 +107,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         onChangeshowCreacionModal(false);
     }
 
-    const getNombreProducto = (idProducto) => {
-        //console.log("idProductosoy: " + idProducto);
-        let nombreProducto = "";
-        productos.forEach((producto) => {
-            if (producto['idProducto'] === idProducto) {
-                nombreProducto = producto['nombreProducto'];
-            }
-        });
-        //console.log("nombre es", nombreProducto);
-        return nombreProducto;
-    }
+
 
 
     useEffect(() => {
