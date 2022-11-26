@@ -82,6 +82,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
             });
 
         setEditMode(false);
+
+
+
     }
     const handleCancelarEdicion = () => {
         setEditMode(false);
