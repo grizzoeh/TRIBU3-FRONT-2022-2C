@@ -1,26 +1,22 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import "./modalCreacionTarea.css";
-import Button2 from '@mui/material/Button';
 import axios from "axios";
-import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
-
-
-
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) => {
 
 
+    const [proyectos, setProyectos] = useState();
 
+    const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
 
     const [show, setShow] = useState(true);
 
@@ -42,17 +38,67 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
     const [tituloTarea, setTituloTarea] = useState("");
 
     const onChangeTituloTarea = (e) => {
-        console.log("AAAAAAAA");
-        console.log(e.target.value);
+
         setTituloTarea(e.target.value);
     };
 
     const [prioridadTarea, setPrioridadTarea] = useState("");
 
     const onChangePrioridadTarea = (e) => {
-        console.log(e.target.value);
         setPrioridadTarea(e.target.value);
     };
+
+    const onChangeProyectoSeleccionado = (e) => {
+        setProyectoSeleccionado(e.target.value);
+    };
+
+    const enviarTarea = async () => {
+
+        const send_tarea = {
+            "titulo": tituloTarea,
+            "cuerpo": cuerpoTarea,
+            "prioridad": prioridadTarea,
+            "proyecto": proyectoSeleccionado,
+        }
+
+        axios.post(SERVER_NAME_SOPORTE + "/tickets", send_tarea)
+            .then((data) => {
+                if (data.data.ok) {
+                    console.log("Tarea creada");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    useEffect(() => {
+        const getProyectos = async () => {
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             "Access-Control-Allow-Origin": "*",
+            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+            //             'Access-Control-Allow-Credentials': true,
+            //             crossorigin: true
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
+            setProyectos([{ "id": 1, "nombre": "Devops" }, { "id": 2, "nombre": "Environ" }, { "id": 3, "nombre": "W2022" }])
+        }
+
+        getProyectos();
+
+    }
+        , []);
 
 
     return (
@@ -69,14 +115,14 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                         <Col xs={1} >
                             <h4>Título</h4>
                         </Col>
-                        <Col>
+                        <Col xs={3}>
                             <Form.Control type="text" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
                         </Col>
 
-                        <Col>
+                        <Col xs={2}>
                             <h4> Prioridad:</h4>
                         </Col>
-                        <Col>
+                        <Col xs={5}>
                             <Dropdown >
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                     {prioridadTarea ? prioridadTarea : "Selecciona una prioridad"}
@@ -88,6 +134,30 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                                     <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Alta</Dropdown.Item>
                                     <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Media</Dropdown.Item>
                                     <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Baja</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+
+                        </Col>
+
+                    </Row>
+                    <Row className="mt-5">
+                        <Col xs={2}>
+                            <h4> Proyecto Destino:</h4>
+                        </Col>
+                        <Col xs={3}>
+                            <Dropdown >
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                    {prioridadTarea ? prioridadTarea : "Selecciona un proyecto"}
+
+
+                                </Dropdown.Toggle>
+
+                                <Dropdown.Menu>
+                                    {proyectos && proyectos.map((proyecto) => (
+                                        <Dropdown.Item name="proyectoSeleccionado" onClick={(e) => onChangeProyectoSeleccionado(e)}>{proyecto.nombre}</Dropdown.Item>
+                                    ))}
+
+
                                 </Dropdown.Menu>
                             </Dropdown>
 
