@@ -15,7 +15,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
+const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -74,6 +74,8 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
         crearTicket();
         onChangeshowCreacionModal(false);
+        getDataEnCurso();
+        getDataEnCurso();
 
 
     }
@@ -105,6 +107,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     const handleClose = () => {
         onChangeshowCreacionModal(false);
+
     }
 
 
@@ -130,7 +133,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                 .catch((error) => {
                     console.log(error);
                 });
-            //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
         }
 
         const getProductos = async () => {

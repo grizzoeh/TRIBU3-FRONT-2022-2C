@@ -282,7 +282,7 @@ const TicketsEnCurso = () => {
                                     );
                                 }
 
-                            ).map((ticketEnCurso) => (
+                            ).sort((a, b) => a.id > b.id ? 1 : -1).map((ticketEnCurso) => (
                                 <Col key={ticketEnCurso.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
@@ -335,7 +335,7 @@ const TicketsEnCurso = () => {
                                             <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>Información</Button>
 
                                             {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
+                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} getDataEnCurso={getDataEnCurso} />
 
                                             ) :
                                                 (null
@@ -346,7 +346,7 @@ const TicketsEnCurso = () => {
 
                                     {
                                         showCreacionModal ? (
-                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
+                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} getDataEnCurso={getDataEnCurso} />
                                         ) :
                                             (null
                                             )
@@ -372,7 +372,7 @@ const TicketsEnCurso = () => {
                                     );
                                 }
 
-                            ).map((ticketCerrado) => (
+                            ).sort((a, b) => a.id > b.id ? 1 : -1).map((ticketCerrado) => (
                                 <Col className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
