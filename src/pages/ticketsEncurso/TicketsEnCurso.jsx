@@ -157,6 +157,14 @@ const TicketsEnCurso = () => {
 
                 </Row>
 
+                {
+                    showCreacionModal ? (
+                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} />
+                    ) :
+                        (null
+                        )
+                }
+
             </Container>
 
             <Container className="container-filters">
@@ -333,23 +341,17 @@ const TicketsEnCurso = () => {
                                             </Card.Text>
                                             <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>Información</Button>
 
-                                            {showTicketModalEnCurso ? (
+                                            {/* {showTicketModalEnCurso ? (
                                                 <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} getDataEnCurso={getDataEnCurso} />
 
                                             ) :
                                                 (null
-                                                )}
+                                                )} */}
 
                                         </Card.Body>
                                     </Card>
 
-                                    {
-                                        showCreacionModal ? (
-                                            <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} />
-                                        ) :
-                                            (null
-                                            )
-                                    }
+
 
                                 </Col>
 
@@ -421,13 +423,7 @@ const TicketsEnCurso = () => {
 
                                         </Card.Body>
                                     </Card>
-                                    {/* {
-                                        showCreacionModal ? (
-                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} getDataEnCurso={getDataEnCurso} />
-                                        ) :
-                                            (null
-                                            )
-                                    } */}
+
                                 </Col>
                             )) : <h3>Cargando...</h3>}
 
