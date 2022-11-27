@@ -33,6 +33,7 @@ const TicketsEnCurso = () => {
         setShowTicketModalEncurso(newSomeState);
     };
 
+
     const [showTicketModalCerrado, setShowTicketModalCerrado] = useState(false);
 
 
@@ -42,9 +43,7 @@ const TicketsEnCurso = () => {
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
 
-    const onChangeshowCreacionModal = (newSomeState) => {
-        setShowCreacionModal(newSomeState);
-    };
+
 
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
@@ -152,7 +151,7 @@ const TicketsEnCurso = () => {
                         <h3>Tickets en Curso</h3>
                     </Col>
                     < Col xs={2}>
-                        <Button size="sm" variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear</Button>
+                        <Button size="sm" variant="primary" onClick={() => setShowCreacionModal(true)}>Crear</Button>
                     </Col>
 
 
@@ -346,7 +345,7 @@ const TicketsEnCurso = () => {
 
                                     {
                                         showCreacionModal ? (
-                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} getDataEnCurso={getDataEnCurso} />
+                                            <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} />
                                         ) :
                                             (null
                                             )
@@ -422,6 +421,13 @@ const TicketsEnCurso = () => {
 
                                         </Card.Body>
                                     </Card>
+                                    {/* {
+                                        showCreacionModal ? (
+                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} getDataEnCurso={getDataEnCurso} />
+                                        ) :
+                                            (null
+                                            )
+                                    } */}
                                 </Col>
                             )) : <h3>Cargando...</h3>}
 

@@ -15,7 +15,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
+const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -51,6 +51,8 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
 
     const [dicci, setDicci] = useState();
 
+    const [showero, setShowero] = useState(true);
+
 
 
     const crearTicket = async () => {
@@ -73,7 +75,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
 
 
         crearTicket();
-        onChangeshowCreacionModal(false);
+        setShowCreacionModal(false);
         getDataEnCurso();
         getDataEnCurso();
 
@@ -106,7 +108,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
     }
 
     const handleClose = () => {
-        onChangeshowCreacionModal(false);
+        setShowCreacionModal(false);
 
     }
 
@@ -116,23 +118,23 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
     useEffect(() => {
 
         const getClientes = async () => {
-            axios
-                .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-                    headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'origin': 'x-requested-with',
-                        'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
-                        'Content-Type': 'application/json',
-                    }
-                })
-                .then((response) => {
-                    console.log(response);
-                    // setClientes(response.data);
-                }
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
+            // axios
+            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //         headers: {
+            //             'Access-Control-Allow-Origin': '*',
+            //             'origin': 'x-requested-with',
+            //             'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+            //             'Content-Type': 'application/json',
+            //         }
+            //     })
+            //     .then((response) => {
+            //         console.log(response);
+            //         // setClientes(response.data);
+            //     }
+            //     )
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
             setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
         }
 
@@ -214,7 +216,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal, getDataEnCurso }) => {
     return (
         <>
 
-            <Modal dialogClassName="modalContent" show={true} onHide={handleClose} >
+            <Modal dialogClassName="modalContent" show={showCreacionModal} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear Ticket </Modal.Title>
                 </Modal.Header>
