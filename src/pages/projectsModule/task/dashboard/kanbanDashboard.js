@@ -4,21 +4,51 @@ import "./tareasProyecto.css"
 // To do: Fetch projects from API.
 import MockProjects from "../../../../Mock/projects";
 import { Col , Row} from "react-bootstrap";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { DragDropContext } from 'react-beautiful-dnd';
 
-export default function KanbanDashboard({tasks}) {
-  let pendingTasks = tasks.filter(
+export default function KanbanDashboard({initialTasks}) {
+
+  const [tasks, setTasks] = useState(initialTasks);
+
+  let pendingTasks = initialTasks.filter(
     (task) => task.state === "pending"
   );
-  let inProgressTasks = tasks.filter(
+  let inProgressTasks = initialTasks.filter(
     (task) => task.state === "in_progress"
   );
-  let finishedTasks = tasks.filter(
+  let finishedTasks = initialTasks.filter(
     (task) => task.state === "finished"
   );
 
+
+
+  const reorder = (list, startIndex, endIndex) => {
+    const result = [...list];
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  }
+
   return (
     <Fragment>
+      <DragDropContext onDragEnd={(result) => {
+          const {source, destination} = result;
+          if (!destination) {
+            return;
+          }
+          // if (source.droppableId === destination.droppableId) {
+          //   return;
+          // }
+
+          setTasks(
+            (prevTasks) => reorder(prevTasks, source.index, destination.index)
+            );
+          console.log(result)
+
+      }}>
+
       <Row className="kanban-row">
         <Col> 
           <KanbanColumn    
@@ -39,7 +69,7 @@ export default function KanbanDashboard({tasks}) {
               />
         </Col>
       </Row>
-
+    </DragDropContext>
     </Fragment>
   );
 }

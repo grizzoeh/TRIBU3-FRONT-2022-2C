@@ -68,13 +68,15 @@ export default function DashboardTareas() {
                     {/* <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button> */}
             </Col>
             < Col>
-                    <Button variant="primary" onClick={console.log("click diagrama gannt")}>Diagrama de Gannt</Button>
-                    {/* <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button> */}
+                    <Button variant="primary" onClick={console.log("click diagrama gannt")}>
+                        Diagrama de Gannt
+                    </Button>
+                    
             </Col>
             </Row>
             <Row>
                 <Container className="container-cards">
-                    <KanbanDashboard tasks={tareas}/>
+                    <KanbanDashboard initialTasks={tareas}/>
                 </Container>
             </Row>
 

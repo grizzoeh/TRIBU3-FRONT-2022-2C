@@ -119,10 +119,13 @@
   
   .task-details {
     font-style: normal;
-    font-weight: 300;
+    align-items: center;
+    justify-content: center;
+    /* align-self: center; */
+    /* font-weight: 300; */
     font-size: 0.8em;
     color: #9c9c9c;
-    word-wrap: break-word;
+    /* word-wrap: break-word; */
     margin-top: 10px;
     line-height: 1.1em;
   }
