@@ -49,7 +49,6 @@ const CrearProductoYVersion = () => {
     }
 
     const handleBotonFiltrado = async () => {
-        console.log(filtroTexto.estado, filtroTexto.nombre)
         if (filtroTexto.estado == "Cualquiera"){
             if (filtroTexto.nombre =="") {
                 return
@@ -165,7 +164,7 @@ const CrearProductoYVersion = () => {
                                         </td>
                                     </tr>          
                                     )
-                                )) : <Row className="centered">No existen productos</Row>
+                                )) : <Row className="centered">No se encontraron productos para los filtros dados</Row>
                             ):(
                                 productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
                                     producto.estado == "Activo" ? (
