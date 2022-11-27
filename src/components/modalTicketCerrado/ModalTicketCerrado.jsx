@@ -14,7 +14,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data }) => {
+const ModalTicketCerrado = ({ numeroTicket, data }) => {
 
 
 
@@ -29,10 +29,12 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
 
     const [compras, setCompras] = useState();
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
 
     const handleClose = () => {
-        onChangeshowTicketModalCerrado(false)
+        setShow(false);
 
     };
 
@@ -117,6 +119,8 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
 
     return (
         <>
+            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Información</Button>
+
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>

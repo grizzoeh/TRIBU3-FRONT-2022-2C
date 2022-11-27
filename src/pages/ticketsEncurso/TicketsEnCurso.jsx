@@ -31,12 +31,7 @@ const TicketsEnCurso = () => {
 
 
 
-    const [showTicketModalCerrado, setShowTicketModalCerrado] = useState(false);
 
-
-    const onChangeshowTicketModalCerrado = (newSomeState) => {
-        setShowTicketModalCerrado(newSomeState);
-    };
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
 
@@ -99,32 +94,33 @@ const TicketsEnCurso = () => {
 
     }
 
+    const getClientes = async () => {
+        // axios
+        //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+        //         headers: {
+        //             "Access-Control-Allow-Origin": "*",
+        //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        //             'Access-Control-Allow-Credentials': true,
+        //             crossorigin: true
+        //         }
+        //     })
+        //     .then((response) => {
+        //         console.log(response);
+        //         // setClientes(response.data);
+        //     }
+        //     )
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+    }
 
 
     useEffect(() => {
 
 
 
-        const getClientes = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
-        }
+
 
         getDataEnCurso();
         getDataCerrados();
@@ -257,7 +253,7 @@ const TicketsEnCurso = () => {
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
                                 {clientes?.map((cliente) => {
                                     return (
-                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
                                     )
                                 })}
 
@@ -341,6 +337,7 @@ const TicketsEnCurso = () => {
                                             <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} />
 
 
+
                                         </Card.Body>
                                     </Card>
 
@@ -406,13 +403,9 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>Información</Button>
 
-                                            {showTicketModalCerrado ? (
-                                                <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
-                                            ) :
-                                                (null
-                                                )}
+                                            <ModalTicketCerrado data={ticketCerrado} numeroTicket={ticketCerrado.id} />
+
 
                                         </Card.Body>
                                     </Card>

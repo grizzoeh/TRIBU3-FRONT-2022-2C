@@ -235,11 +235,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                 <Col>
                                     <Row>
-                                        <Col xs={2}>
-                                            <h4 > Título: </h4>
+                                        <Col sm={2}>
+                                            <h6 > Título: </h6>
                                         </Col>
-                                        <Col xs={9}>
-                                            <Form.Control type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
+                                        <Col sm={6}>
+                                            <Form.Control size="sm" type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
                                         </Col>
 
                                     </Row>
@@ -247,11 +247,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-4">
 
                                         <Col xs={3}>
-                                            <h4>Categoría:</h4>
+                                            <h6>Categoría:</h6>
                                         </Col>
                                         <Col >
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {ticketEditable.categoria}
                                                 </Dropdown.Toggle>
 
@@ -265,11 +265,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     <Row className="mt-4">
                                         <Col xs={3}>
-                                            <h4>Criticidad:</h4>
+                                            <h6>Criticidad:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {ticketEditable.criticidad}
                                                 </Dropdown.Toggle>
 
@@ -285,11 +285,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     <Row className="mt-4">
                                         <Col xs={3}>
-                                            <h4>Estado:</h4>
+                                            <h6>Estado:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {ticketEditable.estado}
                                                 </Dropdown.Toggle>
 
@@ -308,7 +308,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     <Row className="mt-4">
                                         <Col xs={4}>
-                                            <h4>Fecha de creación: </h4>
+                                            <h6>Fecha de creación: </h6>
                                         </Col>
                                         <Col xs={6}>
                                             <Form.Control type="date" name="fechaCreacion" value={ticketEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeTicketEditable(e)} />
@@ -319,7 +319,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-4">
-                                        <h4> Descripción </h4>
+                                        <h6> Descripción </h6>
                                     </Row>
                                     <Row className="mt-1">
 
@@ -329,7 +329,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     </Row>
 
                                     <Row className="mt-4">
-                                        <h4> Notas </h4>
+                                        <h6> Notas </h6>
                                     </Row>
                                     <Row className="mt-1">
                                         <textarea className="box-notas" name="notas" value={ticketEditable.notas} onChange={(e) => onChangeTicketEditable(e)} />
@@ -342,16 +342,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row >
-                                        <h3 className="titulo-subrayado"> Información Cliente: </h3>
+                                        <h5 className="titulo-subrayado"> Información Cliente: </h5>
                                     </Row>
 
                                     <Row className="mt-2">
                                         <Col>
-                                            <h4> Nombre:</h4>
+                                            <h6> Nombre:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
                                                     }
 
@@ -372,7 +372,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     <Row className="mt-4">
                                         <Col>
-                                            <h4> Medio de Contacto:</h4>
+                                            <h6> Medio de Contacto:</h6>
                                         </Col>
                                         <Col>
                                             <Form.Control type="text" name="medioContactoCliente" value={ticketEditable.medioContactoCliente} onChange={(e) => onChangeTicketEditable(e)} />
@@ -385,7 +385,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-2">
 
                                         <Col>
-                                            <h4 > CUIT: </h4>
+                                            <h6 > CUIT: </h6>
                                         </Col>
                                         <Col>
                                             {clientes ?
@@ -400,16 +400,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-4">
-                                        <h3 className="titulo-subrayado"> Información Producto: </h3>
+                                        <h5 className="titulo-subrayado"> Información Producto: </h5>
                                     </Row>
 
                                     <Row className="mt-2">
                                         <Col>
-                                            <h4> Nombre: </h4>
+                                            <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {productos?.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
                                                     }
                                                 </Dropdown.Toggle>
@@ -446,9 +446,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                                 </Dropdown.Menu>
                                             </Dropdown>
-                                        </Col>
+                                        </Col >
 
-                                    </Row>
+                                    </Row >
                                     {/* <Button onClick={console.log(Array
                                         .from(new Set(compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
                                             productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']
@@ -468,11 +468,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     <Row className="mt-4">
                                         <Col>
-                                            <h4> Versión:</h4>
+                                            <h6> Versión:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {versiones?.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
                                                     }
                                                 </Dropdown.Toggle>
@@ -492,7 +492,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     </Row>
 
                                     <Row className="mt-5">
-                                        <h3 className="titulo-subrayado"> Información asesor: </h3>
+                                        <h5 className="titulo-subrayado"> Información asesor: </h5>
                                     </Row>
 
 
@@ -500,11 +500,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-4">
 
                                         <Col>
-                                            <h4> Nombre: </h4>
+                                            <h5> Nombre: </h5>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {ticketEditable.nombreAsesor}
                                                 </Dropdown.Toggle>
 
@@ -518,40 +518,40 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
                                     </Row>
 
-                                </Col>
+                                </Col >
 
-                            </Row>
-
-
+                            </Row >
 
 
-                        </div>
+
+
+                        </div >
                     ) : (
                         // FUERA DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Row className="mt-4">
+                            <Row >
 
                                 <Col>
 
-                                    <Row className="mt-1">
-                                        <Col>
-                                            <h4> Título: </h4>
+                                    <Row >
+                                        <Col sm={4}>
+                                            <h5> Título: </h5>
                                         </Col>
-                                        <Col xs={6}>
+                                        <Col >
                                             {ticketEditable.titulo}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
-                                        <Col>
-                                            <h4> Categoría: </h4>
+                                        <Col sm={4}>
+                                            <h6> Categoría: </h6>
                                         </Col>
                                         <Col >
                                             {ticketEditable.categoria}
                                         </Col>
                                     </Row>
-                                    <Row className="mt-4">
-                                        <Col >
-                                            <h4>Criticidad:   </h4>
+                                    <Row className="mt-2">
+                                        <Col sm={4} >
+                                            <h6>Criticidad:   </h6>
                                         </Col>
                                         <Col>
                                             {ticketEditable.criticidad}
@@ -559,8 +559,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     </Row>
                                     <Row className="mt-2">
 
-                                        <Col >
-                                            <h4>Estado: </h4>
+                                        <Col sm={4}>
+                                            <h6>Estado: </h6>
                                         </Col>
                                         <Col >
                                             {ticketEditable.estado}
@@ -570,8 +570,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-3">
-                                        <Col >
-                                            <h4>Fecha de creación:</h4>
+                                        <Col sm={4}>
+                                            <h6>Fecha de creación:</h6>
                                         </Col>
                                         <Col >
                                             {ticketEditable.fechaCreacion.slice(0, 10)}
@@ -581,10 +581,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-3">
-                                        <h4> Descripción </h4>
+                                        <h6> Descripción </h6>
                                     </Row>
-                                    <Row className="mt-3">
-                                        <Col xs={11}>
+                                    <Row className="mt-1">
+                                        <Col xs={10}>
                                             <p className="linea-box">
                                                 {ticketEditable.descripcion}
                                             </p>
@@ -593,10 +593,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-2">
-                                        <h4> Notas </h4>
+                                        <h6> Notas </h6>
                                     </Row>
-                                    <Row className="mt-3">
-                                        <Col xs={11}>
+                                    <Row className="mt-1">
+                                        <Col xs={10}>
                                             <p className="linea-box">
                                                 {ticketEditable.notas}
                                             </p>
@@ -608,13 +608,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                 <Col>
 
 
-                                    <Row className="mt-1">
-                                        <h3 className="titulo-subrayado"> Información Cliente: </h3>
+                                    <Row >
+                                        <h5 className="titulo-subrayado"> Información Cliente: </h5>
                                     </Row>
 
                                     <Row className="mt-2">
                                         <Col>
-                                            <h4> Nombre:  </h4>
+                                            <h6> Nombre:  </h6>
                                         </Col>
                                         <Col>
 
@@ -629,7 +629,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-2">
 
                                         <Col>
-                                            <h4> Medio de Contacto: </h4>
+                                            <h6> Medio de Contacto: </h6>
                                         </Col>
                                         <Col>
                                             {ticketEditable.medioContactoCliente}
@@ -640,7 +640,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-2">
 
                                         <Col>
-                                            <h4> CUIT: </h4>
+                                            <h6> CUIT: </h6>
                                         </Col>
                                         <Col>
                                             {clientes ?
@@ -655,12 +655,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
                                     <Row className="mt-4">
-                                        <h3 className="titulo-subrayado"> Información Producto: </h3>
+                                        <h5 className="titulo-subrayado"> Información Producto: </h5>
                                     </Row>
 
                                     <Row className="mt-2">
                                         <Col>
-                                            <h4> Nombre: </h4>
+                                            <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
                                             {productos ?
@@ -672,7 +672,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     <Row className="mt-2">
 
                                         <Col>
-                                            <h4> Versión:   </h4>
+                                            <h6> Versión:   </h6>
                                         </Col>
                                         <Col>
                                             {versiones ?
@@ -683,12 +683,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                                     </Row>
 
                                     <Row className="mt-4">
-                                        <h3 className="titulo-subrayado"> Información asesor: </h3>
+                                        <h5 className="titulo-subrayado"> Información asesor: </h5>
                                     </Row>
 
                                     <Row>
                                         <Col>
-                                            <h4> Nombre:</h4>
+                                            <h6> Nombre:</h6>
                                         </Col>
                                         <Col>
                                             {ticketEditable.nombreAsesor}
@@ -710,7 +710,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
 
-                </Modal.Body>
+                </Modal.Body >
                 <Modal.Footer>
                     {editMode ? (
                         // DENTRO DE EDIT MODE FOOTER HEADER

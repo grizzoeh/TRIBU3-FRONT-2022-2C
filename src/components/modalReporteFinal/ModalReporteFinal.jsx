@@ -153,20 +153,16 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                 </Modal.Header>
                 <Modal.Body>
 
-                    <Row className="mt-1">
-                        <h4> Información resolutor: </h4>
-                    </Row>
+
 
                     <Row className="mt-4">
 
-
-
-                        <Col>
-                            <h4> Nombre: </h4>
+                        <Col sm={3}>
+                            <h6> Nombre resolutor: </h6>
                         </Col>
                         <Col>
                             <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                     {nombreAsesorResolutor ? nombreAsesorResolutor : "Seleccionar"}
                                 </Dropdown.Toggle>
 
@@ -181,10 +177,10 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                     </Row>
 
                     <Row className="mt-5">
-                        <Col>
-                            <h4>Fecha de cierre:</h4>
+                        <Col sm={3}>
+                            <h6>Fecha de cierre:</h6>
                         </Col>
-                        <Col xs={9}>
+                        <Col sm={3}>
                             <Form.Control type="date" name="fechaCierre" placeholder="Ej: 18/12/2022" onChange={(e) => onChangeFechaCierre(e)} />
 
                         </Col>
@@ -192,7 +188,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                     </Row>
 
 
-                    <h2 className="mt-5">Escribir Reporte Final</h2>
+                    <h6 className="mt-5">Escribir Reporte Final</h6>
 
                     <textarea className="box-reporte-final mt-4" name="descripcion" onChange={(e) => onChangeReporteFinal(e)} />
 
@@ -200,17 +196,17 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
                 </Modal.Body>
                 <Modal.Footer>
 
-                    <Col xs={10}>
-                        <Button variant="secondary" onClick={handleClose}>
+                    <Col xs={8}>
+                        <Button size="xs" variant="secondary" onClick={handleClose}>
                             Close
                         </Button>
                     </Col>
                     <Col>
                         {nombreAsesorResolutor && fechaCierre && areaAsesorResolutor && reporte && idAsesorResolutor ?
-                            <Button variant="primary" onClick={handleEnviar}>
+                            <Button size="xs" variant="primary" onClick={handleEnviar} style={{ width: "250px" }}>
                                 Enviar Reporte Final y Resolver
                             </Button>
-                            : <h4> cargando...</h4>
+                            : <h4></h4>
                         }
 
                     </Col>
