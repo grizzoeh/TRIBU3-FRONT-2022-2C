@@ -24,6 +24,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
 
+//Hay que ponerle un scrollbar a la tabla y que tenga un tamanio fijo
 function navegarACargaDeHorasPorId(id){
     
 }
