@@ -15,7 +15,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, data, getDataEnCurso }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
     const [clientes, setClientes] = useState();
@@ -32,7 +32,9 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     const [editMode, setEditMode] = useState(false);
 
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
 
     const [idClienteFilter, setIdClienteFilter] = useState(data.idCliente);
 
@@ -42,14 +44,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
     const [dicci, setDicci] = useState();
 
     const handleClose = () => {
-        onChangeshowTicketModalEnCurso(false)
+        setShow(false);
         setEditMode(false);
         getDataEnCurso();
         getDataEnCurso();
 
     };
 
-    // const handleShow = () => onChangeshowTicketModalEnCurso(true);
 
     const handleConfirmarEdicion = () => {
 
@@ -218,6 +219,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, onChangeshowTicketModalEnCurso, 
 
     return (
         <>
+            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Información</Button>
+
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>

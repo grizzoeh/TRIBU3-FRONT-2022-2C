@@ -17,7 +17,6 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 const TicketsEnCurso = () => {
 
 
-    const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
     const [clientes, setClientes] = useState();
 
@@ -29,9 +28,7 @@ const TicketsEnCurso = () => {
         "cliente": "Todos",
     });
 
-    const onChangeshowTicketModalEnCurso = (newSomeState) => {
-        setShowTicketModalEncurso(newSomeState);
-    };
+
 
 
     const [showTicketModalCerrado, setShowTicketModalCerrado] = useState(false);
@@ -339,14 +336,10 @@ const TicketsEnCurso = () => {
 
                                                 </Row>
                                             </Card.Text>
-                                            <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>Información</Button>
 
-                                            {/* {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} getDataEnCurso={getDataEnCurso} />
 
-                                            ) :
-                                                (null
-                                                )} */}
+                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} />
+
 
                                         </Card.Body>
                                     </Card>
