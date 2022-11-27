@@ -149,7 +149,7 @@ const TicketsEnCurso = () => {
 
                 <Row>
                     <Col xs={10}>
-                        <h4>Tickets en Curso</h4>
+                        <h3>Tickets en Curso</h3>
                     </Col>
                     < Col xs={2}>
                         <Button size="sm" variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear</Button>
