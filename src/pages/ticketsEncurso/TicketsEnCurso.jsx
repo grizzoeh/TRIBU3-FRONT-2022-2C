@@ -145,17 +145,14 @@ const TicketsEnCurso = () => {
 
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
-
-
-
             <Container className="container-title">
 
                 <Row>
                     <Col xs={10}>
-                        <h1>Tickets en Curso</h1>
+                        <h4>Tickets en Curso</h4>
                     </Col>
                     < Col xs={2}>
-                        <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button>
+                        <Button size="sm" variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear</Button>
                     </Col>
 
 
@@ -167,7 +164,7 @@ const TicketsEnCurso = () => {
                 <Row>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {showEnTicketsEnCurso}
                             </Dropdown.Toggle>
 
@@ -180,11 +177,11 @@ const TicketsEnCurso = () => {
                         </Dropdown>
                     </Col>
                     <Col>
-                        <h4>Categoría:</h4>
+                        <h5>Categoría:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["categoria"]}
                             </Dropdown.Toggle>
 
@@ -199,11 +196,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Criticidad:</h4>
+                        <h5>Criticidad:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["criticidad"]}
                             </Dropdown.Toggle>
 
@@ -221,11 +218,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Estado:</h4>
+                        <h5>Estado:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["estado"]}
                             </Dropdown.Toggle>
 
@@ -244,11 +241,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Cliente:</h4>
+                        <h5>Cliente:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["cliente"]}
                             </Dropdown.Toggle>
 
@@ -292,11 +289,9 @@ const TicketsEnCurso = () => {
                                             <Card.Title>
                                                 <Row>
                                                     <Col>
-                                                        Ticket  #{ticketEnCurso.id}
+                                                        Ticket  #{ticketEnCurso.id} - {ticketEnCurso.categoria}
                                                     </Col>
-                                                    <Col>
-                                                        {ticketEnCurso.categoria}
-                                                    </Col>
+
 
                                                 </Row>
 
@@ -311,7 +306,7 @@ const TicketsEnCurso = () => {
                                             <Card.Text>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Cliente: </h5>
+                                                        <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
                                                         {clientes[ticketEnCurso.idCliente - 1]["razon social"]}
@@ -320,7 +315,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Criticidad: </h5>
+                                                        <h6>Criticidad: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.criticidad}
@@ -329,7 +324,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Estado: </h5>
+                                                        <h6>Estado: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.estado}
@@ -337,7 +332,7 @@ const TicketsEnCurso = () => {
 
                                                 </Row>
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>TicketInfo</Button>
+                                            <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>Información</Button>
 
                                             {showTicketModalEnCurso ? (
                                                 <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
@@ -384,7 +379,7 @@ const TicketsEnCurso = () => {
                                             <Card.Title>
                                                 <Row>
                                                     <Col>
-                                                        Ticket  #{ticketCerrado.id}
+                                                        Ticket  #{ticketCerrado.id} - {ticketCerrado.categoria}
                                                     </Col>
 
                                                 </Row>
@@ -393,17 +388,13 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketCerrado.titulo}
                                                     </Col>
-                                                    <Col>
-                                                        {ticketCerrado.categoria}
-                                                    </Col>
-
 
                                                 </Row>
                                             </Card.Title>
                                             <Card.Text>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Cliente: </h5>
+                                                        <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
                                                         {clientes[ticketCerrado.idCliente - 1]["razon social"]}
@@ -412,7 +403,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Severidad: </h5>
+                                                        <h6>Severidad: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketCerrado.criticidad}
@@ -421,7 +412,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>TicketInfo</Button>
+                                            <Button size="sm" variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>Información</Button>
 
                                             {showTicketModalCerrado ? (
                                                 <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
