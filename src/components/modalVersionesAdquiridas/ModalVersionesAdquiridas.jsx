@@ -18,7 +18,7 @@ function ModalVersionesAdquiridas() {
 
     return (
         <>
-            <Button variant="primary" size="sm" onClick={handleShow}>Gestionar</Button>
+            <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones adquiridas: </Modal.Title>

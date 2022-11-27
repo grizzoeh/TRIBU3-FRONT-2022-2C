@@ -41,7 +41,7 @@ function ModalEditarVersion(version) {
             <Col sm={2}><Button variant="outline-primary" size="sm" onClick={handleShow}>Renombrar</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Editar Version [version]: </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Editar Version {version["version"].nombre}: </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

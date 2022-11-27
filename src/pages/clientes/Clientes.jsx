@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./clientes.css";
 import Container from 'react-bootstrap/Container';
@@ -9,8 +9,28 @@ import Button from 'react-bootstrap/Button';
 import SpacerLine from "../../components/spacerLine/spacerLine";
 import Col from 'react-bootstrap/Col';
 import ModalVersionesAdquiridas from "../../components/modalVersionesAdquiridas/ModalVersionesAdquiridas";
+import axios from "axios";
 
 const Clientes = () => {
+
+    const [clientes, setClientes] = useState([]);
+
+    useEffect(() => {
+        const getClientes = async () => {
+            axios
+            .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {})
+            .then((response) => {
+                console.log(response);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    
+        getClientes();
+    }, [])
+
     return (
         <Fragment>
             <Container className="container-title">

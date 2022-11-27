@@ -19,9 +19,10 @@ function ModalGestionVersion(producto) {
     const SERVER_NAME = "http://localhost:3000";
     const [show, setShow] = useState(false);
     const [versiones, setVersiones] = useState([]);
+    
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
+
     useEffect(() => {
         const getVersiones = async () => {
             const sendData = {idProducto:producto["producto"].id}
@@ -29,7 +30,6 @@ function ModalGestionVersion(producto) {
                 .get(SERVER_NAME + "/versiones/producto", {params:sendData})
                 .then((res) => {
                     setVersiones(res.data.versiones);
-    
                 })
                 .catch((err) => {
                     console.log(err);
@@ -69,7 +69,7 @@ function ModalGestionVersion(producto) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {versiones.length > 0 ? versiones.map((version) => (
+                                {versiones.length > 0 ? versiones.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
                                     version.estado == "Activa" ? (
                                     <tr>
                                         <td>{version.id}</td>

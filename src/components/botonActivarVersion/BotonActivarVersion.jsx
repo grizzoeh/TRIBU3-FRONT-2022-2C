@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, version } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 
 
-function BotonActivarVersion(version) {
+function BotonActivarVersion(version, refreshFunction) {
 
     const SERVER_NAME = "http://localhost:3000";
 

@@ -13,27 +13,68 @@ import ModalGestionVersion from "../../components/modalGestionVersion/modalGesti
 import ModalEditarProducto from "../../components/modalEditarProducto/modalEditarProducto";
 import BotonDeprecarProducto from "../../components/botonDeprecarProducto/BotonDeprecarProducto";
 import BotonActivarProducto from "../../components/botonActivarProducto/BotonActivarProducto";
+import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
 
 const CrearProductoYVersion = () => {
 
+    const FiltroVacios = {
+        "nombre":"",
+        "estado":"Cualquiera"
+    };
+
     const SERVER_NAME = "http://localhost:3000";
     const [productos, setProductos] = useState([]);
+    const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
+    const [filtrado, setFiltrado] = useState(false);
 
+    const getProductos = async () => {
+        axios
+            .get(SERVER_NAME + "/productos/", {
+            })
+            .then((res) => {
+                setProductos(res.data.productos);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    const handleDropdownChange = (e) => {
+        setFiltroTexto({ ...filtroTexto, [e.target.name]: e.target.innerHTML });
+    };
+
+    const onChangeFiltroTexto = async (e) => {
+        setFiltroTexto({ ...filtroTexto, [e.target.name]: e.target.value });
+    }
+
+    const handleBotonFiltrado = async () => {
+        console.log(filtroTexto.estado, filtroTexto.nombre)
+        if (filtroTexto.estado == "Cualquiera"){
+            if (filtroTexto.nombre =="") {
+                return
+            }
+            else {
+                setProductos(productos.filter(obj => {return obj.nombre === filtroTexto.nombre}))
+            }
+        }
+        else {
+            if (filtroTexto.nombre =="") {
+                setProductos(productos.filter(obj => {return obj.estado === filtroTexto.estado}))
+            }
+            else {
+                setProductos(productos.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
+            }  
+        }
+        setFiltrado(true)
+    }
+
+    const handleBotonQuitarFiltrado = async (e) => {
+        getProductos();
+        setFiltrado(false);
+    }
 
     useEffect(() => {
-        const getProductos = async () => {
-            axios
-                .get(SERVER_NAME + "/productos/", {
-                })
-                .then((res) => {
-                    setProductos(res.data.productos);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
         getProductos();
     }, [])
 
@@ -55,9 +96,24 @@ const CrearProductoYVersion = () => {
                 <Form>
                     <Row>
                         <Col className="v-center" sm={1}><h6>Filtros:</h6></Col>
-                        <Col className="v-center" sm={2}><Form.Control type="filtro" placeholder="Product ID" /></Col>
-                        <Col className="v-center" sm={3}><Form.Control type="filtro" placeholder="Nombre de producto" /></Col>
-                        <Col className="v-center"><Button variant="secondary" size="1">Aplicar</Button></Col>
+                        <Col className="v-center" sm={4}><Form.Control name="nombre" type="filtro" placeholder="Nombre de producto" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={2}>
+                            <Dropdown>
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
+                                    {filtroTexto.estado ? filtroTexto.estado : "Cualquiera"}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cualquiera</Dropdown.Item>
+                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Activo</Dropdown.Item>
+                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Deprecado</Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown></Col>
+                        {filtrado ? (
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Quitar Filtros</Button></Col>
+                        ):(
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Aplicar Filtros</Button></Col>
+                        )}
+                        
                         <ModalProductoNuevo />
                     </Row>
                 </Form>
@@ -76,39 +132,76 @@ const CrearProductoYVersion = () => {
                             </tr> 
                         </thead>
                         <tbody>
-                            {productos.length > 0 ? productos.map((producto) => (
-                                producto.estado == "Activo" ? (
-                                <tr>
-                                    <td>{producto.id}</td>
-                                    <td>{producto.nombre}</td>
-                                    <td>{producto.estado}</td>
-                                    <td>
-                                        <ModalGestionVersion producto={producto}/>
-                                    </td>
-                                    <td>
-                                        <Row>
-                                            <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
-                                            <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
-                                        </Row>
-                                    </td>
-                                </tr>
-                                ) : (
-                                <tr>
-                                    <td>{producto.id}</td>
-                                    <td>{producto.nombre}</td>
-                                    <td>{producto.estado}</td>
-                                    <td>
-                                        <ModalGestionVersion producto ={producto}/>
-                                    </td>
-                                    <td>
-                                        <Row>
-                                            <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
-                                            <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
-                                        </Row>
-                                    </td>
-                                </tr>          
-                                )
-                            )) : <Row className="centered">No existen productos</Row>}
+                            {filtrado ? (
+                                productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
+                                    producto.estado == "Activo" ? (
+                                    <tr>
+                                        <td>{producto.id}</td>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.estado}</td>
+                                        <td>
+                                            <ModalGestionVersion producto={producto}/>
+                                        </td>
+                                        <td>
+                                            <Row>
+                                                <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                                <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                            </Row>
+                                        </td>
+                                    </tr>
+                                    ) : (
+                                    <tr>
+                                        <td>{producto.id}</td>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.estado}</td>
+                                        <td>
+                                            <ModalGestionVersion producto ={producto}/>
+                                        </td>
+                                        <td>
+                                            <Row>
+                                                <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                                <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
+                                            </Row>
+                                        </td>
+                                    </tr>          
+                                    )
+                                )) : <Row className="centered">No existen productos</Row>
+                            ):(
+                                productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
+                                    producto.estado == "Activo" ? (
+                                    <tr>
+                                        <td>{producto.id}</td>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.estado}</td>
+                                        <td>
+                                            <ModalGestionVersion producto={producto}/>
+                                        </td>
+                                        <td>
+                                            <Row>
+                                                <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                                <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                            </Row>
+                                        </td>
+                                    </tr>
+                                    ) : (
+                                    <tr>
+                                        <td>{producto.id}</td>
+                                        <td>{producto.nombre}</td>
+                                        <td>{producto.estado}</td>
+                                        <td>
+                                            <ModalGestionVersion producto ={producto}/>
+                                        </td>
+                                        <td>
+                                            <Row>
+                                                <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
+                                                <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
+                                            </Row>
+                                        </td>
+                                    </tr>          
+                                    )
+                                )) : <Row className="centered">No existen productos</Row>
+                            )}
+                            
                         </tbody>
                     </Table>
                 </Row>
