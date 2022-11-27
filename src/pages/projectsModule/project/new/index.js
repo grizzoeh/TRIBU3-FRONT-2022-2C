@@ -25,7 +25,23 @@ export default function NewProject() {
   };
 
   const [projectData, setProjectData] = useState(initialProject);
-  const [clients, setClients] = useState();
+  const [clients, setClients] = useState([
+    {
+        "id": 1,
+        "razon social": "FIUBA",
+        "CUIT": "20-12345678-2"
+    },
+    {
+        "id": 2,
+        "razon social": "FSOC",
+        "CUIT": "20-12345678-5"
+    },
+    {
+        "id": 3,
+        "razon social": "Macro",
+        "CUIT": "20-12345678-3"
+    }
+]);
 
   const getClients = async () => {
     const externalResourcesURI = new Request(`${SERVER_NAMES.EXTERNAL_RESOURCES}/clientes`);
@@ -43,9 +59,9 @@ export default function NewProject() {
       });
   };
 
-  useEffect(() => {
-    getClients();
-  }, []);
+  // useEffect(() => {
+  //   getClients();
+  // }, []);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
