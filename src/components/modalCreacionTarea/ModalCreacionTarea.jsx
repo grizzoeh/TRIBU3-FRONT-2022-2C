@@ -55,13 +55,13 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
     const enviarTarea = async () => {
 
         const send_tarea = {
-            "titulo": tituloTarea,
-            "cuerpo": cuerpoTarea,
+            "name": tituloTarea,
+            "description": cuerpoTarea,
             "prioridad": prioridadTarea,
-            "proyecto": proyectoSeleccionado,
+            //"proyecto": proyectoSeleccionado,
         }
 
-        axios.post(SERVER_NAME_SOPORTE + "/tickets", send_tarea)
+        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + "{PROJECT_ID}" + "/tasks", send_tarea)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Tarea creada");
@@ -76,7 +76,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
     useEffect(() => {
         const getProyectos = async () => {
             // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            //     .get('https://squad-8-projects.herokuapp.com/psa/projects', {
             //         headers: {
             //             "Access-Control-Allow-Origin": "*",
             //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
@@ -85,7 +85,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
             //         }
             //     })
             //     .then((response) => {
-            //         console.log(response);
+            //         console.log(response.data);
             //         // setClientes(response.data);
             //     }
             //     )
@@ -121,21 +121,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
                         <Col xs={2}>
                             <h4> Prioridad:</h4>
+
                         </Col>
-                        <Col xs={5}>
-                            <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                    {prioridadTarea ? prioridadTarea : "Selecciona una prioridad"}
+                        <Col xs={2}>
+                            <Form.Control type="number" min="0" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
 
-
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Alta</Dropdown.Item>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Media</Dropdown.Item>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Baja</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
 
                         </Col>
 

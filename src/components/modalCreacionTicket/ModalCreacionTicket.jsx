@@ -116,10 +116,10 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
             axios
                 .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
                     headers: {
-                        "Access-Control-Allow-Origin": "*",
-                        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-                        'Access-Control-Allow-Credentials': true,
-                        crossorigin: true
+                        'Access-Control-Allow-Origin': '*',
+                        'origin': 'x-requested-with',
+                        'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
+                        'Content-Type': 'application/json',
                     }
                 })
                 .then((response) => {
