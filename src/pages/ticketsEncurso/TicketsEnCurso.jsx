@@ -10,6 +10,7 @@ import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreac
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 import axios from "axios";
+import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -140,7 +141,10 @@ const TicketsEnCurso = () => {
 
 
     return (
+
+
         <Fragment>
+            <NavbarSoporte></NavbarSoporte>
 
 
 
