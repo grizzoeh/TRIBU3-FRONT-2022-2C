@@ -24,6 +24,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useNavigate } from "react-router-dom";
 
+
 function navegarReportesPorId(id){
     
 }
@@ -35,27 +36,35 @@ const ModalInformacionReportes = () => {
 
     const navigate = useNavigate();
     
-    function createDataEmpleados(legajo, nombre) {
-        return { legajo, nombre };
-      }
-      
-      const cargasHorasEmpleados = [
-        createDataEmpleados(1,'Armando'),
-        createDataEmpleados(2,'Esteban'),
-        createDataEmpleados(3,'Quito'),
-        createDataEmpleados(4,'Franz')
-      ];
+    const[empleados, setEmpleados]=useState([])
+    const[proyectos, setProyectos]=useState([])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/empleados/empleado")
+        .then(res=>res.json())
+        .then((result)=>{
+            setEmpleados(result);
+        })
+    },[])
+
+    useEffect(()=>{
+        fetch("https://squad-8-projects.herokuapp.com/psa/projects")
+        .then(res=>res.json())
+        .then((result)=>{
+            setProyectos(result);
+        })
+    },[])
 
     function createDataProyectos(id, nombre) {
         return { id, nombre };
       }
-      
-      const cargasHorasProyectos = [
+
+    const cargasHorasProyectos = [
         createDataProyectos(1,'Proyecto A'),
         createDataProyectos(2,'Proyecto B'),
         createDataProyectos(3,'Proyecto C'),
         createDataProyectos(4,'Proyecto D')
-      ];
+    ];
     
     /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
     .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
@@ -68,32 +77,33 @@ const ModalInformacionReportes = () => {
             <div>
                 <TextField id="outlined-basic-proyectos" label="Buscar Proyectos por Id" variant="outlined" sx={{ minWidth: 650 }}/>
             </div>
+            
             <div>
                 <TableContainer id="tableProyects" component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
-                                <TableCell align="right">Nombre</TableCell>
+                                <TableCell align="left">Nombre</TableCell>
+                                <TableCell align="left">Descripcion</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {cargasHorasProyectos.map((carga) => (
+                            {proyectos.map((carga) => (
                                 <TableRow
                                     key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={() => navigate("/")}
                                     >
                                     <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
-                                    <TableCell align="right">{carga.nombre}</TableCell>
-                                    <TableCell align="right">{carga.legajo}</TableCell>
+                                    <TableCell align="left">{carga.name}</TableCell>
+                                    <TableCell align="left">{carga.description}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
             </div>
-            <div>
+            <div id='buscador-empleados'>
                 <TextField id="outlined-basic-empleados" label="Buscar Empleados por Legajo" variant="outlined" sx={{ minWidth: 650 }}/>
             </div>
             <div>
@@ -102,19 +112,19 @@ const ModalInformacionReportes = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Legajo</TableCell>
-                                <TableCell align="right">Nombre</TableCell>
+                                <TableCell align="left">Nombre</TableCell>
+                                <TableCell align="left">Apellido</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {cargasHorasEmpleados.map((carga) => (
+                            {empleados.map((carga) => (
                                 <TableRow
                                     key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={() => navigate("/")}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
-                                    <TableCell align="right">{carga.nombre}</TableCell>
-                                    <TableCell align="right">{carga.legajo}</TableCell>
+                                    <TableCell align="left" component="th" scope="row">{carga.legajo}</TableCell>
+                                    <TableCell align="left">{carga.Nombre}</TableCell>
+                                    <TableCell align="left">{carga.Apellido}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

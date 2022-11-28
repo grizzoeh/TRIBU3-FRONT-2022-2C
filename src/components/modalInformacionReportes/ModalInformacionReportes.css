@@ -15,28 +15,53 @@
     margin-bottom: 20px;
 }
 
-#collasible-dropdown{
-  border-width: 1px;
-  border: solid;
-  text-align: center;
-  width: 300px;
-  border: 1px solid rgb(2, 2, 2);
-  text-align: center ;
-  transform: translate(167%, 0);
-  
-}
 
 #tableProyects {
-  width: 80vw;
+  width: 100%;
+  border: 1px solid;
+  height: 12vw;
+  text-align: center;
+  vertical-align: bottom;
+  padding: 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  left: 0vw;
+  bottom: 0vw;
+}
+
+#tableEmpleados {
+  width: 100%;
   text-align: center ;
+  border: 1px solid;
+  height: 12vw;
+  vertical-align: bottom;
+  padding: 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  left: 0vw;
+  top: 1vw;
+}
+
+tr:hover {background-color: coral;}
+
+#outlined-basic-empleados{
+  position: relative;
+  left: 0vw;
+  top: 1vw;
 }
 
 #tuma{
-    width: 300px;
+  width: 300px;
   text-align: center ;
 }
 
 #page {
   align-items: center;
   text-align: center;
+}
+
+#buscador-empleados{
+  position: relative;
+  left: 0vw;
+  top: 1vw;
 }

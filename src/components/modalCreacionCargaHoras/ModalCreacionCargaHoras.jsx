@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/Col';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-
+import { Table } from "react-bootstrap";
 /*
     <div className="DD">
         <Select
@@ -21,8 +21,19 @@ import Form from 'react-bootstrap/Form';
 
 */
 
+
+
 const ModalCreacionCargaDeHoras = () => {
-    
+    const[empleados, setEmpleados]=useState([])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/empleados/empleado")
+        .then(res=>res.json())
+        .then((result)=>{
+            setEmpleados(result);
+        })
+    },[])
+
     return (
         <container>
             <div id="page">
@@ -40,6 +51,13 @@ const ModalCreacionCargaDeHoras = () => {
                         </a>
                     </NavDropdown.Item>
                 </NavDropdown>
+                <Table>{empleados.map(empleado=>(
+                <h4>
+                    legajo: {empleado.legajo}
+                    Nombre: {empleado.Nombre}
+                    Apellido: {empleado.Apellido}
+                </h4>
+            ))}</Table>
             </div>
             
         </container>
