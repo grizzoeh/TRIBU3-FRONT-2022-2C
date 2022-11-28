@@ -25,14 +25,48 @@ import { Table } from "react-bootstrap";
 
 const ModalCreacionCargaDeHoras = () => {
     const[empleados, setEmpleados]=useState([])
+    const[report, setReport]=useState([])
 
     useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/empleados/empleado")
+        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
         .then(res=>res.json())
         .then((result)=>{
             setEmpleados(result);
         })
     },[])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/carga/2")
+        .then(res=>res.json())
+        .then((result)=>{
+            setReport(result);
+        })
+    },[])
+
+    const codigo_carga = 2
+    const fecha = "1-1-1"
+    const cantidad_horas = 999
+    
+    const handleClick2=(e)=>{
+        const url = 'https://squad920222c-production.up.railway.app/deleteCarga/2';
+        fetch(url, {
+            method: 'DELETE',
+            headers: {"Content-Type": 'application/json'}
+        })
+    }
+
+    const handleClick=(e)=>{
+        e.preventDefault()
+        const reporte={codigo_carga}
+        console.log(reporte)
+        fetch(`https://squad920222c-production.up.railway.app/recursos/carga/` + codigo_carga + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
+            method:"PUT",
+            headers:{"Content-Type": "application/json"},
+            body:JSON.stringify(reporte)
+        }).then(()=>{
+            console.log("anda?")
+        })
+    }
 
     return (
         <container>
@@ -51,13 +85,24 @@ const ModalCreacionCargaDeHoras = () => {
                         </a>
                     </NavDropdown.Item>
                 </NavDropdown>
+                <button onClick={handleClick}>Boton para borrar</button>
                 <Table>{empleados.map(empleado=>(
                 <h4>
-                    legajo: {empleado.legajo}
-                    Nombre: {empleado.Nombre}
-                    Apellido: {empleado.Apellido}
+                    proyecto: {empleado.proyectoNombre}
+                    tarea: {empleado.tareaNombre}
+                    codigo: {empleado.codigo_carga}
+                    fecha: {empleado.fecha}
+                    cantidad_horas: {empleado.cantidad_horas}
                 </h4>
-            ))}</Table>
+                ))}</Table>
+                <h5>
+                    proyecto: {report.proyectoNombre}
+                    tarea: {report.tareaNombre}
+                    codigo: {report.codigo_carga}
+                    fecha: {report.fecha}
+                    cantidad_horas: {report.cantidad_horas}
+                </h5>
+            
             </div>
             
         </container>
