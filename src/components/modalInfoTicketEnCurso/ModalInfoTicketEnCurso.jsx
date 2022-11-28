@@ -134,24 +134,19 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     useEffect(() => {
 
         const getClientes = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+            axios
+                .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+                })
+                .then((response) => {
+                    console.log(response);
+                    setClientes(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+            //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
         }
 
         const getProductos = async () => {
