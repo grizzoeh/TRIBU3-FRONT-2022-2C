@@ -72,20 +72,23 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
             idVersion: ticketEditable.idVersion,
         }
 
+        if (ticketEditado.id == null || ticketEditado.id == "" || ticketEditado.titulo == null || ticketEditado.titulo == "" || ticketEditado.categoria == null || ticketEditado.categoria == "" || ticketEditado.criticidad == null || ticketEditado.criticidad == "" || ticketEditado.estado == null || ticketEditado.estado == "" || ticketEditado.fechaCreacion == null || ticketEditado.fechaCreacion == "" || ticketEditado.idCliente == null || ticketEditado.idCliente == "" || ticketEditado.descripcion == null || ticketEditado.descripcion == "" || ticketEditado.medioContactoCliente == null || ticketEditado.medioContactoCliente == "" || ticketEditado.idProducto == null || ticketEditado.idProducto == "" || ticketEditado.idAsesor == null || ticketEditado.idAsesor == "" || ticketEditado.nombreAsesor == null || ticketEditado.nombreAsesor == "" || ticketEditado.areaAsesor == null || ticketEditado.areaAsesor == "" || ticketEditado.notas == null || ticketEditado.notas == "" || ticketEditado.idVersion == null || ticketEditado.idVersion == "") {
+            alert("No se puede dejar campos vacios");
+        } else {
+
+            axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
+                .then((data) => {
+                    if (data.data.ok) {
+                        console.log("Ticket editado");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
 
-        axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Ticket editado");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-
-        setEditMode(false);
+            setEditMode(false);
+        }
 
 
 

@@ -7,6 +7,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Snackbar } from "@mui/material";
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -37,6 +40,8 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     const [TicketData, setTicketData] = useState(TicketNulo);
 
     const [clientes, setClientes] = useState();
+
+    const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
 
     const [productos, setProductos] = useState();
 
@@ -73,11 +78,21 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const handleConfirmarCreacion = () => {
 
+        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null) {
+            setAlertaDatosNulos(true);
 
-        crearTicket();
-        setShowCreacionModal(false);
-        getDataEnCurso();
-        getDataEnCurso();
+
+
+        }
+        else {
+
+            setAlertaDatosNulos(false);
+            crearTicket();
+            setShowCreacionModal(false);
+            getDataEnCurso();
+            getDataEnCurso();
+
+        }
 
 
     }
@@ -216,15 +231,21 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     return (
         <>
 
+
             <Modal dialogClassName="modalContent" show={showCreacionModal} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear Ticket </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
+                    <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                        No puedes dejar campos vacios!
+                    </Alert>
+
                     <div className="div-body-infoticket">
 
                         <Row className="mt-1">
+
 
                             <Col>
 
@@ -233,7 +254,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                         <h4> Título: </h4>
                                     </Col>
                                     <Col xs={8}>
-                                        <Form.Control type="text" name="titulo" onChange={(e) => onChangeTicketEditable(e)} />
+                                        <Form.Control required type="text" name="titulo" onChange={(e) => onChangeTicketEditable(e)} />
                                     </Col>
                                 </Row>
 
@@ -495,17 +516,24 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
                 </Modal.Body>
                 <Modal.Footer>
+                    <Row>
+                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                            No puedes dejar campos vacios!
 
-                    <Fragment>
-                        <Col xs={1} > <Button onClick={handleConfirmarCreacion}>Crear</Button> </Col>
-                    </Fragment>
+                        </Alert>
+                    </Row>
+                    <Row>
+
+                        <Col  > <Button onClick={handleConfirmarCreacion}>Crear</Button> </Col>
 
 
-                    <Col xs={1}>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                    </Col>
+
+                        <Col>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </Col>
+                    </Row>
 
                 </Modal.Footer>
             </Modal >
