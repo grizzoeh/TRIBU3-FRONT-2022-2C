@@ -11,13 +11,11 @@ const NavbarSoporte = () => {
         <Navbar className="navi" fixed="top" bg="dark" variant="dark">
             <Nav className="brand" href="/HomePSa">
 
-                <NavDropdown title="PSA" id="collasible-nav-dropdown">
+                <NavDropdown title="PSA Soporte" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/">
                         Módulo Proyectos
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/">
-                        Módulo Soporte
-                    </NavDropdown.Item>
+
                     <NavDropdown.Item href="/">
                         Módulo Recursos
                     </NavDropdown.Item>
