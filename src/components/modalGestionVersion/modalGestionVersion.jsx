@@ -96,7 +96,6 @@ function ModalGestionVersion(producto) {
 
     return (
         <>
-            {console.log(versiones)}
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>

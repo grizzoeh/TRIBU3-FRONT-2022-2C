@@ -13,11 +13,19 @@
     padding-right: 1%;
 }
 
-.tabla-clientes {
+.tabla-productos {
     padding-top: 1%;
 }
 
 .v-center {
     display: flex;
     align-items: center;
+    justify-content: start;
+}
+
+.centered {
+    padding-top: 7%;
+    display: flex;
+    align-items: flex;
+    justify-content: center;
 }

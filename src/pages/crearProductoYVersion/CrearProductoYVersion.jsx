@@ -49,8 +49,8 @@ const CrearProductoYVersion = () => {
     }
 
     const handleBotonFiltrado = async () => {
-        if (filtroTexto.estado == "Cualquiera"){
-            if (filtroTexto.nombre =="") {
+        if (filtroTexto.estado === "Cualquiera"){
+            if (filtroTexto.nombre === "") {
                 return
             }
             else {
@@ -58,7 +58,7 @@ const CrearProductoYVersion = () => {
             }
         }
         else {
-            if (filtroTexto.nombre =="") {
+            if (filtroTexto.nombre === "") {
                 setProductos(productos.filter(obj => {return obj.estado === filtroTexto.estado}))
             }
             else {
@@ -112,8 +112,7 @@ const CrearProductoYVersion = () => {
                         ):(
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Aplicar Filtros</Button></Col>
                         )}
-                        
-                        <ModalProductoNuevo />
+                        <Col className="v-center" sm={3}><ModalProductoNuevo /></Col>
                     </Row>
                 </Form>
             </Container>
@@ -133,7 +132,7 @@ const CrearProductoYVersion = () => {
                         <tbody>
                             {filtrado ? (
                                 productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
-                                    producto.estado == "Activo" ? (
+                                    producto.estado === "Activo" ? (
                                     <tr>
                                         <td>{producto.id}</td>
                                         <td>{producto.nombre}</td>
@@ -143,8 +142,8 @@ const CrearProductoYVersion = () => {
                                         </td>
                                         <td>
                                             <Row>
-                                                <Col sm={3}><ModalEditarProducto producto={producto}/></Col>
-                                                <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                                <Col sm={4}><ModalEditarProducto producto={producto}/></Col>
+                                                <Col sm={4}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
                                             </Row>
                                         </td>
                                     </tr>
@@ -167,7 +166,7 @@ const CrearProductoYVersion = () => {
                                 )) : <Row className="centered">No se encontraron productos para los filtros dados</Row>
                             ):(
                                 productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
-                                    producto.estado == "Activo" ? (
+                                    producto.estado === "Activo" ? (
                                     <tr>
                                         <td>{producto.id}</td>
                                         <td>{producto.nombre}</td>
