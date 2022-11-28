@@ -25,20 +25,38 @@ import Paper from '@mui/material/Paper';
 import { Input } from "@mui/material";
 
 const ModalCreacionCategorias = () => {
+    const[nombre, setNombre]=useState([])
+    const[descripcion, setDescripcion]=useState([])
+    const idCategoria = 2
+
+    const handleClick=(e)=>{
+        e.preventDefault()
+        const categoria={descripcion, idCategoria,nombre}
+        console.log(categoria)
+        fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, { /*si inputs en blanco, se manda array != string */
+            method:"POST",
+            headers:{"Content-Type": "application/json"},
+            body:JSON.stringify(categoria),
+        }).then(()=>{
+            console.log("anda?")
+        })
+    }
+
     return (
         <container>
             <div>
                 <h2 id='titulo'>Ingrese el nombre de la nueva categoria</h2>
             </div>
             <div id='top-categoria'>
-                <TextField id="outlined-basic" label="Ingrese el nombre de la categoria" variant="outlined" sx={{ minWidth: 650 }}/>
+                <TextField id="outlined-basic" label="Ingrese el nombre de la categoria" variant="outlined" sx={{ minWidth: 650 }} value={nombre} onChange={(e)=>setNombre(e.target.value)}/>
             </div>
             <div>
                 <h2 id='titulo2'>Ingrese una descripcion</h2>
             </div>
             <div id='top-categoria'>
-                <input type="text" name="name" />
+                <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
             </div>
+            <button onClick={handleClick}>Crear</button>
     </container>
     );
 }; 

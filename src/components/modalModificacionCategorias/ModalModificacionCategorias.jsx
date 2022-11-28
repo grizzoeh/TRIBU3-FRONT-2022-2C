@@ -25,6 +25,31 @@ import Paper from '@mui/material/Paper';
 import { Input } from "@mui/material";
 
 const ModalModificarCategorias = () => {
+    const [categorias, setCategorias] = useState([])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCategorias(result);
+        })
+    },[])
+
+    /* cambiar a Put
+    const handleClick2=(e)=>{
+        e.preventDefault()
+        const categoria={descripcion, idCategoria,nombre}
+        console.log(categoria)
+        fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, { 
+            method:"POST",
+            headers:{"Content-Type": "application/json"},
+            body:JSON.stringify(categoria),
+        }).then(()=>{
+            console.log("anda?")
+        })
+    };
+
+    */
     return (
         <container>
             <div>
@@ -40,6 +65,18 @@ const ModalModificarCategorias = () => {
                                 <TableCell align="right">Descripcion</TableCell>
                             </TableRow>
                         </TableHead>
+                        <TableBody>
+                            {categorias.map((carga) => (
+                                <TableRow
+                                    key={carga.idCategoria}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                    <TableCell align="left" component="th" scope="row">{carga.idCategoria}</TableCell>
+                                    <TableCell align="left">{carga.nombre}</TableCell>
+                                    <TableCell align="left">{carga.descripcion}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
                         <TableBody>
                         </TableBody>
                     </Table>
