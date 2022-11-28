@@ -76,7 +76,7 @@ export default function DashboardTareas() {
             </Row>
             <Row>
                 <Container className="container-cards">
-                    <KanbanDashboard initialTasks={tareas}/>
+                    <KanbanDashboard initialTasks={tareas} setTasks={setTareas}/>
                 </Container>
             </Row>
 
