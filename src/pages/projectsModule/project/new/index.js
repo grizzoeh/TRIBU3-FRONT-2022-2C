@@ -8,7 +8,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
 
@@ -27,34 +27,38 @@ export default function NewProject() {
   const [projectData, setProjectData] = useState(initialProject);
   const [clients, setClients] = useState([
     {
-        "id": 1,
-        "razon social": "FIUBA",
-        "CUIT": "20-12345678-2"
+      id: 1,
+      "razon social": "FIUBA",
+      CUIT: "20-12345678-2",
     },
     {
-        "id": 2,
-        "razon social": "FSOC",
-        "CUIT": "20-12345678-5"
+      id: 2,
+      "razon social": "FSOC",
+      CUIT: "20-12345678-5",
     },
     {
-        "id": 3,
-        "razon social": "Macro",
-        "CUIT": "20-12345678-3"
-    }
-]);
+      id: 3,
+      "razon social": "Macro",
+      CUIT: "20-12345678-3",
+    },
+  ]);
 
   const getClients = async () => {
-    const externalResourcesURI = new Request(`${SERVER_NAMES.EXTERNAL_RESOURCES}/clientes`);
+    const externalResourcesURI = new Request(
+      `${SERVER_NAMES.EXTERNAL_RESOURCES}/clientes`
+    );
 
     fetch(externalResourcesURI)
       .then((response) => {
         debugger;
-        response.json()})
+        response.json();
+      })
       .then((data) => {
-        debugger
-        console.log(data)})
+        debugger;
+        console.log(data);
+      })
       .catch(function (e) {
-        debugger
+        debugger;
         alert(e);
       });
   };
@@ -161,21 +165,20 @@ export default function NewProject() {
               <h4>Cliente</h4>
             </Col>
             <Col xs={9}>
-                {/* TODO: get clients */}
-                <DropdownButton variant="secondary" title="Seleccionar" onSelect={handleDropdownButtonChange}>
-                  <Dropdown.Item
-                    eventKey="45"
-                    name="client"
-                  >
-                    Cliente
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    eventKey="50"
-                    name="client"
-                  >
-                    Soporte
-                  </Dropdown.Item>
-                </DropdownButton>
+              {/* TODO: get clients */}
+              <DropdownButton
+                variant="secondary"
+                title="Seleccionar"
+                onSelect={handleDropdownButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client.CUIT}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
             </Col>
           </Row>
 
