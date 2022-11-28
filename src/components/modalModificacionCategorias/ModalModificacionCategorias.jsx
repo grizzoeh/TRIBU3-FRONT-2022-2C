@@ -27,6 +27,11 @@ import { Input } from "@mui/material";
 const ModalModificarCategorias = () => {
     const [categorias, setCategorias] = useState([])
 
+    const[nombre, setNombre]=useState([])
+    const[descripcion, setDescripcion]=useState([])
+    const[catId, setCatId]=useState([])
+
+
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
         .then(res=>res.json())
@@ -35,25 +40,23 @@ const ModalModificarCategorias = () => {
         })
     },[])
 
-    /* cambiar a Put
-    const handleClick2=(e)=>{
+    
+    const handleClick=(e)=>{
         e.preventDefault()
-        const categoria={descripcion, idCategoria,nombre}
+        const categoria={nombre, catId,descripcion} /* manda array si esta vacio */
         console.log(categoria)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, { 
-            method:"POST",
+        fetch(`https://squad920222c-production.up.railway.app/recursos/categorias/` + catId + '?descripcion=' + descripcion + '&nombre=' + nombre,{
+            method:"PUT",
             headers:{"Content-Type": "application/json"},
-            body:JSON.stringify(categoria),
         }).then(()=>{
             console.log("anda?")
         })
-    };
+    }
 
-    */
     return (
         <container>
             <div>
-                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }}/>
+                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
             </div>
             <div>
                 <TableContainer component={Paper}>
@@ -78,6 +81,9 @@ const ModalModificarCategorias = () => {
                             ))}
                         </TableBody>
                         <TableBody>
+                        <TextField id="outlined-basic" label="Ingrese un nombre" variant="outlined" sx={{ minWidth: 650 }} value={nombre} onChange={(e)=>setNombre(e.target.value)}/>
+                        <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
+                        <button onClick={handleClick}>Click</button>
                         </TableBody>
                     </Table>
                 </TableContainer>

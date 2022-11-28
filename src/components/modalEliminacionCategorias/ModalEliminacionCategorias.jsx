@@ -25,10 +25,36 @@ import Paper from '@mui/material/Paper';
 import { Input } from "@mui/material";
 
 const ModalEliminacionCategorias = () => {
+    const [categorias, setCategorias] = useState([])
+    const[catId, setCatId]=useState([])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCategorias(result);
+        })
+    },[])
+
+    const handleClick=(e)=>{
+        const url = "https://squad920222c-production.up.railway.app/recursos/categorias/" + catId;
+        console.log(url);
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*' 
+            },
+            body: JSON.catId
+        })
+    }
+
+
     return (
-        <container>
+        <Container>
             <div>
-                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }}/>
+                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
+                <button onClick={handleClick}>Borrar</button>
             </div>
             <div>
                 <TableContainer component={Paper}>
@@ -41,11 +67,21 @@ const ModalEliminacionCategorias = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
+                            {categorias.map((carga) => (
+                                <TableRow
+                                    key={carga.idCategoria}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                    <TableCell align="left" component="th" scope="row">{carga.idCategoria}</TableCell>
+                                    <TableCell align="left">{carga.nombre}</TableCell>
+                                    <TableCell align="left">{carga.descripcion}</TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
-                    </Table>
+                        </Table>
                 </TableContainer>
             </div>
-        </container>
+        </Container>
     );
 }; 
 

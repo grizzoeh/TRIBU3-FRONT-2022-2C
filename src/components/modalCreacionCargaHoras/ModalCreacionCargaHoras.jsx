@@ -26,6 +26,7 @@ import { Table } from "react-bootstrap";
 const ModalCreacionCargaDeHoras = () => {
     const[empleados, setEmpleados]=useState([])
     const[report, setReport]=useState([])
+    const [categorias, setCategorias] = useState([])
 
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
@@ -43,30 +44,15 @@ const ModalCreacionCargaDeHoras = () => {
         })
     },[])
 
-    const codigo_carga = 2
-    const fecha = "1-1-1"
-    const cantidad_horas = 999
-    
-    const handleClick2=(e)=>{
-        const url = 'https://squad920222c-production.up.railway.app/deleteCargas/2';
-        fetch(url, {
-            method: 'DELETE',
-            headers: {"Content-Type": 'application/json'}
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCategorias(result);
         })
-    }
+    },[])
 
-    const handleClick=(e)=>{
-        e.preventDefault()
-        const reporte={codigo_carga}
-        console.log(reporte)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + codigo_carga + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
-            method:"PUT",
-            headers:{"Content-Type": "application/json"},
-            body:JSON.stringify(reporte)
-        }).then(()=>{
-            console.log("anda?")
-        })
-    }
+    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item">{categoria.nombre}</NavDropdown.Item>)
 
     return (
         <container>
@@ -78,31 +64,8 @@ const ModalCreacionCargaDeHoras = () => {
                             Proyecto
                         </a>
                     </NavDropdown.Item>
-                    
-                    <NavDropdown.Item href="#cargar-horas-licencia" id="dropdown-item">
-                        <a href='/cargar-horas-licencia' id='tuma' onClick='Licencia'>
-                            Licencia y/o Vacaciones
-                        </a>
-                    </NavDropdown.Item>
+                    {listCategorias}
                 </NavDropdown>
-                <button onClick={handleClick}>Boton para borrar</button>
-                <Table>{empleados.map(empleado=>(
-                <h4>
-                    proyecto: {empleado.proyectoNombre}
-                    tarea: {empleado.tareaNombre}
-                    codigo: {empleado.codigo_carga}
-                    fecha: {empleado.fecha}
-                    cantidad_horas: {empleado.cantidad_horas}
-                </h4>
-                ))}</Table>
-                <h5>
-                    proyecto: {report.proyectoNombre}
-                    tarea: {report.tareaNombre}
-                    codigo: {report.codigo_carga}
-                    fecha: {report.fecha}
-                    cantidad_horas: {report.cantidad_horas}
-                </h5>
-            
             </div>
             
         </container>
