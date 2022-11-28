@@ -20,10 +20,11 @@ export default function NewProject() {
     estimated_start_date: null,
     estimated_finalization_date: null,
     project_manager: null,
-    resources: [123],
-    stakeholders: [213124],
+    resources: [],
+    stakeholders: null,
   };
 
+  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialProject);
   const [clients, setClients] = useState([
     {
@@ -77,6 +78,7 @@ export default function NewProject() {
 
   const handleDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, stakeholders: [e] });
+    setButtonTitle(clients.find((client) => client.id == e).CUIT);
   };
 
   const createProject = async () => {
@@ -168,7 +170,7 @@ export default function NewProject() {
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title="Seleccionar"
+                title={buttonTitle}
                 onSelect={handleDropdownButtonChange}
               >
                 {clients.map((client) => {
