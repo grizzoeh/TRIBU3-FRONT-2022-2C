@@ -8,18 +8,18 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import axios from "axios";
 
 export default function NewProject() {
   const initialProject = {
-    name: "",
-    description: "",
-    type: "",
-    client: 0,
-    estimated_start_date: "",
-    estimated_finalization_date: "",
-    project_manager: "",
+    name: null,
+    description: null,
+    type: null,
+    estimated_start_date: null,
+    estimated_finalization_date: null,
+    project_manager: null,
     resources: [123],
     stakeholders: [213124],
   };
@@ -69,6 +69,10 @@ export default function NewProject() {
 
   const handleDropdownChange = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
+  };
+
+  const handleDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, stakeholders: [e] });
   };
 
   const createProject = async () => {
@@ -139,13 +143,13 @@ export default function NewProject() {
                     name="type"
                     onClick={(e) => handleDropdownChange(e)}
                   >
-                    Cliente
+                    client
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="type"
                     onClick={(e) => handleDropdownChange(e)}
                   >
-                    Soporte
+                    support
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -157,31 +161,21 @@ export default function NewProject() {
               <h4>Cliente</h4>
             </Col>
             <Col xs={9}>
-              <Dropdown>
-                <Dropdown.Toggle
-                  variant="secondary"
-                  id="dropdown-basic"
-                  size="xl"
-                >
-                  {projectData.type ? projectData.type : "Seleccionar"}
-                </Dropdown.Toggle>
-
                 {/* TODO: get clients */}
-                <Dropdown.Menu>
+                <DropdownButton variant="secondary" title="Seleccionar" onSelect={handleDropdownButtonChange}>
                   <Dropdown.Item
+                    eventKey="45"
                     name="client"
-                    onClick={(e) => handleDropdownChange(e)}
                   >
                     Cliente
                   </Dropdown.Item>
                   <Dropdown.Item
+                    eventKey="50"
                     name="client"
-                    onClick={(e) => handleDropdownChange(e)}
                   >
                     Soporte
                   </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                </DropdownButton>
             </Col>
           </Row>
 
@@ -240,7 +234,7 @@ export default function NewProject() {
           <Row className="mt-5">
             <Col></Col>
             <Col xs={1}>
-              <Button>Crear</Button>
+              <Button onClick={handleSubmit}>Crear</Button>
             </Col>
           </Row>
         </form>
