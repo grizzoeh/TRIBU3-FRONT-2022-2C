@@ -28,7 +28,7 @@ const ModalCreacionCargaDeHoras = () => {
     const[report, setReport]=useState([])
 
     useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
         .then(res=>res.json())
         .then((result)=>{
             setEmpleados(result);
@@ -36,7 +36,7 @@ const ModalCreacionCargaDeHoras = () => {
     },[])
 
     useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/carga/2")
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas/2")
         .then(res=>res.json())
         .then((result)=>{
             setReport(result);
@@ -48,7 +48,7 @@ const ModalCreacionCargaDeHoras = () => {
     const cantidad_horas = 999
     
     const handleClick2=(e)=>{
-        const url = 'https://squad920222c-production.up.railway.app/deleteCarga/2';
+        const url = 'https://squad920222c-production.up.railway.app/deleteCargas/2';
         fetch(url, {
             method: 'DELETE',
             headers: {"Content-Type": 'application/json'}
@@ -59,7 +59,7 @@ const ModalCreacionCargaDeHoras = () => {
         e.preventDefault()
         const reporte={codigo_carga}
         console.log(reporte)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/carga/` + codigo_carga + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
+        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + codigo_carga + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
             body:JSON.stringify(reporte)
