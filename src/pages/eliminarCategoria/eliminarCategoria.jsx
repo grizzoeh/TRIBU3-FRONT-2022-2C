@@ -3,7 +3,7 @@ import "./eliminarCategoria.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ModalModificarCategoria from "../../components/modalEliminarCategorias/ModalEliminarCategorias";
+import ModalEliminarCategoria from "../../components/modalEliminacionCategorias/ModalEliminacionCategorias";
 
 const EliminarCategoria = () => {
 

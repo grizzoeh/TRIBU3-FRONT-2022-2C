@@ -3,7 +3,7 @@ import "./modificarCategoria.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ModalModificarCategoria from "../../components/modalModificarCategorias/ModalModificarCategorias";
+import ModalModificarCategoria from "../../components/modalModificacionCategorias/ModalModificacionCategorias";
 
 const ModificarCategoria = () => {
 
