@@ -17,7 +17,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
 
 
     const [clientes, setClientes] = useState();
@@ -31,6 +31,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+
+    const [alertaTareaExito, setAlertaTareaExito] = useState(false);
 
 
     const [ticketEditable, setTicketEditable] = useState(data);
@@ -236,8 +238,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Alert show={alertaEdicionExito} key='success' variant='success'>
+                    <Alert show={alertaEdicionExito} variant='success'>
                         Ticket editado con exito!
+
+                    </Alert>
+
+                    <Alert show={alertaTareaExito} variant='success'>
+                        Tarea creada con exito!
 
                     </Alert>
 
@@ -755,12 +762,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     )}
 
                     {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} />) :
+                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />) :
                         (
                             null)}
 
                     {showCreacionTareaModal ? (
-                        <ModalCreacionTarea numeroTicket={numeroTicket} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} />) :
+                        <ModalCreacionTarea numeroTicket={numeroTicket} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} setAlertaTareaExito={setAlertaTareaExito} />) :
                         (
                             null)}
                 </Modal.Footer>

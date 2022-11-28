@@ -11,12 +11,13 @@ import Form from 'react-bootstrap/Form';
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) => {
+const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setAlertaTareaExito }) => {
 
 
     const [proyectos, setProyectos] = useState();
 
     const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
+    const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
 
     const [show, setShow] = useState(true);
 
@@ -25,9 +26,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
     };
 
-    const handleEnviar = () => {
-        onChangeshowCreacionTareaModal(false)
-    };
+
 
     const [cuerpoTarea, setCuerpoTarea] = useState("");
 
@@ -48,8 +47,9 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
         setPrioridadTarea(e.target.value);
     };
 
-    const onChangeProyectoSeleccionado = (e) => {
+    const onChangeProyectoSeleccionado = (e, idProyecto) => {
         setProyectoSeleccionado(e.target.value);
+        setProyectoSeleccionadoId(idProyecto);
     };
 
     const enviarTarea = async () => {
@@ -57,11 +57,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
         const send_tarea = {
             "name": tituloTarea,
             "description": cuerpoTarea,
-            "prioridad": prioridadTarea,
+            "priority": prioridadTarea,
             //"proyecto": proyectoSeleccionado,
         }
 
-        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + "{PROJECT_ID}" + "/tasks", send_tarea)
+        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks", send_tarea)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Tarea creada");
@@ -71,28 +71,26 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                 console.log(error);
             });
 
+        setAlertaTareaExito(true);
+        handleClose();
+
     }
 
     useEffect(() => {
         const getProyectos = async () => {
-            // axios
-            //     .get('https://squad-8-projects.herokuapp.com/psa/projects', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response.data);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setProyectos([{ "id": 1, "nombre": "Devops" }, { "id": 2, "nombre": "Environ" }, { "id": 3, "nombre": "W2022" }])
+            axios
+                .get('https://squad-8-projects.herokuapp.com/psa/projects', {
+
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    setProyectos(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+            //setProyectos([{ "id": 1, "nombre": "Devops" }, { "id": 2, "nombre": "Environ" }, { "id": 3, "nombre": "W2022" }])
         }
 
         getProyectos();
@@ -144,7 +142,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
                                 <Dropdown.Menu>
                                     {proyectos && proyectos.map((proyecto) => (
-                                        <Dropdown.Item name="proyectoSeleccionado" onClick={(e) => onChangeProyectoSeleccionado(e)}>{proyecto.nombre}</Dropdown.Item>
+                                        <Dropdown.Item name="proyectoSeleccionado" onClick={(e) => onChangeProyectoSeleccionado(e, proyecto.id)}>{proyecto.name}</Dropdown.Item>
                                     ))}
 
 
@@ -168,7 +166,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                         </Button>
                     </Col>
                     <Col>
-                        <Button variant="primary" onClick={handleEnviar}>
+                        <Button variant="primary" onClick={enviarTarea}>
                             Enviar Tarea
                         </Button>
                     </Col>

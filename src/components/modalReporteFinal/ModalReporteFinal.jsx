@@ -16,7 +16,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso }) => {
+const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso, setTicketResueltoExito }) => {
 
 
     const [reporte, setReporte] = useState("");
@@ -81,7 +81,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
         getDataEnCurso();
         getDataCerrados();
         getDataCerrados();
-
+        setTicketResueltoExito(true);
         onChangeshowReporteFinalModal(false);
         handleCloseTicket();
     };

@@ -23,6 +23,8 @@ const TicketsEnCurso = () => {
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
 
+    const [ticketResueltoExito, setTicketResueltoExito] = useState(false);
+
 
     const [filters, setFilters] = useState({
         "categoria": "Todas",
@@ -140,10 +142,16 @@ const TicketsEnCurso = () => {
 
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
-            <Alert show={ticketCreadoExito} key='success' variant='success'>
+            <Alert show={ticketCreadoExito} variant='success'>
                 Ticket creado con exito!
 
             </Alert>
+
+            <Alert show={ticketResueltoExito} variant='success'>
+                Ticket resuelto!
+
+            </Alert>
+
             <Container className="container-title">
 
                 <Row>
@@ -341,7 +349,7 @@ const TicketsEnCurso = () => {
                                             </Card.Text>
 
 
-                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} />
+                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />
 
 
 
