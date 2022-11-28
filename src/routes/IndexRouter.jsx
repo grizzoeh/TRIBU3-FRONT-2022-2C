@@ -6,20 +6,16 @@ import {
 } from "react-router-dom";
 //import ProtectedRoute from "./ProtectedRoute";
 
-const TicketsEnCurso = lazy(() => import("../pages/ticketsEncurso/TicketsEnCurso"));
+const Index = lazy(() => import("../pages/index/Index"));
 
 
 
-const CrearProductoYVersion = lazy(() => import("../pages/crearProductoYVersion/CrearProductoYVersion"));
-
-
-const SoporteRouter = () => {
+const IndexRouter = () => {
     return (
         <Router>
             <Suspense fallback={<h1 className="text-center">Loading...</h1>}>
                 <Routes>
-                    <Route path="/tickets-en-curso" element={<TicketsEnCurso />} />
-                    <Route path="/crear-producto-y-version" element={<CrearProductoYVersion />} />
+                    <Route path="/" element={<Index />} />
 
 
                     {/* <Route path="*" element={<Navigate to="/ticketsEnCurso" />} /> */}
@@ -30,4 +26,4 @@ const SoporteRouter = () => {
     );
 };
 
-export default SoporteRouter;
+export default IndexRouter;
