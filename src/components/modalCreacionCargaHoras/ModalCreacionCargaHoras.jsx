@@ -12,6 +12,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 /*
     <div className="DD">
         <Select
@@ -53,7 +54,7 @@ const ModalCreacionCargaDeHoras = () => {
     },[])
 
     const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item">{categoria.nombre}</NavDropdown.Item>)
-
+    const data = 'data de carga horas'
     return (
         <container>
             <div id="page">
@@ -66,6 +67,12 @@ const ModalCreacionCargaDeHoras = () => {
                     </NavDropdown.Item>
                     {listCategorias}
                 </NavDropdown>
+                <Link
+                    to={{
+                        pathname: "/cargar-horas/proyectos",
+                        state: data // your data array of objects
+                    }}
+                    ></Link>
             </div>
             
         </container>

@@ -13,14 +13,22 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
+import { render } from "@testing-library/react";
 
 
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
     const [isShown, setIsShown] = useState(false);
-    
-    const [dropdownProjectText, setdropdownProjectText] = useState('Seleccionar')
-    const changeDropdownProjectText = (text) => setdropdownProjectText(text);
+    const [proyectos, setProyectos] = useState([])
+    const [ProjectText, setProjectText] = useState('Seleccionar')
+
+    useEffect(()=>{
+        fetch("https://squad-8-projects.herokuapp.com/psa/projects/")
+        .then(res=>res.json())
+        .then((result)=>{
+            setProyectos(result);
+        })
+    },[])
 
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
     const changeDropdownTareaText = (text) => setdropdownTareaText(text);
@@ -28,8 +36,8 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const handleClick = event => {
         setIsShown(true);
     }
-    const Proyectos = ['Proyecto A', 'Proyecto B', 'Proyecto C']
-    const listProyectos = Proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); changeDropdownProjectText(proyecto)}}>{proyecto}</NavDropdown.Item>)
+
+    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); setProjectText(proyecto.name)}}>{proyecto.name}</NavDropdown.Item>)
 
     const Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
     const listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item" onClick={() => setdropdownTareaText(tarea)}>{tarea}</NavDropdown.Item>)
@@ -38,7 +46,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         <container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo">Seleccionar Proyecto</h2> 
-                <NavDropdown title={dropdownProjectText} id="collasible-dropdown">
+                <NavDropdown title={ProjectText} id="collasible-dropdown">
                     {listProyectos}
                 </NavDropdown>
                 {isShown && <div id='cargar-horas-licencia'>
