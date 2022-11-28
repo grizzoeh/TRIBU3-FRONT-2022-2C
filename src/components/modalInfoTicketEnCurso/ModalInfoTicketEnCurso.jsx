@@ -9,13 +9,15 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
+import Alert from 'react-bootstrap/Alert';
+
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados }) => {
 
 
     const [clientes, setClientes] = useState();
@@ -25,6 +27,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
     const [versiones, setVersiones] = useState();
 
     const [compras, setCompras] = useState();
+
+    const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
+
+    const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
 
 
     const [ticketEditable, setTicketEditable] = useState(data);
@@ -73,7 +79,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
         }
 
         if (ticketEditado.id == null || ticketEditado.id == "" || ticketEditado.titulo == null || ticketEditado.titulo == "" || ticketEditado.categoria == null || ticketEditado.categoria == "" || ticketEditado.criticidad == null || ticketEditado.criticidad == "" || ticketEditado.estado == null || ticketEditado.estado == "" || ticketEditado.fechaCreacion == null || ticketEditado.fechaCreacion == "" || ticketEditado.idCliente == null || ticketEditado.idCliente == "" || ticketEditado.descripcion == null || ticketEditado.descripcion == "" || ticketEditado.medioContactoCliente == null || ticketEditado.medioContactoCliente == "" || ticketEditado.idProducto == null || ticketEditado.idProducto == "" || ticketEditado.idAsesor == null || ticketEditado.idAsesor == "" || ticketEditado.nombreAsesor == null || ticketEditado.nombreAsesor == "" || ticketEditado.areaAsesor == null || ticketEditado.areaAsesor == "" || ticketEditado.notas == null || ticketEditado.notas == "" || ticketEditado.idVersion == null || ticketEditado.idVersion == "") {
-            alert("No se puede dejar campos vacios");
+            setAlertaDatosNulos(true);
         } else {
 
             axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
@@ -88,6 +94,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
 
 
             setEditMode(false);
+            setAlertaEdicionExito(true);
         }
 
 
@@ -229,11 +236,18 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Alert show={alertaEdicionExito} key='success' variant='success'>
+                        Ticket editado con exito!
+
+                    </Alert>
 
 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
+                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                No puedes dejar campos vacios!
+                            </Alert>
                             <Row className="mt-4">
 
                                 <Col>
@@ -741,7 +755,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso }) => {
                     )}
 
                     {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} />) :
+                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} />) :
                         (
                             null)}
 

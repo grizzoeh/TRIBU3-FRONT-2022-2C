@@ -9,7 +9,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Snackbar } from "@mui/material";
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -18,7 +17,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso }) => {
+const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -88,6 +87,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
             setAlertaDatosNulos(false);
             crearTicket();
+            setTicketCreadoExito(true);
             setShowCreacionModal(false);
             getDataEnCurso();
             getDataEnCurso();

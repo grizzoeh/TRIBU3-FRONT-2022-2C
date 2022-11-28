@@ -14,7 +14,9 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
+
+
+const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso }) => {
 
 
     const [reporte, setReporte] = useState("");
@@ -43,16 +45,16 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
     const handleClose = () => {
         onChangeshowReporteFinalModal(false)
 
+
     };
 
     const handleEnviar = async () => {
 
 
-
         axios.post(SERVER_NAME_SOPORTE + "/tickets/ticket/resuelto", TicketData)
             .then((data) => {
                 if (data.data.ok) {
-                    console.log("Ticket creado");
+                    console.log("Reporte creado");
                 }
             })
             .catch((error) => {
@@ -75,8 +77,13 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
             });
 
 
+        getDataEnCurso();
+        getDataEnCurso();
+        getDataCerrados();
+        getDataCerrados();
 
-        onChangeshowReporteFinalModal(false)
+        onChangeshowReporteFinalModal(false);
+        handleCloseTicket();
     };
 
 
@@ -85,8 +92,9 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal }) => {
 
     const handleDropdownChangeNombre = (e) => {
         setNombreAsesorResolutor(e.target.innerHTML);
-        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["idAsesorResolutor"]: 1 });
-        setTicketData({ ...TicketData, ["areaAsesorResolutor"]: 1 });
+        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["areaAsesorResolutor"]: 1, ["idAsesorResolutor"]: 1 });
+        // setTicketData({ ...TicketData, ["areaAsesorResolutor"]: 1 });
+        // setTicketData({ ...TicketData, ["idAsesorResolutor"]: 1 });
 
     }
 

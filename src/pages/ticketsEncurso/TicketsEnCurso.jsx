@@ -11,6 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
+import Alert from 'react-bootstrap/Alert';
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -19,6 +20,8 @@ const TicketsEnCurso = () => {
 
 
     const [clientes, setClientes] = useState();
+
+    const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
 
 
     const [filters, setFilters] = useState({
@@ -137,6 +140,10 @@ const TicketsEnCurso = () => {
 
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
+            <Alert show={ticketCreadoExito} key='success' variant='success'>
+                Ticket creado con exito!
+
+            </Alert>
             <Container className="container-title">
 
                 <Row>
@@ -152,7 +159,7 @@ const TicketsEnCurso = () => {
 
                 {
                     showCreacionModal ? (
-                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} />
+                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
                     ) :
                         (null
                         )
@@ -334,7 +341,7 @@ const TicketsEnCurso = () => {
                                             </Card.Text>
 
 
-                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} />
+                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} />
 
 
 
