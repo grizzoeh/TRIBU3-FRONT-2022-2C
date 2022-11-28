@@ -189,10 +189,10 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
 
 
+        getClientes();
 
         getProductos();
         getVersiones();
-        getClientes();
         getCompras();
 
 
@@ -365,7 +365,9 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                         <Dropdown >
 
                                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                                {TicketData.idCliente ? clientes[TicketData.idCliente - 1]['razon social'] : "Seleccionar"}
+                                                {clientes ?
+                                                    TicketData.idCliente ? clientes[TicketData.idCliente - 1]['razon social'] : "Seleccionar"
+                                                    : null}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
