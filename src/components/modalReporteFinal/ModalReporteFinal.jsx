@@ -30,7 +30,8 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
     const [fechaCierre, setFechaCierre] = useState("");
 
-    const [idAsesorResolutor, setIdAsesorResolutor] = useState(1);
+
+    //const [idAsesorResolutor, setIdAsesorResolutor] = useState(1);
 
 
     const onChangeReporteFinal = (e) => {
@@ -92,9 +93,8 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
     const handleDropdownChangeNombre = (e) => {
         setNombreAsesorResolutor(e.target.innerHTML);
-        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["areaAsesorResolutor"]: 1, ["idAsesorResolutor"]: 1 });
-        // setTicketData({ ...TicketData, ["areaAsesorResolutor"]: 1 });
-        // setTicketData({ ...TicketData, ["idAsesorResolutor"]: 1 });
+        setTicketData({ ...TicketData, ["nombreAsesorResolutor"]: e.target.innerHTML, ["idAsesorResolutor"]: e.target.id, ["areaAsesorResolutor"]: 1, });
+
 
     }
 
@@ -107,27 +107,28 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
     }
 
 
+
+
+
     useEffect(() => {
         const getRecursos = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setRecursos([{ "legajo": 1, "Nombre": "Mario", "Apellido": "Mendoza" }, { "legajo": 2, "Nombre": "Maria", "Apellido": "Perez" }, { "legajo": 3, "Nombre": "Patricia", "Apellido": "Gaona" }])
+            axios
+                .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
+
+                })
+                .then((response) => {
+                    // console.log(response);
+                    setRecursos(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+            //setRecursos([{ "legajo": 1, "Nombre": "Mario", "Apellido": "Mendoza" }, { "legajo": 2, "Nombre": "Maria", "Apellido": "Perez" }, { "legajo": 3, "Nombre": "Patricia", "Apellido": "Gaona" }])
+
         }
+
+
 
         const getInfoTicket = async () => {
             const send_data = { type: 'enCurso', id: numeroTicket }
@@ -176,7 +177,8 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
                                 <Dropdown.Menu>
                                     {recursos?.map((recurso) => (
-                                        <Dropdown.Item name="nombre" onClick={(e) => handleDropdownChangeNombre(e)}>{recurso.Nombre} {recurso.Apellido}</Dropdown.Item>
+
+                                        < Dropdown.Item name="nombre" id={recurso.legajo} onClick={(e) => { handleDropdownChangeNombre(e); }}>{recurso.Nombre} {recurso.Apellido}</Dropdown.Item>
                                     ))}
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -210,7 +212,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
                         </Button>
                     </Col>
                     <Col>
-                        {nombreAsesorResolutor && fechaCierre && areaAsesorResolutor && reporte && idAsesorResolutor ?
+                        {recursos && nombreAsesorResolutor && fechaCierre && areaAsesorResolutor && reporte ?
                             <Button size="xs" variant="primary" onClick={handleEnviar} style={{ width: "250px" }}>
                                 Enviar Reporte Final y Resolver
                             </Button>

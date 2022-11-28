@@ -51,6 +51,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
     const [dicci, setDicci] = useState();
 
+    const [recursos, setRecursos] = useState();
+
+    const setearIdAsesor = (idAsesorASetear) => {
+        setTicketEditable({ ...ticketEditable, ['idAsesor']: idAsesorASetear });
+    }
+
     const handleClose = () => {
         setShow(false);
         setEditMode(false);
@@ -131,6 +137,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
 
+
     useEffect(() => {
 
         const getClientes = async () => {
@@ -188,9 +195,25 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                 });
         }
 
+        const getRecursos = async () => {
+            axios
+                .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
+
+                })
+                .then((response) => {
+                    // console.log(response);
+                    setRecursos(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
 
 
         getProductos();
+        getRecursos();
         getVersiones();
         getClientes();
         getCompras();
@@ -528,9 +551,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
-                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
-                                                    <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
+
+                                                    {recursos ?
+                                                        recursos.map((recurso) => (
+                                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idAsesor']: recurso['legajo'] }); handleDropdownChange(e); console.log(ticketEditable) }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                        )) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>

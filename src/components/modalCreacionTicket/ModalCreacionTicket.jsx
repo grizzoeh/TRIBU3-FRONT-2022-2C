@@ -29,7 +29,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
         "idCliente": null,
         "medioContactoCliente": null,
         "idProducto": null,
-        "idAsesor": 1,
+        "idAsesor": null,
         "nombreAsesor": null,
         "areaAsesor": 1,
         "notas": null,
@@ -55,7 +55,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const [dicci, setDicci] = useState();
 
-    const [showero, setShowero] = useState(true);
+    const [recursos, setRecursos] = useState();
 
 
 
@@ -119,6 +119,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const setearIdVersionTicket = (idVersionASetear) => {
         setTicketData({ ...TicketData, ['idVersion']: idVersionASetear });
+
+    }
+
+    const setearIdAsesor = (idAsesorASetear) => {
+        setTicketData({ ...TicketData, ['idAsesor']: idAsesorASetear });
 
     }
 
@@ -188,12 +193,29 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
         }
 
 
+        const getRecursos = async () => {
+            axios
+                .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
+
+                })
+                .then((response) => {
+                    // console.log(response);
+                    setRecursos(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
 
         getClientes();
 
         getProductos();
         getVersiones();
         getCompras();
+        getRecursos();
+
+
 
 
     }, []);
@@ -492,7 +514,14 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                                 <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
                                                 <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
                                                 <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
+
+                                                {recursos ?
+                                                    recursos.map((recurso) => (
+                                                        <Dropdown.Item name="nombreAsesor" onClick={(e) => { handleDropdownChange(e); setearIdAsesor(recurso['legajo']); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                    )) : null}
                                             </Dropdown.Menu>
+
+
                                         </Dropdown>
 
                                     </Col>
