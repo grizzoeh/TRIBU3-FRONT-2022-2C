@@ -133,6 +133,7 @@ export default function DashboardTareas() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
+                                <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
                                 <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Por hacer</Dropdown.Item>
                                 <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>En curso</Dropdown.Item>
                                 <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Finalizada</Dropdown.Item>
