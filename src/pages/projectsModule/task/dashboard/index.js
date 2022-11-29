@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-//import "../../../ticketsEncurso/ticketsEnCurso.css";
+import KanbanColumn from "./kanbanColumn";
 import "./tareasProyecto.css"
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -11,8 +11,7 @@ import { useParams } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
 import * as SERVER_NAMES from "../../APIRoutes";
-import MockProjects from "../../../../Mock/projects";
-import KanbanDashboard from "./kanbanDashboard";
+import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 
@@ -66,6 +65,19 @@ export default function DashboardTareas() {
         });
   };
 
+
+  const getNewStatus = (stateName) => {
+    if (stateName === "Pendiente") {
+        return "pending"
+    }
+    if (stateName === "En progreso") {
+        return "in_progress"
+    }
+    if (stateName === "Finalizada") {
+        return "finished"
+    }
+}
+
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
@@ -79,36 +91,33 @@ export default function DashboardTareas() {
         .catch((err) => {
             alert('Se produjo un error al consultar los proyectos', err);
         });
-};
-  useEffect(() => {
-    // const getProyectos = async () => {
-    //     setProyectos(MockProjects);
-    // };
+    };
 
     const getProyecto = async () => {
         axios
-          .get(SERVER_NAME + `/psa/projects/${params.id}`, {})
-          .then((res) => {
+        .get(SERVER_NAME + `/psa/projects/${params.id}`, {})
+        .then((res) => {
             setProyecto(res.data);
-          })
-          .catch((err) => {
+        })
+        .catch((err) => {
             alert('Se produjo un error al consultar los proyectos', err);
-          });
-      };
-
-    const getTareas = async () => {
-      axios
-       .get(SERVER_NAME + `/psa/projects/${params.id}/tasks/`, {})
-       .then((res) => {
-         setTareas(res.data);
-       })
-       .catch((err) => {
-         alert('Se produjo un error al consultar las tareas para el proyecto', err);
-       });
+        });
     };
 
+    const getTareas = async () => {
+        axios
+        .get(SERVER_NAME + `/psa/projects/${params.id}/tasks/`, {})
+        .then((res) => {
+            setTareas(res.data);
+        })
+        .catch((err) => {
+            alert('Se produjo un error al consultar las tareas para el proyecto', err);
+        });
+    };
+
+  useEffect(() => {
     getProyecto();
-    getTareas();
+    getTarea();
     getAssignees();
   }, [params.id]);
 
@@ -136,9 +145,7 @@ export default function DashboardTareas() {
                     
             </Col>
             </Row>
-
-            <Row><Container className="container-filters">
-                <Row>
+            <Row>
                     {/*<Col >
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
@@ -231,30 +238,69 @@ export default function DashboardTareas() {
                         </Dropdown>
                               </Col>*/}
                 </Row>
+                <Row>
+                    <Container className="container-cards">
 
-            </Container></Row>
-            <Row>
-                <Container className="container-cards">
-                <KanbanDashboard initialTasks={tareas} setTasks={setTareas}/>
+                            {/* <KanbanDashboard initialTasks={tareas} setTasks={setTareas}/> */}
 
-                    {/* {tareas.filter(
-                      (tarea) => {
-                        //apply filters with categoria, criticidad and estado
-                        return (
-                          (filters["Estado"] === "Todas" || tarea.categoria === filters["Estado"]) &&
-                          (filters["criticidad"] === "Todas" || tarea.criticidad === filters["criticidad"]) &&
-                          (filters["estado"] === "Todos" || tarea.estado === filters["estado"])
-                          //(filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
-                        );
-                      }
-                    )} */}
-                </Container>
-            </Row>
+                            {/* {tareas.filter(
+                            (tarea) => {
+                                //apply filters with categoria, criticidad and estado
+                                return (
+                                (filters["Estado"] === "Todas" || tarea.categoria === filters["Estado"]) &&
+                                (filters["criticidad"] === "Todas" || tarea.criticidad === filters["criticidad"]) &&
+                                (filters["estado"] === "Todos" || tarea.estado === filters["estado"])
+                                //(filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                );
+                            }
+                            )} */}
 
-        </Container>
+                            <Fragment>
+                                <DragDropContext onDragEnd={(result) => {
+                                    const {source, destination} = result;
+                                    if (!destination) {
+                                        return;
+                                    }
+                                    if (source.droppableId === destination.droppableId) {
+                                        return;
+                                    }
 
+                                    const newStatus = getNewStatus(destination.droppableId);
 
-    </Fragment >
-);
+                                    axios.patch(SERVER_NAME + `/psa/projects/tasks/${result.draggableId}`, {
+                                        status: newStatus,
+                                    }).catch((err) => {
+                                        alert('Se produjo un error al consultar los tareas', err);
+                                    }); 
 
+                                    getTareas();
+                                }}>
+
+                                <Row className="kanban-row">
+                                    <Col> 
+                                    <KanbanColumn    
+                                            stateName={"Pendiente"}
+                                            tasks={tareas.filter((t) => t.status === "pending")}
+                                    />
+                                    </Col>
+                                    <Col>
+                                    <KanbanColumn
+                                            stateName={"En progreso"}
+                                            tasks={tareas.filter((t) => t.status === "in_progress")}
+                                        />
+                                    </Col>
+                                    <Col>
+                                    <KanbanColumn
+                                            stateName={"Finalizada"}
+                                            tasks={tareas.filter((t) => t.status === "finished")}
+                                        />
+                                    </Col>
+                                </Row>
+                            </DragDropContext>
+                            </Fragment>
+                    </Container>
+                </Row>
+            </Container>
+        </Fragment>
+    );                
 }
