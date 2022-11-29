@@ -79,7 +79,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
     useEffect(() => {
         const getProyectos = async () => {
             axios
-                .get('https://squad-8-projects.herokuapp.com/psa/projects', {
+                .get('https://squad-8-projects.herokuapp.com/psa/projects?type=support', {
 
                 })
                 .then((response) => {

@@ -122,6 +122,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
         setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML });
     }
 
+    const handleDropdownChangeRecurso = (e) => {
+
+        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
+    }
+
     const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
 
     const onChangeshowReporteFinalModal = (newSomeState) => {
@@ -554,7 +559,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                     {recursos ?
                                                         recursos.map((recurso) => (
-                                                            <Dropdown.Item name="nombreAsesor" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idAsesor']: recurso['legajo'] }); handleDropdownChange(e); console.log(ticketEditable) }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                            <Dropdown.Item name="nombreAsesor" id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>

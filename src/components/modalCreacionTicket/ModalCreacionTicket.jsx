@@ -107,6 +107,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
         setTicketData({ ...TicketData, [e.target.name]: e.target.innerHTML });
     }
 
+    const handleDropdownChangeRecurso = (e) => {
+
+        setTicketData({ ...TicketData, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
+    }
+
     const setearIdProductoTicket = (idProductoASetear) => {
         setTicketData({ ...TicketData, ['idProducto']: idProductoASetear });
 
@@ -511,13 +516,10 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
 
                                                 {recursos ?
                                                     recursos.map((recurso) => (
-                                                        <Dropdown.Item name="nombreAsesor" onClick={(e) => { handleDropdownChange(e); setearIdAsesor(recurso['legajo']); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                        <Dropdown.Item name="nombreAsesor" id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
                                                     )) : null}
                                             </Dropdown.Menu>
 
