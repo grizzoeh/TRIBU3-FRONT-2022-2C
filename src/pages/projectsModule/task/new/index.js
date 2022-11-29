@@ -66,12 +66,12 @@ export default function NewTask() {
 
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, dependencies: [e] });
-    setDependencyButtonTitle(tareas.find((tarea) => tarea.id === e).name);
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, assignees: [e] });
-    setAssigneeButtonTitle(clients.find((client) => client.legajo === e).Nombre);
+    setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
   const createTask = async () => {
@@ -205,7 +205,7 @@ export default function NewTask() {
                 {clients.map((client) => {
                   return (
                     <Dropdown.Item eventKey={client.legajo} name="client">
-                      {client.Nombre}
+                      {client.Nombre + " " + client.Apellido}
                     </Dropdown.Item>
                   );
                 })}
