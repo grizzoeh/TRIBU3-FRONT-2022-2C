@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -13,6 +14,12 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import axios from "axios";
 
 export default function NewProject() {
+  const navigate = useNavigate();
+
+  const navigateProjectDashboard = () => {
+    navigate('/proyectos');
+  };
+
   const initialProject = {
     name: null,
     description: null,
@@ -61,8 +68,7 @@ export default function NewProject() {
       .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
       .then((data) => {
         if (data.status === 200) {
-          alert("Nuevo proyecto creado");
-          // TODO: redirect to project dashboard
+          navigateProjectDashboard();
         }
       })
       .catch((err) => {
