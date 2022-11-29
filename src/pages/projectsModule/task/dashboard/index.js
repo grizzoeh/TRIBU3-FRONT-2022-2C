@@ -10,9 +10,10 @@ import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import Dropdown from 'react-bootstrap/Dropdown';
-
+import * as SERVER_NAMES from "../../APIRoutes";
 import MockProjects from "../../../../Mock/projects";
 import KanbanDashboard from "./kanbanDashboard";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 export default function DashboardTareas() {
     const params = useParams();
@@ -27,6 +28,24 @@ export default function DashboardTareas() {
       "cliente": "Todos",
   });
 
+  let assigneeQuery="";
+  let priorityQuery="";
+  const [assignees, setAssignees] = useState([]);
+  const [assignee, setAssignee] = useState('Seleccionar');
+  const [priority, setPriority] = useState('---');
+
+  const handleAssigneeFilter = (e) => {
+    e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+    e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+    getTarea();
+  };
+
+  const handlePriorityFilter = (e) => {
+    setPriority(e);
+    priorityQuery="priority="+e+"&";
+    getTarea();
+  };
+
   const handleDropdownFilter = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
 
@@ -35,7 +54,31 @@ export default function DashboardTareas() {
 
 };
 
+  const getAssignees = async () => {
+    axios
+        .get(SERVER_NAMES.ASSIGNEES , {})
+        .then((res) => {
+            setAssignees(res.data);
+        })
+        .catch((err) => {
+            alert('Se produjo un error al consultar los clientes', err);
+        });
+  };
 
+  const getTarea = async () => {
+    let url = `/psa/projects/${params.id}/tasks/?`;
+    setTareas([])
+    //url += priorityQuery;
+    url += assigneeQuery;
+    axios
+        .get(SERVER_NAME + url, {})
+        .then((res) => {
+            setTareas(res.data);
+        })
+        .catch((err) => {
+            alert('Se produjo un error al consultar los proyectos', err);
+        });
+};
   useEffect(() => {
     // const getProyectos = async () => {
     //     setProyectos(MockProjects);
@@ -65,7 +108,8 @@ export default function DashboardTareas() {
 
     getProyecto();
     getTareas();
-  }, []);
+    getAssignees();
+  }, [params.id]);
 
   return (
     <Fragment>
@@ -80,27 +124,12 @@ export default function DashboardTareas() {
             </Row>
             <Row xs="auto">
             < Col>
-                {/*<a href="/crear-tarea">*/}
-                <Link
-                /*
-                    to={{
-                    pathname: "/crear-tarea",
-                    state: { proyecto: {
-                    //id: params.id,
-                    id: proyecto.id,
-                    name: proyecto.name
-                        }}
-                    }}
-                */
-                    to={`/proyectos/${proyecto.id}/crear-tarea/`}
-                >
-                    <Button variant="primary" onClick={console.log("click crear tarea")}>Crear Tarea</Button>
-                    {/* <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button> */}
+                <Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
+                    <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
                 </Link>
-                {/*</a>*/}
             </Col>
             < Col>
-                    <Button variant="primary" onClick={console.log("click diagrama gannt")}>
+                    <Button variant="primary" onClick={() => console.log("click diagrama gannt")}>
                         Diagrama de Gannt
                     </Button>
                     
@@ -124,23 +153,25 @@ export default function DashboardTareas() {
                         </Dropdown>
   </Col>*/}
                     <Col>
-                        <h4>Estado:</h4>
+                        <h4>Empleado asignado:</h4>
                     </Col>
                     <Col >
-                        <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                {filters["Estado"]}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
-                                <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Por hacer</Dropdown.Item>
-                                <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>En curso</Dropdown.Item>
-                                <Dropdown.Item name="Estado" onClick={(e) => handleDropdownFilter(e)}>Finalizada</Dropdown.Item>
-
-
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={assignee}
+                            onSelect={handleAssigneeFilter}
+                        >
+                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                            </Dropdown.Item>
+                            {assignees.map((assignee) => {
+                                return (
+                                    <Dropdown.Item eventKey={assignee.legajo} name="management">
+                                        {assignee.Nombre + " " + assignee.Apellido}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
                     </Col>
 
                     <Col>
