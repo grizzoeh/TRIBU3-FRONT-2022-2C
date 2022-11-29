@@ -39,7 +39,6 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
       }
   }
 
-
   const reorder = (list, startIndex, endIndex) => {
     const result = [...list];
     const [removed] = result.splice(startIndex, 1);
