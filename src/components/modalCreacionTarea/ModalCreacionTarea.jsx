@@ -17,6 +17,8 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
     const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
 
+    const [proyectoSeleccionadoNombre, setProyectoSeleccionadoNombre] = useState();
+
     const [show, setShow] = useState(true);
 
     const handleClose = () => {
@@ -43,8 +45,9 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
 
 
-    const onChangeProyectoSeleccionado = (e, idProyecto) => {
-        setProyectoSeleccionadoId(idProyecto);
+    const onChangeProyectoSeleccionado = (e) => {
+        setProyectoSeleccionadoNombre(e.target.innerHTML);
+        setProyectoSeleccionadoId(e.target.id);
     };
 
     const onChangePrioridadTarea = (e) => {
@@ -60,7 +63,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
             "related_ticket": numeroTicket,
         }
 
-        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks", send_tarea)
+        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Tarea creada");
@@ -134,14 +137,14 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                         <Col xs={3}>
                             <Dropdown >
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                    {prioridadTarea ? prioridadTarea : "Selecciona un proyecto"}
+                                    {proyectoSeleccionadoNombre ? proyectoSeleccionadoNombre : "Selecciona un proyecto"}
 
 
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
                                     {proyectos && proyectos.map((proyecto) => (
-                                        <Dropdown.Item name="proyectoSeleccionado" onClick={(e) => onChangeProyectoSeleccionado(e, proyecto.id)}>{proyecto.name}</Dropdown.Item>
+                                        <Dropdown.Item name="proyectoSeleccionado" id={proyecto.id} onClick={(e) => onChangeProyectoSeleccionado(e)}>{proyecto.name}</Dropdown.Item>
                                     ))}
 
 

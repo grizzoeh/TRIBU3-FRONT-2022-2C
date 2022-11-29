@@ -59,6 +59,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
         setShow(false);
         setEditMode(false);
         setAlertaEdicionExito(false);
+        setAlertaDatosNulos(false);
+        setAlertaTareaExito(false);
         getDataEnCurso();
         getDataEnCurso();
 
