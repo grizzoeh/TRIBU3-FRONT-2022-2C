@@ -25,10 +25,10 @@ export default function Dashboard() {
     let finishDateQuery="";
     let typeQuery="";
 
-    const [state, setState] = useState('Seleccionar');
-    const [assignee, setAssignee] = useState('Seleccionar');
+    const [state, setState] = useState('Todos');
+    const [assignee, setAssignee] = useState('Todos');
     const [finishDate, setFinishDate] = useState('---');
-    const [type, setType] = useState('Seleccionar');
+    const [type, setType] = useState('Todos');
 
     const handleStateFilter = (e) => {
         setState(e);
@@ -38,7 +38,8 @@ export default function Dashboard() {
     const handleAssigneeFilter = (e) => {
 
         setAssignee(e);
-        e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+        console.log(e);
+        e==="Todos"?assigneeQuery="":assigneeQuery="project_manager="+e+"&";
         getProyectos();
     };
     const handlePriorityFilter = (e) => {
@@ -81,12 +82,15 @@ export default function Dashboard() {
 
 
     useEffect(() => {
+        getAssignees();
+        getProyectos();
         const interval = setInterval(() => {
             getAssignees();
             getProyectos();
 
-        }, 100000);
+        }, 10000);
         return () => clearInterval(interval);
+
     }, []);
 
     return (
@@ -117,7 +121,7 @@ export default function Dashboard() {
                     </Col>
 
                     <Col>
-                        <h4>Project Management</h4>
+                        <h4>Project Manager</h4>
                     </Col>
                     <Col>
                         <DropdownButton
@@ -125,13 +129,13 @@ export default function Dashboard() {
                             title={assignee}
                             onSelect={handleAssigneeFilter}
                         >
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
-                                {"Ninguno"}
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
                             </Dropdown.Item>
                             {assignees.map((assignee) => {
                                 return (
                                     <Dropdown.Item eventKey={assignee.legajo} name="management">
-                                        {assignee.Nombre}+""+{assignee.Apellido}
+                                        {assignee.Nombre} {assignee.Apellido} {assignee.legajo}
                                     </Dropdown.Item>
                                 );
                             })}
@@ -176,7 +180,7 @@ export default function Dashboard() {
                 </Row>
             </Container>
 
-            <Body projects={proyectos} filtrosStado={states}/>
+            <Body projects={proyectos}/>
         </>
     );
 }
