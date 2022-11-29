@@ -43,21 +43,20 @@ const ModalModificarCategorias = () => {
     },[])
 
     
-    const handleClick=(e)=>{
-        e.preventDefault()
+    const handleClick=()=>{
         const categoria={nombre, catId,descripcion} /* manda array si esta vacio */
         console.log(categoria)
         fetch(`https://squad920222c-production.up.railway.app/recursos/categorias/` + catId + '?descripcion=' + descripcion + '&nombre=' + nombre,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
         }).then(()=>{
-            console.log("anda?")
-        })
+            window.location.reload();
+        });
+        
     }
     
-    const [semilla,setSemilla] = useState(1);
-    const reset = () => {
-        setSemilla(Math.random());
+    function refreshPage(){
+        window.location.reload();
     }
     
 
@@ -80,8 +79,7 @@ const ModalModificarCategorias = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
-                        <Component key={semilla}/>
-                        <Button className="h-end" variant="primary" onClick={() => {reset();handleClick()}}>Modificar categoria</Button>
+                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar categoria</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

@@ -46,8 +46,11 @@ const ModalEliminacionCategorias = () => {
                 'Access-Control-Allow-Origin': '*' 
             },
             body: JSON.catId
-        })
+        }).then(()=>{
+            window.location.reload();
+        });
     }
+    
 
     return (
         <Container>
