@@ -15,6 +15,8 @@ import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import { render } from "@testing-library/react";
 import IconButton from '@mui/material/IconButton';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 const MAXHORAS = 24;
@@ -28,6 +30,8 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [mostrarHoras, setMostrarHoras] = useState(false);
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
     let [count, setCount] = useState(0);
+    const[fecha, setFecha] = useState(null);
+    const [startDate, setStartDate] = useState(new Date());
 
     
     let Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
@@ -90,11 +94,13 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                     <button onClick={incrementCount}>+</button>
                                     <button onClick={decrementCount}>-</button>
                                 </div>}
-                <Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
+                <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />                
+                
             </div>
         </container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
 }; /* Si no anda Calendar -> npm install react-calendar */
+//<Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
 
 export default ModalCreacionCargaDeHorasProyecto
 
