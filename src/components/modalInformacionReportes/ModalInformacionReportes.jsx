@@ -66,6 +66,53 @@ const ModalInformacionReportes = () => {
         createDataProyectos(4,'Proyecto D')
     ];
     
+    function Search() {
+        const [inputText, setInputText] = useState("");
+        let inputHandler = (e) => {
+          //convert input text to lower case
+          var lowerCase = e.target.value.toLowerCase();
+          setInputText(lowerCase);
+        };
+      
+        return (
+          <div className="main">
+            <h1>React Search</h1>
+            <div className="search">
+              <TextField
+                id="outlined-basic"
+                onChange={inputHandler}
+                variant="outlined"
+                fullWidth
+                label="Search"
+              />
+            </div>
+            <List input={inputText} />
+          </div>
+        );
+      }
+
+      //filtro proyectos
+      function List(props) {
+        //create a new array by filtering the original array
+        const filteredData = proyectos.filter((el) => {
+            //if no input the return the original
+            if (props.input === '') {
+                return el;
+            }
+            //return the item which contains the user input
+            else {
+                return el.text.toLowerCase().includes(props.input)
+            }
+        })
+        return (
+            <ul>
+                {filteredData.map((item) => (
+                    <li key={item.id}>{item.text}</li>
+                ))}
+            </ul>
+        )
+    }
+
     /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
     .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
     .then((result)=>{
@@ -75,9 +122,8 @@ const ModalInformacionReportes = () => {
     return (
         <container>
             <div>
-                <TextField id="outlined-basic-proyectos" label="Buscar Proyectos por Id" variant="outlined" sx={{ minWidth: 650 }}/>
+                <TextField id="outlined-basic-proyectos" label="Buscar Proyectos por Id" variant="outlined" onChange sx={{ minWidth: 650 }}/>
             </div>
-            
             <div>
                 <TableContainer id="tableProyects" component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">

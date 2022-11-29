@@ -44,7 +44,7 @@ const ModalCreacionCategorias = () => {
 
     return (
         <container>
-            <div>
+            <div id = 'Titulo'>
                 <h2 id='titulo'>Ingrese el nombre de la nueva categoria</h2>
             </div>
             <div id='top-categoria'>
@@ -56,7 +56,7 @@ const ModalCreacionCategorias = () => {
             <div id='top-categoria'>
                 <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
             </div>
-            <button onClick={handleClick}>Crear</button>
+            <button onClick={handleClick} id = 'click'>Crear</button>
     </container>
     );
 }; 

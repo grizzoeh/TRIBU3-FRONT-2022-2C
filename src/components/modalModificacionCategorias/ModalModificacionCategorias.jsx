@@ -55,10 +55,13 @@ const ModalModificarCategorias = () => {
 
     return (
         <container>
-            <div>
+            <div id = 'CategoriaId'>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
+                <TextField id='Nombre' label="Ingrese un nombre" variant="outlined" sx={{ minWidth: 650 }} value={nombre} onChange={(e)=>setNombre(e.target.value)}/>
+                <TextField id='Descripcion' label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
+                <button onClick={handleClick} id = 'click'>Buscar</button>
             </div>
-            <div>
+            <div id = 'Tabla'>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
@@ -79,11 +82,6 @@ const ModalModificarCategorias = () => {
                                     <TableCell align="left">{carga.descripcion}</TableCell>
                                 </TableRow>
                             ))}
-                        </TableBody>
-                        <TableBody>
-                        <TextField id="outlined-basic" label="Ingrese un nombre" variant="outlined" sx={{ minWidth: 650 }} value={nombre} onChange={(e)=>setNombre(e.target.value)}/>
-                        <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
-                        <button onClick={handleClick}>Click</button>
                         </TableBody>
                     </Table>
                 </TableContainer>

@@ -13,6 +13,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+
 /*
     <div className="DD">
         <Select
@@ -28,6 +29,9 @@ const ModalCreacionCargaDeHoras = () => {
     const[empleados, setEmpleados]=useState([])
     const[report, setReport]=useState([])
     const [categorias, setCategorias] = useState([])
+    const [isShown, setIsShown] = useState(false);
+    const [proyectos, setProyectos] = useState([])
+    const [ProjectText, setProjectText] = useState('Seleccionar')
 
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
@@ -60,21 +64,19 @@ const ModalCreacionCargaDeHoras = () => {
             <div id="page">
                 <h2 id="titulo">Seleccionar Categoria</h2>
                 <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                    <NavDropdown.Item id="dropdown-item" href='/cargar-horas/proyectos'>
-                        <a  onClick='Proyecto' id='tuma'>
+                    <NavDropdown.Item id="dropdown-item">
+                        <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/proyectos'>
                             Proyecto
                         </a>
                     </NavDropdown.Item>
-                    {listCategorias}
+                    <NavDropdown.Item id="dropdown-item">
+                        <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/licencias'>
+                            Otros
+                        </a>
+                    </NavDropdown.Item>
+                    
                 </NavDropdown>
-                <Link
-                    to={{
-                        pathname: "/cargar-horas/proyectos",
-                        state: data // your data array of objects
-                    }}
-                    ></Link>
             </div>
-            
         </container>
     
     );

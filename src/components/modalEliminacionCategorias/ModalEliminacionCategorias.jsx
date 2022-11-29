@@ -47,14 +47,16 @@ const ModalEliminacionCategorias = () => {
             },
             body: JSON.catId
         })
-    }
+    setTimeout(1000);
+    window.location.reload(false);
 
+    }
 
     return (
         <Container>
             <div>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
-                <button onClick={handleClick}>Borrar</button>
+                <button onClick={() => {handleClick()}} id = 'borrar'>Borrar</button> 
             </div>
             <div>
                 <TableContainer component={Paper}>
