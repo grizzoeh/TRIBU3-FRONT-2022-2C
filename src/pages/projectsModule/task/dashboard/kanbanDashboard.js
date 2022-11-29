@@ -13,13 +13,13 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
   const [update, setUpdate] = useState("hola");
 
   let pendingTasks = initialTasks.filter(
-    (task) => task.state === "pending"
+    (task) => task.status === "pending"
   );
   let inProgressTasks = initialTasks.filter(
-    (task) => task.state === "in_progress"
+    (task) => task.status === "in_progress"
   );
   let finishedTasks = initialTasks.filter(
-    (task) => task.state === "finished"
+    (task) => task.status === "finished"
   );
 
   const getUpdate = () => {
@@ -61,7 +61,7 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
           //console.log(result)
           const newStatus = getNewStatus(destination.droppableId);
 
-          axios.patch(SERVER_NAME + `/psa/projects/tasks-2/${result.draggableId}`, {
+          axios.patch(SERVER_NAME + `/psa/projects/tasks/${result.draggableId}`, {
             state: newStatus,
          }) 
          getUpdate();
