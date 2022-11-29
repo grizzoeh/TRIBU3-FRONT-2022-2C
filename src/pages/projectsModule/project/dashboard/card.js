@@ -1,6 +1,7 @@
 import './task.css'
 import Card from 'react-bootstrap/Card';
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button"
 
 export default function CardCustom({project}) {
@@ -20,7 +21,7 @@ export default function CardCustom({project}) {
 
 
                         </Card.Text>
-                        <Card.Footer>Project manager: {project.project_manager}</Card.Footer>
+                        <Card.Footer>Project Management: {project.priority}</Card.Footer>
 
                         <Button variant="primary" href={`/proyectos/${project.id}/ver-tareas/`}> Ver Proyecto</Button>{' '}
                     </Card.Body>
