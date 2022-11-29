@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -12,74 +11,120 @@ import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
+//import { useLocation } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-export default function NewProject() {
-  const navigate = useNavigate();
-
-  const navigateProjectDashboard = () => {
-    navigate('/proyectos');
-  };
-
-  const initialProject = {
+export default function NewTask() {
+  const initialTask = {
     name: null,
     description: null,
-    type: null,
+    estimated_hours_effort: null,
     estimated_start_date: null,
     estimated_finalization_date: null,
-    project_manager: null,
-    resources: [],
-    stakeholders: null,
+    creation_date: null,
+    dependencies: [],
+    assignees: [],
+    priority: null,
   };
-
+  const params = useParams();
+  const [tareas, setTareas] = useState([]);
+  //const location = useLocation();
   const [buttonTitle, setButtonTitle] = useState('Seleccionar');
-  const [projectData, setProjectData] = useState(initialProject);
-  const [clients, setClients] = useState([]);
+  const [projectData, setProjectData] = useState(initialTask);
+  // preguntar si esta hecho manualmente temporalmente
+  const [clients, setClients] = useState([
+    {
+      id: 1,
+      "razon social": "FIUBA",
+      CUIT: "20-12345678-2",
+    },
+    {
+      id: 2,
+      "razon social": "FSOC",
+      CUIT: "20-12345678-5",
+    },
+    {
+      id: 3,
+      "razon social": "Macro",
+      CUIT: "20-12345678-3",
+    },
+  ]);
+  // modificar para pedir al modulo recursos los empleados
+  // preguntar por que no usa getClients en index.js de proyecto
+  const getEmployees = async () => {
+    const externalResourcesURI = new Request(
+      `${SERVER_NAMES.RESOURCES}/recursos/empleados/empleado`
+    );
 
-  const getClients = async () => {
-    axios
-      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
-      .then((res) => {
-        setClients(res.data);
+    fetch(externalResourcesURI)
+      .then((response) => {
+        debugger;
+        response.json();
       })
-      .catch((err) => {
-        alert('Se produjo un error al consultar los clientes', err);
+      .then((data) => {
+        debugger;
+        // preguntar si aca agarro la data
+        console.log(data);
+      })
+      .catch(function (e) {
+        debugger;
+        alert(e);
       });
   };
-
-  useEffect(() => {
-    getClients();
-  }, []);
+  
+   useEffect(() => {
+        const getTareas = async () => {
+            axios
+            .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
+            .then((res) => {
+                setTareas(res.data);
+            })
+            .catch((err) => {
+                alert('Se produjo un error al consultar las tareas para el proyecto', err);
+            });
+            //setTareas([{"name":"Desarrollar nuevo endpoint para carga de Riesgos","description":"Alguna descripción","estimated_hours_effort":1,"estimated_start_date":"2022-12-18","estimated_finalization_date":"2022-12-18","dependencies":[1,2,123],"assignees":[213124,433543],"priority":"low"}])
+        };
+      // getEmployees();
+        getTareas();
+   }, [params.id]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
-
+  /*
   const handleDropdownChange = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
-  };
+  };*/
 
-  const handleDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, stakeholders: [e] });
+  const handleDependencyDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, dependencies: [e] });
     setButtonTitle(clients.find((client) => client.id == e).CUIT);
   };
 
-  const createProject = async () => {
+  const handleAssigneeDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, assignees: [e] });
+    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  };
+
+  const createTask = async () => {
+    //const location = useLocation();
     axios
-      .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
+      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
       .then((data) => {
         if (data.status === 200) {
-          navigateProjectDashboard();
+          alert("Nueva tarea creada");
+          // TODO: redirect to project dashboard
         }
       })
       .catch((err) => {
-        alert("Se produjo un error al crear proyectos", err);
+        alert("Se produjo un error al crear la tarea", err);
       });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject();
-    setProjectData(initialProject);
+    createTask();
+    setProjectData(initialTask);
   };
 
   return (
@@ -91,7 +136,7 @@ export default function NewProject() {
         <br />
         <Row>
           <Col>
-            <h1>Creacion de nuevo proyecto</h1>
+            <h1>Creacion de nueva tarea</h1>
           </Col>
         </Row>
       </Container>
@@ -100,7 +145,7 @@ export default function NewProject() {
         <form onSubmit={handleSubmit}>
           <Row className="mt-5">
             <Col>
-              <h4>Nombre del proyecto</h4>
+              <h4>Nombre de la tarea</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
@@ -110,8 +155,9 @@ export default function NewProject() {
               />
             </Col>
           </Row>
-
+          {  /*
           <Row className="mt-5">
+            
             <Col>
               <h4>Tipo</h4>
             </Col>
@@ -142,17 +188,53 @@ export default function NewProject() {
               </Dropdown>
             </Col>
           </Row>
-
+          */}
           <Row className="mt-5">
             <Col>
-              <h4>Cliente</h4>
+              <h4>Esfuerzo estimado en horas</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="number"
+                min="0"
+                name="estimated_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col>
+              <h4>Dependencias</h4>
             </Col>
             <Col xs={9}>
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
                 title={buttonTitle}
-                onSelect={handleDropdownButtonChange}
+                onSelect={handleDependencyDropdownButtonChange}
+              >
+                {tareas.map((tarea) => {
+                  return (
+                    <Dropdown.Item eventKey={tarea.id} name="tarea">
+                      {tarea.id}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Empleado asignado</h4>
+            </Col>
+            <Col xs={9}>
+              {/* TODO: get clients */}
+              <DropdownButton
+                variant="secondary"
+                title={buttonTitle}
+                onSelect={handleAssigneeDropdownButtonChange}
               >
                 {clients.map((client) => {
                   return (
@@ -167,7 +249,7 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Fecha de inicio</h4>
+              <h4>Fecha estimada de inicio</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
@@ -195,12 +277,14 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Project manager</h4>
+              <h4>Prioridad</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
-                type="text"
-                name="project_manager"
+                type="number"
+                min="1"
+                placeholder="Ej: 2"
+                name="priority"
                 onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
