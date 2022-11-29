@@ -75,8 +75,8 @@ export default function NewTask() {
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, assignees: [e] });
-    setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
+    if (e!= "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
+    e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
   const createTask = async () => {
@@ -209,6 +209,9 @@ export default function NewTask() {
                 title={AssigneebuttonTitle}
                 onSelect={handleAssigneeDropdownButtonChange}
               >
+                <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                </Dropdown.Item>
                 {clients.map((client) => {
                   return (
                     <Dropdown.Item eventKey={client.legajo} name="client">
