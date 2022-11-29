@@ -3,17 +3,17 @@ import Header from "./header";
 import Body from "./body";
 import { Chart } from "react-google-charts";
 import axios from "axios";
-import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 export default function Dashboard() {
+  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
 
   const [proyectos, setProyectos] = useState([]);
 
   useEffect(() => {
     const getProyectos = async () => {
       axios
-        .get(SERVER_NAME_SOPORTE + "/psa/projects/", {})
+        .get(SERVER_NAME + "/psa/projects/", {})
         .then((res) => {
           setProyectos(res.data);
         })

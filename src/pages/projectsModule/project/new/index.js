@@ -1,11 +1,10 @@
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
-import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 export default function NewProject() {
-
+  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
 
   const [projectData, setProjectData] = useState({
     name: "",
@@ -20,7 +19,7 @@ export default function NewProject() {
 
   const createProject = async () => {
     axios
-      .post(SERVER_NAME_SOPORTE + "/psa/projects/", projectData)
+      .post(SERVER_NAME + "/psa/projects/", projectData)
       .then((data) => {
         debugger
         if (data.status === 200) {
