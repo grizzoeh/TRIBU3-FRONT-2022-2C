@@ -435,28 +435,28 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                         < Dropdown >
                                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                                 {productos ?
-                                                    TicketData.idProducto ? productos?.filter(producto => producto.id === TicketData.idProducto)[0]['nombre'] : "Seleccionar"
-                                                    : null}
+                                                    TicketData.idProducto ? productos?.filter(producto => producto.id === TicketData.idProducto && producto.estado === "Activo")[0]['nombre'] : "Seleccionar"
+                                                    : <></>}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
 
 
-                                                {dicci ?
+                                                {dicci && productos ?
                                                     dicci[idClienteFilter]?.map((idProducto) => (
                                                         <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
                                                             (e) => {
                                                                 setearIdProductoTicket(idProducto);
                                                                 setIdProductoFilter(idProducto);
                                                             }
-                                                        } >
-                                                            {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
+                                                        }>
+                                                            {productos.filter(producto => producto.id === idProducto & producto.estado === "Activo").map((producto) => (producto.nombre))}
 
                                                         </Dropdown.Item>
                                                     ))
 
 
-                                                    : null}
+                                                    : <></>}
 
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -479,10 +479,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                                 {/* show versions filtering compras by idclientefilter and idproductofilter */}
 
                                                 {compras && productos && versiones ?
-                                                    compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
+                                                    compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter && versiones.find(version => version.id === compra.idVersion)['estado'] === "Activa")
                                                         .map((compra) => (
                                                             //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
                                                             <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setearIdVersionTicket(compra['idVersion']); }}>{versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']} </Dropdown.Item>
+
                                                         )) : null
 
                                                 }
