@@ -12,6 +12,7 @@ const TicketsEnCurso = lazy(() => import("../pages/ticketsEncurso/TicketsEnCurso
 
 const CrearProductoYVersion = lazy(() => import("../pages/crearProductoYVersion/CrearProductoYVersion"));
 
+const Clientes = lazy(() => import("../pages/clientes/Clientes"));
 
 const SoporteRouter = () => {
     return (
@@ -20,8 +21,7 @@ const SoporteRouter = () => {
                 <Routes>
                     <Route path="/tickets-en-curso" element={<TicketsEnCurso />} />
                     <Route path="/crear-producto-y-version" element={<CrearProductoYVersion />} />
-
-
+                    <Route path="/clientes" element={<Clientes/>} />
                     {/* <Route path="*" element={<Navigate to="/ticketsEnCurso" />} /> */}
 
                 </Routes>

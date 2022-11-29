@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ModalInfoTicketEnCurso from "../../components/modalInfoTicketEnCurso/ModalInfoTicketEnCurso";
+<<<<<<< HEAD
 import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreacionTicket";
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
@@ -14,6 +15,8 @@ import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import Alert from 'react-bootstrap/Alert';
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
+=======
+>>>>>>> origin/soporte-productos
 
 const TicketsEnCurso = () => {
 
