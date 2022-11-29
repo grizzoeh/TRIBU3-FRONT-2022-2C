@@ -29,6 +29,7 @@ function ModalGestionVersion(producto) {
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
     const [filtrado, setFiltrado] = useState(false);
     const [versiones, setVersiones] = useState([]);
+    const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const [checked, setChecked] = useState(false);
     const [radioValue, setRadioValue] = useState('1');
     
@@ -56,27 +57,27 @@ function ModalGestionVersion(producto) {
     }
 
     const handleBotonFiltrado = async () => {
+        setVersionesFiltradas(versiones);
         if (filtroTexto.estado == "Cualquiera"){
             if (filtroTexto.nombre =="") {
                 return
             }
             else {
-                setVersiones(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre}))
+                setVersionesFiltradas(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre}))
             }
         }
         else {
             if (filtroTexto.nombre =="") {
-                setVersiones(versiones.filter(obj => {return obj.estado === filtroTexto.estado}))
+                setVersionesFiltradas(versiones.filter(obj => {return obj.estado === filtroTexto.estado}))
             }
             else {
-                setVersiones(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
+                setVersionesFiltradas(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
             }  
         }
         setFiltrado(true)
     }
 
     const handleBotonQuitarFiltrado = async (e) => {
-        getVersiones();
         setFiltrado(false);
     }
 
@@ -111,7 +112,12 @@ function ModalGestionVersion(producto) {
                             ):(
                                 <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                             )}
-                        <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id}/></Col>
+                        {producto["producto"].estado === "Deprecado" ? (
+                            <Col className="v-center"><Button variant="primary" size="1" disabled={true}>+ Nueva version</Button></Col>
+                        ) : (
+                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id}/></Col>
+                        )}
+
                     </Row>
                     <Row>
                         <Table versiones>
@@ -127,7 +133,7 @@ function ModalGestionVersion(producto) {
                             </thead>
                             <tbody>
                                 {filtrado ? (
-                                    versiones.length > 0 ? versiones.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
+                                    versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
                                         version.estado == "Activa" ? (
                                         <tr>
                                             <td>{version.id}</td>

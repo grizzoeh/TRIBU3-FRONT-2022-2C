@@ -74,8 +74,6 @@ const Clientes = () => {
     }
 
     const handleBotonQuitarFiltrado = async (e) => {
-        getClientes();
-        setShowBusquedaOk(false);
         setFiltrado(false);
     }
 

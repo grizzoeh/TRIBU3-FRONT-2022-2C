@@ -26,6 +26,7 @@ const CrearProductoYVersion = () => {
     const SERVER_NAME = "http://localhost:3000";
     const [productos, setProductos] = useState([]);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
+    const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [filtrado, setFiltrado] = useState(false);
 
     const getProductos = async () => {
@@ -49,27 +50,27 @@ const CrearProductoYVersion = () => {
     }
 
     const handleBotonFiltrado = async () => {
+        setProductosFiltrados(productos);
         if (filtroTexto.estado === "Cualquiera"){
             if (filtroTexto.nombre === "") {
                 return
             }
             else {
-                setProductos(productos.filter(obj => {return obj.nombre === filtroTexto.nombre}))
+                setProductosFiltrados(productos.filter(obj => {return obj.nombre === filtroTexto.nombre}))
             }
         }
         else {
             if (filtroTexto.nombre === "") {
-                setProductos(productos.filter(obj => {return obj.estado === filtroTexto.estado}))
+                setProductosFiltrados(productos.filter(obj => {return obj.estado === filtroTexto.estado}))
             }
             else {
-                setProductos(productos.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
+                setProductosFiltrados(productos.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
             }  
         }
         setFiltrado(true)
     }
 
     const handleBotonQuitarFiltrado = async (e) => {
-        getProductos();
         setFiltrado(false);
     }
 
@@ -131,7 +132,7 @@ const CrearProductoYVersion = () => {
                         </thead>
                         <tbody>
                             {filtrado ? (
-                                productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
+                                productosFiltrados.length > 0 ? productosFiltrados.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
                                     producto.estado === "Activo" ? (
                                     <tr>
                                         <td>{producto.id}</td>

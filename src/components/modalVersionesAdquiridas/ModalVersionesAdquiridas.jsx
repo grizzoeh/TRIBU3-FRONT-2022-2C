@@ -1,4 +1,4 @@
-import React, { useEffect, useState, version } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./modalVersionesAdquiridas.css";
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -14,13 +14,13 @@ function ModalVersionesAdquiridas(cliente) {
     const FiltroVacios = {
         "version":"",
         "producto":"",
-        "estado":"Cualquiera"
     };
 
     const [show, setShow] = useState(false);
     const [compras, setCompras] = useState([]);
     const [versiones, setVersiones] = useState([]);
     const [productos, setProductos] = useState([]);
+    const [comprasFiltradas, setComprasFiltradas] = useState([]);
     const [filtrado, setFiltrado] = useState(false);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
     const handleClose = () => setShow(false);
@@ -37,6 +37,34 @@ function ModalVersionesAdquiridas(cliente) {
         console.log("versiones:", versiones);
         productos.find(producto => producto.id === compra.idProducto).nombre
         */
+    }
+
+    const handleBotonFiltrado = async () => {
+        setComprasFiltradas(compras);
+        if (filtroTexto.producto === "" & filtroTexto.version === "") {
+            return
+        }
+        if (filtroTexto.producto === "" & filtroTexto.version !== "") {
+            /* Busco Version */
+            setComprasFiltradas(compras.filter(compra => {return versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version}));
+        }
+        if (filtroTexto.producto !== "" & filtroTexto.version === "") {
+            /* Busco Producto */
+            setComprasFiltradas(compras.filter(compra => {return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto}));
+        }
+        if (filtroTexto.producto !== "" & filtroTexto.version !== "") {
+            /* Busco Ambas */
+            setComprasFiltradas(compras.filter(compra => {return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto & versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version}));
+        }
+        setFiltrado(true);
+    }
+
+    const handleBotonQuitarFiltrado = async (e) => {
+        setFiltrado(false);
+    }
+
+    const onChangeFiltroTexto = async (e) => {
+        setFiltroTexto({ ...filtroTexto, [e.target.name]: e.target.value });
     }
 
     const getVersiones = async () => {
@@ -91,10 +119,14 @@ function ModalVersionesAdquiridas(cliente) {
                 <Modal.Body>
                     <Row>
                         <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
-                        <Col className="v-center" sm={3}><Form.Control type="filtro" placeholder="Producto" /></Col>
-                        <Col className="v-center" sm={3}><Form.Control type="filtro" placeholder="Version" /></Col>
-                        <Col className="v-center"><Button variant="secondary" size="1">Buscar</Button></Col>
-                        <Col><ModalAsociarVersion/></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="producto" type="filtro" placeholder="Producto" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="version" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        {filtrado ? (
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
+                        ):(
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
+                        )}
+                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]}/></Col>
                     </Row>
                     <Row>
                         <Table compras>
@@ -109,11 +141,11 @@ function ModalVersionesAdquiridas(cliente) {
                             </thead>
                             <tbody>
                             {filtrado ? (
-                                compras.length > 0 ? compras.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
+                                comprasFiltradas.length > 0 ? comprasFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
                                     <tr>
                                         <td>{compra.id}</td>
-                                        <td>{compra.idProducto}</td>
-                                        <td>{compra.idVersion}</td>
+                                        <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre):(<></>)}</td>
+                                        <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre):(<></>)}</td>
                                         <td>{compra.fechaCompra.slice(0, 10)}</td>
                                         <td><></></td>
                                     </tr>

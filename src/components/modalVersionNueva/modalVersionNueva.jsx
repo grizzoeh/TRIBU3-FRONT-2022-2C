@@ -35,7 +35,6 @@ function ModalVersionNueva(idProducto) {
     }
 
     const crearVersion = async () => {
-        console.log(VersionData);
         axios.post(SERVER_NAME + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
