@@ -29,7 +29,8 @@ export default function NewTask() {
   const params = useParams();
   const [tareas, setTareas] = useState([]);
   //const location = useLocation();
-  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
+  const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   // preguntar si esta hecho manualmente temporalmente
   const [clients, setClients] = useState([
@@ -51,26 +52,7 @@ export default function NewTask() {
   ]);
   // modificar para pedir al modulo recursos los empleados
   // preguntar por que no usa getClients en index.js de proyecto
-  const getEmployees = async () => {
-    const externalResourcesURI = new Request(
-      `${SERVER_NAMES.RESOURCES}/recursos/empleados/empleado`
-    );
-
-    fetch(externalResourcesURI)
-      .then((response) => {
-        debugger;
-        response.json();
-      })
-      .then((data) => {
-        debugger;
-        // preguntar si aca agarro la data
-        console.log(data);
-      })
-      .catch(function (e) {
-        debugger;
-        alert(e);
-      });
-  };
+  
   
    useEffect(() => {
         const getTareas = async () => {
@@ -84,7 +66,29 @@ export default function NewTask() {
             });
             //setTareas([{"name":"Desarrollar nuevo endpoint para carga de Riesgos","description":"Alguna descripción","estimated_hours_effort":1,"estimated_start_date":"2022-12-18","estimated_finalization_date":"2022-12-18","dependencies":[1,2,123],"assignees":[213124,433543],"priority":"low"}])
         };
-      // getEmployees();
+
+        const getEmployees = async () => {
+          const externalResourcesURI = new Request(
+            `${SERVER_NAMES.RESOURCES}/recursos/empleados/empleado`
+          );
+      
+          fetch(externalResourcesURI)
+            .then((response) => {
+              debugger;
+              response.json();
+            })
+            .then((data) => {
+              debugger;
+              // preguntar si aca agarro la data
+              setClients(data);
+              console.log(data);
+            })
+            .catch(function (e) {
+              debugger;
+              alert(e);
+            });
+        };
+        //getEmployees();
         getTareas();
    }, [params.id]);
 
@@ -98,12 +102,12 @@ export default function NewTask() {
 
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, dependencies: [e] });
-    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, assignees: [e] });
-    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+    setAssigneeButtonTitle(clients.find((client) => client.id == e).CUIT);
   };
 
   const createTask = async () => {
@@ -211,13 +215,13 @@ export default function NewTask() {
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={buttonTitle}
+                title={DependencybuttonTitle}
                 onSelect={handleDependencyDropdownButtonChange}
               >
                 {tareas.map((tarea) => {
                   return (
                     <Dropdown.Item eventKey={tarea.id} name="tarea">
-                      {tarea.id}
+                      {tarea.name}
                     </Dropdown.Item>
                   );
                 })}
@@ -233,7 +237,7 @@ export default function NewTask() {
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={buttonTitle}
+                title={AssigneebuttonTitle}
                 onSelect={handleAssigneeDropdownButtonChange}
               >
                 {clients.map((client) => {
