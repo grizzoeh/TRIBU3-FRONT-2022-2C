@@ -29,6 +29,7 @@ const Clientes = () => {
     const [filtrado, setFiltrado] = useState(false);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
 
+
     const [showBusquedaError, setShowBusquedaError] = useState(false);
     const [showBusquedaOk, setShowBusquedaOk] = useState(false);
     const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
@@ -66,7 +67,6 @@ const Clientes = () => {
         }
         if (filtroTexto.razonsocial !== "" & filtroTexto.cuit !== "") {
             /* Busco Ambas */
-            
             setClientesFiltrados(clientes.filter(obj => {return obj.CUIT === filtroTexto.cuit & obj["razon social"] === filtroTexto.razonsocial}))
         }
         handleShowBusquedaOk();
@@ -84,9 +84,7 @@ const Clientes = () => {
     }, [])
 
     return (
-        
         <Fragment>
-
             <>
                 <Snackbar  open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key = {vertical + horizontal}>
                     <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
@@ -111,13 +109,13 @@ const Clientes = () => {
             <Container className="filtros-tabla">
                 <Form>
                     <Row>
-                        <Col className="v-center" sm={1}><h6>Filtros:</h6></Col>
+                        <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
                         <Col className="v-center" sm={3}><Form.Control type="filtro" name="razonsocial" placeholder="Razon social" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
                         <Col className="v-center" sm={3}><Form.Control type="filtro"  name="cuit" placeholder="CUIT" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
                         {filtrado ? (
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Quitar Filtros</Button></Col>
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
                         ):(
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Aplicar Filtros</Button></Col>
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
                     </Row>
                 </Form>
@@ -141,7 +139,7 @@ const Clientes = () => {
                                     <td>{cliente.id}</td>
                                     <td>{cliente["razon social"]}</td>
                                     <td>{cliente.CUIT}</td>
-                                    <td><Col className="v-center"><ModalVersionesAdquiridas/></Col></td>
+                                    <td><ModalVersionesAdquiridas cliente={cliente}/></td>
                                 </tr>
                                 )) : <Row className="centered">No se encontraron clientes para los filtros dados</Row>
                             ):(
@@ -150,7 +148,7 @@ const Clientes = () => {
                                     <td>{cliente.id}</td>
                                     <td>{cliente["razon social"]}</td>
                                     <td>{cliente.CUIT}</td>
-                                    <td><Col className="v-center"><ModalVersionesAdquiridas/></Col></td>
+                                    <td><ModalVersionesAdquiridas cliente={cliente}/></td>
                                 </tr>
                             )) : <Row className="centered">No se encontraron clientes</Row>
                             )}

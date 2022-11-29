@@ -4,7 +4,6 @@ import {
     Route,
     BrowserRouter as Router,
 } from "react-router-dom";
-import Clientes from "../pages/clientes/Clientes";
 //import ProtectedRoute from "./ProtectedRoute";
 
 const TicketsEnCurso = lazy(() => import("../pages/ticketsEncurso/TicketsEnCurso"));
@@ -15,6 +14,7 @@ const CrearTicket = lazy(() => import("../pages/crearTicket/CrearTicket"));
 
 const CrearProductoYVersion = lazy(() => import("../pages/crearProductoYVersion/CrearProductoYVersion"));
 
+const Clientes = lazy(() => import("../pages/clientes/Clientes"));
 
 const SoporteRouter = () => {
     return (

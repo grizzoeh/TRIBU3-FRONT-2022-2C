@@ -15,7 +15,7 @@ function ModalAsociarVersion() {
 
     return (
         <>
-            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Agregar version</Button></Col>
+            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Asociar version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear un nuevo producto: </Modal.Title>
@@ -23,11 +23,6 @@ function ModalAsociarVersion() {
                 <Modal.Body>
                     <Row className="campo">
                         <Col><h6>Version:</h6></Col>
-                        <Col>
-                            <DropdownButton id="secondary">
-                                <Dropdown.Item>5.6.6</Dropdown.Item>
-                            </DropdownButton>    
-                        </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>

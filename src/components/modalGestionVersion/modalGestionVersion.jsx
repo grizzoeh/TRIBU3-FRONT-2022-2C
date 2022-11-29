@@ -24,23 +24,13 @@ function ModalGestionVersion(producto) {
         "estado":"Cualquiera",
     };
 
-    const OrdenDefault = {
-        "orden":"ID de version"
-    }
-
     const SERVER_NAME = "http://localhost:3000";
     const [show, setShow] = useState(false);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
-    const [orden, setOrden] = useState(OrdenDefault);
     const [filtrado, setFiltrado] = useState(false);
     const [versiones, setVersiones] = useState([]);
     const [checked, setChecked] = useState(false);
     const [radioValue, setRadioValue] = useState('1');
-
-    const radios = [
-        { name: "Version ID", value: "id" },
-        { name: "Fecha Release", value: "fechaRelease" },
-      ];
     
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -97,15 +87,14 @@ function ModalGestionVersion(producto) {
     return (
         <>
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
-            <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} >
+            <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones de {producto["producto"].nombre}: </Modal.Title>
                 </Modal.Header>
-
                 <Modal.Body>
                     <Row>
-                        <Col className="v-center" sm={1}><h6>Filtros:</h6></Col>
-                        <Col className="v-center" sm={2}><Form.Control name="nombre" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="nombre" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
                         <Col className="v-center" sm={2}>
                             <Dropdown>
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
@@ -118,9 +107,9 @@ function ModalGestionVersion(producto) {
                                 </Dropdown.Menu>
                             </Dropdown></Col>
                             {filtrado ? (
-                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Quitar Filtros</Button></Col>
+                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
                             ):(
-                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Aplicar Filtros</Button></Col>
+                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                             )}
                         <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id}/></Col>
                     </Row>

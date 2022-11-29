@@ -94,7 +94,7 @@ const CrearProductoYVersion = () => {
             <Container className="filtros-tabla">
                 <Form>
                     <Row>
-                        <Col className="v-center" sm={1}><h6>Filtros:</h6></Col>
+                        <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
                         <Col className="v-center" sm={4}><Form.Control name="nombre" type="filtro" placeholder="Nombre de producto" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
                         <Col className="v-center" sm={2}>
                             <Dropdown>
@@ -108,9 +108,9 @@ const CrearProductoYVersion = () => {
                                 </Dropdown.Menu>
                             </Dropdown></Col>
                         {filtrado ? (
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Quitar Filtros</Button></Col>
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
                         ):(
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Aplicar Filtros</Button></Col>
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
                         <Col className="v-center" sm={3}><ModalProductoNuevo /></Col>
                     </Row>
