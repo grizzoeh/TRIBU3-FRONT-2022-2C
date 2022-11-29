@@ -1,19 +1,20 @@
+import './task.css'
+import { Link } from 'react-router-dom'
+
 export default function Card({ project }) {
   return (
-    <section style={sectionStyle}>
-      <h3>{project.id}</h3>
-      <h3>{project.name}</h3>
-      <h3>{project.description}</h3>
-      <h3>{project.type}</h3>
-      <h3>{project.status}</h3>
-      <h3>{project.estimatedStartDate}</h3>
-      <h3>{project.estimatedFinalizationDate}</h3>
-    </section>
+
+    <div className="task">
+      <h2 className='task-name over-hide'>{project.name}</h2>
+      <p className='task-details'>{project.type}</p>
+      <p className='task-details'>{project.description}</p>
+      <Link className='remove-bar' to={`/proyectos/${project.id}/ver-tareas/`}> 
+
+      - 
+      </Link>
+
+      
+    </div>
+  //</section>
   );
 }
-
-const sectionStyle = {
-  background: "papayawhip",
-  padding: "20px",
-  width: "500px",
-};

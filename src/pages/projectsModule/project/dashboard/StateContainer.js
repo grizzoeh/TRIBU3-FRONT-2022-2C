@@ -1,9 +1,11 @@
 import Card from "./card";
+import './task.css'
 
 export default function StateContainer({ stateName, projects }) {
   return (
-    <section style={sectionStyle}>
-      <h3>{stateName}</h3>
+    //<section style={sectionStyle}>
+    <section className="column">
+      <h3 className="task-box-header">{stateName}</h3>
 
       {projects.map((project) => {
         return <Card project={project} />;
@@ -11,7 +13,3 @@ export default function StateContainer({ stateName, projects }) {
     </section>
   );
 }
-
-const sectionStyle = {
-  background: "#a9a9a9",
-};
