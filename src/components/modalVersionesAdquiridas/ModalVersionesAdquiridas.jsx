@@ -9,12 +9,14 @@ import Form from 'react-bootstrap/Form';
 import ModalAsociarVersion from '../modalAsociarVersion/ModalAsociarVersion';
 import BotonQuitarCompra from '../botonQuitarCompra/BotonQuitarCompra';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 function ModalVersionesAdquiridas(cliente) {
-    
+
     const FiltroVacios = {
-        "version":"",
-        "producto":"",
+        "version": "",
+        "producto": "",
     };
 
     const [show, setShow] = useState(false);
@@ -27,7 +29,7 @@ function ModalVersionesAdquiridas(cliente) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const SERVER_NAME = "http://localhost:3000";
+
     const vertical = "top"
     const horizontal = "center"
 
@@ -47,15 +49,15 @@ function ModalVersionesAdquiridas(cliente) {
         }
         if (filtroTexto.producto === "" & filtroTexto.version !== "") {
             /* Busco Version */
-            setComprasFiltradas(compras.filter(compra => {return versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version}));
+            setComprasFiltradas(compras.filter(compra => { return versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version }));
         }
         if (filtroTexto.producto !== "" & filtroTexto.version === "") {
             /* Busco Producto */
-            setComprasFiltradas(compras.filter(compra => {return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto}));
+            setComprasFiltradas(compras.filter(compra => { return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto }));
         }
         if (filtroTexto.producto !== "" & filtroTexto.version !== "") {
             /* Busco Ambas */
-            setComprasFiltradas(compras.filter(compra => {return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto & versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version}));
+            setComprasFiltradas(compras.filter(compra => { return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto & versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version }));
         }
         setFiltrado(true);
     }
@@ -70,7 +72,7 @@ function ModalVersionesAdquiridas(cliente) {
 
     const getVersiones = async () => {
         axios
-            .get(SERVER_NAME + "/versiones/", {
+            .get(SERVER_NAME_SOPORTE + "/versiones/", {
             })
             .then((res) => {
                 setVersiones(res.data.versiones);
@@ -82,7 +84,7 @@ function ModalVersionesAdquiridas(cliente) {
 
     const getProductos = async () => {
         axios
-            .get(SERVER_NAME + "/productos/", {
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
             })
             .then((res) => {
                 setProductos(res.data.productos);
@@ -92,10 +94,10 @@ function ModalVersionesAdquiridas(cliente) {
             });
     }
 
-    const getCompras= async () => {
-        const sendData = {idCliente:cliente["cliente"].id}
+    const getCompras = async () => {
+        const sendData = { idCliente: cliente["cliente"].id }
         axios
-            .get(SERVER_NAME + "/compras/compra/cliente", {params:sendData})
+            .get(SERVER_NAME_SOPORTE + "/compras/compra/cliente", { params: sendData })
             .then((res) => {
                 setCompras(res.data.compras);
             })
@@ -111,7 +113,7 @@ function ModalVersionesAdquiridas(cliente) {
     }, [])
 
     return (
-        <>  
+        <>
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent3" show={show} onHide={handleClose}>
                 <Modal.Header closeButton onClick={handleClose}>
@@ -120,14 +122,14 @@ function ModalVersionesAdquiridas(cliente) {
                 <Modal.Body>
                     <Row>
                         <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
-                        <Col className="v-center" sm={3}><Form.Control name="producto" type="filtro" placeholder="Producto" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
-                        <Col className="v-center" sm={3}><Form.Control name="version" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="producto" type="filtro" placeholder="Producto" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="version" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
                         {filtrado ? (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
-                        ):(
+                        ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]}/></Col>
+                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} /></Col>
                     </Row>
                     <Row>
                         <Table compras>
@@ -138,29 +140,29 @@ function ModalVersionesAdquiridas(cliente) {
                                     <th>Version</th>
                                     <th>Fecha Compra</th>
                                     <th>Acciones</th>
-                                </tr> 
+                                </tr>
                             </thead>
                             <tbody>
-                            {filtrado ? (
-                                comprasFiltradas.length > 0 ? comprasFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
-                                    <tr>
-                                        <td>{compra.id}</td>
-                                        <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre):(<></>)}</td>
-                                        <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre):(<></>)}</td>
-                                        <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                        <td><></></td>
-                                    </tr>
+                                {filtrado ? (
+                                    comprasFiltradas.length > 0 ? comprasFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
+                                        <tr>
+                                            <td>{compra.id}</td>
+                                            <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre) : (<></>)}</td>
+                                            <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre) : (<></>)}</td>
+                                            <td>{compra.fechaCompra.slice(0, 10)}</td>
+                                            <td><></></td>
+                                        </tr>
                                     )) : <Row className="centered">No se encontraron compras para los filtros dados</Row>
-                                ):(
-                                compras.length > 0 ? compras.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
-                                    <tr>
-                                        <td>{compra.id}</td>
-                                        <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre):(<></>)}</td>
-                                        <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre):(<></>)}</td>
-                                        <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                        <td><BotonQuitarCompra compra={compra}/></td>
-                                    </tr>
-                                )) : <Row className="centered">No se encontraron compras</Row>
+                                ) : (
+                                    compras.length > 0 ? compras.sort((a, b) => a.id > b.id ? 1 : -1).map((compra) => (
+                                        <tr>
+                                            <td>{compra.id}</td>
+                                            <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre) : (<></>)}</td>
+                                            <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre) : (<></>)}</td>
+                                            <td>{compra.fechaCompra.slice(0, 10)}</td>
+                                            <td><BotonQuitarCompra compra={compra} /></td>
+                                        </tr>
+                                    )) : <Row className="centered">No se encontraron compras</Row>
                                 )}
                             </tbody>
                         </Table>
