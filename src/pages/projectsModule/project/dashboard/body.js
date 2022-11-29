@@ -13,8 +13,8 @@ export default function Body({projects,filtrosStado}) {
                             return (
                                 <tr>
                                     <StateContainer className={"row-cards mt-4 row"}
-                                                    stateName={projectGroup.name}
-                                                    projects={projectGroup.id}
+                                                    stateName={filtroStado.name}
+                                                    projects={projects}
                                     /></tr>
                             );
                         })
