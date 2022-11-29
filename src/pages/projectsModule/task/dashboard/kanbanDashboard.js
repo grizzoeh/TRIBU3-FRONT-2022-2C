@@ -9,7 +9,7 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
 
   const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
 
-  //const [tasks, setTasks] = useState(initialTasks);
+  //const [tasks, setTareas] = useState(initialTasks);
   const [update, setUpdate] = useState("hola");
 
   let pendingTasks = initialTasks.filter(
@@ -23,20 +23,20 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
   );
 
   const getUpdate = () => {
-    setUpdate("chau");
+      setUpdate("chau");
   };
 
 
   const getNewStatus = (stateName) => {
-    if (stateName === "Pendiente") {
-      return "pending"
-    }
-    if (stateName === "En progreso") {
-      return "in_progress"
-    }
-    if (stateName === "Finalizada") {
-      return "finished"
-    }
+      if (stateName === "Pendiente") {
+        return "pending"
+      }
+      if (stateName === "En progreso") {
+        return "in_progress"
+      }
+      if (stateName === "Finalizada") {
+        return "finished"
+      }
   }
 
   const reorder = (list, startIndex, endIndex) => {
