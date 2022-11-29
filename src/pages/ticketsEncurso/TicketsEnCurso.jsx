@@ -372,7 +372,7 @@ const TicketsEnCurso = () => {
                                 }
 
                             ).sort((a, b) => a.id > b.id ? 1 : -1).map((ticketCerrado) => (
-                                <Col className="mt-3">
+                                <Col key={ticketCerrado.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
                                             <Card.Title>
