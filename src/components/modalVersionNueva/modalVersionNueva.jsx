@@ -7,15 +7,17 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 function ModalVersionNueva(idProducto) {
-    
+
     const VersionNula = {
-        "nombre":null,
-        "idProducto":idProducto.idProducto,
-        "estado":null,
-        "fechaRelease":null,
-        "fechaDeprecacion":null
+        "nombre": null,
+        "idProducto": idProducto.idProducto,
+        "estado": null,
+        "fechaRelease": null,
+        "fechaDeprecacion": null
     }
 
     const [VersionData, setVersionData] = useState(VersionNula);
@@ -24,18 +26,18 @@ function ModalVersionNueva(idProducto) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const SERVER_NAME = "http://localhost:3000";
+
 
     const onChangeVersionEditable = (e) => {
         setVersionData({ ...VersionData, [e.target.name]: e.target.value });
     }
-    
+
     const handleDropdownChange = (e) => {
-        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML }); 
+        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML });
     }
 
     const crearVersion = async () => {
-        axios.post(SERVER_NAME + "/versiones", VersionData)
+        axios.post(SERVER_NAME_SOPORTE + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version creada");
@@ -58,11 +60,11 @@ function ModalVersionNueva(idProducto) {
                 <Modal.Body>
                     <Row className="campo">
                         <Col><h6>Nombre de version:</h6></Col>
-                        <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre de la version" onChange={(e) => onChangeVersionEditable(e)}/></Col>
-                    </Row> 
+                        <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre de la version" onChange={(e) => onChangeVersionEditable(e)} /></Col>
+                    </Row>
                     <Row className="campo">
                         <Col><h6>Fecha Release:</h6></Col>
-                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)}/></Col>
+                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)} /></Col>
                     </Row>
                     <Row className="campo">
                         <Col><h6>Estado de la version:</h6></Col>
