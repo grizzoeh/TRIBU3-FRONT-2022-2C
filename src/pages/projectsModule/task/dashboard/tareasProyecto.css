@@ -1,0 +1,41 @@
+.container-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    top: 70px;
+    padding-bottom: 50%;
+
+}
+
+.container-filters {
+    position: relative;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    flex-direction: column;
+    background-color: white;
+
+}
+
+.container-cards {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: white;
+}
+
+.row-cards {
+    padding-bottom: 3%;
+}
+
+.kanban-row {
+    align-content: flex-start;
+    padding-top: 5%;
+    /* margin: 1%; */
+}

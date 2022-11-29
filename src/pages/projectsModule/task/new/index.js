@@ -1,5 +1,4 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -10,77 +9,93 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
-
+import Select from 'react-select'
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 
-
-export default function NewProject() {
-  const navigate = useNavigate();
-
-  const navigateProjectDashboard = () => {
-    navigate('/proyectos');
-  };
-
-  const initialProject = {
+export default function NewTask() {
+  const initialTask = {
     name: null,
     description: null,
-    type: null,
+    estimated_hours_effort: null,
     estimated_start_date: null,
     estimated_finalization_date: null,
-    project_manager: null,
-    resources: [],
-    stakeholders: null,
+    creation_date: null,
+    dependencies: [],
+    assignees: [],
+    priority: null,
   };
-
-  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
-  const [projectData, setProjectData] = useState(initialProject);
+  const params = useParams();
+  const [tareas, setTareas] = useState([]);
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
+  const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
+  const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
+  
+  
+   useEffect(() => {
+        const getTareas = async () => {
+            axios
+            .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
+            .then((res) => {
+                setTareas(res.data);
+            })
+            .catch((err) => {
+                alert('Se produjo un error al consultar las tareas para el proyecto', err);
+            });
+        };
 
-  const getClients = async () => {
-    axios
-      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
-      .then((res) => {
-        setClients(res.data);
-      })
-      .catch((err) => {
-        alert('Se produjo un error al consultar los clientes', err);
-      });
-  };
+        const getAssignees = async () => {
+          axios
+              .get(SERVER_NAMES.ASSIGNEES , {})
+              .then((res) => {
+                  setClients(res.data);
+              })
+              .catch((err) => {
+                  alert('Se produjo un error al consultar los clientes', err);
+              });
+        };
 
-  useEffect(() => {
-    getClients();
-  }, []);
+        getAssignees();
+        getTareas();
+   }, [params.id]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
 
-  const handleDropdownChange = (e) => {
-    setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
+  const handleDependencyDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, dependencies: [e] });
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
-  const handleDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, stakeholders: [e] });
-    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  const handleDependencyDropdownButtonChange2 = (e) => {
+    setProjectData({ ...projectData, dependencies: [e] });
+    //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
-  const createProject = async () => {
+  const handleAssigneeDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, assignees: [e] });
+    setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
+  };
+
+  const createTask = async () => {
     axios
-      .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
+      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
       .then((data) => {
         if (data.status === 200) {
-          navigateProjectDashboard();
+          alert("Nueva tarea creada");
         }
       })
       .catch((err) => {
-        alert("Se produjo un error al crear proyectos", err);
+        alert("Se produjo un error al crear la tarea", err);
       });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject();
-    setProjectData(initialProject);
+    createTask();
+    setProjectData(initialTask);
   };
 
   return (
@@ -92,7 +107,7 @@ export default function NewProject() {
         <br />
         <Row>
           <Col>
-            <h1>Creacion de nuevo proyecto</h1>
+            <h1>Creacion de nueva tarea</h1>
           </Col>
         </Row>
       </Container>
@@ -101,7 +116,7 @@ export default function NewProject() {
         <form onSubmit={handleSubmit}>
           <Row className="mt-5">
             <Col>
-              <h4>Nombre del proyecto</h4>
+              <h4>Nombre de la tarea</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
@@ -111,8 +126,9 @@ export default function NewProject() {
               />
             </Col>
           </Row>
-
+          {  /*
           <Row className="mt-5">
+            
             <Col>
               <h4>Tipo</h4>
             </Col>
@@ -143,22 +159,60 @@ export default function NewProject() {
               </Dropdown>
             </Col>
           </Row>
+          */}
+          <Row className="mt-5">
+            <Col>
+              <h4>Esfuerzo estimado en horas</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="number"
+                min="0"
+                name="estimated_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col>
+              <h4>Dependencias</h4>
+            </Col>
+            <Col xs={9}>
+              {/* TODO: get clients */}
+              <Select isMulti options={tareas} getOptionLabel={(tarea) => tarea.name}
+              getOptionValue={(tarea) => tarea.id} onChange={handleDependencyDropdownButtonChange2}/>
+              {/*<DropdownButton
+                variant="secondary"
+                title={DependencybuttonTitle}
+                onSelect={handleDependencyDropdownButtonChange}
+              >
+                {tareas.map((tarea) => {
+                  return (
+                    <Dropdown.Item eventKey={tarea.id} name="tarea">
+                      {tarea.name}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>*/}
+            </Col>
+          </Row>
 
           <Row className="mt-5">
             <Col>
-              <h4>Cliente</h4>
+              <h4>Empleado asignado</h4>
             </Col>
             <Col xs={9}>
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={buttonTitle}
-                onSelect={handleDropdownButtonChange}
+                title={AssigneebuttonTitle}
+                onSelect={handleAssigneeDropdownButtonChange}
               >
                 {clients.map((client) => {
                   return (
-                    <Dropdown.Item eventKey={client.id} name="client">
-                      {client.CUIT}
+                    <Dropdown.Item eventKey={client.legajo} name="client">
+                      {client.Nombre + " " + client.Apellido}
                     </Dropdown.Item>
                   );
                 })}
@@ -168,7 +222,7 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Fecha de inicio</h4>
+              <h4>Fecha estimada de inicio</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
@@ -196,12 +250,14 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Project manager</h4>
+              <h4>Prioridad</h4>
             </Col>
             <Col xs={9}>
               <Form.Control
-                type="text"
-                name="project_manager"
+                type="number"
+                min="1"
+                placeholder="Ej: 2"
+                name="priority"
                 onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
