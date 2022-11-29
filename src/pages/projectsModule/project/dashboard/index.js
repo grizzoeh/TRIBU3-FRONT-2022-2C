@@ -14,8 +14,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 
 export default function Dashboard() {
-    const states =[{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
-    const types = [{"name": "client"}, {"name": "support"}];
+    const states =[{"name":"Todos"},{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
+    const types = [{"name": "Todos"},{"name": "client"}, {"name": "support"}];
 
     const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
     const [proyectos, setProyectos] = useState([]);
@@ -32,7 +32,7 @@ export default function Dashboard() {
 
     const handleStateFilter = (e) => {
         setState(e);
-        stateQuery="status="+e+"&";
+        e==="Todos"?stateQuery="":stateQuery="status="+e+"&";
         getProyectos();
     };
     const handleAssigneeFilter = (e) => {
@@ -48,7 +48,7 @@ export default function Dashboard() {
     };
     const handleTypeFilter = (e) => {
         setType(e);
-        typeQuery="type="+e+"&";
+        e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
         getProyectos();
     };
 
@@ -79,9 +79,16 @@ export default function Dashboard() {
             });
     };
 
+
     useEffect(() => {
-        getAssignees();
-        getProyectos();
+        const interval = setInterval(() => {
+            getAssignees();
+            getProyectos();
+
+        }, 10000);
+
+        return () => clearInterval(interval);
+
     }, []);
 
     return (
