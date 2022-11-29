@@ -13,6 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import * as SERVER_NAMES from "../../APIRoutes";
 import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 export default function DashboardTareas() {
     const params = useParams();

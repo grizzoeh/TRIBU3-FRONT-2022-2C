@@ -3,21 +3,21 @@ import "./botonQuitarCompra.css"
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 function BotonActivarVersion(compra) {
 
-    const SERVER_NAME = "http://localhost:3000";
 
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const eliminarCompra= async () => {
-        const sendData = {id:compra["compra"].id}
+    const eliminarCompra = async () => {
+        const sendData = { id: compra["compra"].id }
         axios
-            .delete(SERVER_NAME + "/compras/compra/", {data:sendData})
+            .delete(SERVER_NAME_SOPORTE + "/compras/compra/", { data: sendData })
             .then((res) => {
                 console.log("Compra Eliminada")
                 window.location.reload();
@@ -44,7 +44,7 @@ function BotonActivarVersion(compra) {
                 </Modal.Footer>
             </Modal>
         </>
-           
+
     )
 
 }
