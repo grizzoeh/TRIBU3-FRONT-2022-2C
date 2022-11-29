@@ -135,97 +135,83 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     }
 
 
+    const getClientes = async () => {
+        axios
+            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+            })
+            .then((response) => {
+                // console.log(response);
+                setClientes(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+    }
+
+    const getProductos = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
+            })
+            .then((res) => {
+                setProductos(res.data.productos);
 
 
-    useEffect(() => {
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-        const getClientes = async () => {
-            axios
-                .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+    const getVersiones = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/versiones/", {
+            })
+            .then((res) => {
+                setVersiones(res.data.versiones);
 
-                })
-                .then((response) => {
-                    // console.log(response);
-                    setClientes(response.data);
-                }
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
-            //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
-        }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-        const getProductos = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/productos/", {
-                })
-                .then((res) => {
-                    setProductos(res.data.productos);
+    const getCompras = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/compras/", {
+            })
+            .then((res) => {
+                setCompras(res.data.compras);
+                makeDictionarProductsByClient(res.data.compras);
 
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getVersiones = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/versiones/", {
-                })
-                .then((res) => {
-                    setVersiones(res.data.versiones);
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getCompras = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/compras/", {
-                })
-                .then((res) => {
-                    setCompras(res.data.compras);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
 
-        const getRecursos = async () => {
-            axios
-                .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
+    const getRecursos = async () => {
+        axios
+            .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
 
-                })
-                .then((response) => {
-                    // console.log(response);
-                    setRecursos(response.data);
-                }
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
+            })
+            .then((response) => {
+                // console.log(response);
+                setRecursos(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-        getClientes();
-
-        getProductos();
-        getVersiones();
-        getCompras();
-        getRecursos();
-
-
-
-
-    }, []);
-
-    useEffect(() => {
-        const makeDictionarProductsByClient = async () => {
-            const dict = {};
-            compras?.map((compra) => {
+    const makeDictionarProductsByClient = async (responsecompras) => {
+        const dict = {};
+        responsecompras.length > 0 ?
+            responsecompras.map((compra) => {
                 if (!dict[compra.idCliente]) {
                     dict[compra.idCliente] = [];
 
@@ -239,11 +225,26 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
 
 
-            });
-            setDicci(dict);
-        }
-        makeDictionarProductsByClient();
-    }, [dicci]);
+            }) : console.log("No hay compras");
+        setDicci(dict);
+    }
+
+
+    useEffect(() => {
+
+
+        getClientes();
+
+        getProductos();
+        getVersiones();
+        getCompras();
+        getRecursos();
+
+
+
+
+    }, []);
+
 
 
 
