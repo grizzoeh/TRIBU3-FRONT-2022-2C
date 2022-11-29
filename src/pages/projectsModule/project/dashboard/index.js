@@ -61,6 +61,7 @@ export default function Dashboard() {
             .catch((err) => {
                 alert('Se produjo un error al consultar los clientes', err);
             });
+        console.log(assignees);
     };
     const getProyectos = async () => {
         let url = "/psa/projects/?";
@@ -85,7 +86,7 @@ export default function Dashboard() {
             getAssignees();
             getProyectos();
 
-        }, 100000);
+        }, 600000);
         return () => clearInterval(interval);
     }, []);
 
@@ -125,13 +126,13 @@ export default function Dashboard() {
                             title={assignee}
                             onSelect={handleAssigneeFilter}
                         >
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
-                                {"Ninguno"}
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
                             </Dropdown.Item>
                             {assignees.map((assignee) => {
                                 return (
                                     <Dropdown.Item eventKey={assignee.legajo} name="management">
-                                        {assignee.Nombre}+""+{assignee.Apellido}
+                                        {assignee.Nombre} {assignee.Apellido}
                                     </Dropdown.Item>
                                 );
                             })}
