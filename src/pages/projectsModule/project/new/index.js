@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -8,60 +9,46 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
 
 export default function NewProject() {
-  const initialProject = {
-    name: "",
-    description: "",
-    type: "",
-    client: 0,
-    estimated_start_date: "",
-    estimated_finalization_date: "",
-    project_manager: "",
-    resources: [123],
-    stakeholders: [213124],
+  const navigate = useNavigate();
+
+  const navigateProjectDashboard = () => {
+    navigate('/proyectos');
   };
 
+  const initialProject = {
+    name: null,
+    description: null,
+    type: null,
+    estimated_start_date: null,
+    estimated_finalization_date: null,
+    project_manager: null,
+    resources: [],
+    stakeholders: null,
+  };
+
+  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialProject);
-  const [clients, setClients] = useState([
-    {
-        "id": 1,
-        "razon social": "FIUBA",
-        "CUIT": "20-12345678-2"
-    },
-    {
-        "id": 2,
-        "razon social": "FSOC",
-        "CUIT": "20-12345678-5"
-    },
-    {
-        "id": 3,
-        "razon social": "Macro",
-        "CUIT": "20-12345678-3"
-    }
-]);
+  const [clients, setClients] = useState([]);
 
   const getClients = async () => {
-    const externalResourcesURI = new Request(`${SERVER_NAMES.EXTERNAL_RESOURCES}/clientes`);
-
-    fetch(externalResourcesURI)
-      .then((response) => {
-        debugger;
-        response.json()})
-      .then((data) => {
-        debugger
-        console.log(data)})
-      .catch(function (e) {
-        debugger
-        alert(e);
+    axios
+      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+      .then((res) => {
+        setClients(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los clientes', err);
       });
   };
 
-  // useEffect(() => {
-  //   getClients();
-  // }, []);
+  useEffect(() => {
+    getClients();
+  }, []);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -71,13 +58,17 @@ export default function NewProject() {
     setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
   };
 
+  const handleDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, stakeholders: [e] });
+    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  };
+
   const createProject = async () => {
     axios
       .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
       .then((data) => {
         if (data.status === 200) {
-          alert("Nuevo proyecto creado");
-          // TODO: redirect to project dashboard
+          navigateProjectDashboard();
         }
       })
       .catch((err) => {
@@ -139,13 +130,13 @@ export default function NewProject() {
                     name="type"
                     onClick={(e) => handleDropdownChange(e)}
                   >
-                    Cliente
+                    client
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="type"
                     onClick={(e) => handleDropdownChange(e)}
                   >
-                    Soporte
+                    support
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -157,31 +148,20 @@ export default function NewProject() {
               <h4>Cliente</h4>
             </Col>
             <Col xs={9}>
-              <Dropdown>
-                <Dropdown.Toggle
-                  variant="secondary"
-                  id="dropdown-basic"
-                  size="xl"
-                >
-                  {projectData.type ? projectData.type : "Seleccionar"}
-                </Dropdown.Toggle>
-
-                {/* TODO: get clients */}
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    name="client"
-                    onClick={(e) => handleDropdownChange(e)}
-                  >
-                    Cliente
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    name="client"
-                    onClick={(e) => handleDropdownChange(e)}
-                  >
-                    Soporte
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              {/* TODO: get clients */}
+              <DropdownButton
+                variant="secondary"
+                title={buttonTitle}
+                onSelect={handleDropdownButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client.CUIT}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
             </Col>
           </Row>
 
@@ -240,7 +220,7 @@ export default function NewProject() {
           <Row className="mt-5">
             <Col></Col>
             <Col xs={1}>
-              <Button>Crear</Button>
+              <Button onClick={handleSubmit}>Crear</Button>
             </Col>
           </Row>
         </form>
