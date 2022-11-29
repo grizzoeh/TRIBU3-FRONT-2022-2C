@@ -15,6 +15,7 @@ import BotonDeprecarProducto from "../../components/botonDeprecarProducto/BotonD
 import BotonActivarProducto from "../../components/botonActivarProducto/BotonActivarProducto";
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
+import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 
 const CrearProductoYVersion = () => {
 
@@ -81,6 +82,7 @@ const CrearProductoYVersion = () => {
 
     return (
         <Fragment>
+            <NavbarSoporte />
 
             <Container className="container-title">
                 <Row>

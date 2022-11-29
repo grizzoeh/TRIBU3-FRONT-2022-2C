@@ -12,12 +12,14 @@ import ModalVersionesAdquiridas from "../../components/modalVersionesAdquiridas/
 import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 import axios from "axios";
+import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
+
 
 const Clientes = () => {
 
     const FiltroVacios = {
-        "razonsocial":"",
-        "cuit":""
+        "razonsocial": "",
+        "cuit": ""
     };
 
     const SERVER_NAME = "http://localhost:3000";
@@ -59,15 +61,15 @@ const Clientes = () => {
         }
         if (filtroTexto.razonsocial === "" & filtroTexto.cuit !== "") {
             /* Busco CUIT */
-            setClientesFiltrados(clientes.filter(obj => {return obj.CUIT === filtroTexto.cuit}))
+            setClientesFiltrados(clientes.filter(obj => { return obj.CUIT === filtroTexto.cuit }))
         }
         if (filtroTexto.razonsocial !== "" & filtroTexto.cuit === "") {
             /* Busco Razon Social */
-            setClientesFiltrados(clientes.filter(obj => {return obj["razon social"] === filtroTexto.razonsocial}))
+            setClientesFiltrados(clientes.filter(obj => { return obj["razon social"] === filtroTexto.razonsocial }))
         }
         if (filtroTexto.razonsocial !== "" & filtroTexto.cuit !== "") {
             /* Busco Ambas */
-            setClientesFiltrados(clientes.filter(obj => {return obj.CUIT === filtroTexto.cuit & obj["razon social"] === filtroTexto.razonsocial}))
+            setClientesFiltrados(clientes.filter(obj => { return obj.CUIT === filtroTexto.cuit & obj["razon social"] === filtroTexto.razonsocial }))
         }
         handleShowBusquedaOk();
         setFiltrado(true);
@@ -83,13 +85,14 @@ const Clientes = () => {
 
     return (
         <Fragment>
+            <NavbarSoporte />
             <>
-                <Snackbar  open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key = {vertical + horizontal}>
+                <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
                 </Snackbar>
             </>
             <>
-                <Snackbar  open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key = {vertical + horizontal}>
+                <Snackbar open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error: primero se debe ingresar al menos un parametro de busqueda.</Alert>
                 </Snackbar>
             </>
@@ -108,11 +111,11 @@ const Clientes = () => {
                 <Form>
                     <Row>
                         <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
-                        <Col className="v-center" sm={3}><Form.Control type="filtro" name="razonsocial" placeholder="Razon social" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
-                        <Col className="v-center" sm={3}><Form.Control type="filtro"  name="cuit" placeholder="CUIT" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={3}><Form.Control type="filtro" name="razonsocial" placeholder="Razon social" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
+                        <Col className="v-center" sm={3}><Form.Control type="filtro" name="cuit" placeholder="CUIT" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
                         {filtrado ? (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
-                        ):(
+                        ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
                     </Row>
@@ -128,27 +131,27 @@ const Clientes = () => {
                                 <th>Razon Social</th>
                                 <th>CUIT</th>
                                 <th>Versiones Adquiridas</th>
-                            </tr> 
+                            </tr>
                         </thead>
                         <tbody>
-                        {filtrado ? (
-                            clientesFiltrados.length > 0 ? clientesFiltrados.sort((a, b) => a.id > b.id ? 1 : -1).map((cliente) => (
-                                <tr>
-                                    <td>{cliente.id}</td>
-                                    <td>{cliente["razon social"]}</td>
-                                    <td>{cliente.CUIT}</td>
-                                    <td><ModalVersionesAdquiridas cliente={cliente}/></td>
-                                </tr>
+                            {filtrado ? (
+                                clientesFiltrados.length > 0 ? clientesFiltrados.sort((a, b) => a.id > b.id ? 1 : -1).map((cliente) => (
+                                    <tr>
+                                        <td>{cliente.id}</td>
+                                        <td>{cliente["razon social"]}</td>
+                                        <td>{cliente.CUIT}</td>
+                                        <td><ModalVersionesAdquiridas cliente={cliente} /></td>
+                                    </tr>
                                 )) : <Row className="centered">No se encontraron clientes para los filtros dados</Row>
-                            ):(
-                            clientes.length > 0 ? clientes.sort((a, b) => a.id > b.id ? 1 : -1).map((cliente) => (
-                                <tr>
-                                    <td>{cliente.id}</td>
-                                    <td>{cliente["razon social"]}</td>
-                                    <td>{cliente.CUIT}</td>
-                                    <td><ModalVersionesAdquiridas cliente={cliente}/></td>
-                                </tr>
-                            )) : <Row className="centered">No se encontraron clientes</Row>
+                            ) : (
+                                clientes.length > 0 ? clientes.sort((a, b) => a.id > b.id ? 1 : -1).map((cliente) => (
+                                    <tr>
+                                        <td>{cliente.id}</td>
+                                        <td>{cliente["razon social"]}</td>
+                                        <td>{cliente.CUIT}</td>
+                                        <td><ModalVersionesAdquiridas cliente={cliente} /></td>
+                                    </tr>
+                                )) : <Row className="centered">No se encontraron clientes</Row>
                             )}
                         </tbody>
                     </Table>

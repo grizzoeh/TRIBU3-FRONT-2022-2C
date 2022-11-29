@@ -113,12 +113,12 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     }
 
     const setearIdProductoTicket = (idProductoASetear) => {
-        setTicketData({ ...TicketData, ['idProducto']: idProductoASetear });
+        setTicketData({ ...TicketData, ['idProducto']: idProductoASetear, ['idVersion']: null });
 
     }
 
     const setearIdClienteTicket = (idClienteASetear) => {
-        setTicketData({ ...TicketData, ['idCliente']: idClienteASetear });
+        setTicketData({ ...TicketData, ['idCliente']: idClienteASetear, ['idProducto']: null, ['idVersion']: null });
 
     }
 
