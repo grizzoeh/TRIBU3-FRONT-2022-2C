@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, Component } from "react";
 import Calendar from 'react-calendar'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -54,12 +54,17 @@ const ModalModificarCategorias = () => {
             console.log("anda?")
         })
     }
+    
+    const [semilla,setSemilla] = useState(1);
+    const reset = () => {
+        setSemilla(Math.random());
+    }
+    
 
     return (
         <container>
             <div id = 'CategoriaId'>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>{setCatId(e.target.value)}}/>
-                
                 <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar Categoria</Button></Col>
                     <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                     <Modal.Header closeButton onClick={handleClose}>
@@ -75,7 +80,8 @@ const ModalModificarCategorias = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
-                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar categoria</Button>
+                        <Component key={semilla}/>
+                        <Button className="h-end" variant="primary" onClick={() => {reset();handleClick()}}>Modificar categoria</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

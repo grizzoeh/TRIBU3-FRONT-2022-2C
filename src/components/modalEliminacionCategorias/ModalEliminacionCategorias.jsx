@@ -47,9 +47,6 @@ const ModalEliminacionCategorias = () => {
             },
             body: JSON.catId
         })
-    setTimeout(1000);
-    window.location.reload(false);
-
     }
 
     return (

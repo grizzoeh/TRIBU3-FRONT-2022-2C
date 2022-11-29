@@ -34,6 +34,15 @@ const ModalInformacionReportes = () => {
     const [isShown, setIsShown] = useState(false);
     //const [cargasHoras, setCargasHoras] = useState([]);
 
+    const [categorias, setCategorias] = useState([])
+    const[nombre, setNombre]=useState([])
+    const[descripcion, setDescripcion]=useState([])
+    const[catId, setCatId]=useState([])
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const navigate = useNavigate();
     
     const[empleados, setEmpleados]=useState([])
@@ -55,17 +64,21 @@ const ModalInformacionReportes = () => {
         })
     },[])
 
+    const [ReporteProyectos, setReporteProyectos] = useState([]);
+    
     function createDataProyectos(id, nombre) {
         return { id, nombre };
       }
+      //ID + FECHA + CANTIDAD HORAS + ID PROYECTO + ID TAREA + LEGAJO + NOMBRE TAREA + NOMBRE PROYECTO + ESTADO + CATEGORIA
+      //En este handle tenemos que hacer que levante los proyectos para mostrar el reporte
+      const handleClick=(e)=>{
+        fetch(`https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + catId)
+        .then(res=>res.json())
+        .then((result)=>{
+            setReporteProyectos(result);
+        })
+    }
 
-    const cargasHorasProyectos = [
-        createDataProyectos(1,'Proyecto A'),
-        createDataProyectos(2,'Proyecto B'),
-        createDataProyectos(3,'Proyecto C'),
-        createDataProyectos(4,'Proyecto D')
-    ];
-    
     function Search() {
         const [inputText, setInputText] = useState("");
         let inputHandler = (e) => {
@@ -123,6 +136,22 @@ const ModalInformacionReportes = () => {
         <container>
             <div>
                 <TextField id="outlined-basic-proyectos" label="Buscar Proyectos por Id" variant="outlined" onChange sx={{ minWidth: 650 }}/>
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Ver Reporte</Button></Col>
+                    <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
+                    <Modal.Header closeButton onClick={handleClose}>
+                        <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Reporte {catId}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row className="campo">
+                            <Col><h6>Reporte</h6></Col>
+                            <Form.Control name="nombre" type="filtro" placeholder="Nombre" onChange={(e)=>setNombre(e.target.value)}/>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="h-end" variant="secondary" onClick={handleClose}>Denegar</Button>
+                        <Button className="h-end" variant="primary" onClick={handleClick}>Aprobar</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
             <div>
                 <TableContainer id="tableProyects" component={Paper}>
