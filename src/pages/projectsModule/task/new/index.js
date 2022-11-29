@@ -9,7 +9,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
-
+import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
@@ -67,6 +67,11 @@ export default function NewTask() {
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, dependencies: [e] });
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
+  };
+
+  const handleDependencyDropdownButtonChange2 = (e) => {
+    setProjectData({ ...projectData, dependencies: [e] });
+    //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
@@ -175,7 +180,9 @@ export default function NewTask() {
             </Col>
             <Col xs={9}>
               {/* TODO: get clients */}
-              <DropdownButton
+              <Select isMulti options={tareas} getOptionLabel={(tarea) => tarea.name}
+              getOptionValue={(tarea) => tarea.id} onChange={handleDependencyDropdownButtonChange2}/>
+              {/*<DropdownButton
                 variant="secondary"
                 title={DependencybuttonTitle}
                 onSelect={handleDependencyDropdownButtonChange}
@@ -187,7 +194,7 @@ export default function NewTask() {
                     </Dropdown.Item>
                   );
                 })}
-              </DropdownButton>
+              </DropdownButton>*/}
             </Col>
           </Row>
 
