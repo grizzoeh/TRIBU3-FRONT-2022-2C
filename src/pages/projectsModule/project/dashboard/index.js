@@ -14,8 +14,8 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 
 export default function Dashboard() {
-    const states =[{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
-    const types = [{"name": "client"}, {"name": "support"}];
+    const states =[{"name":"Todos"},{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
+    const types = [{"name": "Todos"},{"name": "client"}, {"name": "support"}];
 
     const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
     const [proyectos, setProyectos] = useState([]);
@@ -32,13 +32,13 @@ export default function Dashboard() {
 
     const handleStateFilter = (e) => {
         setState(e);
-        stateQuery="status="+e+"&";
+        e==="Todos"?stateQuery="":stateQuery="status="+e+"&";
         getProyectos();
     };
     const handleAssigneeFilter = (e) => {
 
         setAssignee(e);
-        assigneeQuery="assignee="+e+"&";
+        e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
         getProyectos();
     };
     const handlePriorityFilter = (e) => {
@@ -48,13 +48,13 @@ export default function Dashboard() {
     };
     const handleTypeFilter = (e) => {
         setType(e);
-        typeQuery="type="+e+"&";
+        e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
         getProyectos();
     };
 
     const getAssignees = async () => {
         axios
-            .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+            .get(SERVER_NAMES.ASSIGNEES , {})
             .then((res) => {
                 setAssignees(res.data);
             })
@@ -79,9 +79,14 @@ export default function Dashboard() {
             });
     };
 
+
     useEffect(() => {
-        getAssignees();
-        getProyectos();
+        const interval = setInterval(() => {
+            getAssignees();
+            getProyectos();
+
+        }, 100000);
+        return () => clearInterval(interval);
     }, []);
 
     return (
@@ -112,7 +117,7 @@ export default function Dashboard() {
                     </Col>
 
                     <Col>
-                        <h4>Reaponsable</h4>
+                        <h4>Project Management</h4>
                     </Col>
                     <Col>
                         <DropdownButton
@@ -120,10 +125,13 @@ export default function Dashboard() {
                             title={assignee}
                             onSelect={handleAssigneeFilter}
                         >
+                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                            </Dropdown.Item>
                             {assignees.map((assignee) => {
                                 return (
-                                    <Dropdown.Item eventKey={assignee.id} name="client">
-                                        {assignee.CUIT}
+                                    <Dropdown.Item eventKey={assignee.legajo} name="management">
+                                        {assignee.Nombre}+""+{assignee.Apellido}
                                     </Dropdown.Item>
                                 );
                             })}
