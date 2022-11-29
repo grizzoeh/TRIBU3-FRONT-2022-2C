@@ -14,6 +14,7 @@ import * as SERVER_NAMES from "../../APIRoutes";
 import MockProjects from "../../../../Mock/projects";
 import KanbanDashboard from "./kanbanDashboard";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
 
 export default function DashboardTareas() {
     const params = useParams();
@@ -42,7 +43,7 @@ export default function DashboardTareas() {
 
   const handlePriorityFilter = (e) => {
     setPriority(e);
-    priorityQuery="priority="+e+"&";
+    e===0?priorityQuery="":priorityQuery="priority="+e+"&";
     getTarea();
   };
 
@@ -175,28 +176,18 @@ export default function DashboardTareas() {
                     </Col>
 
                     <Col>
-                        <h4>Criticidad:</h4>
+                        <h4>Prioridad:</h4>
                     </Col>
                     <Col >
-                        <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                {filters["criticidad"]}
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Todas</Dropdown.Item>
-                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Baja</Dropdown.Item>
-                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Media</Dropdown.Item>
-                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Alta</Dropdown.Item>
-                                <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Crítica</Dropdown.Item>
-
-
-
-                            </Dropdown.Menu>
-                        </Dropdown>
+                    <Form.Control
+                        type="number"
+                        min="0"
+                        placeholder="Ej: 2"
+                        name="priority"
+                        onChange={(e) => handlePriorityFilter(e)}/>
                     </Col>
 
-                    <Col>
+                    {/*<Col>
                         <h4>Estado2:</h4>
                     </Col>
                     <Col >
@@ -222,7 +213,7 @@ export default function DashboardTareas() {
                     <Col>
                         <h4>Cliente:</h4>
                     </Col>
-                    {/*<Col >
+                    <Col >
                         <Dropdown>
                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                 {filters["cliente"]}
