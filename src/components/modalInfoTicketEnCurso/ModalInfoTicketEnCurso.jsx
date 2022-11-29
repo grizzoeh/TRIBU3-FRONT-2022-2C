@@ -53,9 +53,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
     const [recursos, setRecursos] = useState();
 
-    const setearIdAsesor = (idAsesorASetear) => {
-        setTicketEditable({ ...ticketEditable, ['idAsesor']: idAsesorASetear });
-    }
+
 
     const handleClose = () => {
         setShow(false);
@@ -87,7 +85,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
             idVersion: ticketEditable.idVersion,
         }
 
-        if (ticketEditado.id == null || ticketEditado.id == "" || ticketEditado.titulo == null || ticketEditado.titulo == "" || ticketEditado.categoria == null || ticketEditado.categoria == "" || ticketEditado.criticidad == null || ticketEditado.criticidad == "" || ticketEditado.estado == null || ticketEditado.estado == "" || ticketEditado.fechaCreacion == null || ticketEditado.fechaCreacion == "" || ticketEditado.idCliente == null || ticketEditado.idCliente == "" || ticketEditado.descripcion == null || ticketEditado.descripcion == "" || ticketEditado.medioContactoCliente == null || ticketEditado.medioContactoCliente == "" || ticketEditado.idProducto == null || ticketEditado.idProducto == "" || ticketEditado.idAsesor == null || ticketEditado.idAsesor == "" || ticketEditado.nombreAsesor == null || ticketEditado.nombreAsesor == "" || ticketEditado.areaAsesor == null || ticketEditado.areaAsesor == "" || ticketEditado.notas == null || ticketEditado.notas == "" || ticketEditado.idVersion == null || ticketEditado.idVersion == "") {
+        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.notas === null || ticketEditado.notas === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
             setAlertaDatosNulos(true);
         } else {
 

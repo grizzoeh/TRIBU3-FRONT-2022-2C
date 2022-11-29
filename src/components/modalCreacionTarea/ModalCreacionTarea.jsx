@@ -8,7 +8,6 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 
-import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setAlertaTareaExito }) => {
@@ -16,7 +15,6 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
     const [proyectos, setProyectos] = useState();
 
-    const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
     const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
 
     const [show, setShow] = useState(true);
@@ -43,13 +41,14 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
     const [prioridadTarea, setPrioridadTarea] = useState("");
 
-    const onChangePrioridadTarea = (e) => {
-        setPrioridadTarea(e.target.value);
-    };
+
 
     const onChangeProyectoSeleccionado = (e, idProyecto) => {
-        setProyectoSeleccionado(e.target.value);
         setProyectoSeleccionadoId(idProyecto);
+    };
+
+    const onChangePrioridadTarea = (e) => {
+        setPrioridadTarea(e.target.value);
     };
 
     const enviarTarea = async () => {
@@ -122,7 +121,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
                         </Col>
                         <Col xs={2}>
-                            <Form.Control type="number" min="0" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
+                            <Form.Control type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
 
 
                         </Col>

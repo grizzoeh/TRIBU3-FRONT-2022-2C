@@ -127,10 +127,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     }
 
-    const setearIdAsesor = (idAsesorASetear) => {
-        setTicketData({ ...TicketData, ['idAsesor']: idAsesorASetear });
 
-    }
 
     const handleClose = () => {
         setShowCreacionModal(false);
