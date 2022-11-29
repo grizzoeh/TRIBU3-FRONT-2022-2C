@@ -7,6 +7,7 @@ import Table from 'react-bootstrap/Table'
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import ModalAsociarVersion from '../modalAsociarVersion/ModalAsociarVersion';
+import BotonQuitarCompra from '../botonQuitarCompra/BotonQuitarCompra';
 import axios from "axios";
 
 function ModalVersionesAdquiridas(cliente) {
@@ -110,7 +111,7 @@ function ModalVersionesAdquiridas(cliente) {
     }, [])
 
     return (
-        <>
+        <>  
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent3" show={show} onHide={handleClose}>
                 <Modal.Header closeButton onClick={handleClose}>
@@ -157,7 +158,7 @@ function ModalVersionesAdquiridas(cliente) {
                                         <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre):(<></>)}</td>
                                         <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre):(<></>)}</td>
                                         <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                        <td><></></td>
+                                        <td><BotonQuitarCompra compra={compra}/></td>
                                     </tr>
                                 )) : <Row className="centered">No se encontraron compras</Row>
                                 )}

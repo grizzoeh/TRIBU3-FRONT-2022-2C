@@ -68,7 +68,6 @@ function ModalAsociarVersion(compras) {
             "idCliente":compras["cliente"].id,
             "idVersion":nuevaCompra.idVersion,
             "fechaCompra":currentdate
-
         })
             .then((data) => {
                 if (data.data.ok) {

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios";
 
 
-function BotonActivarVersion(version, refreshFunction) {
+function BotonActivarVersion(version) {
 
     const SERVER_NAME = "http://localhost:3000";
 
