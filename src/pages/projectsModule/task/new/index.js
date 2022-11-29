@@ -11,7 +11,6 @@ import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
-//import { useLocation } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
 export default function NewTask() {
@@ -28,30 +27,10 @@ export default function NewTask() {
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
-  //const location = useLocation();
   const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
-  // preguntar si esta hecho manualmente temporalmente
-  const [clients, setClients] = useState([
-    {
-      id: 1,
-      "razon social": "FIUBA",
-      CUIT: "20-12345678-2",
-    },
-    {
-      id: 2,
-      "razon social": "FSOC",
-      CUIT: "20-12345678-5",
-    },
-    {
-      id: 3,
-      "razon social": "Macro",
-      CUIT: "20-12345678-3",
-    },
-  ]);
-  // modificar para pedir al modulo recursos los empleados
-  // preguntar por que no usa getClients en index.js de proyecto
+  const [clients, setClients] = useState([]);
   
   
    useEffect(() => {
@@ -64,60 +43,43 @@ export default function NewTask() {
             .catch((err) => {
                 alert('Se produjo un error al consultar las tareas para el proyecto', err);
             });
-            //setTareas([{"name":"Desarrollar nuevo endpoint para carga de Riesgos","description":"Alguna descripción","estimated_hours_effort":1,"estimated_start_date":"2022-12-18","estimated_finalization_date":"2022-12-18","dependencies":[1,2,123],"assignees":[213124,433543],"priority":"low"}])
         };
 
-        const getEmployees = async () => {
-          const externalResourcesURI = new Request(
-            `${SERVER_NAMES.RESOURCES}/recursos/empleados/empleado`
-          );
-      
-          fetch(externalResourcesURI)
-            .then((response) => {
-              debugger;
-              response.json();
-            })
-            .then((data) => {
-              debugger;
-              // preguntar si aca agarro la data
-              setClients(data);
-              console.log(data);
-            })
-            .catch(function (e) {
-              debugger;
-              alert(e);
-            });
+        const getAssignees = async () => {
+          axios
+              .get(SERVER_NAMES.ASSIGNEES , {})
+              .then((res) => {
+                  setClients(res.data);
+              })
+              .catch((err) => {
+                  alert('Se produjo un error al consultar los clientes', err);
+              });
         };
-        //getEmployees();
+
+        getAssignees();
         getTareas();
    }, [params.id]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
-  /*
-  const handleDropdownChange = (e) => {
-    setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
-  };*/
 
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, dependencies: [e] });
-    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id === e).name);
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, assignees: [e] });
-    setAssigneeButtonTitle(clients.find((client) => client.id == e).CUIT);
+    setAssigneeButtonTitle(clients.find((client) => client.legajo === e).Nombre);
   };
 
   const createTask = async () => {
-    //const location = useLocation();
     axios
       .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
       .then((data) => {
         if (data.status === 200) {
           alert("Nueva tarea creada");
-          // TODO: redirect to project dashboard
         }
       })
       .catch((err) => {
@@ -242,8 +204,8 @@ export default function NewTask() {
               >
                 {clients.map((client) => {
                   return (
-                    <Dropdown.Item eventKey={client.id} name="client">
-                      {client.CUIT}
+                    <Dropdown.Item eventKey={client.legajo} name="client">
+                      {client.Nombre}
                     </Dropdown.Item>
                   );
                 })}
