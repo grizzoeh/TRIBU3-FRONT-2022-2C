@@ -141,7 +141,7 @@ const Clientes = () => {
                                         <td>{cliente.id}</td>
                                         <td>{cliente["razon social"]}</td>
                                         <td>{cliente.CUIT}</td>
-                                        <td><ModalVersionesAdquiridas cliente={cliente} /></td>
+                                        <td><ModalVersionesAdquiridas cliente={cliente} refreshClientes={getClientes}/></td>
                                     </tr>
                                 )) : <Row className="centered">No se encontraron clientes para los filtros dados</Row>
                             ) : (
@@ -150,7 +150,7 @@ const Clientes = () => {
                                         <td>{cliente.id}</td>
                                         <td>{cliente["razon social"]}</td>
                                         <td>{cliente.CUIT}</td>
-                                        <td><ModalVersionesAdquiridas cliente={cliente} /></td>
+                                        <td><ModalVersionesAdquiridas cliente={cliente}/></td>
                                     </tr>
                                 )) : <Row className="centered">No se encontraron clientes</Row>
                             )}

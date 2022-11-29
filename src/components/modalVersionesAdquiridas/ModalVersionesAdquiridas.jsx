@@ -10,6 +10,8 @@ import ModalAsociarVersion from '../modalAsociarVersion/ModalAsociarVersion';
 import BotonQuitarCompra from '../botonQuitarCompra/BotonQuitarCompra';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
 
 function ModalVersionesAdquiridas(cliente) {
@@ -33,19 +35,22 @@ function ModalVersionesAdquiridas(cliente) {
     const vertical = "top"
     const horizontal = "center"
 
+    const [showBusquedaError, setShowBusquedaError] = useState(false);
+    const [showBusquedaOk, setShowBusquedaOk] = useState(false);
+    const [showEliminar, setShowEliminar] = useState(false);
+    const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
+    const handleShowBusquedaOk = () => setShowBusquedaOk(true);
+    const handleCloseBusquedaError = () => setShowBusquedaError(false);
+    const handleShowBusquedaError = () => setShowBusquedaError(true);
+    const handleCloseEliminar = () => setShowEliminar(false);
+    const handleShowEliminar = () => setShowEliminar(true);
 
-    const testing = async () => {
-        /*
-        console.log("productos:", productos);
-        console.log("versiones:", versiones);
-        productos.find(producto => producto.id === compra.idProducto).nombre
-        */
-    }
 
     const handleBotonFiltrado = async () => {
         setComprasFiltradas(compras);
         if (filtroTexto.producto === "" & filtroTexto.version === "") {
-            return
+            handleShowBusquedaError();
+            return;
         }
         if (filtroTexto.producto === "" & filtroTexto.version !== "") {
             /* Busco Version */
@@ -59,6 +64,7 @@ function ModalVersionesAdquiridas(cliente) {
             /* Busco Ambas */
             setComprasFiltradas(compras.filter(compra => { return productos.find(producto => producto.id === compra.idProducto).nombre === filtroTexto.producto & versiones.find(version => version.id === compra.idVersion).nombre === filtroTexto.version }));
         }
+        handleShowBusquedaOk();
         setFiltrado(true);
     }
 
@@ -114,6 +120,21 @@ function ModalVersionesAdquiridas(cliente) {
 
     return (
         <>
+            <>
+                <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error: primero se debe ingresar al menos un parametro de busqueda.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showEliminar} autoHideDuration={1500} onClose={handleCloseEliminar} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseEliminar} variant="info" sx={{ width: '100%' }}>Compra eliminada con exito.</Alert>
+                </Snackbar>
+            </>
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent3" show={show} onHide={handleClose}>
                 <Modal.Header closeButton onClick={handleClose}>
@@ -129,7 +150,7 @@ function ModalVersionesAdquiridas(cliente) {
                         ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} /></Col>
+                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} refreshCompras={getCompras}/></Col>
                     </Row>
                     <Row>
                         <Table compras>
@@ -150,7 +171,7 @@ function ModalVersionesAdquiridas(cliente) {
                                             <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre) : (<></>)}</td>
                                             <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre) : (<></>)}</td>
                                             <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                            <td><></></td>
+                                            <td><BotonQuitarCompra compra={compra} refreshCompras={getCompras} refreshAlert={handleShowEliminar}/></td>
                                         </tr>
                                     )) : <Row className="centered">No se encontraron compras para los filtros dados</Row>
                                 ) : (
@@ -160,7 +181,7 @@ function ModalVersionesAdquiridas(cliente) {
                                             <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre) : (<></>)}</td>
                                             <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre) : (<></>)}</td>
                                             <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                            <td><BotonQuitarCompra compra={compra} /></td>
+                                            <td><BotonQuitarCompra compra={compra} refreshCompras={getCompras} refreshAlert={handleShowEliminar}/></td>
                                         </tr>
                                     )) : <Row className="centered">No se encontraron compras</Row>
                                 )}

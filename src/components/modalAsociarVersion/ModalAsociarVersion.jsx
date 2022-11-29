@@ -8,8 +8,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
+import { wait } from '@testing-library/user-event/dist/utils/misc/wait';
 
-function ModalAsociarVersion(compras) {
+function ModalAsociarVersion({cliente, compras, refreshCompras}) {
 
     const NuevaCompraVacia = {
         "producto": "",
@@ -26,6 +29,16 @@ function ModalAsociarVersion(compras) {
     const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const vertical = "top"
+    const horizontal = "center"
+
+    const [showBusquedaError, setShowBusquedaError] = useState(false);
+    const [showBusquedaOk, setShowBusquedaOk] = useState(false);
+    const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
+    const handleShowBusquedaOk = () => setShowBusquedaOk(true);
+    const handleCloseBusquedaError = () => setShowBusquedaError(false);
+    const handleShowBusquedaError = () => setShowBusquedaError(true);
 
     const handleDropdownChange = (e, idProducto, idVersion) => {
         if (e.target.name === "producto") {
@@ -66,19 +79,22 @@ function ModalAsociarVersion(compras) {
         var currentdate = new Date();
         axios.post(SERVER_NAME_SOPORTE + "/compras", {
             "idProducto": nuevaCompra.idProducto,
-            "idCliente": compras["cliente"].id,
+            "idCliente": cliente.id,
             "idVersion": nuevaCompra.idVersion,
             "fechaCompra": currentdate
         })
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Compra creada");
-                    window.location.reload();
+                    setNuevaCompra(NuevaCompraVacia)
+                    handleShowBusquedaOk();
+                    refreshCompras();
                     handleClose();
                 }
             })
             .catch((error) => {
                 console.log(error);
+                handleShowBusquedaError();
             });
     }
 
@@ -87,14 +103,23 @@ function ModalAsociarVersion(compras) {
         getVersiones();
     }, [])
 
+
     return (
         <>
+            <>
+                <Snackbar className="alerta" open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert className="alerta" onClose={handleCloseBusquedaOk} variant="success" sx={{ width: '100%' }}>Compra creada con exito.</Alert>
+                </Snackbar>
+            </>
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Asociar version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear un nuevo producto: </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Snackbar className="alerta" open={showBusquedaError} autoHideDuration={1500} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert className="alerta" show={showBusquedaError} onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error al crear la compra.</Alert>
+                    </Snackbar>
                     <Row className="campo">
                         <Col className="v-center"><h6>Producto:</h6></Col>
                         <Col className="v-center">
@@ -103,7 +128,7 @@ function ModalAsociarVersion(compras) {
                                     {nuevaCompra.producto !== "" ? nuevaCompra.producto : "Seleccionar producto"}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    {productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
+                                    {productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).filter(producto => producto.estado === "Activo").map((producto) => (
                                         <Dropdown.Item name="producto" onClick={(e) => { handleDropdownChange(e, producto.id, null) }}>{producto.nombre}</Dropdown.Item>
                                     )) : <></>
                                     }
@@ -119,8 +144,8 @@ function ModalAsociarVersion(compras) {
                                     {nuevaCompra.version !== "" ? nuevaCompra.version : "Seleccionar version"}
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
-                                    {versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
-                                        compras["compras"].some(compra => compra.idVersion === version.id) ? (
+                                    {versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).filter(version => version.estado === "Activa").map((version) => (
+                                        compras.some(compra => compra.idVersion === version.id) ? (
                                             <></>
                                         ) : (
                                             <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e, null, version.id)}>{version.nombre}</Dropdown.Item>
