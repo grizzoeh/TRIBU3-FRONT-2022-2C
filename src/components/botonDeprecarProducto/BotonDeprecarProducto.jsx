@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 function BotonDeprecarProducto(producto) {
 
-    const SERVER_NAME = "http://localhost:3000";
+
 
     const handleEstado = async () => {
         const productoData = {
@@ -13,16 +14,16 @@ function BotonDeprecarProducto(producto) {
             nombre: producto["producto"].nombre,
             estado: "Deprecado"
         }
-        axios.patch(SERVER_NAME + "/productos/producto", productoData)
-        .then((data) => {
-            if (data.data.ok) {
-                console.log("Producto editado");
-                window.location.reload();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        axios.patch(SERVER_NAME_SOPORTE + "/productos/producto", productoData)
+            .then((data) => {
+                if (data.data.ok) {
+                    console.log("Producto editado");
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     return (

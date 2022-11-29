@@ -7,12 +7,14 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 function ModalProductoNuevo() {
-    
+
     const ProductoNulo = {
-        "nombre":null,
-        "estado":null
+        "nombre": null,
+        "estado": null
     }
 
     const [ProductData, setProductData] = useState(ProductoNulo);
@@ -20,19 +22,19 @@ function ModalProductoNuevo() {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
-    const SERVER_NAME = "http://localhost:3000";
+
+
 
     const onChangeProductoEditable = (e) => {
         setProductData({ ...ProductData, [e.target.name]: e.target.value });
     }
-    
+
     const handleDropdownChange = (e) => {
         setProductData({ ...ProductData, [e.target.name]: e.target.innerHTML });
     }
 
     const crearProducto = async () => {
-        axios.post(SERVER_NAME + "/productos", ProductData)
+        axios.post(SERVER_NAME_SOPORTE + "/productos", ProductData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto creado");
@@ -54,7 +56,7 @@ function ModalProductoNuevo() {
                 <Modal.Body>
                     <Row className="campo">
                         <Col><h6>Nombre del producto:</h6></Col>
-                        <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre del producto" onChange={(e) => onChangeProductoEditable(e)}/></Col>
+                        <Col><Form.Control name="nombre" type="filtro" placeholder="Nombre del producto" onChange={(e) => onChangeProductoEditable(e)} /></Col>
                     </Row>
                     <Row className="campo">
                         <Col><h6>Estado del producto:</h6></Col>

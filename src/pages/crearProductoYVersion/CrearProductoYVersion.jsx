@@ -16,6 +16,8 @@ import BotonActivarProducto from "../../components/botonActivarProducto/BotonAct
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
+import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 const CrearProductoYVersion = () => {
 
@@ -24,7 +26,7 @@ const CrearProductoYVersion = () => {
         "estado": "Cualquiera"
     };
 
-    const SERVER_NAME = "http://localhost:3000";
+
     const [productos, setProductos] = useState([]);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
@@ -32,7 +34,7 @@ const CrearProductoYVersion = () => {
 
     const getProductos = async () => {
         axios
-            .get(SERVER_NAME + "/productos/", {
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
             })
             .then((res) => {
                 setProductos(res.data.productos);

@@ -7,17 +7,18 @@ import Modal from 'react-bootstrap/Modal';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 function ModalAsociarVersion(compras) {
 
     const NuevaCompraVacia = {
-        "producto":"",
-        "version":"",
-        "idProducto":null,
-        "idVersion":null,
+        "producto": "",
+        "version": "",
+        "idProducto": null,
+        "idVersion": null,
     };
 
-    const SERVER_NAME = "http://localhost:3000";
+
     const [show, setShow] = useState(false);
     const [versiones, setVersiones] = useState([]);
     const [productos, setProductos] = useState([]);
@@ -28,18 +29,18 @@ function ModalAsociarVersion(compras) {
 
     const handleDropdownChange = (e, idProducto, idVersion) => {
         if (e.target.name === "producto") {
-            setVersionesFiltradas(versiones.filter(obj => {return obj.idProducto === idProducto}))
-            setNuevaCompra({ ...nuevaCompra, ["idProducto"]: idProducto, ["producto"]: e.target.innerHTML, ["idVersion"]: "", ["version"]: ""});
+            setVersionesFiltradas(versiones.filter(obj => { return obj.idProducto === idProducto }))
+            setNuevaCompra({ ...nuevaCompra, ["idProducto"]: idProducto, ["producto"]: e.target.innerHTML, ["idVersion"]: "", ["version"]: "" });
         }
         if (e.target.name === "version") {
-            setNuevaCompra({ ...nuevaCompra, ["idVersion"]: idVersion, ["version"]: e.target.innerHTML});
-            
+            setNuevaCompra({ ...nuevaCompra, ["idVersion"]: idVersion, ["version"]: e.target.innerHTML });
+
         }
     };
 
     const getVersiones = async () => {
         axios
-            .get(SERVER_NAME + "/versiones/", {
+            .get(SERVER_NAME_SOPORTE + "/versiones/", {
             })
             .then((res) => {
                 setVersiones(res.data.versiones);
@@ -51,7 +52,7 @@ function ModalAsociarVersion(compras) {
 
     const getProductos = async () => {
         axios
-            .get(SERVER_NAME + "/productos/", {
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
             })
             .then((res) => {
                 setProductos(res.data.productos);
@@ -63,11 +64,11 @@ function ModalAsociarVersion(compras) {
 
     const crearCompra = async () => {
         var currentdate = new Date();
-        axios.post(SERVER_NAME + "/compras", {
-            "idProducto":nuevaCompra.idProducto,
-            "idCliente":compras["cliente"].id,
-            "idVersion":nuevaCompra.idVersion,
-            "fechaCompra":currentdate
+        axios.post(SERVER_NAME_SOPORTE + "/compras", {
+            "idProducto": nuevaCompra.idProducto,
+            "idCliente": compras["cliente"].id,
+            "idVersion": nuevaCompra.idVersion,
+            "fechaCompra": currentdate
         })
             .then((data) => {
                 if (data.data.ok) {
@@ -87,7 +88,7 @@ function ModalAsociarVersion(compras) {
     }, [])
 
     return (
-        <>  
+        <>
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Asociar version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
@@ -98,15 +99,15 @@ function ModalAsociarVersion(compras) {
                         <Col className="v-center"><h6>Producto:</h6></Col>
                         <Col className="v-center">
                             <Dropdown>
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
-                                        {nuevaCompra.producto !== "" ? nuevaCompra.producto : "Seleccionar producto"}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        {productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
-                                            <Dropdown.Item name="producto" onClick={(e) => {handleDropdownChange(e, producto.id, null)}}>{producto.nombre}</Dropdown.Item>
-                                        )) : <></>
-                                        }
-                                    </Dropdown.Menu>
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
+                                    {nuevaCompra.producto !== "" ? nuevaCompra.producto : "Seleccionar producto"}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {productos.length > 0 ? productos.sort((a, b) => a.id > b.id ? 1 : -1).map((producto) => (
+                                        <Dropdown.Item name="producto" onClick={(e) => { handleDropdownChange(e, producto.id, null) }}>{producto.nombre}</Dropdown.Item>
+                                    )) : <></>
+                                    }
+                                </Dropdown.Menu>
                             </Dropdown>
                         </Col>
                     </Row>
@@ -114,19 +115,19 @@ function ModalAsociarVersion(compras) {
                         <Col className="v-center"><h6>Version:</h6></Col>
                         <Col className="v-center">
                             <Dropdown>
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
-                                        {nuevaCompra.version !== "" ? nuevaCompra.version : "Seleccionar version"}
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        {versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
-                                            compras["compras"].some(compra => compra.idVersion === version.id) ? (
-                                                <></>
-                                            ):(
-                                                <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e, null, version.id)}>{version.nombre}</Dropdown.Item> 
-                                            )
-                                        )) : <></>
-                                        }
-                                    </Dropdown.Menu>
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
+                                    {nuevaCompra.version !== "" ? nuevaCompra.version : "Seleccionar version"}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
+                                        compras["compras"].some(compra => compra.idVersion === version.id) ? (
+                                            <></>
+                                        ) : (
+                                            <Dropdown.Item name="version" onClick={(e) => handleDropdownChange(e, null, version.id)}>{version.nombre}</Dropdown.Item>
+                                        )
+                                    )) : <></>
+                                    }
+                                </Dropdown.Menu>
                             </Dropdown>
                         </Col>
                     </Row>
