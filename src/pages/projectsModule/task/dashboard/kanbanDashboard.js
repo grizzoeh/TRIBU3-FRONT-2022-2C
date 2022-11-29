@@ -62,7 +62,7 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
           const newStatus = getNewStatus(destination.droppableId);
 
           axios.patch(SERVER_NAME + `/psa/projects/tasks/${result.draggableId}`, {
-            state: newStatus,
+            status: newStatus,
          }) 
          getUpdate();
          console.log(update);
