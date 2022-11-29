@@ -56,7 +56,6 @@ const TicketsEnCurso = () => {
     const handleDropdownFilter = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
 
-        console.log("filters", filters);
 
 
     };

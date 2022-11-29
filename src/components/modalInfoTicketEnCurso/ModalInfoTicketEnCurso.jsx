@@ -142,96 +142,80 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     };
 
 
+    const getClientes = async () => {
+        axios
+            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+            })
+            .then((response) => {
+                setClientes(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+    }
+
+    const getProductos = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
+            })
+            .then((res) => {
+                setProductos(res.data.productos);
 
 
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-    useEffect(() => {
+    const getVersiones = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/versiones/", {
+            })
+            .then((res) => {
+                setVersiones(res.data.versiones);
 
-        const getClientes = async () => {
-            axios
-                .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-                })
-                .then((response) => {
-                    console.log(response);
-                    setClientes(response.data);
-                }
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
-            //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
-        }
+    const getCompras = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/compras/", {
+            })
+            .then((res) => {
+                setCompras(res.data.compras);
+                makeDictionarProductsByClient(res.data.compras);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-        const getProductos = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/productos/", {
-                })
-                .then((res) => {
-                    setProductos(res.data.productos);
+    const getRecursos = async () => {
+        axios
+            .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
 
+            })
+            .then((response) => {
+                // console.log(response);
+                setRecursos(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getVersiones = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/versiones/", {
-                })
-                .then((res) => {
-                    setVersiones(res.data.versiones);
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getCompras = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/compras/", {
-                })
-                .then((res) => {
-                    setCompras(res.data.compras);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getRecursos = async () => {
-            axios
-                .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
-
-                })
-                .then((response) => {
-                    // console.log(response);
-                    setRecursos(response.data);
-                }
-                )
-                .catch((error) => {
-                    console.log(error);
-                });
-        }
-
-
-
-        getProductos();
-        getRecursos();
-        getVersiones();
-        getClientes();
-        getCompras();
-
-
-    }, []);
-
-    useEffect(() => {
-        const makeDictionarProductsByClient = async () => {
-            const dict = {};
-            compras?.map((compra) => {
+    const makeDictionarProductsByClient = async (comprasresponse) => {
+        const dict = {};
+        comprasresponse.length > 0 ?
+            comprasresponse.map((compra) => {
                 if (!dict[compra.idCliente]) {
                     dict[compra.idCliente] = [];
 
@@ -245,12 +229,26 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
 
-            });
-            setDicci(dict);
-        }
-        makeDictionarProductsByClient();
-    }, [dicci]);
+            }) : console.log("No hay compras");
+        setDicci(dict);
+    }
 
+
+    useEffect(() => {
+
+        getProductos();
+        getRecursos();
+        getVersiones();
+        getClientes();
+        getCompras();
+
+
+    }, []);
+
+    useEffect(() => {
+
+        //makeDictionarProductsByClient();
+    }, []);
 
 
 
@@ -409,7 +407,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                 <Dropdown.Menu>
                                                     {clientes ?
                                                         clientes.map((cliente) => (
-                                                            <Dropdown.Item name="nombreCliente" onClick={(e) => {
+                                                            <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
                                                                 setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"] });
                                                                 setIdClienteFilter(cliente["id"]);
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
@@ -457,14 +455,15 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
-                                            <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {productos?.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
-                                                    }
-                                                </Dropdown.Toggle>
+                                            {Object.keys(dicci).length > 0 ?
+                                                <Dropdown >
+                                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
+                                                        {productos?.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                                        }
+                                                    </Dropdown.Toggle>
 
-                                                <Dropdown.Menu>
-                                                    {/* {
+                                                    <Dropdown.Menu>
+                                                        {/* {
                                                         productos ?
                                                             compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
                                                                 <Dropdown.Item name="nombreProducto" onClick={(e) => {
@@ -472,29 +471,25 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                                     setIdProductoFilter(compra["idProducto"]);
                                                                 }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
                                                             )) : null} */}
-                                                    {dicci ?
-                                                        dicci[idClienteFilter]?.map((idProducto) => (
-                                                            <Dropdown.Item name="nombreProducto" onClick={
-                                                                (e) => {
-                                                                    setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto });
-                                                                    setIdProductoFilter(idProducto);
-                                                                }
-                                                            } >
-                                                                {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
+                                                        {dicci ?
+                                                            dicci[idClienteFilter]?.map((idProducto) => (
+                                                                <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
+                                                                    (e) => {
+                                                                        setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto });
+                                                                        setIdProductoFilter(idProducto);
+                                                                    }
+                                                                } >
+                                                                    {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
 
-                                                            </Dropdown.Item>
-                                                        ))
-
-
-                                                        : null}
+                                                                </Dropdown.Item>
+                                                            ))
 
 
+                                                            : <></>}
 
-
-
-
-                                                </Dropdown.Menu>
-                                            </Dropdown>
+                                                    </Dropdown.Menu>
+                                                </Dropdown>
+                                                : <></>}
                                         </Col >
 
                                     </Row >
@@ -531,7 +526,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                         compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
                                                             .map((compra) => (
                                                                 //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
+                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
 
                                                     }
                                                 </Dropdown.Menu>
@@ -561,7 +556,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                     {recursos ?
                                                         recursos.map((recurso) => (
-                                                            <Dropdown.Item name="nombreAsesor" id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                            <Dropdown.Item name="nombreAsesor" key={recurso['legajo']} id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>
