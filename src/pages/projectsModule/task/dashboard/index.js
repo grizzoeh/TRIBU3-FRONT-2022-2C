@@ -97,13 +97,13 @@ export default function DashboardTareas() {
                         */
                             to={`/proyectos/${proyecto.id}/crear-tarea/`}
                         >
-                            <Button variant="primary" onClick={console.log("click crear tarea")}>Crear Tarea</Button>
+                            <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
                         {/* <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button> */}
                         </Link>
                     {/*</a>*/}
                     </Col>
                     < Col>
-                        <Button variant="primary" onClick={console.log("click diagrama gannt")}>
+                        <Button variant="primary" onClick={() => console.log("click diagrama gannt")}>
                           Diagrama de Gannt
                       </Button>
                     
