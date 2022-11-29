@@ -14,13 +14,30 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import { render } from "@testing-library/react";
+import IconButton from '@mui/material/IconButton';
 
+
+const MAXHORAS = 24;
+const MINHORAS = 0;
 
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
     const [isShown, setIsShown] = useState(false);
     const [proyectos, setProyectos] = useState([])
     const [ProjectText, setProjectText] = useState('Seleccionar')
+    const [mostrarHoras, setMostrarHoras] = useState(false);
+    const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
+    let [count, setCount] = useState(0);
+
+    
+    let Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
+    let listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
+                                            onClick={() => procedimientoTareaElegida(tarea)}>{tarea}</NavDropdown.Item>)
+
+    function procedimientoTareaElegida(nombreTarea){
+        setdropdownTareaText(nombreTarea)
+        setMostrarHoras(true)
+    }
 
     useEffect(()=>{
         fetch("https://squad-8-projects.herokuapp.com/psa/projects/")
@@ -29,18 +46,28 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             setProyectos(result);
         })
     },[])
+    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" 
+                                                    onClick={() => {handleClick(); 
+                                                    setProjectText(proyecto.name)}}>{proyecto.name}
+                                                    </NavDropdown.Item>)
 
-    const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
-    const changeDropdownTareaText = (text) => setdropdownTareaText(text);
 
     const handleClick = event => {
         setIsShown(true);
     }
-
-    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" onClick={() => {handleClick(); setProjectText(proyecto.name)}}>{proyecto.name}</NavDropdown.Item>)
-
-    const Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
-    const listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item" onClick={() => setdropdownTareaText(tarea)}>{tarea}</NavDropdown.Item>)
+    
+    function incrementCount() {
+        if(count+1 <= MAXHORAS){
+            count = count + 1;
+            setCount(count);
+        }
+    }
+    function decrementCount() {
+        if(count-1 >= MINHORAS){
+            count = count - 1;
+            setCount(count);
+        }
+    }
 
     return (
         <container>
@@ -55,9 +82,14 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                     {listTareas}   
                                 </NavDropdown>
                             </div>}
-            </div>
-
-            <div>
+                {mostrarHoras && <div className="App">
+                                    <div>
+                                        <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>
+                                        {count}
+                                    </div>
+                                    <button onClick={incrementCount}>+</button>
+                                    <button onClick={decrementCount}>-</button>
+                                </div>}
                 <Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
             </div>
         </container>
