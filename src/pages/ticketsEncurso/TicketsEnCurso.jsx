@@ -10,15 +10,20 @@ import ModalCreacionTicket from "../../components/modalCreacionTicket/ModalCreac
 import Dropdown from 'react-bootstrap/Dropdown';
 import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketCerrado";
 import axios from "axios";
+import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
+import Alert from 'react-bootstrap/Alert';
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 const TicketsEnCurso = () => {
 
 
-    const [showTicketModalEnCurso, setShowTicketModalEncurso] = useState(false);
 
     const [clientes, setClientes] = useState();
+
+    const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
+
+    const [ticketResueltoExito, setTicketResueltoExito] = useState(false);
 
 
     const [filters, setFilters] = useState({
@@ -28,22 +33,14 @@ const TicketsEnCurso = () => {
         "cliente": "Todos",
     });
 
-    const onChangeshowTicketModalEnCurso = (newSomeState) => {
-        setShowTicketModalEncurso(newSomeState);
-    };
-
-    const [showTicketModalCerrado, setShowTicketModalCerrado] = useState(false);
 
 
-    const onChangeshowTicketModalCerrado = (newSomeState) => {
-        setShowTicketModalCerrado(newSomeState);
-    };
+
+
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
 
-    const onChangeshowCreacionModal = (newSomeState) => {
-        setShowCreacionModal(newSomeState);
-    };
+
 
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
@@ -59,7 +56,6 @@ const TicketsEnCurso = () => {
     const handleDropdownFilter = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
 
-        console.log("filters", filters);
 
 
     };
@@ -102,32 +98,27 @@ const TicketsEnCurso = () => {
 
     }
 
+    const getClientes = async () => {
+        axios
+            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+            })
+            .then((response) => {
+                setClientes(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+    }
 
 
     useEffect(() => {
 
 
 
-        const getClientes = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
-        }
+
 
         getDataEnCurso();
         getDataCerrados();
@@ -140,22 +131,40 @@ const TicketsEnCurso = () => {
 
 
     return (
+
+
         <Fragment>
+            <NavbarSoporte></NavbarSoporte>
+            <Alert show={ticketCreadoExito} variant='success'>
+                Ticket creado con exito!
 
+            </Alert>
 
+            <Alert show={ticketResueltoExito} variant='success'>
+                Ticket resuelto!
+
+            </Alert>
 
             <Container className="container-title">
 
                 <Row>
                     <Col xs={10}>
-                        <h1>Tickets en Curso</h1>
+                        <h3>Tickets en Curso</h3>
                     </Col>
                     < Col xs={2}>
-                        <Button variant="primary" onClick={() => onChangeshowCreacionModal(true)}>Crear Ticket</Button>
+                        <Button size="sm" variant="primary" onClick={() => setShowCreacionModal(true)}>Crear</Button>
                     </Col>
 
 
                 </Row>
+
+                {
+                    showCreacionModal ? (
+                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
+                    ) :
+                        (null
+                        )
+                }
 
             </Container>
 
@@ -163,7 +172,7 @@ const TicketsEnCurso = () => {
                 <Row>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {showEnTicketsEnCurso}
                             </Dropdown.Toggle>
 
@@ -176,11 +185,11 @@ const TicketsEnCurso = () => {
                         </Dropdown>
                     </Col>
                     <Col>
-                        <h4>Categoría:</h4>
+                        <h5>Categoría:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["categoria"]}
                             </Dropdown.Toggle>
 
@@ -195,11 +204,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Criticidad:</h4>
+                        <h5>Criticidad:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["criticidad"]}
                             </Dropdown.Toggle>
 
@@ -217,11 +226,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Estado:</h4>
+                        <h5>Estado:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["estado"]}
                             </Dropdown.Toggle>
 
@@ -240,11 +249,11 @@ const TicketsEnCurso = () => {
                     </Col>
 
                     <Col>
-                        <h4>Cliente:</h4>
+                        <h5>Cliente:</h5>
                     </Col>
                     <Col >
                         <Dropdown>
-                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                 {filters["cliente"]}
                             </Dropdown.Toggle>
 
@@ -252,7 +261,7 @@ const TicketsEnCurso = () => {
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
                                 {clientes?.map((cliente) => {
                                     return (
-                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
                                     )
                                 })}
 
@@ -281,18 +290,16 @@ const TicketsEnCurso = () => {
                                     );
                                 }
 
-                            ).map((ticketEnCurso) => (
+                            ).sort((a, b) => a.id > b.id ? 1 : -1).map((ticketEnCurso) => (
                                 <Col key={ticketEnCurso.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
                                             <Card.Title>
                                                 <Row>
                                                     <Col>
-                                                        Ticket  #{ticketEnCurso.id}
+                                                        Ticket  #{ticketEnCurso.id} - {ticketEnCurso.categoria}
                                                     </Col>
-                                                    <Col>
-                                                        {ticketEnCurso.categoria}
-                                                    </Col>
+
 
                                                 </Row>
 
@@ -307,7 +314,7 @@ const TicketsEnCurso = () => {
                                             <Card.Text>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Cliente: </h5>
+                                                        <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
                                                         {clientes[ticketEnCurso.idCliente - 1]["razon social"]}
@@ -316,7 +323,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Criticidad: </h5>
+                                                        <h6>Criticidad: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.criticidad}
@@ -325,7 +332,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Estado: </h5>
+                                                        <h6>Estado: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.estado}
@@ -333,25 +340,16 @@ const TicketsEnCurso = () => {
 
                                                 </Row>
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketEnCurso); setShowTicketModalEncurso(true) }}>TicketInfo</Button>
 
-                                            {showTicketModalEnCurso ? (
-                                                <ModalInfoTicketEnCurso data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalEnCurso={onChangeshowTicketModalEnCurso} />
 
-                                            ) :
-                                                (null
-                                                )}
+                                            <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />
+
+
 
                                         </Card.Body>
                                     </Card>
 
-                                    {
-                                        showCreacionModal ? (
-                                            <ModalCreacionTicket onChangeshowCreacionModal={onChangeshowCreacionModal} />
-                                        ) :
-                                            (null
-                                            )
-                                    }
+
 
                                 </Col>
 
@@ -373,14 +371,14 @@ const TicketsEnCurso = () => {
                                     );
                                 }
 
-                            ).map((ticketCerrado) => (
-                                <Col className="mt-3">
+                            ).sort((a, b) => a.id > b.id ? 1 : -1).map((ticketCerrado) => (
+                                <Col key={ticketCerrado.id} className="mt-3">
                                     <Card style={{ width: '22rem' }}>
                                         <Card.Body>
                                             <Card.Title>
                                                 <Row>
                                                     <Col>
-                                                        Ticket  #{ticketCerrado.id}
+                                                        Ticket  #{ticketCerrado.id} - {ticketCerrado.categoria}
                                                     </Col>
 
                                                 </Row>
@@ -389,17 +387,13 @@ const TicketsEnCurso = () => {
                                                     <Col>
                                                         {ticketCerrado.titulo}
                                                     </Col>
-                                                    <Col>
-                                                        {ticketCerrado.categoria}
-                                                    </Col>
-
 
                                                 </Row>
                                             </Card.Title>
                                             <Card.Text>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Cliente: </h5>
+                                                        <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
                                                         {clientes[ticketCerrado.idCliente - 1]["razon social"]}
@@ -408,7 +402,7 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h5>Severidad: </h5>
+                                                        <h6>Severidad: </h6>
                                                     </Col>
                                                     <Col>
                                                         {ticketCerrado.criticidad}
@@ -417,16 +411,13 @@ const TicketsEnCurso = () => {
                                                 </Row>
 
                                             </Card.Text>
-                                            <Button variant="primary" onClick={() => { setTicketSeleccionadoData(ticketCerrado); setShowTicketModalCerrado(true) }}>TicketInfo</Button>
 
-                                            {showTicketModalCerrado ? (
-                                                <ModalTicketCerrado data={ticketSeleccionadoData} numeroTicket={ticketSeleccionadoData.id} onChangeshowTicketModalCerrado={onChangeshowTicketModalCerrado} />
-                                            ) :
-                                                (null
-                                                )}
+                                            <ModalTicketCerrado data={ticketCerrado} numeroTicket={ticketCerrado.id} />
+
 
                                         </Card.Body>
                                     </Card>
+
                                 </Col>
                             )) : <h3>Cargando...</h3>}
 
