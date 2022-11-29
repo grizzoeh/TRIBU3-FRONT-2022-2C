@@ -63,7 +63,7 @@ export default function Dashboard() {
                   </DropdownButton>
               </Col>
           </Row>
-          <Body projects={proyectos,filtrosStado}/>
+          <Body projects={proyectos} filtrosStado={filtrosStado}/>
       </>
   );
 }
