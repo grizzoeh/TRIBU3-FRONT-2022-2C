@@ -53,15 +53,14 @@ export default function DashboardTareas() {
       };
 
     const getTareas = async () => {
-      //axios
-      //  .get(SERVER_NAME + `/psa/projects/${params.id}/tasks/`, {})
-      //  .then((res) => {
-      //    setTareas(res.data);
-      //  })
-      //  .catch((err) => {
-      //    alert('Se produjo un error al consultar las tareas para el proyecto', err);
-      //  });
-      //setTareas([{"name":"Desarrollar nuevo endpoint para carga de Riesgos","description":"Alguna descripción","estimated_hours_effort":1,"estimated_start_date":"2022-12-18","estimated_finalization_date":"2022-12-18","dependencies":[1,2,123],"assignees":[213124,433543],"priority":"low"}])
+      axios
+       .get(SERVER_NAME + `/psa/projects/${params.id}/tasks/`, {})
+       .then((res) => {
+         setTareas(res.data);
+       })
+       .catch((err) => {
+         alert('Se produjo un error al consultar las tareas para el proyecto', err);
+       });
     };
 
     getProyecto();
@@ -213,8 +212,9 @@ export default function DashboardTareas() {
             </Container></Row>
             <Row>
                 <Container className="container-cards">
-                    {/*<KanbanDashboard initialTasks={tareas}/>*/}
-                    {tareas.filter(
+                <KanbanDashboard initialTasks={tareas} setTasks={setTareas}/>
+
+                    {/* {tareas.filter(
                       (tarea) => {
                         //apply filters with categoria, criticidad and estado
                         return (
@@ -224,8 +224,7 @@ export default function DashboardTareas() {
                           //(filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
                         );
                       }
-                    )}
-                    <KanbanDashboard initialTasks={tareas} setTasks={setTareas}/>
+                    )} */}
                 </Container>
             </Row>
 
