@@ -58,7 +58,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
             "name": tituloTarea,
             "description": cuerpoTarea,
             "priority": prioridadTarea,
-            //"proyecto": proyectoSeleccionado,
+            "related_ticket": numeroTicket,
         }
 
         axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks", send_tarea)

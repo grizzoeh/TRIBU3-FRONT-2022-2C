@@ -60,6 +60,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const handleClose = () => {
         setShow(false);
         setEditMode(false);
+        setAlertaEdicionExito(false);
         getDataEnCurso();
         getDataEnCurso();
 
@@ -110,6 +111,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     }
     const handleCancelarEdicion = () => {
         setEditMode(false);
+        setAlertaDatosNulos(false);
     }
 
     const onChangeTicketEditable = (e) => {
