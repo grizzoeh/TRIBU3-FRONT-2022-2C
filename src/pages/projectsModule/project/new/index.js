@@ -26,47 +26,22 @@ export default function NewProject() {
 
   const [buttonTitle, setButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialProject);
-  const [clients, setClients] = useState([
-    {
-      id: 1,
-      "razon social": "FIUBA",
-      CUIT: "20-12345678-2",
-    },
-    {
-      id: 2,
-      "razon social": "FSOC",
-      CUIT: "20-12345678-5",
-    },
-    {
-      id: 3,
-      "razon social": "Macro",
-      CUIT: "20-12345678-3",
-    },
-  ]);
+  const [clients, setClients] = useState([]);
 
   const getClients = async () => {
-    const externalResourcesURI = new Request(
-      `${SERVER_NAMES.EXTERNAL_RESOURCES}/clientes`
-    );
-
-    fetch(externalResourcesURI)
-      .then((response) => {
-        debugger;
-        response.json();
+    axios
+      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+      .then((res) => {
+        setClients(res.data);
       })
-      .then((data) => {
-        debugger;
-        console.log(data);
-      })
-      .catch(function (e) {
-        debugger;
-        alert(e);
+      .catch((err) => {
+        alert('Se produjo un error al consultar los clientes', err);
       });
   };
 
-  // useEffect(() => {
-  //   getClients();
-  // }, []);
+  useEffect(() => {
+    getClients();
+  }, []);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
