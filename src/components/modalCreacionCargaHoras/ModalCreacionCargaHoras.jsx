@@ -8,7 +8,7 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { Table } from "react-bootstrap";
@@ -32,6 +32,8 @@ const ModalCreacionCargaDeHoras = () => {
     const [isShown, setIsShown] = useState(false);
     const [proyectos, setProyectos] = useState([])
     const [ProjectText, setProjectText] = useState('Seleccionar')
+
+    
 
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
@@ -57,29 +59,31 @@ const ModalCreacionCargaDeHoras = () => {
         })
     },[])
 
-    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item">{categoria.nombre}</NavDropdown.Item>)
+    const listCategorias = categorias.map(categoria => <Dropdown.Item id="dropdown-item">{categoria.nombre}</Dropdown.Item>)
     const data = 'data de carga horas'
     return (
         <container>
             <div id="page">
                 <h2 id="titulo">Seleccionar Categoria</h2>
-                <NavDropdown title="Seleccionar" id="collasible-dropdown">
-                    <NavDropdown.Item id="dropdown-item">
+                <Dropdown title="Seleccionar" id="collasible-dropdown">
+                    <Dropdown.Item id="dropdown-item">
                         <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/proyectos'>
                             Proyecto
                         </a>
-                    </NavDropdown.Item>
-                    <NavDropdown.Item id="dropdown-item">
+                    </Dropdown.Item>
+                    <Dropdown.Item id="dropdown-item">
                         <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/licencias'>
                             Otros
                         </a>
-                    </NavDropdown.Item>
+                    </Dropdown.Item>
                     
-                </NavDropdown>
+                </Dropdown>
             </div>
+            
         </container>
     
     );
 };
+
 
 export default ModalCreacionCargaDeHoras

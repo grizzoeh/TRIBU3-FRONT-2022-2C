@@ -9,7 +9,7 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
@@ -26,11 +26,13 @@ import { Input } from "@mui/material";
 
 const ModalModificarCategorias = () => {
     const [categorias, setCategorias] = useState([])
-
     const[nombre, setNombre]=useState([])
     const[descripcion, setDescripcion]=useState([])
     const[catId, setCatId]=useState([])
 
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
@@ -56,10 +58,26 @@ const ModalModificarCategorias = () => {
     return (
         <container>
             <div id = 'CategoriaId'>
-                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
-                <TextField id='Nombre' label="Ingrese un nombre" variant="outlined" sx={{ minWidth: 650 }} value={nombre} onChange={(e)=>setNombre(e.target.value)}/>
-                <TextField id='Descripcion' label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
-                <button onClick={handleClick} id = 'click'>Buscar</button>
+                <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>{setCatId(e.target.value)}}/>
+                
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar Categoria</Button></Col>
+                    <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
+                    <Modal.Header closeButton onClick={handleClose}>
+                        <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Categoria con id: {catId}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row className="campo">
+                            <Col><h6>Nuevo nombre:</h6></Col>
+                            <Form.Control name="nombre" type="filtro" placeholder="Nombre" onChange={(e)=>setNombre(e.target.value)}/>
+                            <Col><h6>Nueva Descripcion:</h6></Col>
+                            <Form.Control name="nombre" type="filtro" placeholder="Descripcion" onChange={(e)=>setDescripcion(e.target.value)}/>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
+                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar categoria</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
             <div id = 'Tabla'>
                 <TableContainer component={Paper}>
@@ -86,6 +104,8 @@ const ModalModificarCategorias = () => {
                     </Table>
                 </TableContainer>
             </div>
+
+            
         </container>
     );
 }; 
