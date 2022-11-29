@@ -1,15 +1,16 @@
 import KanbanColumn from "./kanbanColumn";
 import "./tareasProyecto.css"
-
-// To do: Fetch projects from API.
-import MockProjects from "../../../../Mock/projects";
+import axios from "axios";
 import { Col , Row} from "react-bootstrap";
 import { Fragment, useState } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
 
-export default function KanbanDashboard({initialTasks}) {
+export default function KanbanDashboard({initialTasks, setTasks}) {
 
-  const [tasks, setTasks] = useState(initialTasks);
+  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
+
+  //const [tasks, setTasks] = useState(initialTasks);
+  const [update, setUpdate] = useState("hola");
 
   let pendingTasks = initialTasks.filter(
     (task) => task.state === "pending"
@@ -21,7 +22,22 @@ export default function KanbanDashboard({initialTasks}) {
     (task) => task.state === "finished"
   );
 
+  const getUpdate = () => {
+    setUpdate("chau");
+  };
 
+
+  const getNewStatus = (stateName) => {
+    if (stateName === "Pendiente") {
+      return "pending"
+    }
+    if (stateName === "En progreso") {
+      return "in_progress"
+    }
+    if (stateName === "Finalizada") {
+      return "finished"
+    }
+  }
 
   const reorder = (list, startIndex, endIndex) => {
     const result = [...list];
@@ -38,14 +54,21 @@ export default function KanbanDashboard({initialTasks}) {
           if (!destination) {
             return;
           }
-          // if (source.droppableId === destination.droppableId) {
-          //   return;
-          // }
+          if (source.droppableId === destination.droppableId) {
+            return;
+          }
 
-          setTasks(
-            (prevTasks) => reorder(prevTasks, source.index, destination.index)
-            );
-          console.log(result)
+          //console.log(result)
+          const newStatus = getNewStatus(destination.droppableId);
+
+          axios.patch(SERVER_NAME + `/psa/projects/tasks-2/${result.draggableId}`, {
+            state: newStatus,
+         }) 
+         getUpdate();
+         console.log(update);
+         // TODO Proyectos, actualizar la vista
+         window.location.reload(true);
+         //setTasks();
 
       }}>
 
