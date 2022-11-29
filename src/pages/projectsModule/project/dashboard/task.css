@@ -37,8 +37,17 @@
     height: 700px;
     margin-top: 20px;
   }
-  
-  .column {
+.container-cards {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: white;
+}
+
+.column {
     width: 300px;
     max-height: 700px;
     background-color: #f6f9fa;
@@ -70,8 +79,18 @@
   .add-task-button:hover {
     background-color: #dee4e4;
   }
-  
-  .task-container {
+.container-title {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  padding-bottom: 2%;
+
+}
+
+.task-container {
     width: 100%;
     min-height: 30px;
     max-height: 600px;
