@@ -24,10 +24,8 @@ const NavbarSoporte = () => {
 
             <Nav className="me-auto">
                 <Nav.Link href="/tickets-en-curso">Tickets</Nav.Link>
-                <Nav.Link href="/crear-producto-y-version">Crear Producto y Versión</Nav.Link>
-
-                <Nav.Link href="/proyectos">Proyectos</Nav.Link>
-
+                <Nav.Link href="/crear-producto-y-version">Productos y Versiónes</Nav.Link>
+                <Nav.Link href="/clientes">Clientes</Nav.Link>
             </Nav>
 
 

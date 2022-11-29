@@ -8,15 +8,16 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 
-import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) => {
+const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setAlertaTareaExito }) => {
 
 
     const [proyectos, setProyectos] = useState();
 
-    const [proyectoSeleccionado, setProyectoSeleccionado] = useState("");
+    const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
+
+    const [proyectoSeleccionadoNombre, setProyectoSeleccionadoNombre] = useState();
 
     const [show, setShow] = useState(true);
 
@@ -25,9 +26,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
     };
 
-    const handleEnviar = () => {
-        onChangeshowCreacionTareaModal(false)
-    };
+
 
     const [cuerpoTarea, setCuerpoTarea] = useState("");
 
@@ -44,24 +43,27 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
     const [prioridadTarea, setPrioridadTarea] = useState("");
 
-    const onChangePrioridadTarea = (e) => {
-        setPrioridadTarea(e.target.value);
-    };
+
 
     const onChangeProyectoSeleccionado = (e) => {
-        setProyectoSeleccionado(e.target.value);
+        setProyectoSeleccionadoNombre(e.target.innerHTML);
+        setProyectoSeleccionadoId(e.target.id);
+    };
+
+    const onChangePrioridadTarea = (e) => {
+        setPrioridadTarea(e.target.value);
     };
 
     const enviarTarea = async () => {
 
         const send_tarea = {
-            "titulo": tituloTarea,
-            "cuerpo": cuerpoTarea,
-            "prioridad": prioridadTarea,
-            "proyecto": proyectoSeleccionado,
+            "name": tituloTarea,
+            "description": cuerpoTarea,
+            "priority": prioridadTarea,
+            "related_ticket": numeroTicket,
         }
 
-        axios.post(SERVER_NAME_SOPORTE + "/tickets", send_tarea)
+        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Tarea creada");
@@ -71,28 +73,26 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                 console.log(error);
             });
 
+        setAlertaTareaExito(true);
+        handleClose();
+
     }
 
     useEffect(() => {
         const getProyectos = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setProyectos([{ "id": 1, "nombre": "Devops" }, { "id": 2, "nombre": "Environ" }, { "id": 3, "nombre": "W2022" }])
+            axios
+                .get('https://squad-8-projects.herokuapp.com/psa/projects?type=support', {
+
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    setProyectos(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+            //setProyectos([{ "id": 1, "nombre": "Devops" }, { "id": 2, "nombre": "Environ" }, { "id": 3, "nombre": "W2022" }])
         }
 
         getProyectos();
@@ -121,21 +121,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
 
                         <Col xs={2}>
                             <h4> Prioridad:</h4>
+
                         </Col>
-                        <Col xs={5}>
-                            <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                    {prioridadTarea ? prioridadTarea : "Selecciona una prioridad"}
+                        <Col xs={2}>
+                            <Form.Control type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
 
-
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Alta</Dropdown.Item>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Media</Dropdown.Item>
-                                    <Dropdown.Item name="prioridadTarea" onClick={(e) => onChangePrioridadTarea(e)}>Baja</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
 
                         </Col>
 
@@ -147,14 +137,14 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                         <Col xs={3}>
                             <Dropdown >
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                    {prioridadTarea ? prioridadTarea : "Selecciona un proyecto"}
+                                    {proyectoSeleccionadoNombre ? proyectoSeleccionadoNombre : "Selecciona un proyecto"}
 
 
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>
                                     {proyectos && proyectos.map((proyecto) => (
-                                        <Dropdown.Item name="proyectoSeleccionado" onClick={(e) => onChangeProyectoSeleccionado(e)}>{proyecto.nombre}</Dropdown.Item>
+                                        <Dropdown.Item name="proyectoSeleccionado" id={proyecto.id} onClick={(e) => onChangeProyectoSeleccionado(e)}>{proyecto.name}</Dropdown.Item>
                                     ))}
 
 
@@ -178,7 +168,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal }) =>
                         </Button>
                     </Col>
                     <Col>
-                        <Button variant="primary" onClick={handleEnviar}>
+                        <Button variant="primary" onClick={enviarTarea}>
                             Enviar Tarea
                         </Button>
                     </Col>
