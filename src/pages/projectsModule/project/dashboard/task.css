@@ -37,15 +37,7 @@
     height: 700px;
     margin-top: 20px;
   }
-.container-cards {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 
-  background-color: white;
-}
 
 .column {
     width: 300px;

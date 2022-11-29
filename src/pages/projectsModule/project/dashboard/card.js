@@ -1,20 +1,36 @@
 import './task.css'
-import { Link } from 'react-router-dom'
+import Card from 'react-bootstrap/Card';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button"
 
-export default function Card({ project }) {
-  return (
+export default function CardCustom({project}) {
+    return (
+        <Row>
+                <Card>
+                    <Card.Header as="h4">Proyecto #{project.id}</Card.Header>
+                    <Card.Body>
+                        <Card.Title>Nombre: {project.name}</Card.Title>
+                        <Card.Text>
 
-    <div className="task">
-      <h2 className='task-name over-hide'>{project.name}</h2>
-      <p className='task-details'>{project.type}</p>
-      <p className='task-details'>{project.description}</p>
-      <Link className='remove-bar' to={`/proyectos/${project.id}/ver-tareas/`}> 
+                            <ul>
+                                <li> Descripcion: {project.description} </li>
+                                <li> Estatus: {project.status}</li>
+                                <li>   Tipo: {project.type}</li>
+                            </ul>
 
-      - 
-      </Link>
 
-      
-    </div>
-  //</section>
-  );
+                        </Card.Text>
+                        <Card.Footer>Project Management: {project.priority}</Card.Footer>
+
+                        <Button variant="primary" href={`/proyectos/${project.id}/ver-tareas/`}> Ver Proyecto</Button>{' '}
+                    </Card.Body>
+                </Card>
+
+
+
+        </Row>
+
+
+    )
 }

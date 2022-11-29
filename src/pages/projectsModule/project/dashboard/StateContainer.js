@@ -1,14 +1,13 @@
-import Card from "./card";
+import CardCustom from "./card";
 import './task.css'
 
 export default function StateContainer({ stateName, projects }) {
   return (
     //<section style={sectionStyle}>
-    <section className="row">
-
-      <h3 className="task-box-header">{stateName}</h3>
-      {projects?.map((project) => {
-        return <Card project={project} />;
+    <section >
+      <h2>{stateName}</h2>
+      {projects?.map((oneProject) => {
+        return <CardCustom project={oneProject} />;
       })}
     </section>
   );
