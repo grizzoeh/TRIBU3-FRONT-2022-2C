@@ -14,7 +14,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data }) => {
+const ModalTicketCerrado = ({ numeroTicket, data }) => {
 
 
 
@@ -29,10 +29,12 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
 
     const [compras, setCompras] = useState();
 
-    const [show, setShow] = useState(true);
+    const [show, setShow] = useState(false);
+
+    const handleShow = () => setShow(true);
 
     const handleClose = () => {
-        onChangeshowTicketModalCerrado(false)
+        setShow(false);
 
     };
 
@@ -40,24 +42,18 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
     useEffect(() => {
 
         const getClientes = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+            axios
+                .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+                })
+                .then((response) => {
+                    setClientes(response.data);
+                }
+                )
+                .catch((error) => {
+                    console.log(error);
+                });
+            //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
         }
 
         const getProductos = async () => {
@@ -117,6 +113,8 @@ const ModalTicketCerrado = ({ numeroTicket, onChangeshowTicketModalCerrado, data
 
     return (
         <>
+            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Información</Button>
+
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>

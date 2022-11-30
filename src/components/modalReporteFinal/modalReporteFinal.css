@@ -46,3 +46,8 @@
     height: 300px;
     width: 100%;
 }
+
+.titulo-subrayado {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+}
