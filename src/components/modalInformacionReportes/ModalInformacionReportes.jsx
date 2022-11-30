@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, Component } from "react";
 import Calendar from 'react-calendar'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -9,7 +9,7 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
@@ -22,39 +22,23 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useNavigate } from "react-router-dom";
+import { Input } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
-function navegarReportesPorId(id){
-    
-}
-//Hay que ponerle un scrollbar a la tabla y que tenga un tamanio fijo y pensar si 
+
 const ModalInformacionReportes = () => {
-    const [value, onChange] = useState(new Date()); 
-    const [isShown, setIsShown] = useState(false);
-    //const [cargasHoras, setCargasHoras] = useState([]);
-
-    const [categorias, setCategorias] = useState([])
-    const[nombre, setNombre]=useState([])
-    const[descripcion, setDescripcion]=useState([])
-    const[catId, setCatId]=useState([])
-
+    const [proyectos,setProyectos] = useState([])
+    const [ReporteProyectos, setReporteProyectos] = useState([]);
+    const [proyectoId,setProyectoId] = useState([]);
+    const [listaTareas,setListaTareas] = useState([]);
+    const [startDate, setStartDate] = useState(new Date());
+    const [finishDate, setFinishDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    const navigate = useNavigate();
-    
-    const[empleados, setEmpleados]=useState([])
-    const[proyectos, setProyectos]=useState([])
-
-    useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/empleados/empleado")
-        .then(res=>res.json())
-        .then((result)=>{
-            setEmpleados(result);
-        })
-    },[])
+    const [listaIdsTareas,setListaIdsTareas] = useState([]);
 
     useEffect(()=>{
         fetch("https://squad-8-projects.herokuapp.com/psa/projects")
@@ -63,151 +47,74 @@ const ModalInformacionReportes = () => {
             setProyectos(result);
         })
     },[])
-
-    const [ReporteProyectos, setReporteProyectos] = useState([]);
     
-    function createDataProyectos(id, nombre) {
-        return { id, nombre };
-      }
-      //ID + FECHA + CANTIDAD HORAS + ID PROYECTO + ID TAREA + LEGAJO + NOMBRE TAREA + NOMBRE PROYECTO + ESTADO + CATEGORIA
-      //En este handle tenemos que hacer que levante los proyectos para mostrar el reporte
-      const handleClick=(e)=>{
-        fetch(`https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + catId)
-        .then(res=>res.json())
-        .then((result)=>{
-            setReporteProyectos(result);
-        })
-    }
+    const handleClick=() => {
+        setReporteProyectos([])
+        const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId; /*legajo no sirve, tirar error */
+        fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            setReporteProyectos(data);
+        });
+    };
 
-    function Search() {
-        const [inputText, setInputText] = useState("");
-        let inputHandler = (e) => {
-          //convert input text to lower case
-          var lowerCase = e.target.value.toLowerCase();
-          setInputText(lowerCase);
-        };
-      
-        return (
-          <div className="main">
-            <h1>React Search</h1>
-            <div className="search">
-              <TextField
-                id="outlined-basic"
-                onChange={inputHandler}
-                variant="outlined"
-                fullWidth
-                label="Search"
-              />
-            </div>
-            <List input={inputText} />
-          </div>
-        );
-      }
+        
+    const fecha_inferior = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
+    const fecha_superior = finishDate.getDate() + '-' + finishDate.getMonth() + '-' + finishDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
 
-      //filtro proyectos
-      function List(props) {
-        //create a new array by filtering the original array
-        const filteredData = proyectos.filter((el) => {
-            //if no input the return the original
-            if (props.input === '') {
-                return el;
-            }
-            //return the item which contains the user input
-            else {
-                return el.text.toLowerCase().includes(props.input)
-            }
-        })
-        return (
-            <ul>
-                {filteredData.map((item) => (
-                    <li key={item.id}>{item.text}</li>
-                ))}
-            </ul>
-        )
-    }
+    
 
-    /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
-    .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
-    .then((result)=>{
-        setCargasHoras(result);
-    })*/
-    /* Falta terminar de ver como extraer la informacion del back, el fetch falla. Puede ser por la caida de la base de datos*/
     return (
         <container>
-            <div>
-                <TextField id="outlined-basic-proyectos" label="Buscar Proyectos por Id" variant="outlined" onChange sx={{ minWidth: 650 }}/>
-                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Ver Reporte</Button></Col>
-                    <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
-                    <Modal.Header closeButton onClick={handleClose}>
-                        <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Reporte {catId}</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Row className="campo">
-                            <Col><h6>Reporte</h6></Col>
-                            <Form.Control name="nombre" type="filtro" placeholder="Nombre" onChange={(e)=>setNombre(e.target.value)}/>
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className="h-end" variant="secondary" onClick={handleClose}>Denegar</Button>
-                        <Button className="h-end" variant="primary" onClick={handleClick}>Aprobar</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-            <div>
-                <TableContainer id="tableProyects" component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="left">Id</TableCell>
-                                <TableCell align="left">Nombre</TableCell>
-                                <TableCell align="left">Descripcion</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {proyectos.map((carga) => (
-                                <TableRow
-                                    key={carga.codigo_carga}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                    <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
-                                    <TableCell align="left">{carga.name}</TableCell>
-                                    <TableCell align="left">{carga.description}</TableCell>
+            <div id = 'proyectoId'>
+                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} value={proyectoId} onChange={(e)=>{setProyectoId(e.target.value)}}/>
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow} id='boton'>Consultar Proyecto</Button></Col>
+                {show && <Modal.Footer>
+                    <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
+                    <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} />
+                    <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
+                    <Button className="h-end" variant="primary" onClick={handleClick}>Confirmar</Button>
+                </Modal.Footer>}
+                <div id = 'Tabla'>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">Id proyecto</TableCell>
+                                    <TableCell align="right">Nombre</TableCell>
+                                    <TableCell align="right">Tarea</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </div>
-            <div id='buscador-empleados'>
-                <TextField id="outlined-basic-empleados" label="Buscar Empleados por Legajo" variant="outlined" sx={{ minWidth: 650 }}/>
-            </div>
-            <div>
-                <TableContainer id="tableEmpleados" component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell align="left">Legajo</TableCell>
-                                <TableCell align="left">Nombre</TableCell>
-                                <TableCell align="left">Apellido</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {empleados.map((carga) => (
-                                <TableRow
-                                    key={carga.codigo_carga}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                    <TableCell align="left" component="th" scope="row">{carga.legajo}</TableCell>
-                                    <TableCell align="left">{carga.Nombre}</TableCell>
-                                    <TableCell align="left">{carga.Apellido}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {show && ReporteProyectos.map((proyecto) => (
+                                        <TableRow
+                                            key={proyecto.proyectoId}
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            <TableCell align="center" component="th" scope="row">{proyecto.proyectoId}</TableCell>
+                                            <TableCell align="right">{proyecto.proyectoNombre}</TableCell>
+                                            <TableCell align="right">{proyecto.tareaNombre}</TableCell>
+                                        </TableRow>
+                                    ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
             </div>
         </container>
     );
 }; 
 
+/*
+{show && cargaLegajo.map((carga) => (
+                                    <TableRow
+                                        key={carga.legajo}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                        <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
+                                        <TableCell align="right">{carga.proyectoNombre}</TableCell>
+                                        <TableCell align="right">{carga.tareaNombre}</TableCell>
+                                        <TableCell align="right">{carga.cantidad_horas}</TableCell>
+                                        <TableCell align="right">{carga.fecha}</TableCell>
+                                    </TableRow>
+                                ))}
+*/
 export default ModalInformacionReportes

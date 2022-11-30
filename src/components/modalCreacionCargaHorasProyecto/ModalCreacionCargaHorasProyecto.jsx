@@ -58,7 +58,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const fecha = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
 
 
-
+    /*estado => revision */
     const postClick=(e)=>{
         e.preventDefault()
         const carga={cantidad_horas, fecha, legajo, proyectoId, proyectoNombre, tarea_id, tareaNombre}
