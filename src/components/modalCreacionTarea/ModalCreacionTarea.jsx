@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 
 
 
@@ -18,6 +20,8 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
     const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
 
     const [proyectoSeleccionadoNombre, setProyectoSeleccionadoNombre] = useState();
+
+    const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
 
     const [show, setShow] = useState(true);
 
@@ -63,19 +67,26 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
             "related_ticket": numeroTicket,
         }
 
-        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Tarea creada");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (send_tarea.name === "" || send_tarea.description === "" || send_tarea.priority === "" || send_tarea.related_ticket === "" || send_tarea.name === null || send_tarea.description === null || send_tarea.priority === null || send_tarea.related_ticket === null) {
+            setAlertaDatosNulos(true);
 
-        setAlertaTareaExito(true);
-        handleClose();
+        }
+        else {
 
+            axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
+                .then((data) => {
+                    if (data.data.ok) {
+                        console.log("Tarea creada");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            setAlertaTareaExito(true);
+            handleClose();
+
+        }
     }
 
     useEffect(() => {
@@ -108,8 +119,9 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Tarea de Ticket #{numeroTicket}  </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-
-
+                    <Alert size={"xs"} show={alertaDatosNulos} key='danger' variant='danger'>
+                        No puedes dejar campos vacios!
+                    </Alert>
                     <Row className="mt-1">
                         <Col xs={1} md={2}>
                             <h5>Título:</h5>
@@ -172,6 +184,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                             Close
                         </Button>
                     </Col>
+
                     <Col>
                         <Button variant="primary" onClick={enviarTarea}>
                             Enviar Tarea
