@@ -19,7 +19,7 @@ import { wait } from "@testing-library/user-event/dist/utils";
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function DashboardTareas() {
-    const params = useParams();
+  const params = useParams();
   const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
   const [tareas, setTareas] = useState([]);
   const [proyecto, setProyecto] = useState([]);
@@ -81,6 +81,17 @@ export default function DashboardTareas() {
     }
 }
 
+ const updateColumnsTasks = (tasks, taskId, newStatus) => {
+    tasks.map((task) => {
+        if (task.id.toString() === taskId) {
+            task.status = newStatus;
+            return task;
+        } else {
+        return task;
+        }
+    })
+ };
+
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
@@ -92,7 +103,7 @@ export default function DashboardTareas() {
             setTareas(res.data);
         })
         .catch((err) => {
-            alert('Se produjo un error al consultar los proyectos', err);
+            alert('Se produjo un error al consultar las tareas para el proyecto', err);
         });
     };
 
@@ -122,7 +133,7 @@ export default function DashboardTareas() {
     getProyecto();
     getTarea();
     getAssignees();
-  }, [params.id]);
+  }, [params]);
 
   return (
     <Fragment>
@@ -270,14 +281,15 @@ export default function DashboardTareas() {
                                     }
 
                                     const newStatus = getNewStatus(destination.droppableId);
-
+                                    getTarea();
+                                    setTareas((prev) => updateColumnsTasks(prev, result.draggableId, newStatus));
                                     axios.patch(SERVER_NAME + `/psa/projects/tasks/${result.draggableId}`, {
                                         status: newStatus,
                                     }).catch((err) => {
-                                        alert('Se produjo un error al consultar los tareas', err);
+                                        alert('Se produjo un error al actualizar la tarea', err);
                                     }); 
-
-                                    getTareas();
+                                    
+                                    getTarea();
                                 }}>
 
                                 <Row className="kanban-row">
