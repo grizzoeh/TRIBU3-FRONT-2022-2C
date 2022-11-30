@@ -44,25 +44,32 @@ const ModalInformacionCargaHorasPorLegajo = () => {
         createData(4,'28/11/2022',9)
       ];
 */
-        useEffect(()=>{
+        /*useEffect(()=>{
             fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
             .then(res=>res.json())
             .then((result)=>{
                 setCargas(result);
             })
-        },[])
+        },[])*/
+
+        /* PROBAR */
+
+        useEffect(() => {
+            fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data)
+                setCargas(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+        }, []);
 
         const handleClick=(e)=>{
             const url = `https://squad920222c-production.up.railway.app/recursos/cargas/` + legajo; /*hacerlo array */
             console.log(url);
-            fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*' 
-                },
-                body: JSON.legajo
-            }).then((res)=>{});
+            
         }
         
 

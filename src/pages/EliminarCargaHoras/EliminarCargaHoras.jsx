@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ModalEliminacionCargaHoras from "../../components/modalEliminacionCargaHoras/ModalEliminacionCargaHoras";
+import NavbarRecursos from "../../components/navbarRecursos/NavbarRecursos";
 
 const EliminacionCargaDeHoras = () => {
 
@@ -12,7 +13,7 @@ const EliminacionCargaDeHoras = () => {
     return (
         <Fragment>
 
-
+            <NavbarRecursos />
 
             <Container className="container-title">
 
