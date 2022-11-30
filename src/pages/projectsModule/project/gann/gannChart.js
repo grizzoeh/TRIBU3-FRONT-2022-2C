@@ -13,10 +13,10 @@ export default function GannChart() {
        { type: "string", label: "Task Name" },
         { type: "string", label: "Resource" },
         { type: "date", label: "Start Date" },
-      //  { type: "date", label: "End Date" },
-     /*   { type: "number", label: "Duration" },
-        { type: "string", label: "Percent Complete" },
-        { type: "string", label: "Dependencies" },*/
+        { type: "date", label: "End Date" },
+        { type: "number", label: "Duration" },
+        { type: "number", label: "Percent Complete" },
+        { type: "string", label: "Dependencies" },
     ]
 /*
  
@@ -126,7 +126,12 @@ export default function GannChart() {
                 return [tarea.id,
                      tarea.name,
                      tarea.description,
-                     new Date(2015, 3, 28)
+                     new Date(2022, 11, 28),
+                     new Date(2022, 11, 30),
+                     6,
+                     null,
+                     null
+
                    /*  tarea.estimated_finalization_date,
                      tarea.estimated_hours_effort,
                     /* tarea.state,
