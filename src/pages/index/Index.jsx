@@ -22,7 +22,7 @@ const Index = () => {
             <div className="container-title">
                 <Row>
                     <Col>
-                        <h1>Sistema de Gestión PSA</h1>
+                        <h1 className="titulofuente">Sistema de Gestión PSA</h1>
                     </Col>
                 </Row>
             </div>
@@ -30,17 +30,17 @@ const Index = () => {
             <div className="container-index">
                 <Row className="row-index">
                     <Col >
-                        <Button variant="primary" className="boton-proyectos" size="lg" block>
+                        <Button variant="primary" className="boton-proyectos" size="lg" block href="/proyectos">
                             Modulo Proyectos
                         </Button>
                     </Col>
                     <Col >
-                        <Button variant="primary" size="lg" className="boton-soporte" block>
+                        <Button variant="primary" size="lg" className="boton-soporte" block href="/tickets-en-curso">
                             Modulo Soporte
                         </Button>
                     </Col>
                     <Col >
-                        <Button variant="primary" className="boton-recursos" size="lg" block>
+                        <Button variant="primary" className="boton-recursos" size="lg" block href="cargar-horas">
                             Modulo Recursos
                         </Button>
                     </Col>
