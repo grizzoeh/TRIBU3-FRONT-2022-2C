@@ -1,5 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react";
+import Calendar from 'react-calendar'
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import "./ModalEliminacionCargaHoras.css";
+import Button2 from '@mui/material/Button';
+import axios from "axios";
+import Alert from "@mui/material/Alert";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 
 import TextField from '@mui/material/TextField';
@@ -10,38 +22,41 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useNavigate } from "react-router-dom";
+import { Input } from "@mui/material";
 
-function navegarACargaDeHorasPorId(id){
+const ModalEliminacionCargaHoras = () => {
+    const [cargas, setCargas] = useState([])
+    const[carId, setCarId]=useState([])
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCargas(result);
+        })
+    },[])
+
+    const handleClick=(e)=>{
+        const url = "https://squad920222c-production.up.railway.app/recursos/carga/" + carId;
+        console.log(url);
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*' 
+            },
+            body: JSON.catId
+        }).then(()=>{
+            window.location.reload();
+        });
+    }
     
-}
 
-const ModalModificacionCargaHoras = () => {
-    //const [cargasHoras, setCargasHoras] = useState([]);
-
-    const navigate = useNavigate();
-    
-    function createData(id, fecha, legajo) {
-        return { id, fecha, legajo };
-      }
-      
-      const cargasHoras = [
-        createData(1,'26/11/2022',1),
-        createData(2,'26/11/2022',1),
-        createData(3,'27/11/2022',6),
-        createData(4,'28/11/2022',9)
-      ];
-
-    /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
-    .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
-    .then((result)=>{
-        setCargasHoras(result);
-    })*/
-    /* Falta terminar de ver como extraer la informacion del back, el fetch falla. Puede ser por la caida de la base de datos*/
     return (
-        <container>
+        <Container>
             <div>
-                <TextField id="outlined-basic" label="Buscar Carga de Horas por Id" variant="outlined" sx={{ minWidth: 650 }}/>
+                <TextField id="outlined-basic" label="Buscar Carga por Id" variant="outlined" sx={{ minWidth: 650 }} value={carId} onChange={(e)=>setCarId(e.target.value)}/>
+                <button onClick={() => {handleClick()}} id = 'borrar'>Borrar</button> 
             </div>
             <div>
                 <TableContainer component={Paper}>
@@ -50,27 +65,26 @@ const ModalModificacionCargaHoras = () => {
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
                                 <TableCell align="right">Fecha</TableCell>
-                                <TableCell align="right">Legajo</TableCell>
+                                <TableCell align="right">Horas Actualizadas</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {cargasHoras.map((carga) => (
+                            {cargas.map((carga) => (
                                 <TableRow
-                                    key={carga.codigo_carga}
+                                    key={carga.cargaId}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={() => console.log("")}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
-                                    <TableCell align="right">{carga.fecha}</TableCell>
-                                    <TableCell align="right">{carga.legajo}</TableCell>
+                                    <TableCell align="left" component="th" scope="row">{carga.cargaId}</TableCell>
+                                    <TableCell align="left">{carga.fecha}</TableCell>
+                                    <TableCell align="left">{carga.cantidad_horas}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
-                    </Table>
+                        </Table>
                 </TableContainer>
             </div>
-        </container>
+        </Container>
     );
 }; 
 
-export default ModalModificacionCargaHoras
+export default ModalEliminacionCargaHoras

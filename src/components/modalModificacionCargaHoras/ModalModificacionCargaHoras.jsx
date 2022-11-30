@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, Component } from "react";
 import Calendar from 'react-calendar'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -9,7 +9,7 @@ import axios from "axios";
 import Alert from "@mui/material/Alert";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import Dropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
@@ -22,68 +22,99 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useNavigate } from "react-router-dom";
-
-//Hay que ponerle un scrollbar a la tabla y que tenga un tamanio fijo
-function navegarACargaDeHorasPorId(id){
-    
-}
+import { Input } from "@mui/material";
 
 const ModalModificacionCargaHoras = () => {
-    const [value, onChange] = useState(new Date()); 
-    const [isShown, setIsShown] = useState(false);
-    //const [cargasHoras, setCargasHoras] = useState([]);
-
-    const navigate = useNavigate();
+    const [cargas, setCargas] = useState([])
+    const[carId, setCarId]=useState([])
+    const[fecha, setFecha]=useState([])
+    const[cantidad_horas, setCantidadHoras]=useState([])
     
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCargas(result);
+        })
+    },[])
+/*
     function createData(id, fecha, legajo) {
         return { id, fecha, legajo };
       }
-      
-      const cargasHoras = [
+
+    const cargasHoras = [
         createData(1,'26/11/2022',1),
         createData(2,'26/11/2022',1),
         createData(3,'27/11/2022',6),
         createData(4,'28/11/2022',9)
       ];
+*/
+    const handleClick=()=>{
+        const cargaHorasNueva={carId, fecha,cantidad_horas} /* manda array si esta vacio */
+        console.log(cargaHorasNueva)
+        fetch(`https://squad920222c-production.up.railway.app/recursos/carga/` + carId + '?fecha=' + fecha + '&horasActualizadas=' + cantidad_horas,{
+            method:"PUT",
+            headers:{"Content-Type": "application/json"},
+        }).then(()=>{
+            window.location.reload();
+        });
+        
+    }
 
-    /*fetch("http://localhost:8080/recursos/carga/getAllCargas")
-    .then(res=>res.json()).then(()=>{console.log("SeCargaronCargas")})
-    .then((result)=>{
-        setCargasHoras(result);
-    })*/
-    /* Falta terminar de ver como extraer la informacion del back, el fetch falla. Puede ser por la caida de la base de datos*/
     return (
         <container>
-            <div>
-                <TextField id="outlined-basic" label="Buscar Carga de Horas por Id" variant="outlined" sx={{ minWidth: 650 }}/>
+            <div id = 'cargaId'>
+                <TextField id="outlined-basic" label="Buscar Carga por Id" variant="outlined" sx={{ minWidth: 650 }} value={carId} onChange={(e)=>{setCarId(e.target.value)}}/>
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar fecha</Button></Col>
+                    <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
+                    <Modal.Header closeButton onClick={handleClose}>
+                        <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Carga con id: {carId}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row className="campo">
+                            <Col><h6>Nueva fecha:</h6></Col>
+                            <Form.Control name="fecha" type="filtro" placeholder="Fecha" onChange={(e)=>setFecha(e.target.value)}/>
+                            <Col><h6>Horas actualizadas:</h6></Col>
+                            <Form.Control name="horas" type="filtro" placeholder="Horas" onChange={(e)=>setCantidadHoras(e.target.value)}/>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
+                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar fecha</Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
-            <div>
+            <div id = 'Tabla'>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
                                 <TableCell align="right">Fecha</TableCell>
-                                <TableCell align="right">Legajo</TableCell>
+                                <TableCell align="right">Horas Actualizadas</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {cargasHoras.map((carga) => (
+                            {cargas.map((carga) => (
                                 <TableRow
-                                    key={carga.codigo_carga}
+                                    key={carga.cargaId}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    onClick={() => navigate("/")}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.id}</TableCell>
-                                    <TableCell align="right">{carga.fecha}</TableCell>
-                                    <TableCell align="right">{carga.legajo}</TableCell>
+                                    <TableCell align="left" component="th" scope="row">{carga.cargaId}</TableCell>
+                                    <TableCell align="left">{carga.fecha}</TableCell>
+                                    <TableCell align="left">{carga.cantidad_horas}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
             </div>
+
+            
         </container>
     );
 }; 

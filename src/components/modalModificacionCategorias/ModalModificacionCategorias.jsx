@@ -54,10 +54,7 @@ const ModalModificarCategorias = () => {
         });
         
     }
-    
-    function refreshPage(){
-        window.location.reload();
-    }
+
     
 
     return (
