@@ -135,7 +135,7 @@ function ModalVersionesAdquiridas(cliente) {
             </>
             <>
                 <Snackbar open={showEliminar} autoHideDuration={1500} onClose={handleCloseEliminar} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert onClose={handleCloseEliminar} variant="info" sx={{ width: '100%' }}>Compra eliminada con exito.</Alert>
+                    <Alert onClose={handleCloseEliminar} variant="success" sx={{ width: '100%' }}>Compra eliminada con exito.</Alert>
                 </Snackbar>
             </>
             <>

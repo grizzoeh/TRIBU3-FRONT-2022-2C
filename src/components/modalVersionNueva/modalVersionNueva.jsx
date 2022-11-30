@@ -65,7 +65,7 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
                     </Row>
                     <Row className="campo">
                         <Col><h6>Fecha Release:</h6></Col>
-                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)} /></Col>
+                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" max={new Date().toISOString().slice(0, 10)} onChange={(e) => onChangeVersionEditable(e)} /></Col>
                     </Row>
                     <Row className="campo">
                         <Col><h6>Estado de la version:</h6></Col>

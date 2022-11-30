@@ -4,7 +4,7 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonDeprecarProducto({producto, refreshProductos, refreshFiltradas}) {
+function BotonDeprecarProducto({producto, refreshProductos, refreshFiltradas, refreshAlert}) {
 
 
 
@@ -22,6 +22,7 @@ function BotonDeprecarProducto({producto, refreshProductos, refreshFiltradas}) {
                     if (refreshFiltradas) {
                         refreshFiltradas();
                     }
+                    refreshAlert();
                 }
             })
             .catch((error) => {

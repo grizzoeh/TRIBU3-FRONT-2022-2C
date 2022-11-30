@@ -28,7 +28,10 @@ function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas
     const [nuevaCompra, setNuevaCompra] = useState(NuevaCompraVacia);
     const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setNuevaCompra(NuevaCompraVacia);
+        setShow(true);
+    }
 
     const vertical = "top"
     const horizontal = "center"

@@ -17,6 +17,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
 
 const CrearProductoYVersion = () => {
@@ -31,6 +33,29 @@ const CrearProductoYVersion = () => {
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
     const [productosFiltrados, setProductosFiltrados] = useState([]);
     const [filtrado, setFiltrado] = useState(false);
+
+    const vertical = "top"
+    const horizontal = "center"
+
+    const [showBusquedaError, setShowBusquedaError] = useState(false);
+    const [showBusquedaOk, setShowBusquedaOk] = useState(false);
+    const [showProductoCreadoOK, setProductoCreadoOK] = useState(false);
+    const [showProductoEditadoOK, setProductoEditadoOK] = useState(false);
+    const [showProductoDeprecadoOK, setProductoDeprecadoOK] = useState(false);
+    const [showProductoActivadoOK, setProductoActivadoOK] = useState(false);
+    const handleCloseProductoActivadoOK = () => setProductoActivadoOK(false);
+    const handleShowProductoActivadoOK = () => setProductoActivadoOK(true);
+    const handleCloseProductoDeprecadoOK = () => setProductoDeprecadoOK(false);
+    const handleShowProductoDeprecadoOK = () => setProductoDeprecadoOK(true);
+    const handleCloseProductoEditadoOK = () => setProductoEditadoOK(false);
+    const handleShowProductoEditadoOK = () => setProductoEditadoOK(true);
+    const handleCloseProductoCreadoOK = () => setProductoCreadoOK(false);
+    const handleShowProductoCreadoOK = () => setProductoCreadoOK(true);
+    const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
+    const handleShowBusquedaOk = () => setShowBusquedaOk(true);
+    const handleCloseBusquedaError = () => setShowBusquedaError(false);
+    const handleShowBusquedaError = () => setShowBusquedaError(true);
+
 
     const getProductos = async () => {
         axios
@@ -56,6 +81,7 @@ const CrearProductoYVersion = () => {
         setProductosFiltrados(productos);
         if (filtroTexto.estado === "Cualquiera") {
             if (filtroTexto.nombre === "") {
+                handleShowBusquedaError();
                 return
             }
             else {
@@ -70,6 +96,7 @@ const CrearProductoYVersion = () => {
                 setProductosFiltrados(productos.filter(obj => { return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado }))
             }
         }
+        handleShowBusquedaOk();
         setFiltrado(true)
     }
 
@@ -83,9 +110,39 @@ const CrearProductoYVersion = () => {
 
 
     return (
+
         <Fragment>
             <NavbarSoporte />
-
+            <>
+                <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error: primero se debe ingresar al menos un parametro de busqueda.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showProductoCreadoOK} autoHideDuration={1500} onClose={handleCloseProductoCreadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseProductoCreadoOK} variant="success" sx={{ width: '100%' }}>Producto creado con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showProductoEditadoOK} autoHideDuration={1500} onClose={handleCloseProductoEditadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseProductoEditadoOK} variant="success" sx={{ width: '100%' }}>Producto editado con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showProductoDeprecadoOK} autoHideDuration={1500} onClose={handleCloseProductoDeprecadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseProductoDeprecadoOK} variant="success" sx={{ width: '100%' }}>Producto deprecado con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showProductoActivadoOK} autoHideDuration={1500} onClose={handleCloseProductoActivadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseProductoActivadoOK} variant="success" sx={{ width: '100%' }}>Producto deprecado con exito.</Alert>
+                </Snackbar>
+            </>
             <Container className="container-title">
                 <Row>
                     <h1>Productos y versiones:</h1>
@@ -117,7 +174,7 @@ const CrearProductoYVersion = () => {
                         ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col className="v-center" sm={3}><ModalProductoNuevo refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
+                        <Col className="v-center" sm={3}><ModalProductoNuevo refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoCreadoOK}/></Col>
                     </Row>
                 </Form>
             </Container>
@@ -147,8 +204,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={4}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
-                                                    <Col sm={4}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}></BotonDeprecarProducto></Col>
+                                                    <Col sm={4}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={4}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoDeprecadoOK}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -162,8 +219,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
-                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}></BotonActivarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoActivadoOK}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -181,8 +238,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos}/></Col>
-                                                    <Col sm={3}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos}></BotonDeprecarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoDeprecadoOK}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -196,8 +253,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos}/></Col>
-                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos}></BotonActivarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoActivadoOK}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>

@@ -8,9 +8,10 @@ import Form from 'react-bootstrap/Form';
 import Dropdown from 'react-bootstrap/Dropdown';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
-
-function ModalProductoNuevo({refreshProductos, refreshFiltradas}) {
+function ModalProductoNuevo({refreshProductos, refreshFiltradas, refreshAlert}) {
 
     const ProductoNulo = {
         "nombre": null,
@@ -21,9 +22,16 @@ function ModalProductoNuevo({refreshProductos, refreshFiltradas}) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setProductData(ProductoNulo);
+        setShow(true);
+    }
 
-
+    const vertical = "top"
+    const horizontal = "center"
+    const [showProductoError, setProductoError] = useState(false);
+    const handleCloseProductoError = () => setProductoError(false);
+    const handleShowProductoError = () => setProductoError(true);
 
     const onChangeProductoEditable = (e) => {
         setProductData({ ...ProductData, [e.target.name]: e.target.value });
@@ -38,18 +46,25 @@ function ModalProductoNuevo({refreshProductos, refreshFiltradas}) {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto creado");
+                    refreshAlert();
                     refreshProductos();
                     refreshFiltradas();
                     handleClose();
                 }
             })
             .catch((error) => {
+                handleShowProductoError();
                 console.log(error);
             });
     }
 
     return (
         <>
+            <>
+                <Snackbar open={showProductoError} autoHideDuration={2000} onClose={handleCloseProductoError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseProductoError} variant="danger" sx={{ width: '100%' }}>Error al crear producto.</Alert>
+                </Snackbar>
+            </>
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nuevo Producto</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>

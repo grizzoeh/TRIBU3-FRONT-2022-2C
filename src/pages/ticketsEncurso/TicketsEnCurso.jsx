@@ -12,8 +12,9 @@ import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketC
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import Alert from 'react-bootstrap/Alert';
-
+import SpacerLine from "../../components/spacerLine/spacerLine";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 const TicketsEnCurso = () => {
 
@@ -131,8 +132,6 @@ const TicketsEnCurso = () => {
 
 
     return (
-
-
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
             <Alert show={ticketCreadoExito} variant='success'>
@@ -142,33 +141,28 @@ const TicketsEnCurso = () => {
 
             <Alert show={ticketResueltoExito} variant='success'>
                 Ticket resuelto!
-
             </Alert>
-
             <Container className="container-title">
-
                 <Row>
-                    <Col xs={10}>
-                        <h3>Tickets en Curso</h3>
-                    </Col>
-                    < Col xs={2}>
-                        <Button size="sm" variant="primary" onClick={() => setShowCreacionModal(true)}>Crear</Button>
-                    </Col>
-
-
+                    <Col className="v-center"><h1>Tickets:</h1></Col>
+                    <Col className="v-center"><Button size="1" variant="primary" onClick={() => setShowCreacionModal(true)}>+ Nuevo Ticket</Button></Col>
                 </Row>
-
+            </Container>
+            <Container>
                 {
                     showCreacionModal ? (
                         <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
                     ) :
-                        (null
-                        )
+                    (
+                        <></>
+                    )
                 }
-
+            </Container>
+            <Container className="spacer-line">
+                <SpacerLine className="spacer-line" color="black"></SpacerLine>
             </Container>
 
-            <Container className="container-filters">
+            <Container>
                 <Row>
                     <Col >
                         <Dropdown>

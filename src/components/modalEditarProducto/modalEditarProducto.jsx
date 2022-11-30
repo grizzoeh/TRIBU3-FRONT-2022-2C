@@ -9,7 +9,7 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function ModalEditarProducto({producto, refreshProductos, refreshFiltradas}) {
+function ModalEditarProducto({producto, refreshProductos, refreshFiltradas, refreshAlert}) {
 
     const [nuevoNombre, setNuevoNombre] = useState(producto)
     const [show, setShow] = useState(false);
@@ -30,10 +30,11 @@ function ModalEditarProducto({producto, refreshProductos, refreshFiltradas}) {
                 if (data.data.ok) {
                     console.log("Producto editado");
                     refreshProductos();
+                    refreshAlert();
+                    handleClose();
                     if (refreshFiltradas) {
                         refreshFiltradas();
                     }
-                    handleClose();
                 }
             })
             .catch((error) => {
