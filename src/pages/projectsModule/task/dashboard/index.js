@@ -15,6 +15,8 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import { wait } from "@testing-library/user-event/dist/utils";
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+
 export default function DashboardTareas() {
     const params = useParams();
   const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
@@ -123,6 +125,7 @@ export default function DashboardTareas() {
 
   return (
     <Fragment>
+        <NavbarProyectos/>
         {/* TODO Proyectos: Mejorar estilo de padding  */}
         <Container className="container-title">
 

@@ -13,6 +13,8 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+
 export default function NewTask() {
   const initialTask = {
     name: null,
@@ -100,9 +102,8 @@ export default function NewTask() {
 
   return (
     <Fragment>
+      <NavbarProyectos/>
       <Container>
-        <br />
-        <br />
         <br />
         <br />
         <Row>
