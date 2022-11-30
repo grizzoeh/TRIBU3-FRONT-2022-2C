@@ -9,12 +9,15 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function ModalEditarProducto(producto) {
+function ModalEditarProducto({producto, refreshProductos, refreshFiltradas, refreshAlert}) {
 
-    const [nuevoNombre, setNuevoNombre] = useState(producto["producto"])
+    const [nuevoNombre, setNuevoNombre] = useState(producto)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setNuevoNombre(producto);
+        setShow(true);
+    }
 
 
     const onChangeNuevoNombre = async (e) => {
@@ -26,7 +29,12 @@ function ModalEditarProducto(producto) {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto editado");
-                    window.location.reload();
+                    refreshProductos();
+                    refreshAlert();
+                    handleClose();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
                 }
             })
             .catch((error) => {
@@ -39,7 +47,7 @@ function ModalEditarProducto(producto) {
             <Col><Button variant="outline-primary" size="sm" onClick={handleShow}>Renombrar</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Renombrar {producto["producto"].nombre}: </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Renombrar {producto.nombre}: </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

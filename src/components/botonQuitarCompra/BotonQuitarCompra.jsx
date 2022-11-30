@@ -4,32 +4,55 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { wait } from '@testing-library/user-event/dist/utils';
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
 
-function BotonActivarVersion(compra) {
-
+function BotonActivarVersion({compra, refreshCompras, refreshAlert, refreshFiltradas}) {
 
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        refreshCompras();
+        if (refreshFiltradas) {
+            refreshFiltradas();
+        }
+        setShow(false);
+    } 
     const handleShow = () => setShow(true);
 
+    const vertical = "top"
+    const horizontal = "center"
+
+    const [showBusquedaError, setShowBusquedaError] = useState(false);
+    const handleCloseBusquedaError = () => {
+        setShowBusquedaError(false);
+    }
+    const handleShowBusquedaError = () => setShowBusquedaError(true);
+
     const eliminarCompra = async () => {
-        const sendData = { id: compra["compra"].id }
+        const sendData = { id: compra.id }
         axios
             .delete(SERVER_NAME_SOPORTE + "/compras/compra/", { data: sendData })
             .then((res) => {
-                console.log("Compra Eliminada")
-                window.location.reload();
+                refreshAlert();
                 handleClose();
+                console.log("Compra Eliminada")
             })
             .catch((err) => {
                 console.log(err);
+                handleShowBusquedaError();
             });
     }
 
     return (
         <>
+            <>
+                <Snackbar open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error al eliminar la compra.</Alert>
+                </Snackbar>
+            </>
             <Button variant="danger" size="sm" onClick={handleShow}>Quitar</Button>
             <Modal dialogClassName="modalContent4" show={show} onHide={handleClose} >
                 <Modal.Header>

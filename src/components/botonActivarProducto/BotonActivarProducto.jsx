@@ -4,21 +4,25 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonActivarProducto(producto) {
+function BotonActivarProducto({producto, refreshProductos, refreshFiltradas, refreshAlert}) {
 
 
 
     const handleEstado = async () => {
         const productoData = {
-            id: producto["producto"].id,
-            nombre: producto["producto"].nombre,
+            id: producto.id,
+            nombre: producto.nombre,
             estado: "Activo"
         }
         axios.patch(SERVER_NAME_SOPORTE + "/productos/producto", productoData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto editado");
-                    window.location.reload();
+                    refreshProductos();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
+                    refreshAlert();
                 }
             })
             .catch((error) => {

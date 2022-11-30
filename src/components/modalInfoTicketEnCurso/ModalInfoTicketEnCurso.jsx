@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 import Alert from 'react-bootstrap/Alert';
-
+import { Snackbar } from "@mui/material";
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -19,6 +19,8 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
 
+    const vertical = "top"
+    const horizontal = "center"
 
     const [clientes, setClientes] = useState();
 
@@ -29,11 +31,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const [compras, setCompras] = useState();
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
+    const handleCloseEdicionExito = () => setAlertaEdicionExito(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+    const handleCloseAlertaDatosNulos = () => setAlertaDatosNulos(false);
 
     const [alertaTareaExito, setAlertaTareaExito] = useState(false);
-
+    const handleCloseAlertaTareaExito = () => setAlertaTareaExito(false);
 
     const [ticketEditable, setTicketEditable] = useState(data);
 
@@ -262,23 +266,27 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <Snackbar open={alertaEdicionExito} autoHideDuration={2000} onClose={handleCloseEdicionExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert show={alertaEdicionExito} variant='success'>
                         Ticket editado con exito!
-
                     </Alert>
+                </Snackbar>
 
+                <Snackbar open={alertaTareaExito} autoHideDuration={2000} onClose={handleCloseAlertaTareaExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert show={alertaTareaExito} variant='success'>
                         Tarea creada con exito!
-
                     </Alert>
+                </Snackbar>
 
 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                                No puedes dejar campos vacios!
-                            </Alert>
+                            <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                                <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                    No puedes dejar campos vacios!
+                                </Alert>
+                            </Snackbar>
                             <Row className="mt-4">
 
                                 <Col>
@@ -400,7 +408,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    {clientes?.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+
                                                     }
 
                                                 </Dropdown.Toggle>
@@ -473,21 +482,18 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                                     setIdProductoFilter(compra["idProducto"]);
                                                                 }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
                                                             )) : null} */}
-                                                        {dicci ?
+                                                        {dicci && productos ?
                                                             dicci[idClienteFilter]?.map((idProducto) => (
-                                                                <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
-                                                                    (e) => {
-                                                                        setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
-                                                                        setIdProductoFilter(idProducto);
-                                                                    }
-                                                                } >
-                                                                    {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
-
-                                                                </Dropdown.Item>
-                                                            ))
-
-
-                                                            : <></>}
+                                                                productos.filter(producto => producto.id === idProducto && producto.estado === "Activo").map((producto) =>
+                                                                    <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
+                                                                        (e) => {
+                                                                            setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
+                                                                            setIdProductoFilter(idProducto);
+                                                                        }
+                                                                    } >
+                                                                        {producto["nombre"]}
+                                                                    </Dropdown.Item>
+                                                                ))) : <></>}
 
                                                     </Dropdown.Menu>
                                                 </Dropdown>
@@ -527,10 +533,15 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                 <Dropdown.Menu>
                                                     {compras && productos && versiones ?
-                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
+                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter && versiones.find(version => version.id === compra.idVersion)['estado'] === "Activa")
                                                             .map((compra) => (
-                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
+                                                                versiones.filter(version => version.id === compra.idVersion).map((version) => (
+
+                                                                    //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                                    <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}>
+                                                                        {version.nombre}
+                                                                    </Dropdown.Item>
+                                                                )))) : <></>
 
                                                     }
                                                 </Dropdown.Menu>

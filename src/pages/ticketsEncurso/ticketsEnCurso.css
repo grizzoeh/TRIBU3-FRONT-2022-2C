@@ -1,13 +1,19 @@
 .container-title {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     background-color: white;
-    padding-bottom: 2%;
-    margin-top: -6%;
+    margin-top: -80px;
+}
 
+.botoncrearticket {
+    width: 130px;
+    height: 35px;
+}
+
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .container-filters {
@@ -17,7 +23,6 @@
     align-items: left;
     flex-direction: column;
     background-color: white;
-
 }
 
 .container-cards {
@@ -31,4 +36,15 @@
 
 .row-cards {
     padding-bottom: 3%;
+}
+
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.v-center {
+    display: flex;
+    align-items: center;
+    justify-content: start;
 }
