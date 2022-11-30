@@ -35,7 +35,7 @@ const ModalModificacionCargaHoras = () => {
     const handleShow = () => setShow(true);
 
     useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
         .then(res=>res.json())
         .then((result)=>{
             setCargas(result);
@@ -56,7 +56,7 @@ const ModalModificacionCargaHoras = () => {
     const handleClick=()=>{
         const cargaHorasNueva={carId, fecha,cantidad_horas} /* manda array si esta vacio */
         console.log(cargaHorasNueva)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/carga/` + carId + '?fecha=' + fecha + '&horasActualizadas=' + cantidad_horas,{
+        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
         }).then(()=>{
@@ -101,10 +101,10 @@ const ModalModificacionCargaHoras = () => {
                         <TableBody>
                             {cargas.map((carga) => (
                                 <TableRow
-                                    key={carga.cargaId}
+                                    key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.cargaId}</TableCell>
+                                    <TableCell align="left" component="th" scope="row">{carga.codigo_carga}</TableCell>
                                     <TableCell align="left">{carga.fecha}</TableCell>
                                     <TableCell align="left">{carga.cantidad_horas}</TableCell>
                                 </TableRow>

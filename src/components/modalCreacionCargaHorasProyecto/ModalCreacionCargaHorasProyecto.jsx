@@ -34,9 +34,9 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [startDate, setStartDate] = useState(new Date());
 
     
-    let Tareas = ['Tarea A', 'Tarea B', 'Tarea C', 'Tarea D'];
+    const Tareas = [{id: 1, name: 'Tarea A'}, {id: 2, name: 'Tarea B'}, {id: 3, name: 'Tarea C'}];
     let listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
-                                            onClick={() => procedimientoTareaElegida(tarea)}>{tarea}</NavDropdown.Item>)
+                                            onClick={() => procedimientoTareaElegida(tarea.name)}>{tarea.name}</NavDropdown.Item>)
 
     function procedimientoTareaElegida(nombreTarea){
         setdropdownTareaText(nombreTarea)
@@ -50,6 +50,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             setProyectos(result);
         })
     },[])
+
     const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" 
                                                     onClick={() => {handleClick(); 
                                                     setProjectText(proyecto.name)}}>{proyecto.name}
