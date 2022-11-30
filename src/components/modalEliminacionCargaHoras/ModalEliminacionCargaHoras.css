@@ -1,0 +1,21 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 750px; */
+    width: 100vw;
+    top: 100px;
+    background-color: white;
+}
+
+#borrar{
+    border: 1px solid;
+    height: 3vw;
+    width: 5vw;
+    text-align: center;
+    position: relative;
+    left: 3vw;
+    top: 0vw;
+    background-color: orange;
+}
