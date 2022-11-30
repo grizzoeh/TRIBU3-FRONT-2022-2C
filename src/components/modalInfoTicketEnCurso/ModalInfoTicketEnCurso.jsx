@@ -400,7 +400,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    {clientes?.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+
                                                     }
 
                                                 </Dropdown.Toggle>

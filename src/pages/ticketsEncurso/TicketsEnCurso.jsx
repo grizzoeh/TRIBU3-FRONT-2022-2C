@@ -27,12 +27,16 @@ const TicketsEnCurso = () => {
 
     const [ticketResueltoExito, setTicketResueltoExito] = useState(false);
 
+    const [recursos, setRecursos] = useState();
+
+
 
     const [filters, setFilters] = useState({
         "categoria": "Todas",
         "estado": "Todos",
         "criticidad": "Todas",
         "cliente": "Todos",
+        "asesor": "Todos"
     });
 
 
@@ -115,16 +119,30 @@ const TicketsEnCurso = () => {
         //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
     }
 
+    const getRecursos = async () => {
+        axios
+            .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
+
+            })
+            .then((response) => {
+                // console.log(response);
+                setRecursos(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
 
     useEffect(() => {
-
-
 
 
 
         getDataEnCurso();
         getDataCerrados();
         getClientes();
+        getRecursos();
 
 
 
@@ -274,6 +292,27 @@ const TicketsEnCurso = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
+
+                    <Col>
+                        <h5>Asesor:</h5>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
+                                {filters["asesor"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="asesor" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                {recursos?.map((asesor) => {
+                                    return (
+                                        <Dropdown.Item key={asesor["legajo"]} name="asesor" onClick={(e) => handleDropdownFilter(e)}>{asesor["Nombre"]} {asesor["Apellido"]}</Dropdown.Item>
+                                    )
+                                })}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
                 </Row>
 
             </Container>
@@ -292,7 +331,9 @@ const TicketsEnCurso = () => {
                                         (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
                                         (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
                                         (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
-                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                        (filters["cliente"] === "Todos" || clientes?.find(cliente => cliente.id === ticket.idCliente)["razon social"] === filters["cliente"]) &&
+                                        (filters["asesor"] === "Todos" || recursos.find(recurso => recurso.legajo === ticket.idAsesor).Nombre + " " + recursos.find(recurso => recurso.legajo === ticket.idAsesor).Apellido === filters["asesor"])
+
                                     );
                                 }
 
@@ -323,7 +364,7 @@ const TicketsEnCurso = () => {
                                                         <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {clientes[ticketEnCurso.idCliente - 1]["razon social"]}
+                                                        {clientes?.find(cliente => cliente.id === ticketEnCurso.idCliente)["razon social"]}
                                                     </Col>
 
                                                 </Row>
@@ -342,6 +383,16 @@ const TicketsEnCurso = () => {
                                                     </Col>
                                                     <Col>
                                                         {ticketEnCurso.estado}
+                                                    </Col>
+
+                                                </Row>
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h6>Asesor: </h6>
+                                                    </Col>
+                                                    <Col>
+                                                        {recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Nombre"] + " " + recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Apellido"]}
+
                                                     </Col>
 
                                                 </Row>
