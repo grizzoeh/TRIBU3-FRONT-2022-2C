@@ -16,7 +16,7 @@ const NavbarIndex = () => {
             <Nav className="me-auto">
                 <Nav.Link href="/proyectos">Proyectos</Nav.Link>
                 <Nav.Link href="/tickets-en-curso">Soporte</Nav.Link>
-                <Nav.Link href="/recursos">Recursos</Nav.Link>
+                <Nav.Link href="/cargar-horas">Recursos</Nav.Link>
 
             </Nav>
 

@@ -13,10 +13,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import * as SERVER_NAMES from "../../APIRoutes";
 import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+
 export default function DashboardTareas() {
-    const params = useParams();
+  const params = useParams();
   const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
   const [tareas, setTareas] = useState([]);
   const [proyecto, setProyecto] = useState([]);
@@ -42,7 +45,7 @@ export default function DashboardTareas() {
 
   const handlePriorityFilter = (e) => {
     setPriority(e);
-    priorityQuery="priority="+e+"&";
+    e===0?priorityQuery="":priorityQuery="priority="+e+"&";
     getTarea();
   };
 
@@ -78,6 +81,17 @@ export default function DashboardTareas() {
     }
 }
 
+ const updateColumnsTasks = (tasks, taskId, newStatus) => {
+    tasks.map((task) => {
+        if (task.id.toString() === taskId) {
+            task.status = newStatus;
+            return task;
+        } else {
+        return task;
+        }
+    })
+ };
+
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
@@ -89,7 +103,7 @@ export default function DashboardTareas() {
             setTareas(res.data);
         })
         .catch((err) => {
-            alert('Se produjo un error al consultar los proyectos', err);
+            alert('Se produjo un error al consultar las tareas para el proyecto', err);
         });
     };
 
@@ -119,10 +133,11 @@ export default function DashboardTareas() {
     getProyecto();
     getTarea();
     getAssignees();
-  }, [params.id]);
+  }, [params]);
 
   return (
     <Fragment>
+        <NavbarProyectos/>
         {/* TODO Proyectos: Mejorar estilo de padding  */}
         <Container className="container-title">
 
@@ -181,6 +196,62 @@ export default function DashboardTareas() {
                             })}
                         </DropdownButton>
                     </Col>
+
+                    <Col>
+                        <h4>Prioridad:</h4>
+                    </Col>
+                    <Col >
+                    <Form.Control
+                        type="number"
+                        min="0"
+                        placeholder="Ej: 2"
+                        name="priority"
+                        onChange={(e) => handlePriorityFilter(e)}/>
+                    </Col>
+
+                    {/*<Col>
+                        <h4>Estado2:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["estado"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Cliente:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["cliente"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
+                                {clientes?.map((cliente) => {
+                                    return (
+                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                    )
+                                })}
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                              </Col>*/}
                 </Row>
                 <Row>
                     <Container className="container-cards">
@@ -210,14 +281,15 @@ export default function DashboardTareas() {
                                     }
 
                                     const newStatus = getNewStatus(destination.droppableId);
-
+                                    getTarea();
+                                    setTareas((prev) => updateColumnsTasks(prev, result.draggableId, newStatus));
                                     axios.patch(SERVER_NAME + `/psa/projects/tasks/${result.draggableId}`, {
                                         status: newStatus,
                                     }).catch((err) => {
-                                        alert('Se produjo un error al consultar los tareas', err);
+                                        alert('Se produjo un error al actualizar la tarea', err);
                                     }); 
-
-                                    getTareas();
+                                    
+                                    getTarea();
                                 }}>
 
                                 <Row className="kanban-row">

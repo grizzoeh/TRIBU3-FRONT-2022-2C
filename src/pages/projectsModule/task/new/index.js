@@ -13,6 +13,8 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+
 export default function NewTask() {
   const initialTask = {
     name: null,
@@ -75,8 +77,8 @@ export default function NewTask() {
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, assignees: [e] });
-    setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
+    if (e!= "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
+    e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
   const createTask = async () => {
@@ -100,9 +102,8 @@ export default function NewTask() {
 
   return (
     <Fragment>
+      <NavbarProyectos/>
       <Container>
-        <br />
-        <br />
         <br />
         <br />
         <Row>
@@ -209,6 +210,9 @@ export default function NewTask() {
                 title={AssigneebuttonTitle}
                 onSelect={handleAssigneeDropdownButtonChange}
               >
+                <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                </Dropdown.Item>
                 {clients.map((client) => {
                   return (
                     <Dropdown.Item eventKey={client.legajo} name="client">

@@ -18,6 +18,8 @@
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-bootstrap": "^2.6.0",
+    "react-calendar": "^4.0.0",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-google-charts": "^4.0.0",
     "react-router-dom": "^6.4.3",

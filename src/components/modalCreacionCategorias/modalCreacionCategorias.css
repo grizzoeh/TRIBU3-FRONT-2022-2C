@@ -1,0 +1,30 @@
+#top-categoria{
+    margin-left: 315px;
+}
+
+
+
+#titulo{
+    margin-top: 100px;
+    text-align: center;
+}
+
+#titulo2{
+    margin-top: 20px;
+    text-align: center;
+}
+
+#click{
+    border: 1px solid;
+    height: 3vw;
+    width: 5vw;
+    text-align: center;
+    position: relative;
+    left: 30vw;
+    top: 4vw;
+    background-color: orange;
+}
+
+#outlined-basic2{
+    margin-: 100px;
+}

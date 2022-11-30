@@ -10,7 +10,6 @@ const DashboardProyectos = lazy(() => import("../pages/projectsModule/project/da
 const ProyectoNuevo = lazy(() => import("../pages/projectsModule/project/new/index"));
 const TareasDeProyecto = lazy(() => import("../pages/projectsModule/task/dashboard/index"));
 const TareaNueva = lazy(() => import("../pages/projectsModule/task/new/index"));
-// const FiltrarProyecto = lazy(() => import("../pages/projectsModule/project/filter/index"));
 
 const ProyectoRouter = () => {
     return (
