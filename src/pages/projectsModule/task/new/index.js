@@ -177,13 +177,13 @@ export default function NewTask() {
           </Row>
           <Row className="mt-5">
             <Col>
-              <h4>Dependencias</h4>
+              <h4>Tarea padre</h4>
             </Col>
             <Col xs={9}>
               {/* TODO: get clients */}
-              <Select isMulti options={tareas} getOptionLabel={(tarea) => tarea.name}
-              getOptionValue={(tarea) => tarea.id} onChange={handleDependencyDropdownButtonChange2}/>
-              {/*<DropdownButton
+              {/*<Select isMulti options={tareas} getOptionLabel={(tarea) => tarea.name}
+              getOptionValue={(tarea) => tarea.id} onChange={handleDependencyDropdownButtonChange2}/>*/}
+              <DropdownButton
                 variant="secondary"
                 title={DependencybuttonTitle}
                 onSelect={handleDependencyDropdownButtonChange}
@@ -195,7 +195,7 @@ export default function NewTask() {
                     </Dropdown.Item>
                   );
                 })}
-              </DropdownButton>*/}
+              </DropdownButton>
             </Col>
           </Row>
 
