@@ -4,6 +4,7 @@ import {
     Route,
     BrowserRouter as Router,
 } from "react-router-dom";
+import GannChart from "../pages/projectsModule/project/gann/gannChart";
 
 const DashboardProyectos = lazy(() => import("../pages/projectsModule/project/dashboard/index"));
 const ProyectoNuevo = lazy(() => import("../pages/projectsModule/project/new/index"));
@@ -20,6 +21,7 @@ const ProyectoRouter = () => {
                     <Route path="/crear-proyecto" element={<ProyectoNuevo/>} />
                     <Route path="/proyectos/:id/ver-tareas" element={<TareasDeProyecto/>} />
                     <Route path="/proyectos/:id/crear-tarea" element={<TareaNueva/>} />
+                    <Route path="/proyectos/:id/gannt" element={<GannChart/>} />
                     {/* <Route path="/filtrar-proyecto" element={<FiltrarProyecto/>} /> */}
                 </Routes>
             </Suspense>
