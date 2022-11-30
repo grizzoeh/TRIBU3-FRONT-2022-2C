@@ -117,7 +117,7 @@ const CrearProductoYVersion = () => {
                         ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col className="v-center" sm={3}><ModalProductoNuevo /></Col>
+                        <Col className="v-center" sm={3}><ModalProductoNuevo refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
                     </Row>
                 </Form>
             </Container>
@@ -147,8 +147,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={4}><ModalEditarProducto producto={producto} /></Col>
-                                                    <Col sm={4}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                                    <Col sm={4}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
+                                                    <Col sm={4}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -162,8 +162,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} /></Col>
-                                                    <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
+                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -181,8 +181,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} /></Col>
-                                                    <Col sm={3}><BotonDeprecarProducto producto={producto}></BotonDeprecarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos}/></Col>
+                                                    <Col sm={3}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>
@@ -196,8 +196,8 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} /></Col>
-                                                    <Col sm={3}><BotonActivarProducto producto={producto}></BotonActivarProducto></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos}/></Col>
+                                                    <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
                                         </tr>

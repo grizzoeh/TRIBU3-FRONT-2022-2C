@@ -4,10 +4,10 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonActivarVersion(version) {
+function BotonActivarVersion({version, refreshVersiones, refreshFiltradas}) {
 
 
-    const [versionModificada, setVersionModificada] = useState(version["version"])
+    const [versionModificada, setVersionModificada] = useState(version)
 
     const activarVersion = async () => {
         versionModificada.estado = "Activa";
@@ -15,7 +15,10 @@ function BotonActivarVersion(version) {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version editada");
-                    window.location.reload();
+                    refreshVersiones();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
                 }
             })
             .catch((error) => {

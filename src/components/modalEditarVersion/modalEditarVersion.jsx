@@ -8,12 +8,15 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
-function ModalEditarVersion(version) {
+function ModalEditarVersion({version, refreshVersiones, refreshFiltradas}) {
 
-    const [nuevoNombre, setNuevoNombre] = useState(version["version"])
+    const [nuevoNombre, setNuevoNombre] = useState(version)
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setNuevoNombre(version);
+        setShow(true);
+    }
 
 
     const modificarVersion = async () => {
@@ -21,7 +24,11 @@ function ModalEditarVersion(version) {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version editado");
-                    window.location.reload();
+                    refreshVersiones();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
+                    handleClose();
                 }
             })
             .catch((error) => {
@@ -33,16 +40,13 @@ function ModalEditarVersion(version) {
         setNuevoNombre({ ...nuevoNombre, [e.target.name]: e.target.value });
     }
 
-    const testing = async (e) => {
-        console.log(nuevoNombre);
-    }
 
     return (
         <>
             <Col sm={2}><Button variant="outline-primary" size="sm" onClick={handleShow}>Renombrar</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Editar Version {version["version"].nombre}: </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Editar Version {version.nombre}: </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>

@@ -10,11 +10,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function ModalVersionNueva(idProducto) {
+function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
 
     const VersionNula = {
         "nombre": null,
-        "idProducto": idProducto.idProducto,
+        "idProducto": idProducto,
         "estado": null,
         "fechaRelease": null,
         "fechaDeprecacion": null
@@ -41,7 +41,8 @@ function ModalVersionNueva(idProducto) {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version creada");
-                    window.location.reload();
+                    refreshVersiones();
+                    refreshFiltradas();
                     handleClose();
                 }
             })
@@ -51,7 +52,7 @@ function ModalVersionNueva(idProducto) {
     }
 
     return (
-        <>
+        <>  
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nueva version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>

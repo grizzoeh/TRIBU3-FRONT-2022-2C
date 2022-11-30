@@ -9,12 +9,15 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 
 
-function BotonActivarVersion({compra, refreshCompras, refreshAlert}) {
+function BotonActivarVersion({compra, refreshCompras, refreshAlert, refreshFiltradas}) {
 
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
         refreshCompras();
+        if (refreshFiltradas) {
+            refreshFiltradas();
+        }
         setShow(false);
     } 
     const handleShow = () => setShow(true);

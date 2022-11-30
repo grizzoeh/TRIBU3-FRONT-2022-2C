@@ -4,21 +4,24 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonDeprecarProducto(producto) {
+function BotonDeprecarProducto({producto, refreshProductos, refreshFiltradas}) {
 
 
 
     const handleEstado = async () => {
         const productoData = {
-            id: producto["producto"].id,
-            nombre: producto["producto"].nombre,
+            id: producto.id,
+            nombre: producto.nombre,
             estado: "Deprecado"
         }
         axios.patch(SERVER_NAME_SOPORTE + "/productos/producto", productoData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto editado");
-                    window.location.reload();
+                    refreshProductos();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
                 }
             })
             .catch((error) => {

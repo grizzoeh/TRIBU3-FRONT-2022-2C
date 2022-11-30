@@ -10,7 +10,7 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function ModalProductoNuevo() {
+function ModalProductoNuevo({refreshProductos, refreshFiltradas}) {
 
     const ProductoNulo = {
         "nombre": null,
@@ -38,6 +38,8 @@ function ModalProductoNuevo() {
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto creado");
+                    refreshProductos();
+                    refreshFiltradas();
                     handleClose();
                 }
             })

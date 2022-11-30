@@ -12,7 +12,7 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 import { wait } from '@testing-library/user-event/dist/utils/misc/wait';
 
-function ModalAsociarVersion({cliente, compras, refreshCompras}) {
+function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas, refreshAlert}) {
 
     const NuevaCompraVacia = {
         "producto": "",
@@ -89,6 +89,10 @@ function ModalAsociarVersion({cliente, compras, refreshCompras}) {
                     setNuevaCompra(NuevaCompraVacia)
                     handleShowBusquedaOk();
                     refreshCompras();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
+                    refreshAlert();
                     handleClose();
                 }
             })
@@ -106,11 +110,6 @@ function ModalAsociarVersion({cliente, compras, refreshCompras}) {
 
     return (
         <>
-            <>
-                <Snackbar className="alerta" open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert className="alerta" onClose={handleCloseBusquedaOk} variant="success" sx={{ width: '100%' }}>Compra creada con exito.</Alert>
-                </Snackbar>
-            </>
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Asociar version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>

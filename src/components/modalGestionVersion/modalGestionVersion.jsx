@@ -35,7 +35,12 @@ function ModalGestionVersion(producto) {
     const [radioValue, setRadioValue] = useState('1');
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        setFiltrado(false);
+        setFiltroTexto(FiltroVacios)
+    }
+
 
     const getVersiones = async () => {
         const sendData = { idProducto: producto["producto"].id }
@@ -116,7 +121,7 @@ function ModalGestionVersion(producto) {
                         {producto["producto"].estado === "Deprecado" ? (
                             <Col className="v-center"><Button variant="primary" size="1" disabled={true}>+ Nueva version</Button></Col>
                         ) : (
-                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} /></Col>
+                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
                         )}
 
                     </Row>
@@ -144,8 +149,8 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -158,8 +163,8 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado}/></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -176,8 +181,8 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones}/></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -190,8 +195,8 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones}/></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>

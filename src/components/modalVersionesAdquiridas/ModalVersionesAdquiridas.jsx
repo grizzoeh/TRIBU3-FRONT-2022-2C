@@ -38,12 +38,15 @@ function ModalVersionesAdquiridas(cliente) {
     const [showBusquedaError, setShowBusquedaError] = useState(false);
     const [showBusquedaOk, setShowBusquedaOk] = useState(false);
     const [showEliminar, setShowEliminar] = useState(false);
+    const [showCreadaOk, setShowCreadaOk] = useState(false);
     const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
     const handleShowBusquedaOk = () => setShowBusquedaOk(true);
     const handleCloseBusquedaError = () => setShowBusquedaError(false);
     const handleShowBusquedaError = () => setShowBusquedaError(true);
     const handleCloseEliminar = () => setShowEliminar(false);
     const handleShowEliminar = () => setShowEliminar(true);
+    const handleCloseCreadaOk = () => setShowCreadaOk(false);
+    const handleShowCreadaOk = () => setShowCreadaOk(true);
 
 
     const handleBotonFiltrado = async () => {
@@ -135,10 +138,15 @@ function ModalVersionesAdquiridas(cliente) {
                     <Alert onClose={handleCloseEliminar} variant="info" sx={{ width: '100%' }}>Compra eliminada con exito.</Alert>
                 </Snackbar>
             </>
+            <>
+                <Snackbar className="alerta" open={showCreadaOk} autoHideDuration={1500} onClose={handleCloseCreadaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert className="alerta" onClose={handleCloseCreadaOk} variant="success" sx={{ width: '100%' }}>Compra creada con exito.</Alert>
+                </Snackbar>
+            </>
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent3" show={show} onHide={handleClose}>
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones adquiridas: </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Gestion de versiones adquiridas por {cliente["cliente"]["razon social"]}: </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>
@@ -150,7 +158,7 @@ function ModalVersionesAdquiridas(cliente) {
                         ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} refreshCompras={getCompras}/></Col>
+                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} refreshCompras={getCompras} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowCreadaOk}/></Col>
                     </Row>
                     <Row>
                         <Table compras>
@@ -171,7 +179,7 @@ function ModalVersionesAdquiridas(cliente) {
                                             <td>{productos.length > 0 ? (productos.find(producto => producto.id === compra.idProducto).nombre) : (<></>)}</td>
                                             <td>{versiones.length > 0 ? (versiones.find(version => version.id === compra.idVersion).nombre) : (<></>)}</td>
                                             <td>{compra.fechaCompra.slice(0, 10)}</td>
-                                            <td><BotonQuitarCompra compra={compra} refreshCompras={getCompras} refreshAlert={handleShowEliminar}/></td>
+                                            <td><BotonQuitarCompra compra={compra} refreshCompras={getCompras} refreshAlert={handleShowEliminar} refreshFiltradas={handleBotonQuitarFiltrado}/></td>
                                         </tr>
                                     )) : <Row className="centered">No se encontraron compras para los filtros dados</Row>
                                 ) : (
