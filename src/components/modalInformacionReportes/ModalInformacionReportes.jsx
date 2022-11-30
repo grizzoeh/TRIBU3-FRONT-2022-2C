@@ -28,26 +28,31 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 
+
 const ModalInformacionReportes = () => {
-    const [proyectos,setProyectos] = useState([])
     const [ReporteProyectos, setReporteProyectos] = useState([]);
     const [proyectoId,setProyectoId] = useState([]);
-    const [listaTareas,setListaTareas] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const [listaIdsTareas,setListaIdsTareas] = useState([]);
-
-    useEffect(()=>{
-        fetch("https://squad-8-projects.herokuapp.com/psa/projects")
-        .then(res=>res.json())
-        .then((result)=>{
-            setProyectos(result);
-        })
-    },[])
+    const [listaTareas,setListaTareas] = useState([]);
+    const [proyectoName,setProyectoNombre] = useState([]);
+    const [cargas, setCargas] = useState([]);
+    const [sum, setSum] = useState(0)
     
+    const obtenerListaTareas=()=> {
+        setListaTareas([])
+        const url = `https://squad-8-projects.herokuapp.com/psa/projects` + proyectoId + '/tasks/';
+        fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            setListaTareas(data);
+        });
+    };
+
+
     const handleClick=() => {
         setReporteProyectos([])
         const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId; /*legajo no sirve, tirar error */
@@ -56,7 +61,45 @@ const ModalInformacionReportes = () => {
         .then((data) => {
             setReporteProyectos(data);
         });
+
+        setListaTareas([])
+        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + '/tasks/';
+        fetch(urlTareas)
+        .then((res) => res.json())
+        .then((data) => {
+            setListaTareas(data);
+        });
     };
+
+    function calcularSumaHoras(idTarea){
+        let suma = 0;
+        
+        const url = `https://squad920222c-production.up.railway.app/recursos/reporte/tarea/` + idTarea; 
+        fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            setCargas(data);
+        });
+
+        cargas.map((carga) =>{
+            suma = suma+carga.horas
+        })
+
+        return suma;
+    }
+
+
+    function FilasDeTareas(){
+        return (
+            listaTareas.map((tarea) => (
+            <TableRow>
+                <TableCell>{tarea.id}</TableCell>
+                <TableCell>{tarea.name}</TableCell>
+                <TableCell>{calcularSumaHoras(tarea.id)}</TableCell>
+                <TableCell>{tarea.estimated_hours_effort - calcularSumaHoras(tarea.id)}</TableCell>
+            </TableRow>
+        )))
+    }
 
         
     const fecha_inferior = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
@@ -80,21 +123,24 @@ const ModalInformacionReportes = () => {
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">Id proyecto</TableCell>
-                                    <TableCell align="right">Nombre</TableCell>
-                                    <TableCell align="right">Tarea</TableCell>
+                                    <TableCell align="center">Nombre de la tarea</TableCell>
+                                    <TableCell align="center">Id de la tarea</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {show && ReporteProyectos.map((proyecto) => (
                                         <TableRow
-                                            key={proyecto.proyectoId}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                            <TableCell align="center" component="th" scope="row">{proyecto.proyectoId}</TableCell>
-                                            <TableCell align="right">{proyecto.proyectoNombre}</TableCell>
-                                            <TableCell align="right">{proyecto.tareaNombre}</TableCell>
+                                            <TableCell align="center">{proyecto.tareaNombre}</TableCell>
+                                            <TableCell align="center">{proyecto.tarea_id}</TableCell>
+                                            <TableCell align="center">{proyecto.cantidad_horas}</TableCell>
+                                            
                                         </TableRow>
-                                    ))}
+                                
+                                        
+                                        ))}
+                                {FilasDeTareas()}        
+                                <h3>{sum}</h3>
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -103,18 +149,5 @@ const ModalInformacionReportes = () => {
         </container>
     );
 }; 
-
-/*
-{show && cargaLegajo.map((carga) => (
-                                    <TableRow
-                                        key={carga.legajo}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                        <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
-                                        <TableCell align="right">{carga.proyectoNombre}</TableCell>
-                                        <TableCell align="right">{carga.tareaNombre}</TableCell>
-                                        <TableCell align="right">{carga.cantidad_horas}</TableCell>
-                                        <TableCell align="right">{carga.fecha}</TableCell>
-                                    </TableRow>
-                                ))}
-*/
+/*<>{setSum(proyecto.cantidad_horas)}</> */
 export default ModalInformacionReportes

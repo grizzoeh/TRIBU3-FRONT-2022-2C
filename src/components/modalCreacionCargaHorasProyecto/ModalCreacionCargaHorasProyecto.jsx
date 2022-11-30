@@ -31,17 +31,13 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
     let [cantidad_horas, setCount] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
-    const [proyectoId,setProyectoId] = useState();
     const [proyectoNombre, setProyectoNombre] = useState();
     const [legajo, setLegajo] = useState();
     const [tarea_id, setTarea_id] = useState();
     const [tareaNombre, setTareaNombre] = useState();
-
-
-    const Tareas = [{id: 1, name: 'Tarea A'}, {id: 2, name: 'Tarea B'}, {id: 3, name: 'Tarea C'}];
-    let listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
-                                            onClick={() => {procedimientoTareaElegida(tarea.name);setTareaNombre(tarea.name);setTarea_id(1)}}>{tarea.name}</NavDropdown.Item>)
-
+    const [tareas, setTareas] = useState([]);
+    const [proyectoId, setProyectoId] = useState();
+   
     function procedimientoTareaElegida(nombreTarea){
         setdropdownTareaText(nombreTarea)
         setMostrarHoras(true)
@@ -59,10 +55,8 @@ const ModalCreacionCargaDeHorasProyecto = () => {
 
 
     /*estado => revision */
-    const postClick=(e)=>{
-        e.preventDefault()
+    function postClick(proyectoId){
         const carga={cantidad_horas, fecha, legajo, proyectoId, proyectoNombre, tarea_id, tareaNombre}
-        console.log(carga)
         fetch(`https://squad920222c-production.up.railway.app/recursos/cargas`, {
             method:"POST",
             headers:{"Content-Type": "application/json"},
@@ -72,17 +66,21 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         })
     }
 
-    
+    function getClick(IdProyecto) {
+        const url = 'https://squad-8-projects.herokuapp.com/psa/projects/' + IdProyecto + '/tasks/';
+        fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            setTareas(data);
+            console.log(tareas)
+        });
+        setIsShown(true)
+    }
 
     const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" /*proyecto.id ???????????? */
-                                                    onClick={() => {handleClick(); 
-                                                    setProjectText(proyecto.name);setProyectoNombre(proyecto.name);setProyectoId(proyecto.id)}}>{proyecto.name}
+                                                    onClick={() => {funcion1(proyecto)}}>{proyecto.name}
                                                     </NavDropdown.Item>)
 
-
-    const handleClick = event => {
-        setIsShown(true);
-    }
     
     function incrementCount() {
         if(cantidad_horas+1 <= MAXHORAS){
@@ -97,21 +95,32 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         }
     }
 
+    function funcion1(proyecto){
+        getClick(proyecto.id);
+        setProjectText(proyecto.name);
+        setProyectoNombre(proyecto.name);
+        setProyectoId(proyecto.id);
+    }
+
     return (
         <container>
             <div id='cargar-horas-licencia'>
-                <h2 id="titulo">Seleccionar Proyecto</h2> 
+                <h2 id="titulo1">Seleccionar Proyecto</h2> 
                 <NavDropdown title={ProjectText} id="navBarProyectos">
                     {listProyectos}
                 </NavDropdown>
-                <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+            </div>
+            <div id = "search">
                 {isShown && <div id='cargar-horas-licencia'>
                                 <h2 id="titulo">Seleccionar Tarea</h2>
                                 <NavDropdown title={dropdownTareaText} id="navBarTareas">
-                                    {listTareas}   
+                                    {tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
+                                            onClick={() => {procedimientoTareaElegida(tarea.name);setTareaNombre(tarea.name);setTarea_id(tarea.id)}}>{tarea.name}</NavDropdown.Item>)}
+   
                                 </NavDropdown>
                             </div>}
-                {mostrarHoras && <div className="App">
+                {mostrarHoras &&  <div className="App">
+                                    <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                                     <div>
                                         <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>
                                         {cantidad_horas}
@@ -122,7 +131,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} />              
                 
             </div>
-            <Button onClick={postClick}>Boton para postear aca</Button>
+            <Button onClick={postClick(proyectoId)}>Boton para postear aca</Button>
 
         </container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/

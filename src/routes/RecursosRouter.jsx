@@ -22,9 +22,9 @@ const EliminarCargaHoras = lazy(() => import("../pages/EliminarCargaHoras/Elimin
 
 const CrearCategoria = lazy(() => import("../pages/crearCategoria/CrearCategoria"));
 
-const ModificarCategoria = lazy(() => import("../pages/modificarCategoria/ModificarCategoria"));
+const ModificarCategoria = lazy(() => import("../pages/modificarCategoria/modificarCategoria"));
 
-const EliminarCategoria = lazy(() => import("../pages/eliminarCategoria/EliminarCategoria"));
+const EliminarCategoria = lazy(() => import("../pages/eliminarCategoria/eliminarCategoria"));
 
 const RecursosRouter = () => {
     return (

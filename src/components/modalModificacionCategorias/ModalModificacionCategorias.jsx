@@ -86,8 +86,8 @@ const ModalModificarCategorias = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
-                                <TableCell align="right">Nombre</TableCell>
-                                <TableCell align="right">Descripcion</TableCell>
+                                <TableCell align="left">Nombre</TableCell>
+                                <TableCell align="left">Descripcion</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
