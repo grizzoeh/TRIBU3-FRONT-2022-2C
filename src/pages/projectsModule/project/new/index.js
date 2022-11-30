@@ -180,7 +180,7 @@ export default function NewProject() {
                 {projectManagers.map((projectManager) => {
                   return (
                     <Dropdown.Item eventKey={projectManager.id} name="projectManager">
-                      {projectManager.CUIT}
+                      {projectManager["razon social"]}
                     </Dropdown.Item>
                   );
                 })}
@@ -201,7 +201,7 @@ export default function NewProject() {
                 {sponsors.map((sponsor) => {
                   return (
                     <Dropdown.Item eventKey={sponsor.id} name="sponsor">
-                      {sponsor.CUIT}
+                      {sponsor["razon social"]}
                     </Dropdown.Item>
                   );
                 })}
@@ -214,7 +214,7 @@ export default function NewProject() {
               <h4>Recursos</h4>
             </Col>
             <Col xs={9}>
-              <Select isMulti options={resources} getOptionLabel={(resource) => resource.CUIT}
+              <Select isMulti options={resources} getOptionLabel={(resource) => resource["razon social"]}
                 getOptionValue={(resource) => resource.id} onChange={handleResourcesDropdownButtonChange} />
             </Col>
           </Row>
@@ -224,7 +224,7 @@ export default function NewProject() {
               <h4>Stake holders</h4>
             </Col>
             <Col xs={9}>
-              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => stakeholder.CUIT}
+              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => stakeholder["razon social"]}
                 getOptionValue={(stakeholder) => stakeholder.id} onChange={handleStakeHoldersDropdownButtonChange} />
             </Col>
           </Row>
