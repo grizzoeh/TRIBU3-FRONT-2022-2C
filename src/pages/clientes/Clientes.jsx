@@ -13,6 +13,7 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 const Clientes = () => {
@@ -22,7 +23,7 @@ const Clientes = () => {
         "cuit": ""
     };
 
-    const SERVER_NAME = "http://localhost:3000";
+
     const vertical = "top"
     const horizontal = "center"
 

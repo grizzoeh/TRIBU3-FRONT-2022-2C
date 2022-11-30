@@ -16,15 +16,16 @@ import BotonActivarVersion from '../botonActivarVersion/BotonActivarVersion';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { SERVER_NAME_SOPORTE } from "../../environment";
+
 
 function ModalGestionVersion(producto) {
-    
+
     const FiltroVacios = {
-        "nombre":"",
-        "estado":"Cualquiera",
+        "nombre": "",
+        "estado": "Cualquiera",
     };
 
-    const SERVER_NAME = "http://localhost:3000";
     const [show, setShow] = useState(false);
     const [filtroTexto, setFiltroTexto] = useState(FiltroVacios);
     const [filtrado, setFiltrado] = useState(false);
@@ -32,14 +33,14 @@ function ModalGestionVersion(producto) {
     const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const [checked, setChecked] = useState(false);
     const [radioValue, setRadioValue] = useState('1');
-    
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const getVersiones = async () => {
-        const sendData = {idProducto:producto["producto"].id}
+        const sendData = { idProducto: producto["producto"].id }
         axios
-            .get(SERVER_NAME + "/versiones/producto", {params:sendData})
+            .get(SERVER_NAME_SOPORTE + "/versiones/producto", { params: sendData })
             .then((res) => {
                 setVersiones(res.data.versiones);
             })
@@ -58,21 +59,21 @@ function ModalGestionVersion(producto) {
 
     const handleBotonFiltrado = async () => {
         setVersionesFiltradas(versiones);
-        if (filtroTexto.estado == "Cualquiera"){
-            if (filtroTexto.nombre =="") {
+        if (filtroTexto.estado == "Cualquiera") {
+            if (filtroTexto.nombre == "") {
                 return
             }
             else {
-                setVersionesFiltradas(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre}))
+                setVersionesFiltradas(versiones.filter(obj => { return obj.nombre === filtroTexto.nombre }))
             }
         }
         else {
-            if (filtroTexto.nombre =="") {
-                setVersionesFiltradas(versiones.filter(obj => {return obj.estado === filtroTexto.estado}))
+            if (filtroTexto.nombre == "") {
+                setVersionesFiltradas(versiones.filter(obj => { return obj.estado === filtroTexto.estado }))
             }
             else {
-                setVersionesFiltradas(versiones.filter(obj => {return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado}))
-            }  
+                setVersionesFiltradas(versiones.filter(obj => { return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado }))
+            }
         }
         setFiltrado(true)
     }
@@ -95,7 +96,7 @@ function ModalGestionVersion(producto) {
                 <Modal.Body>
                     <Row>
                         <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
-                        <Col className="v-center" sm={3}><Form.Control name="nombre" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)}/></Col>
+                        <Col className="v-center" sm={3}><Form.Control name="nombre" type="filtro" placeholder="Version" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
                         <Col className="v-center" sm={2}>
                             <Dropdown>
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
@@ -107,15 +108,15 @@ function ModalGestionVersion(producto) {
                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Deprecada</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown></Col>
-                            {filtrado ? (
-                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
-                            ):(
-                                <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
-                            )}
+                        {filtrado ? (
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
+                        ) : (
+                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
+                        )}
                         {producto["producto"].estado === "Deprecado" ? (
                             <Col className="v-center"><Button variant="primary" size="1" disabled={true}>+ Nueva version</Button></Col>
                         ) : (
-                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id}/></Col>
+                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} /></Col>
                         )}
 
                     </Row>
@@ -135,65 +136,65 @@ function ModalGestionVersion(producto) {
                                 {filtrado ? (
                                     versionesFiltradas.length > 0 ? versionesFiltradas.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
                                         version.estado == "Activa" ? (
-                                        <tr>
-                                            <td>{version.id}</td>
-                                            <td>{version.nombre}</td>
-                                            <td>{version.estado}</td>
-                                            <td>{version.fechaRelease.slice(0, 10)}</td>
-                                            <td>-</td>
-                                            <td>
-                                                <Row>
-                                                    <Col sm={4}><ModalEditarVersion version={version}/></Col>
-                                                    <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
-                                                </Row>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>{version.id}</td>
+                                                <td>{version.nombre}</td>
+                                                <td>{version.estado}</td>
+                                                <td>{version.fechaRelease.slice(0, 10)}</td>
+                                                <td>-</td>
+                                                <td>
+                                                    <Row>
+                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                    </Row>
+                                                </td>
+                                            </tr>
                                         ) : (
-                                        <tr>
-                                            <td>{version.id}</td>
-                                            <td>{version.nombre}</td>
-                                            <td>{version.estado}</td>
-                                            <td>{version.fechaRelease.slice(0, 10)}</td>
-                                            <td>{version.fechaDeprecacion.slice(0, 10)}</td>
-                                            <td>
-                                                <Row>
-                                                    <Col sm={4}><ModalEditarVersion version={version}/></Col>
-                                                    <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
-                                                </Row>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>{version.id}</td>
+                                                <td>{version.nombre}</td>
+                                                <td>{version.estado}</td>
+                                                <td>{version.fechaRelease.slice(0, 10)}</td>
+                                                <td>{version.fechaDeprecacion.slice(0, 10)}</td>
+                                                <td>
+                                                    <Row>
+                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                    </Row>
+                                                </td>
+                                            </tr>
                                         )
                                     )) : <Row className="centered">No se encontraron versiones para los filtros dados</Row>
-                                ):(
+                                ) : (
                                     versiones.length > 0 ? versiones.sort((a, b) => a.id > b.id ? 1 : -1).map((version) => (
                                         version.estado == "Activa" ? (
-                                        <tr>
-                                            <td>{version.id}</td>
-                                            <td>{version.nombre}</td>
-                                            <td>{version.estado}</td>
-                                            <td>{version.fechaRelease.slice(0, 10)}</td>
-                                            <td>-</td>
-                                            <td>
-                                                <Row>
-                                                    <Col sm={4}><ModalEditarVersion version={version}/></Col>
-                                                    <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
-                                                </Row>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>{version.id}</td>
+                                                <td>{version.nombre}</td>
+                                                <td>{version.estado}</td>
+                                                <td>{version.fechaRelease.slice(0, 10)}</td>
+                                                <td>-</td>
+                                                <td>
+                                                    <Row>
+                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                    </Row>
+                                                </td>
+                                            </tr>
                                         ) : (
-                                        <tr>
-                                            <td>{version.id}</td>
-                                            <td>{version.nombre}</td>
-                                            <td>{version.estado}</td>
-                                            <td>{version.fechaRelease.slice(0, 10)}</td>
-                                            <td>{version.fechaDeprecacion.slice(0, 10)}</td>
-                                            <td>
-                                                <Row>
-                                                    <Col sm={4}><ModalEditarVersion version={version}/></Col>
-                                                    <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
-                                                </Row>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td>{version.id}</td>
+                                                <td>{version.nombre}</td>
+                                                <td>{version.estado}</td>
+                                                <td>{version.fechaRelease.slice(0, 10)}</td>
+                                                <td>{version.fechaDeprecacion.slice(0, 10)}</td>
+                                                <td>
+                                                    <Row>
+                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                    </Row>
+                                                </td>
+                                            </tr>
                                         )
                                     )) : <Row className="centered">No existen versiones</Row>
                                 )}
