@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -15,7 +17,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
+const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -27,7 +29,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         "idCliente": null,
         "medioContactoCliente": null,
         "idProducto": null,
-        "idAsesor": 1,
+        "idAsesor": null,
         "nombreAsesor": null,
         "areaAsesor": 1,
         "notas": null,
@@ -37,6 +39,8 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
     const [TicketData, setTicketData] = useState(TicketNulo);
 
     const [clientes, setClientes] = useState();
+
+    const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
 
     const [productos, setProductos] = useState();
 
@@ -50,6 +54,8 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
 
     const [dicci, setDicci] = useState();
+
+    const [recursos, setRecursos] = useState();
 
 
 
@@ -71,9 +77,22 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     const handleConfirmarCreacion = () => {
 
+        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null) {
+            setAlertaDatosNulos(true);
 
-        crearTicket();
-        onChangeshowCreacionModal(false);
+
+
+        }
+        else {
+
+            setAlertaDatosNulos(false);
+            crearTicket();
+            setTicketCreadoExito(true);
+            setShowCreacionModal(false);
+            getDataEnCurso();
+            getDataEnCurso();
+
+        }
 
 
     }
@@ -88,13 +107,18 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
         setTicketData({ ...TicketData, [e.target.name]: e.target.innerHTML });
     }
 
+    const handleDropdownChangeRecurso = (e) => {
+
+        setTicketData({ ...TicketData, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
+    }
+
     const setearIdProductoTicket = (idProductoASetear) => {
-        setTicketData({ ...TicketData, ['idProducto']: idProductoASetear });
+        setTicketData({ ...TicketData, ['idProducto']: idProductoASetear, ['idVersion']: null });
 
     }
 
     const setearIdClienteTicket = (idClienteASetear) => {
-        setTicketData({ ...TicketData, ['idCliente']: idClienteASetear });
+        setTicketData({ ...TicketData, ['idCliente']: idClienteASetear, ['idProducto']: null, ['idVersion']: null });
 
     }
 
@@ -103,90 +127,91 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
     }
 
+
+
     const handleClose = () => {
-        onChangeshowCreacionModal(false);
+        setShowCreacionModal(false);
+
     }
 
 
+    const getClientes = async () => {
+        axios
+            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+            })
+            .then((response) => {
+                // console.log(response);
+                setClientes(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+    }
+
+    const getProductos = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/productos/", {
+            })
+            .then((res) => {
+                setProductos(res.data.productos);
 
 
-    useEffect(() => {
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
-        const getClientes = async () => {
-            // axios
-            //     .get('https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-            //         headers: {
-            //             "Access-Control-Allow-Origin": "*",
-            //             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-            //             'Access-Control-Allow-Credentials': true,
-            //             crossorigin: true
-            //         }
-            //     })
-            //     .then((response) => {
-            //         console.log(response);
-            //         // setClientes(response.data);
-            //     }
-            //     )
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-            setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
-        }
+    const getVersiones = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/versiones/", {
+            })
+            .then((res) => {
+                setVersiones(res.data.versiones);
 
-        const getProductos = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/productos/", {
-                })
-                .then((res) => {
-                    setProductos(res.data.productos);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
+    const getCompras = async () => {
+        axios
+            .get(SERVER_NAME_SOPORTE + "/compras/", {
+            })
+            .then((res) => {
+                setCompras(res.data.compras);
+                makeDictionarProductsByClient(res.data.compras);
 
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getVersiones = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/versiones/", {
-                })
-                .then((res) => {
-                    setVersiones(res.data.versiones);
-
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        const getCompras = async () => {
-            axios
-                .get(SERVER_NAME_SOPORTE + "/compras/", {
-                })
-                .then((res) => {
-                    setCompras(res.data.compras);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
 
+    const getRecursos = async () => {
+        axios
+            .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
 
+            })
+            .then((response) => {
+                // console.log(response);
+                setRecursos(response.data);
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 
-        getProductos();
-        getVersiones();
-        getClientes();
-        getCompras();
-
-
-    }, []);
-
-    useEffect(() => {
-        const makeDictionarProductsByClient = async () => {
-            const dict = {};
-            compras?.map((compra) => {
+    const makeDictionarProductsByClient = async (responsecompras) => {
+        const dict = {};
+        responsecompras.length > 0 ?
+            responsecompras.map((compra) => {
                 if (!dict[compra.idCliente]) {
                     dict[compra.idCliente] = [];
 
@@ -200,26 +225,47 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
 
 
-            });
-            setDicci(dict);
-        }
-        makeDictionarProductsByClient();
-    }, [dicci]);
+            }) : console.log("No hay compras");
+        setDicci(dict);
+    }
+
+
+    useEffect(() => {
+
+
+        getClientes();
+
+        getProductos();
+        getVersiones();
+        getCompras();
+        getRecursos();
+
+
+
+
+    }, []);
+
 
 
 
     return (
         <>
 
-            <Modal dialogClassName="modalContent" show={true} onHide={handleClose} >
+
+            <Modal dialogClassName="modalContent" show={showCreacionModal} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear Ticket </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
+                    <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                        No puedes dejar campos vacios!
+                    </Alert>
+
                     <div className="div-body-infoticket">
 
                         <Row className="mt-1">
+
 
                             <Col>
 
@@ -228,7 +274,7 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                         <h4> Título: </h4>
                                     </Col>
                                     <Col xs={8}>
-                                        <Form.Control type="text" name="titulo" onChange={(e) => onChangeTicketEditable(e)} />
+                                        <Form.Control required type="text" name="titulo" onChange={(e) => onChangeTicketEditable(e)} />
                                     </Col>
                                 </Row>
 
@@ -344,13 +390,15 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                         <Dropdown >
 
                                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                                                {TicketData.idCliente ? clientes[TicketData.idCliente - 1]['razon social'] : "Seleccionar"}
+                                                {clientes ?
+                                                    TicketData.idCliente ? clientes[TicketData.idCliente - 1]['razon social'] : "Seleccionar"
+                                                    : null}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
                                                 {clientes ?
                                                     clientes.map((cliente) => (
-                                                        <Dropdown.Item name="nombreCliente" onClick={(e) => { setearIdClienteTicket(cliente['id']); setIdClienteFilter(cliente["id"]) }}>{cliente["razon social"]}</Dropdown.Item>
+                                                        <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => { setearIdClienteTicket(cliente['id']); setIdClienteFilter(cliente["id"]) }}>{cliente["razon social"]}</Dropdown.Item>
                                                     )) : null}
 
                                             </Dropdown.Menu>
@@ -387,28 +435,29 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                         < Dropdown >
                                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                                 {productos ?
-                                                    TicketData.idProducto ? productos?.filter(producto => producto.id === TicketData.idProducto)[0]['nombre'] : "Seleccionar"
-                                                    : null}
+                                                    TicketData.idProducto ? productos?.filter(producto => producto.id === TicketData.idProducto && producto.estado === "Activo")[0]['nombre'] : "Seleccionar"
+                                                    : <></>}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
 
 
-                                                {dicci ?
+                                                {dicci && productos ?
                                                     dicci[idClienteFilter]?.map((idProducto) => (
-                                                        <Dropdown.Item name="nombreProducto" onClick={
-                                                            (e) => {
-                                                                setearIdProductoTicket(idProducto);
-                                                                setIdProductoFilter(idProducto);
-                                                            }
-                                                        } >
-                                                            {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
+                                                        productos.filter(producto => producto.id === idProducto && producto.estado === "Activo").map((producto) =>
+                                                            <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
+                                                                (e) => {
+                                                                    setearIdProductoTicket(idProducto);
+                                                                    setIdProductoFilter(idProducto);
+                                                                }
+                                                            }>
+                                                                {producto.nombre}
 
-                                                        </Dropdown.Item>
-                                                    ))
+                                                            </Dropdown.Item>
+                                                        ))) : <></>}
 
 
-                                                    : null}
+
 
                                             </Dropdown.Menu>
                                         </Dropdown>
@@ -424,18 +473,22 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                             <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                                                 {versiones ?
                                                     TicketData.idVersion ? versiones?.filter(version => version.id === TicketData.idVersion)[0]['nombre'] : "Seleccionar"
-                                                    : null}
+                                                    : <></>}
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
                                                 {/* show versions filtering compras by idclientefilter and idproductofilter */}
 
                                                 {compras && productos && versiones ?
-                                                    compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
+                                                    compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter && versiones.find(version => version.id === compra.idVersion)['estado'] === "Activa")
                                                         .map((compra) => (
-                                                            //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                            <Dropdown.Item name="versionProducto" onClick={(e) => { setearIdVersionTicket(compra['idVersion']); }}>{versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']} </Dropdown.Item>
-                                                        )) : null
+                                                            versiones.filter(version => version.id === compra.idVersion).map((version) => (
+                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setearIdVersionTicket(compra['idVersion']); }}>
+                                                                    {version.nombre}
+                                                                </Dropdown.Item>
+
+                                                            )))) : <></>
 
                                                 }
 
@@ -466,10 +519,14 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Miguel</Dropdown.Item>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Paulo</Dropdown.Item>
-                                                <Dropdown.Item name="nombreAsesor" onClick={(e) => handleDropdownChange(e)}>Mariana</Dropdown.Item>
+
+                                                {recursos ?
+                                                    recursos.map((recurso) => (
+                                                        <Dropdown.Item key={recurso['legajo']} name="nombreAsesor" id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
+                                                    )) : null}
                                             </Dropdown.Menu>
+
+
                                         </Dropdown>
 
                                     </Col>
@@ -490,17 +547,24 @@ const ModalCreacionTicket = ({ onChangeshowCreacionModal }) => {
 
                 </Modal.Body>
                 <Modal.Footer>
+                    <Row>
+                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                            No puedes dejar campos vacios!
 
-                    <Fragment>
-                        <Col xs={1} > <Button onClick={handleConfirmarCreacion}>Crear</Button> </Col>
-                    </Fragment>
+                        </Alert>
+                    </Row>
+                    <Row>
+
+                        <Col  > <Button onClick={handleConfirmarCreacion}>Crear</Button> </Col>
 
 
-                    <Col xs={1}>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                    </Col>
+
+                        <Col>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Close
+                            </Button>
+                        </Col>
+                    </Row>
 
                 </Modal.Footer>
             </Modal >

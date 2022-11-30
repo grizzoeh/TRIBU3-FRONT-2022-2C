@@ -1,134 +1,231 @@
-import { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
+
+import * as SERVER_NAMES from "../../APIRoutes";
+
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
+import Container from "react-bootstrap/Container";
+import DropdownButton from "react-bootstrap/DropdownButton";
+
 import axios from "axios";
 
-export default function NewProject() {
-  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
 
-  const [projectData, setProjectData] = useState({
-    name: "",
-    description: "",
-    type: "",
-    estimated_start_date: "",
-    estimated_finalization_date: "",
-    project_manager: "",
-    resources: [123],
-    stakeholders: [213124]
-  });
+export default function NewProject() {
+  const navigate = useNavigate();
+
+  const navigateProjectDashboard = () => {
+    navigate('/proyectos');
+  };
+
+  const initialProject = {
+    name: null,
+    description: null,
+    type: null,
+    estimated_start_date: null,
+    estimated_finalization_date: null,
+    project_manager: null,
+    resources: [],
+    stakeholders: null,
+  };
+
+  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
+  const [projectData, setProjectData] = useState(initialProject);
+  const [clients, setClients] = useState([]);
+
+  const getClients = async () => {
+    axios
+      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+      .then((res) => {
+        setClients(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los clientes', err);
+      });
+  };
+
+  useEffect(() => {
+    getClients();
+  }, []);
+
+  const onChangeProjectData = (e) => {
+    setProjectData({ ...projectData, [e.target.name]: e.target.value });
+  };
+
+  const handleDropdownChange = (e) => {
+    setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
+  };
+
+  const handleDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, stakeholders: [e] });
+    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  };
 
   const createProject = async () => {
     axios
-      .post(SERVER_NAME + "/psa/projects/", projectData)
+      .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
       .then((data) => {
-        debugger
         if (data.status === 200) {
-          alert("Nuevo proyecto creado");
-          // TODO: redirect to project dashboard
+          navigateProjectDashboard();
         }
       })
       .catch((err) => {
-        alert("Se produjo un error al consultar los proyectos", err);
+        alert("Se produjo un error al crear proyectos", err);
       });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     createProject();
-
-    setProjectData({
-      name: "",
-      description: "",
-      type: "",
-      estimated_start_date: "",
-      estimated_finalization_date: "",
-      project_manager: "",
-      resources: [], // TODO: fill
-      stakeholders: [] // TODO: fill
-    });
+    setProjectData(initialProject);
   };
 
   return (
-    <>
-      <h1>Nuevo proyecto</h1>
+    <Fragment>
+      <Container>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Row>
+          <Col>
+            <h1>Creacion de nuevo proyecto</h1>
+          </Col>
+        </Row>
+      </Container>
 
-      <br />
-      <br />
+      <Container>
+        <form onSubmit={handleSubmit}>
+          <Row className="mt-5">
+            <Col>
+              <h4>Nombre del proyecto</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="name"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
 
-      <form onSubmit={handleSubmit}>
-        <label>Nombre:</label>
-        <input
-          type="text"
-          value={projectData.name}
-          onChange={(e) =>
-            setProjectData({ ...projectData, name: e.target.value })
-          }
-        />
-        <br />
-        <br />
+          <Row className="mt-5">
+            <Col>
+              <h4>Tipo</h4>
+            </Col>
+            <Col xs={9}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="secondary"
+                  id="dropdown-basic"
+                  size="xl"
+                >
+                  {projectData.type ? projectData.type : "Seleccionar"}
+                </Dropdown.Toggle>
 
-        <label>Description:</label>
-        <input
-          type="text"
-          value={projectData.description}
-          onChange={(e) =>
-            setProjectData({ ...projectData, description: e.target.value })
-          }
-        />
-        <br />
-        <br />
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    name="type"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    client
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    name="type"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    support
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+          </Row>
 
-        <label>Tipo:</label>
-        <input
-          type="text"
-          value={projectData.type}
-          onChange={(e) =>
-            setProjectData({ ...projectData, type: e.target.value })
-          }
-        />
-        <br />
-        <br />
+          <Row className="mt-5">
+            <Col>
+              <h4>Cliente</h4>
+            </Col>
+            <Col xs={9}>
+              {/* TODO: get clients */}
+              <DropdownButton
+                variant="secondary"
+                title={buttonTitle}
+                onSelect={handleDropdownButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client.CUIT}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
 
-        <label>Fecha de inicio:</label>
-        <Form.Control
-          type="text"
-          name="fechaDeInicio"
-          placeholder="Ej: 18/12/2022"
-          onChange={(e) =>
-            setProjectData({ ...projectData, estimated_start_date: e.target.value })
-          }
-        />
-        <br />
-        <br />
+          <Row className="mt-5">
+            <Col>
+              <h4>Fecha de inicio</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="estimated_start_date"
+                placeholder="Ej: 18/12/2022"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
 
-        <label>Fecha de fin:</label>
-        <Form.Control
-          type="text"
-          name="fechaDeFin"
-          placeholder="Ej: 18/12/2023"
-          onChange={(e) =>
-            setProjectData({ ...projectData, estimated_finalization_date: e.target.value })
-          }
-        />
-        <br />
-        <br />
+          <Row className="mt-5">
+            <Col>
+              <h4>Fecha estimada de fin</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="estimated_finalization_date"
+                placeholder="Ej: 18/12/2022"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
 
-        <label>Project manager:</label>
-        <input
-          type="text"
-          value={projectData.project_manager}
-          onChange={(e) =>
-            setProjectData({ ...projectData, project_manager: e.target.value })
-          }
-        />
-        <br />
-        <br />
+          <Row className="mt-5">
+            <Col>
+              <h4>Project manager</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="project_manager"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
 
-        <button>Crear</button>
-      </form>
+          <Row className="mt-5">
+            <h4>Descripción</h4>
+          </Row>
+          <Row className="mt-3">
+            <textarea
+              name="description"
+              placeholder="Escribe una descripción..."
+              onChange={(e) => onChangeProjectData(e)}
+            />
+          </Row>
 
-      <br />
-      <br />
-    </>
+          <Row className="mt-5">
+            <Col></Col>
+            <Col xs={1}>
+              <Button onClick={handleSubmit}>Crear</Button>
+            </Col>
+          </Row>
+        </form>
+      </Container>
+    </Fragment>
   );
 }
