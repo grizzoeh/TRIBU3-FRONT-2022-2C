@@ -1,13 +1,21 @@
 .container-title {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     background-color: white;
     padding-bottom: 2%;
     margin-top: -6%;
 
+}
+
+.botoncrearticket {
+    width: 130px;
+    height: 40px;
+}
+
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .container-filters {

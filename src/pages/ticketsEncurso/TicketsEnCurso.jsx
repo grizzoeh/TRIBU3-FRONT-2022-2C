@@ -12,6 +12,8 @@ import ModalTicketCerrado from "../../components/modalTicketCerrado/ModalTicketC
 import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import Alert from 'react-bootstrap/Alert';
+import SpacerLine from "../../components/spacerLine/spacerLine";
+
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -148,15 +150,19 @@ const TicketsEnCurso = () => {
             <Container className="container-title">
 
                 <Row>
-                    <Col xs={10}>
+                    <Col sm={3}>
                         <h3>Tickets en Curso</h3>
                     </Col>
-                    < Col xs={2}>
-                        <Button size="sm" variant="primary" onClick={() => setShowCreacionModal(true)}>Crear</Button>
+                    < Col sm={1}>
+                        <Button size="sm" variant="primary" className="botoncrearticket" onClick={() => setShowCreacionModal(true)}>Crear Ticket</Button>
                     </Col>
-
-
                 </Row>
+                <Container className="spacer-line">
+                    <SpacerLine className="spacer-line" color="black"></SpacerLine>
+                </Container>
+
+
+
 
                 {
                     showCreacionModal ? (
