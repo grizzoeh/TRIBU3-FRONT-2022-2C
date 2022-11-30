@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import * as SERVER_NAMES from "../../APIRoutes";
+import * as SERVER_NAMES from "../../../APIRoutes";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -13,7 +13,7 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
-import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewTask() {
   const initialTask = {
@@ -41,6 +41,7 @@ export default function NewTask() {
             .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
             .then((res) => {
                 setTareas(res.data);
+                setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar las tareas para el proyecto', err);
@@ -60,7 +61,8 @@ export default function NewTask() {
 
         getAssignees();
         getTareas();
-   }, [params.id]);
+        //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == params.idTarea).name);
+   }, [params]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -108,7 +110,7 @@ export default function NewTask() {
         <br />
         <Row>
           <Col>
-            <h1>Creacion de nueva tarea</h1>
+            <h1>Creacion de nueva subtarea</h1>
           </Col>
         </Row>
       </Container>

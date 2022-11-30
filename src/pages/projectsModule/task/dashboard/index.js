@@ -44,8 +44,8 @@ export default function DashboardTareas() {
   };
 
   const handlePriorityFilter = (e) => {
-    setPriority(e);
-    e===0?priorityQuery="":priorityQuery="priority="+e+"&";
+    setPriority(e.target.value);
+    e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
     getTarea();
   };
 
@@ -95,7 +95,7 @@ export default function DashboardTareas() {
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
-    //url += priorityQuery;
+    url += priorityQuery;
     url += assigneeQuery;
     axios
         .get(SERVER_NAME + url, {})
