@@ -1,20 +1,23 @@
 import * as SERVER_NAMES from "../../APIRoutes";
 
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Chart} from "react-google-charts";
 import axios from "axios";
 import {useParams} from 'react-router-dom';
+import moment from 'moment';
+import { Container } from "react-bootstrap";
+
 export default function GannChart() {
 
   const google = window.google;
 
    const columns = [
-        { type: "string", label: "Task ID" },
-       { type: "string", label: "Task Name" },
+        { type: "string", label: "ID Tarea" },
+       { type: "string", label: "Nombre" },
         { type: "string", label: "Resource" },
         { type: "date", label: "Start Date" },
         { type: "date", label: "End Date" },
-        { type: "number", label: "Duration" },
+        { type: "number", label: "Esfuerzo estimado" },
         { type: "number", label: "Percent Complete" },
         { type: "string", label: "Dependencies" },
     ]
@@ -114,21 +117,23 @@ export default function GannChart() {
     }, []);
 
     const options = {
-        height: 275,
+        height: 600,
         gantt: {
           defaultStartDateMillis: new Date(2015, 3, 28),
         },
       };
     return (
-        <Chart chartType="Gantt" width="100%" height="50%" 
-        options={options} data={
+        <Fragment>
+        <Container key="chart-container">
+
+        <Chart chartType="Gantt" width="80%" height="50%" data={
             [columns,...tareas.map((tarea) => {
                 return [tarea.id,
                      tarea.name,
                      tarea.description,
-                     new Date(2022, 11, 28),
-                     new Date(2022, 11, 30),
-                     6,
+                     moment(tarea.estimated_start_date, "YYYY-MM-DD").toDate(),
+                     moment(tarea.estimated_finalization_date, "YYYY-MM-DD").toDate(),
+                     tarea.estimated_hours_effort,
                      null,
                      null
 
@@ -143,6 +148,8 @@ export default function GannChart() {
                  ]
              })]
         }/>
+        </Container>
+        </Fragment>
 
     );
 }
