@@ -1,0 +1,67 @@
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 750px; */
+    width: 100vw;
+    top: 100px;
+    background-color: white;
+}
+
+#titulo{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+
+#tableProyects {
+  width: 100%;
+  border: 1px solid;
+  height: 12vw;
+  text-align: center;
+  vertical-align: bottom;
+  padding: 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  left: 0vw;
+  bottom: 0vw;
+}
+
+#tableEmpleados {
+  width: 100%;
+  text-align: center ;
+  border: 1px solid;
+  height: 12vw;
+  vertical-align: bottom;
+  padding: 0px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+  left: 0vw;
+  top: 1vw;
+}
+
+tr:hover {background-color: coral;}
+
+#outlined-basic-empleados{
+  position: relative;
+  left: 0vw;
+  top: 1vw;
+}
+
+#tuma{
+  width: 300px;
+  text-align: center ;
+}
+
+#page {
+  align-items: center;
+  text-align: center;
+}
+
+#buscador-empleados{
+  position: relative;
+  left: 0vw;
+  top: 1vw;
+}
