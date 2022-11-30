@@ -135,7 +135,11 @@ export default function GannChart() {
                    /*  tarea.estimated_finalization_date,
                      tarea.estimated_hours_effort,
                     /* tarea.state,
-                     tarea.dependencies*/
+                     tarea.dependencies
+                                     
+                     //new Date(tarea.creation_date),
+
+                     */
                  ]
              })]
         }/>
