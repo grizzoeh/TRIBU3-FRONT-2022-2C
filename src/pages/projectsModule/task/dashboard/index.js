@@ -154,10 +154,11 @@ export default function DashboardTareas() {
                 </Link>
             </Col>
             < Col>
+                <Link to={`/proyectos/${proyecto.id}/gannt/`}>
                     <Button variant="primary" onClick={() => console.log("click diagrama gannt")}>
                         Diagrama de Gannt
                     </Button>
-                    
+                </Link>                
             </Col>
             </Row>
             <Row>
