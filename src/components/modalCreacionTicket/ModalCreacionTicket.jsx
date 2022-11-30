@@ -46,7 +46,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     const [clientes, setClientes] = useState();
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
-    const handleCloseAlertaDatosNulos= () => setAlertaDatosNulos(true);
+    const handleCloseAlertaDatosNulos= () => setAlertaDatosNulos(false);
 
     const [productos, setProductos] = useState();
 
