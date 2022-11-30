@@ -7,6 +7,8 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+
 
 
 
@@ -18,6 +20,8 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
     const [proyectoSeleccionadoId, setProyectoSeleccionadoId] = useState();
 
     const [proyectoSeleccionadoNombre, setProyectoSeleccionadoNombre] = useState();
+
+    const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
 
     const [show, setShow] = useState(true);
 
@@ -63,19 +67,26 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
             "related_ticket": numeroTicket,
         }
 
-        axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Tarea creada");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (send_tarea.name === "" || send_tarea.description === "" || send_tarea.priority === "" || send_tarea.related_ticket === "" || send_tarea.name === null || send_tarea.description === null || send_tarea.priority === null || send_tarea.related_ticket === null) {
+            setAlertaDatosNulos(true);
 
-        setAlertaTareaExito(true);
-        handleClose();
+        }
+        else {
 
+            axios.post("https://squad-8-projects.herokuapp.com/psa/projects/" + proyectoSeleccionadoId + "/tasks/", send_tarea)
+                .then((data) => {
+                    if (data.data.ok) {
+                        console.log("Tarea creada");
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            setAlertaTareaExito(true);
+            handleClose();
+
+        }
     }
 
     useEffect(() => {
@@ -108,35 +119,39 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Tarea de Ticket #{numeroTicket}  </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <Alert size={"xs"} show={alertaDatosNulos} key='danger' variant='danger'>
+                        No puedes dejar campos vacios!
+                    </Alert>
+                    <Row className="mt-1">
+                        <Col xs={1} md={2}>
+                            <h5>Título:</h5>
+                        </Col>
+                        <Col xs={3} >
+                            <Form.Control size="sm" type="text" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
+                        </Col>
+                    </Row>
 
-                    <h3>Crea una tarea</h3>
 
-                    <Row className="mt-5">
-                        <Col xs={1} >
-                            <h4>Título</h4>
+                    <Row className="mt-3">
+                        <Col xs={2}>
+                            <h6> Prioridad: </h6>
+
                         </Col>
                         <Col xs={3}>
-                            <Form.Control type="text" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
-                        </Col>
-
-                        <Col xs={2}>
-                            <h4> Prioridad:</h4>
-
-                        </Col>
-                        <Col xs={2}>
-                            <Form.Control type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
+                            <Form.Control size="sm" type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
 
 
                         </Col>
 
                     </Row>
-                    <Row className="mt-5">
-                        <Col xs={2}>
-                            <h4> Proyecto Destino:</h4>
+
+                    <Row className="mt-4">
+                        <Col sm={2}>
+                            <h6> Proyecto Destino:</h6>
                         </Col>
-                        <Col xs={3}>
+                        <Col >
                             <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                     {proyectoSeleccionadoNombre ? proyectoSeleccionadoNombre : "Selecciona un proyecto"}
 
 
@@ -153,9 +168,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
                         </Col>
 
+
+
                     </Row>
 
-                    <h4 className="mt-5">Descripción</h4>
+                    <h6 className="mt-4">Descripción</h6>
                     <textarea className="box-reporte-final mt-4" name="reporteFinal" onChange={(e) => onChangeCuerpoTarea(e)} />
 
 
@@ -167,6 +184,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                             Close
                         </Button>
                     </Col>
+
                     <Col>
                         <Button variant="primary" onClick={enviarTarea}>
                             Enviar Tarea

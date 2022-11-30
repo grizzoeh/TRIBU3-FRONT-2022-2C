@@ -1,17 +1,13 @@
-import Card from "./card";
+import CardCustom from "./card";
+import './task.css'
 
-export default function StateContainer({ stateName, projects }) {
+export default function StateContainer({ projects }) {
   return (
-    <section style={sectionStyle}>
-      <h3>{stateName}</h3>
-
-      {projects.map((project) => {
-        return <Card project={project} />;
+    //<section style={sectionStyle}>
+    <section >
+      {projects?.map((oneProject) => {
+        return <CardCustom project={oneProject} />;
       })}
     </section>
   );
 }
-
-const sectionStyle = {
-  background: "#a9a9a9",
-};

@@ -80,6 +80,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
         getDataEnCurso();
         getDataEnCurso();
+        getDataEnCurso();
         getDataCerrados();
         getDataCerrados();
         setTicketResueltoExito(true);
@@ -102,7 +103,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
     const onChangeFechaCierre = (e) => {
         setFechaCierre(e.target.value);
-        setTicketData({ ...TicketData, ["fechaCierre"]: e.target.value });
+        setTicketData({ ...TicketData, ["fechaCierre"]: e.target.value, ["estado"]: "Cerrado" });
 
     }
 

@@ -1,98 +1,184 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Header from "./header";
 import Body from "./body";
-import { Chart } from "react-google-charts";
 import axios from "axios";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Dropdown from "react-bootstrap/Dropdown";
+import Container from 'react-bootstrap/Container';
+import * as SERVER_NAMES from "../../APIRoutes";
+import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
 
 
 export default function Dashboard() {
-  const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
+    const states =[{"name":"Todos"},{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
+    const types = [{"name": "Todos"},{"name": "client"}, {"name": "support"}];
 
-  const [proyectos, setProyectos] = useState([]);
+    const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
+    const [proyectos, setProyectos] = useState([]);
+    const [assignees, setAssignees] = useState([]);
+    let stateQuery="";
+    let assigneeQuery="";
+    let finishDateQuery="";
+    let typeQuery="";
 
-  useEffect(() => {
-    const getProyectos = async () => {
-      axios
-        .get(SERVER_NAME + "/psa/projects/", {})
-        .then((res) => {
-          setProyectos(res.data);
-        })
-        .catch((err) => {
-          alert('Se produjo un error al consultar los proyectos', err);
-        });
+    const [state, setState] = useState('Seleccionar');
+    const [assignee, setAssignee] = useState('Seleccionar');
+    const [finishDate, setFinishDate] = useState('---');
+    const [type, setType] = useState('Seleccionar');
+
+    const handleStateFilter = (e) => {
+        setState(e);
+        e==="Todos"?stateQuery="":stateQuery="status="+e+"&";
+        getProyectos();
+    };
+    const handleAssigneeFilter = (e) => {
+
+        setAssignee(e);
+        e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+        getProyectos();
+    };
+    const handlePriorityFilter = (e) => {
+        setFinishDate(e);
+        finishDateQuery="finishDate="+e+"&";
+        getProyectos();
+    };
+    const handleTypeFilter = (e) => {
+        setType(e);
+        e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
+        getProyectos();
     };
 
-    getProyectos();
-  }, []);
+    const getAssignees = async () => {
+        axios
+            .get(SERVER_NAMES.ASSIGNEES , {})
+            .then((res) => {
+                setAssignees(res.data);
+            })
+            .catch((err) => {
+                alert('Se produjo un error al consultar los clientes', err);
+            });
+        console.log(assignees);
+    };
+    const getProyectos = async () => {
+        let url = "/psa/projects/?";
+        setProyectos([])
+        url += stateQuery;
+        url += typeQuery;
+        url += finishDateQuery;
+        url += assigneeQuery;
+        axios
+            .get(SERVER_NAME + url, {})
+            .then((res) => {
+                setProyectos(res.data);
+            })
+            .catch((err) => {
+                alert('Se produjo un error al consultar los proyectos', err);
+            });
+    };
 
-  const columns = [
-    { type: "string", label: "Task ID" },
-    { type: "string", label: "Task Name" },
-    { type: "string", label: "Resource" },
-    { type: "date", label: "Start Date" },
-    { type: "date", label: "End Date" },
-    { type: "number", label: "Duration" },
-    { type: "number", label: "Percent Complete" },
-    { type: "string", label: "Dependencies" },
-  ];
 
-  const rows = [
-    [
-      "toTrain",
-      "Walk to train stop",
-      "walk",
-      null,
-      null,
-      5 * 60 * 1000,
-      100,
-      null,
-    ],
-    [
-      "music",
-      "Listen to music",
-      "music",
-      null,
-      null,
-      70 * 60 * 1000,
-      100,
-      null,
-    ],
-    [
-      "wait",
-      "Wait for train",
-      "wait",
-      null,
-      null,
-      10 * 60 * 1000,
-      100,
-      "toTrain",
-    ],
-    ["train", "Train ride", "train", null, null, 45 * 60 * 1000, 75, "wait"],
-    ["toWork", "Walk to work", "walk", null, null, 10 * 60 * 1000, 0, "train"],
-    ["work", "Sit down at desk", null, null, null, 2 * 60 * 1000, 0, "toWork"],
-  ];
+    useEffect(() => {
+        const interval = setInterval(() => {
+            getAssignees();
+            getProyectos();
 
-  const data = [columns, ...rows];
+        }, 600000);
+        return () => clearInterval(interval);
+    }, []);
 
-  const options = {
-    height: 275,
-    gantt: {
-      defaultStartDateMillis: new Date(2015, 3, 28),
-    },
-  };
+    return (
+        <>
+            <Header/>
 
-  return (
-    <>
-      <Header />
-      <Body projects={proyectos} />
+            <Container className="container-filters">
+                <Row className="mt-5">
+                    <Col>
+                        <h4>Estados</h4>
+                    </Col>
+                    <Col>
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={state}
+                            onSelect={handleStateFilter}
+                        >
 
-      <Chart
-        chartType="Gantt"
-        width="100%"
-        height="50%"
-        data={data}
-        options={options}
-      />
-    </>
-  );
+                            {states.map((state) => {
+                                return (
+                                    <Dropdown.Item eventKey={state.name} name="state">
+                                        {state.name}
+                                    </Dropdown.Item>
+                                );
+                            })}
+
+                        </DropdownButton>
+                    </Col>
+
+                    <Col>
+                        <h4>Project Management</h4>
+                    </Col>
+                    <Col>
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={assignee}
+                            onSelect={handleAssigneeFilter}
+                        >
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
+                            </Dropdown.Item>
+                            {assignees.map((assignee) => {
+                                return (
+                                    <Dropdown.Item eventKey={assignee.legajo} name="management">
+                                        {assignee.Nombre} {assignee.Apellido}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                    </Col>
+                </Row>
+
+                    <Row className="mt-5">
+                    <Col>
+                        <h4>Fecha de Finalizacion</h4>
+                    </Col>
+                    <Col>
+                        <ButtonGroup className="me-5" aria-label="First group"    onClick={handlePriorityFilter}>
+                            <Form.Control
+                                type="text"
+                                placeholder={finishDate}
+                                aria-label={finishDate}
+                                aria-describedby="btnGroupAddon"
+                            />
+                            <Button variant="secondary">Filtrar</Button>{' '}
+
+                        </ButtonGroup>
+                    </Col>
+                    <Col>
+                        <h4>Tipo</h4>
+                    </Col>
+                    <Col>
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={type}
+                            onSelect={handleTypeFilter}
+                        >
+                            {types.map((type) => {
+                                return (
+                                    <Dropdown.Item eventKey={type.name} name="client">
+                                        {type.name}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                    </Col>
+                </Row>
+            </Container>
+
+            <Body projects={proyectos} filtrosStado={states}/>
+        </>
+    );
 }

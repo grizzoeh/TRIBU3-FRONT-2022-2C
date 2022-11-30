@@ -7,6 +7,8 @@ import {
 
 const DashboardProyectos = lazy(() => import("../pages/projectsModule/project/dashboard/index"));
 const ProyectoNuevo = lazy(() => import("../pages/projectsModule/project/new/index"));
+const TareasDeProyecto = lazy(() => import("../pages/projectsModule/task/dashboard/index"));
+const TareaNueva = lazy(() => import("../pages/projectsModule/task/new/index"));
 // const FiltrarProyecto = lazy(() => import("../pages/projectsModule/project/filter/index"));
 
 const ProyectoRouter = () => {
@@ -16,6 +18,8 @@ const ProyectoRouter = () => {
                 <Routes>
                     <Route path="/proyectos" element={<DashboardProyectos/>} />
                     <Route path="/crear-proyecto" element={<ProyectoNuevo/>} />
+                    <Route path="/proyectos/:id/ver-tareas" element={<TareasDeProyecto/>} />
+                    <Route path="/proyectos/:id/crear-tarea" element={<TareaNueva/>} />
                     {/* <Route path="/filtrar-proyecto" element={<FiltrarProyecto/>} /> */}
                 </Routes>
             </Suspense>
