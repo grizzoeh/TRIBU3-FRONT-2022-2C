@@ -6,10 +6,12 @@ import axios from "axios";
 import {useParams} from 'react-router-dom';
 import moment from 'moment';
 import { Container } from "react-bootstrap";
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+
 
 export default function GannChart() {
 
-  const google = window.google;
+    const google = window.google;
 
    const columns = [
         { type: "string", label: "ID Tarea" },
@@ -21,21 +23,6 @@ export default function GannChart() {
         { type: "number", label: "Percent Complete" },
         { type: "string", label: "Dependencies" },
     ]
-/*
- 
-*/
-  //  const data = [columns, ...rows];/*
-  /*  const columns = [
-         "Task Name",
-        "Task Id",
-        "Descripción",
-        "Dia De inicio Estimado",
-        "Dia De finalización Estimado",
-        "Horas Estimadas",
-        "Estado",
-       "Dependencies",
-    ];*/
-
 
     const params = useParams();
     const [tareas, setTareas] = useState([]);
@@ -64,69 +51,38 @@ export default function GannChart() {
             });
     };
     useEffect(() => {
-        const interval = setInterval(() => {
-            getAssignees();
-            getTareas();
-
-            /*
-            const fillSquareMatrix = (size) => {
-    return Array(size)
-    . fill()
-    . map((u,y) => Array(size)
-    . fill()
-    . map((u,x) => y * size + x + 1));
-    };*/
-    
-            /*
-            columns.forEach((colunm) => {
-                setdataToGann().addColumn(colunm.type,colunm.label);
-                //('string', 'Agentes')
-            })
-            tareas.forEach((tarea) => {
-                /*let faffa=
-        
-                setdataToGann().addRow([
-                    tarea.id,
-                    ,null
-                    ,null
-                    ,            new Date(2015, 0, 1),
-                    new Date(2015, 0, 5),
-                    null,
-                    null,
-                    null
-                ]);
-            })*//*
-            let lista=tareas.map((tarea) => {
-               return [tarea.id,
-                    tarea.name,
-                     tarea.description,
-                    tarea.estimated_start_date,
-                    tarea.estimated_finalization_date,
-                    tarea.estimated_hours_effort,
-                    tarea.state,
-                    tarea.dependencies
-                ]
-            })
-*/
-            //console.log(lista);
-            //dataToGann=[columns, lista];
-            //console.log([columns, ...lista]);*/
-        }, 3000);
-        return () => clearInterval(interval);
-       
+        // const interval = setInterval(() => {
+        //     getAssignees();
+        //     getTareas();
+        // }, 3000);
+        // return () => clearInterval(interval);
+        getAssignees();
+        getTareas();
     }, []);
 
+    // const options = {
+    //     height: 600,
+    //     gantt: {
+    //       defaultStartDateMillis: new Date(2015, 3, 28),
+    //     },
+    //   };
+
     const options = {
-        height: 600,
+        height: 700,
+        width: 1000,
+        title: "Nearby galaxies",
         gantt: {
-          defaultStartDateMillis: new Date(2015, 3, 28),
+          trackHeight: 30
         },
       };
     return (
         <Fragment>
+        <NavbarProyectos/>
         <Container key="chart-container">
-
-        <Chart chartType="Gantt" width="80%" height="50%" data={
+        <br></br>
+        <br></br>
+        <br></br>
+        <Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={true} data={
             [columns,...tareas.map((tarea) => {
                 return [tarea.id,
                      tarea.name,
