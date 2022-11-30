@@ -11,7 +11,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 
-function ModalProductoNuevo({refreshProductos, refreshFiltradas, refreshAlert}) {
+function ModalProductoNuevo({ refreshProductos, refreshFiltradas, refreshAlert }) {
 
     const ProductoNulo = {
         "nombre": null,
@@ -65,7 +65,7 @@ function ModalProductoNuevo({refreshProductos, refreshFiltradas, refreshAlert}) 
                     <Alert onClose={handleCloseProductoError} variant="danger" sx={{ width: '100%' }}>Error al crear producto.</Alert>
                 </Snackbar>
             </>
-            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nuevo Producto</Button></Col>
+            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>✚ Nuevo Producto</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear un nuevo producto: </Modal.Title>

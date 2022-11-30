@@ -12,7 +12,7 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 
 
-function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas, refreshAlert}) {
+function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, refreshAlert }) {
 
     const VersionNula = {
         "nombre": null,
@@ -64,8 +64,8 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas, refr
     }
 
     return (
-        <>  
-            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nueva version</Button></Col>
+        <>
+            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>✚ Nueva version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <>
                     <Snackbar open={showVersionError} autoHideDuration={2000} onClose={handleCloseVersionError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
@@ -82,7 +82,7 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas, refr
                     </Row>
                     <Row className="campo">
                         <Col><h6>Fecha Release:</h6></Col>
-                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" max={new Date().toISOString().slice(0, 10)} onChange={(e) => onChangeVersionEditable(e)} /></Col>
+                        <Col><Form.Control name="fechaRelease" type="date" placeholder="Fecha de lanzamiento" onChange={(e) => onChangeVersionEditable(e)} /></Col>
                     </Row>
                     <Row className="campo">
                         <Col><h6>Estado de la version:</h6></Col>

@@ -171,7 +171,7 @@ const TicketsEnCurso = () => {
                         <h3>Tickets en Curso</h3>
                     </Col>
                     < Col sm={1}>
-                        <Button size="sm" variant="primary" className="botoncrearticket" onClick={() => setShowCreacionModal(true)}>Crear Ticket</Button>
+                        <Button size="sm" variant="primary" className="botoncrearticket" onClick={() => setShowCreacionModal(true)}> ✚ Nuevo Ticket</Button>
                     </Col>
                 </Row>
                 <Container className="spacer-line">

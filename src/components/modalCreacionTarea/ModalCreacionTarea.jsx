@@ -8,12 +8,15 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import { Snackbar } from "@mui/material";
 
 
 
 
 const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setAlertaTareaExito }) => {
 
+    const vertical = "top"
+    const horizontal = "center"
 
     const [proyectos, setProyectos] = useState();
 
@@ -56,6 +59,10 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
     const onChangePrioridadTarea = (e) => {
         setPrioridadTarea(e.target.value);
+    };
+
+    const handleCloseAlertaDatosNulos = () => {
+        setAlertaDatosNulos(false);
     };
 
     const enviarTarea = async () => {
@@ -119,9 +126,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Tarea de Ticket #{numeroTicket}  </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Alert size={"xs"} show={alertaDatosNulos} key='danger' variant='danger'>
-                        No puedes dejar campos vacios!
-                    </Alert>
+                    <Snackbar open={alertaDatosNulos} autoHideDuration={1500} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert size={"xs"} show={alertaDatosNulos} key='danger' variant='danger'>
+                            No puedes dejar campos vacios!
+                        </Alert>
+                    </Snackbar>
                     <Row className="mt-1">
                         <Col xs={1} md={2}>
                             <h5>Título:</h5>
