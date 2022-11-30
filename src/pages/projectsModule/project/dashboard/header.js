@@ -7,9 +7,6 @@ export default function ProjectHeader() {
     return (
         <>
             <br/>
-            <br/>
-            <br/>
-            <br/>
             <Container className="container-title">
                 <Row>
                     <Col xs={10}>
