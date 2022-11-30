@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
+import Select from 'react-select'
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -13,6 +14,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
 
+
 export default function NewProject() {
   const navigate = useNavigate();
 
@@ -22,32 +24,63 @@ export default function NewProject() {
 
   const initialProject = {
     name: null,
-    description: null,
     type: null,
-    estimated_start_date: null,
-    estimated_finalization_date: null,
-    project_manager: null,
+    description: null,
+    projectManager: null,
+    sponsor: null,
     resources: [],
-    stakeholders: null,
+    stakeholders: [],
   };
 
-  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
-  const [projectData, setProjectData] = useState(initialProject);
-  const [clients, setClients] = useState([]);
+  const [sponsorButtonTitle, setSponsorButtonTitle] = useState('Seleccionar');
+  const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
 
-  const getClients = async () => {
+  const [projectData, setProjectData] = useState(initialProject);
+
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
+  const [resources, setResources] = useState([]);
+  const [stakeholders, setStakeholders] = useState([]);
+  
+  const handleDropdownSponsorsButtonChange = (e) => {
+    setProjectData({ ...projectData, projectManager: e });
+    setSponsorButtonTitle(sponsors.find((client) => client.id == e).CUIT);
+  };
+
+  const handleDropdownProjectManagerButtonChange = (e) => {
+    setProjectData({ ...projectData, sponsor: e });
+    setProjectManagerButtonTitle(projectManagers.find((client) => client.id == e).CUIT);
+  };
+
+  const getResources = async () => {
     axios
       .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
       .then((res) => {
-        setClients(res.data);
+        setProjectManagers(res.data);
+        setSponsors(res.data);
+        setResources(res.data);
+        setStakeholders(res.data);
       })
       .catch((err) => {
-        alert('Se produjo un error al consultar los clientes', err);
+        alert('Se produjo un error al consultar los recursos', err);
+      });
+  };
+
+  const createProject = async () => {
+    axios
+      .post(SERVER_NAMES.PROJECTS + "/psa/projects", projectData)
+      .then((data) => {
+        if (data.status === 200) {
+          navigateProjectDashboard();
+        }
+      })
+      .catch((err) => {
+        alert("Se produjo un error al crear el proyecto", err);
       });
   };
 
   useEffect(() => {
-    getClients();
+    getResources();
   }, []);
 
   const onChangeProjectData = (e) => {
@@ -58,22 +91,12 @@ export default function NewProject() {
     setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
   };
 
-  const handleDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, stakeholders: [e] });
-    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  const handleResourcesDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, resources: e.map((item) => item.id) });
   };
 
-  const createProject = async () => {
-    axios
-      .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
-      .then((data) => {
-        if (data.status === 200) {
-          navigateProjectDashboard();
-        }
-      })
-      .catch((err) => {
-        alert("Se produjo un error al crear proyectos", err);
-      });
+  const handleStakeHoldersDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, stakeholders: e.map((item) => item.id) });
   };
 
   const handleSubmit = (event) => {
@@ -145,19 +168,18 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Cliente</h4>
+              <h4>Project Manager</h4>
             </Col>
             <Col xs={9}>
-              {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={buttonTitle}
-                onSelect={handleDropdownButtonChange}
+                title={projectManagerButtonTitle}
+                onSelect={handleDropdownProjectManagerButtonChange}
               >
-                {clients.map((client) => {
+                {projectManagers.map((projectManager) => {
                   return (
-                    <Dropdown.Item eventKey={client.id} name="client">
-                      {client.CUIT}
+                    <Dropdown.Item eventKey={projectManager.id} name="projectManager">
+                      {projectManager.CUIT}
                     </Dropdown.Item>
                   );
                 })}
@@ -167,42 +189,42 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Fecha de inicio</h4>
+              <h4>Sponsor</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
-                type="text"
-                name="estimated_start_date"
-                placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeProjectData(e)}
-              />
+              <DropdownButton
+                variant="secondary"
+                title={sponsorButtonTitle}
+                onSelect={handleDropdownSponsorsButtonChange}
+              >
+                {sponsors.map((sponsor) => {
+                  return (
+                    <Dropdown.Item eventKey={sponsor.id} name="sponsor">
+                      {sponsor.CUIT}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
             </Col>
           </Row>
 
           <Row className="mt-5">
             <Col>
-              <h4>Fecha estimada de fin</h4>
+              <h4>Recursos</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
-                type="text"
-                name="estimated_finalization_date"
-                placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeProjectData(e)}
-              />
+              <Select isMulti options={resources} getOptionLabel={(resource) => resource.CUIT}
+                getOptionValue={(resource) => resource.id} onChange={handleResourcesDropdownButtonChange} />
             </Col>
           </Row>
 
           <Row className="mt-5">
             <Col>
-              <h4>Project manager</h4>
+              <h4>Stake holders</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
-                type="text"
-                name="project_manager"
-                onChange={(e) => onChangeProjectData(e)}
-              />
+              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => stakeholder.CUIT}
+                getOptionValue={(stakeholder) => stakeholder.id} onChange={handleStakeHoldersDropdownButtonChange} />
             </Col>
           </Row>
 
