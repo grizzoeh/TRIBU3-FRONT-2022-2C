@@ -30,6 +30,8 @@ export default function NewProject() {
     sponsor: null,
     resources: [],
     stakeholders: [],
+    estimated_start_date: null,
+    estimated_finalization_date: null,
   };
 
   const [sponsorButtonTitle, setSponsorButtonTitle] = useState('Seleccionar');
@@ -225,6 +227,34 @@ export default function NewProject() {
             <Col xs={9}>
               <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => stakeholder.CUIT}
                 getOptionValue={(stakeholder) => stakeholder.id} onChange={handleStakeHoldersDropdownButtonChange} />
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Fecha de inicio</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="estimated_start_date"
+                placeholder="Ej: 18/12/2022"
+                onChange={(e) => onChangeProjectData(e)}
+              />
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Fecha estimada de fin</h4>
+            </Col>
+            <Col xs={9}>
+              <Form.Control
+                type="text"
+                name="estimated_finalization_date"
+                placeholder="Ej: 15/10/2025"
+                onChange={(e) => onChangeProjectData(e)}
+              />
             </Col>
           </Row>
 
