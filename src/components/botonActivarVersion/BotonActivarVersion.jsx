@@ -7,14 +7,21 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 function BotonActivarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
 
-    const [versionModificada, setVersionModificada] = useState(version)
+
 
     const activarVersion = async () => {
-        versionModificada.estado = "Activa";
-        axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", versionModificada)
+        const versionData = {
+            id: version.id,
+            nombre: version.nombre,
+            idProducto: version.idProducto,
+            estado: "Activa",
+            fechaRelease: version.fechaRelease,
+            fechaDeprecacion: null
+        }
+        axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", versionData)
             .then((data) => {
                 if (data.data.ok) {
-                    console.log("Version editada");
+                    console.log("Version activada");
                     refreshVersiones();
                     if (refreshFiltradas) {
                         refreshFiltradas();
