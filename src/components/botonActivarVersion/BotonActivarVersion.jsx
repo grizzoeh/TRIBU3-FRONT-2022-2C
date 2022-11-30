@@ -4,7 +4,7 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonActivarVersion({version, refreshVersiones, refreshFiltradas}) {
+function BotonActivarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
 
     const [versionModificada, setVersionModificada] = useState(version)
@@ -19,6 +19,7 @@ function BotonActivarVersion({version, refreshVersiones, refreshFiltradas}) {
                     if (refreshFiltradas) {
                         refreshFiltradas();
                     }
+                    refreshAlert();
                 }
             })
             .catch((error) => {

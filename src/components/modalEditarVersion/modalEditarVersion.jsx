@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
-function ModalEditarVersion({version, refreshVersiones, refreshFiltradas}) {
+function ModalEditarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
     const [nuevoNombre, setNuevoNombre] = useState(version)
     const [show, setShow] = useState(false);
@@ -28,6 +28,7 @@ function ModalEditarVersion({version, refreshVersiones, refreshFiltradas}) {
                     if (refreshFiltradas) {
                         refreshFiltradas();
                     }
+                    refreshAlert();
                     handleClose();
                 }
             })

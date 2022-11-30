@@ -8,9 +8,11 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
 
-function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
+function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
     const VersionNula = {
         "nombre": null,
@@ -24,8 +26,16 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setVersionData(VersionNula);
+        setShow(true);
+    }
 
+    const vertical = "top"
+    const horizontal = "center"
+    const [showVersionError, setVersionError] = useState(false);
+    const handleCloseVersionError = () => setVersionError(false);
+    const handleShowVersionError = () => setVersionError(true);
 
 
     const onChangeVersionEditable = (e) => {
@@ -43,10 +53,12 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
                     console.log("Version creada");
                     refreshVersiones();
                     refreshFiltradas();
+                    refreshAlert()
                     handleClose();
                 }
             })
             .catch((error) => {
+                handleShowVersionError();
                 console.log(error);
             });
     }
@@ -55,6 +67,11 @@ function ModalVersionNueva({idProducto, refreshVersiones, refreshFiltradas}) {
         <>  
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nueva version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
+                <>
+                    <Snackbar open={showVersionError} autoHideDuration={2000} onClose={handleCloseVersionError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert onClose={handleCloseVersionError} variant="danger" sx={{ width: '100%' }}>Error al crear version.</Alert>
+                    </Snackbar>
+                </>
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear nueva version: </Modal.Title>
                 </Modal.Header>

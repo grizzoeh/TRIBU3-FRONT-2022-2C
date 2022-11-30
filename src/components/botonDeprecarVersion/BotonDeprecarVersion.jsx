@@ -4,7 +4,7 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonDeprecarVersion({version, refreshVersiones, refreshFiltradas}) {
+function BotonDeprecarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
 
 
@@ -20,6 +20,7 @@ function BotonDeprecarVersion({version, refreshVersiones, refreshFiltradas}) {
                     if (refreshFiltradas) {
                         refreshFiltradas();
                     }
+                    refreshAlert();
                 }
             })
             .catch((error) => {

@@ -140,7 +140,7 @@ const CrearProductoYVersion = () => {
             </>
             <>
                 <Snackbar open={showProductoActivadoOK} autoHideDuration={1500} onClose={handleCloseProductoActivadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert onClose={handleCloseProductoActivadoOK} variant="success" sx={{ width: '100%' }}>Producto deprecado con exito.</Alert>
+                    <Alert onClose={handleCloseProductoActivadoOK} variant="success" sx={{ width: '100%' }}>Producto activado con exito.</Alert>
                 </Snackbar>
             </>
             <Container className="container-title">
