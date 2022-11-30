@@ -10,7 +10,7 @@ import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 import Alert from 'react-bootstrap/Alert';
-
+import { Snackbar } from "@mui/material";
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
@@ -19,6 +19,8 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
 
+    const vertical = "top"
+    const horizontal = "center"
 
     const [clientes, setClientes] = useState();
 
@@ -29,11 +31,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const [compras, setCompras] = useState();
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
+    const handleCloseEdicionExito = () => setAlertaEdicionExito(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+    const handleCloseAlertaDatosNulos = () => setAlertaDatosNulos(false);
 
     const [alertaTareaExito, setAlertaTareaExito] = useState(false);
-
+    const handleCloseAlertaTareaExito = () => setAlertaTareaExito(false);
 
     const [ticketEditable, setTicketEditable] = useState(data);
 
@@ -262,23 +266,27 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <Snackbar open={alertaEdicionExito} autoHideDuration={2000} onClose={handleCloseEdicionExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert show={alertaEdicionExito} variant='success'>
                         Ticket editado con exito!
-
                     </Alert>
+                </Snackbar>
 
+                <Snackbar open={alertaTareaExito} autoHideDuration={2000} onClose={handleCloseAlertaTareaExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert show={alertaTareaExito} variant='success'>
                         Tarea creada con exito!
-
                     </Alert>
+                </Snackbar>
 
 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                                No puedes dejar campos vacios!
-                            </Alert>
+                            <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                                <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                    No puedes dejar campos vacios!
+                                </Alert>
+                            </Snackbar>
                             <Row className="mt-4">
 
                                 <Col>

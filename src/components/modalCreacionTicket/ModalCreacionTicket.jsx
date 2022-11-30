@@ -9,6 +9,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Snackbar } from "@mui/material";
+
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -36,11 +38,15 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
         "idVersion": null,
     }
 
+    const vertical = "top"
+    const horizontal = "center"
+
     const [TicketData, setTicketData] = useState(TicketNulo);
 
     const [clientes, setClientes] = useState();
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+    const handleCloseAlertaDatosNulos= () => setAlertaDatosNulos(false);
 
     const [productos, setProductos] = useState();
 
@@ -258,9 +264,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                 </Modal.Header>
                 <Modal.Body>
 
-                    <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                        No puedes dejar campos vacios!
-                    </Alert>
+                    <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                            No puedes dejar campos vacios!
+                        </Alert>
+                    </Snackbar>
 
                     <div className="div-body-infoticket">
 
@@ -548,10 +556,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                 </Modal.Body>
                 <Modal.Footer>
                     <Row>
-                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                            No puedes dejar campos vacios!
-
-                        </Alert>
+                        <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                No puedes dejar campos vacios!
+                            </Alert>
+                        </Snackbar>
                     </Row>
                     <Row>
 

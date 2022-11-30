@@ -16,6 +16,8 @@ import BotonActivarVersion from '../botonActivarVersion/BotonActivarVersion';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
@@ -32,10 +34,38 @@ function ModalGestionVersion(producto) {
     const [versiones, setVersiones] = useState([]);
     const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const [checked, setChecked] = useState(false);
-    const [radioValue, setRadioValue] = useState('1');
+
+    const vertical = "top"
+    const horizontal = "center"
+
+    const [showBusquedaError, setShowBusquedaError] = useState(false);
+    const [showBusquedaOk, setShowBusquedaOk] = useState(false);
+    const [showVersionCreadoOK, setVersionCreadoOK] = useState(false);
+    const [showVersionEditadoOK, setVersionEditadoOK] = useState(false);
+    const [showVersionDeprecadoOK, setVersionDeprecadoOK] = useState(false);
+    const [showVersionActivadoOK, setVersionActivadoOK] = useState(false);
+    const handleCloseVersionActivadoOK = () => setVersionActivadoOK(false);
+    const handleShowVersionActivadoOK = () => setVersionActivadoOK(true);
+    const handleCloseVersionDeprecadoOK = () => setVersionDeprecadoOK(false);
+    const handleShowVersionDeprecadoOK = () => setVersionDeprecadoOK(true);
+    const handleCloseVersionEditadoOK = () => setVersionEditadoOK(false);
+    const handleShowVersionEditadoOK = () => setVersionEditadoOK(true);
+    const handleCloseVersionCreadoOK = () => setVersionCreadoOK(false);
+    const handleShowVersionCreadoOK = () => setVersionCreadoOK(true);
+    const handleCloseBusquedaOk = () => setShowBusquedaOk(false);
+    const handleShowBusquedaOk = () => setShowBusquedaOk(true);
+    const handleCloseBusquedaError = () => setShowBusquedaError(false);
+    const handleShowBusquedaError = () => setShowBusquedaError(true);
+
+
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        setFiltrado(false);
+        setFiltroTexto(FiltroVacios)
+    }
+
 
     const getVersiones = async () => {
         const sendData = { idProducto: producto["producto"].id }
@@ -61,7 +91,8 @@ function ModalGestionVersion(producto) {
         setVersionesFiltradas(versiones);
         if (filtroTexto.estado == "Cualquiera") {
             if (filtroTexto.nombre == "") {
-                return
+                handleShowBusquedaError();
+                return;
             }
             else {
                 setVersionesFiltradas(versiones.filter(obj => { return obj.nombre === filtroTexto.nombre }))
@@ -75,6 +106,7 @@ function ModalGestionVersion(producto) {
                 setVersionesFiltradas(versiones.filter(obj => { return obj.nombre === filtroTexto.nombre & obj.estado === filtroTexto.estado }))
             }
         }
+        handleShowBusquedaOk();
         setFiltrado(true)
     }
 
@@ -88,6 +120,36 @@ function ModalGestionVersion(producto) {
 
     return (
         <>
+            <>
+                <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showBusquedaError} autoHideDuration={2000} onClose={handleCloseBusquedaError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseBusquedaError} variant="danger" sx={{ width: '100%' }}>Error: primero se debe ingresar al menos un parametro de busqueda.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showVersionCreadoOK} autoHideDuration={1500} onClose={handleCloseVersionCreadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseVersionCreadoOK} variant="success" sx={{ width: '100%' }}>Version creada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showVersionEditadoOK} autoHideDuration={1500} onClose={handleCloseVersionEditadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseVersionEditadoOK} variant="success" sx={{ width: '100%' }}>Version editada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showVersionDeprecadoOK} autoHideDuration={1500} onClose={handleCloseVersionDeprecadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseVersionDeprecadoOK} variant="success" sx={{ width: '100%' }}>Version deprecada con exito.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showVersionActivadoOK} autoHideDuration={1500} onClose={handleCloseVersionActivadoOK} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseVersionActivadoOK} variant="success" sx={{ width: '100%' }}>Version activada con exito.</Alert>
+                </Snackbar>
+            </>
             <Button variant="outline-primary" size="sm" onClick={handleShow}>Gestionar</Button>
             <Modal dialogClassName="modalContent1" show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton onClick={handleClose}>
@@ -116,7 +178,7 @@ function ModalGestionVersion(producto) {
                         {producto["producto"].estado === "Deprecado" ? (
                             <Col className="v-center"><Button variant="primary" size="1" disabled={true}>+ Nueva version</Button></Col>
                         ) : (
-                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} /></Col>
+                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionCreadoOK}/></Col>
                         )}
 
                     </Row>
@@ -144,8 +206,8 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK}/></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionDeprecadoOK}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -158,8 +220,8 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK}/></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionActivadoOK}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -176,8 +238,8 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={3}><BotonDeprecarVersion version={version}></BotonDeprecarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK}/></Col>
+                                                        <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionDeprecadoOK}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>
@@ -190,8 +252,8 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} /></Col>
-                                                        <Col sm={2}><BotonActivarVersion version={version}></BotonActivarVersion></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK}/></Col>
+                                                        <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionActivadoOK}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
                                             </tr>

@@ -16,6 +16,8 @@ import SpacerLine from "../../components/spacerLine/spacerLine";
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+
 
 const TicketsEnCurso = () => {
 
@@ -24,8 +26,10 @@ const TicketsEnCurso = () => {
     const [clientes, setClientes] = useState();
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
+    const handleCloseCreadoExito = () => setTicketCreadoExito(false);
 
     const [ticketResueltoExito, setTicketResueltoExito] = useState(false);
+    const handleCloseResueltoExito = () => setTicketResueltoExito(false);
 
     const [recursos, setRecursos] = useState();
 
@@ -39,9 +43,8 @@ const TicketsEnCurso = () => {
         "asesor": "Todos"
     });
 
-
-
-
+    const vertical = "top"
+    const horizontal = "center"
 
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
@@ -61,14 +64,12 @@ const TicketsEnCurso = () => {
 
     const handleDropdownFilter = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
-
-
-
     };
 
 
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
+
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
 
@@ -151,22 +152,20 @@ const TicketsEnCurso = () => {
 
 
     return (
-
-
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
-            <Alert show={ticketCreadoExito} variant='success'>
-                Ticket creado con exito!
+            <Snackbar open={ticketCreadoExito} autoHideDuration={2000} onClose={handleCloseCreadoExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                <Alert show={ticketCreadoExito} variant='success'>
+                    Ticket creado con exito!
+                </Alert>
+            </Snackbar>
 
-            </Alert>
-
-            <Alert show={ticketResueltoExito} variant='success'>
-                Ticket resuelto!
-
-            </Alert>
-
+            <Snackbar open={ticketResueltoExito} autoHideDuration={2000} onClose={handleCloseResueltoExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                <Alert show={ticketResueltoExito} variant='success'>
+                    Ticket resuelto!
+                </Alert>
+            </Snackbar>
             <Container className="container-title">
-
                 <Row>
                     <Col sm={3}>
                         <h3>Tickets en Curso</h3>
@@ -186,13 +185,16 @@ const TicketsEnCurso = () => {
                     showCreacionModal ? (
                         <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
                     ) :
-                        (null
+                        (
+                            <></>
                         )
                 }
-
+            </Container >
+            <Container className="spacer-line">
+                <SpacerLine className="spacer-line" color="black"></SpacerLine>
             </Container>
 
-            <Container className="container-filters">
+            <Container>
                 <Row>
                     <Col >
                         <Dropdown>

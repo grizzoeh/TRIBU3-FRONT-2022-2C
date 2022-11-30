@@ -4,19 +4,28 @@ import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
-function BotonDeprecarVersion(version) {
-
+function BotonDeprecarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
 
 
     const handleEstado = async () => {
+        var currentdate = new Date();
         const versionData = {
-            id: version["version"].id,
+            id: version.id,
+            nombre: version.nombre,
+            idProducto: version.idProducto,
+            estado: "Deprecada",
+            fechaRelease: version.fechaRelease,
+            fechaDeprecacion: currentdate
         }
-        axios.patch(SERVER_NAME_SOPORTE + "/versiones/deprecacion", versionData)
+        axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", versionData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version deprecada");
-                    window.location.reload();
+                    refreshVersiones();
+                    if (refreshFiltradas) {
+                        refreshFiltradas();
+                    }
+                    refreshAlert();
                 }
             })
             .catch((error) => {
