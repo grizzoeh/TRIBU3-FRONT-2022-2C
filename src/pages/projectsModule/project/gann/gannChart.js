@@ -45,11 +45,17 @@ export default function GannChart() {
           });
     };
 
-    let data = new google.visualization.DataTable();
-
     getAssignees();
     getTareas();
-  }, [params.id]);
+    let dataToGann = new google.visualization.DataTable();
+
+    columns.forEach((colunm) => {
+      data.addColumn(colunm);
+    })
+    tareas.forEach((tarea) => {
+      data.addRow([tarea]);
+    })
+
 
 /*
   const onChangeProjectData = (e) => {
