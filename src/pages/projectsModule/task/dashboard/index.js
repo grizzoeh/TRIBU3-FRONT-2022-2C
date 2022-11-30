@@ -13,6 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import * as SERVER_NAMES from "../../APIRoutes";
 import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
 
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
@@ -44,7 +45,7 @@ export default function DashboardTareas() {
 
   const handlePriorityFilter = (e) => {
     setPriority(e);
-    priorityQuery="priority="+e+"&";
+    e===0?priorityQuery="":priorityQuery="priority="+e+"&";
     getTarea();
   };
 
@@ -184,6 +185,62 @@ export default function DashboardTareas() {
                             })}
                         </DropdownButton>
                     </Col>
+
+                    <Col>
+                        <h4>Prioridad:</h4>
+                    </Col>
+                    <Col >
+                    <Form.Control
+                        type="number"
+                        min="0"
+                        placeholder="Ej: 2"
+                        name="priority"
+                        onChange={(e) => handlePriorityFilter(e)}/>
+                    </Col>
+
+                    {/*<Col>
+                        <h4>Estado2:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["estado"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
+                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
+
+
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Col>
+
+                    <Col>
+                        <h4>Cliente:</h4>
+                    </Col>
+                    <Col >
+                        <Dropdown>
+                            <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                {filters["cliente"]}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
+                                {clientes?.map((cliente) => {
+                                    return (
+                                        <Dropdown.Item name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                    )
+                                })}
+
+                            </Dropdown.Menu>
+                        </Dropdown>
+                              </Col>*/}
                 </Row>
                 <Row>
                     <Container className="container-cards">
