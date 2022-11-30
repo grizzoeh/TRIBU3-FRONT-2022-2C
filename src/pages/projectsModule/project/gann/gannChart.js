@@ -82,7 +82,7 @@ export default function GannChart() {
         <br></br>
         <br></br>
         <br></br>
-        <Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={true} data={
+        <Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={false} data={
             [columns,...tareas.map((tarea) => {
                 return [tarea.id,
                      tarea.name,
