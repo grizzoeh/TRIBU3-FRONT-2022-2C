@@ -473,21 +473,18 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                                     setIdProductoFilter(compra["idProducto"]);
                                                                 }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
                                                             )) : null} */}
-                                                        {dicci ?
+                                                        {dicci && productos ?
                                                             dicci[idClienteFilter]?.map((idProducto) => (
-                                                                <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
-                                                                    (e) => {
-                                                                        setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
-                                                                        setIdProductoFilter(idProducto);
-                                                                    }
-                                                                } >
-                                                                    {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
-
-                                                                </Dropdown.Item>
-                                                            ))
-
-
-                                                            : <></>}
+                                                                productos.filter(producto => producto.id === idProducto && producto.estado === "Activo").map((producto) =>
+                                                                    <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
+                                                                        (e) => {
+                                                                            setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
+                                                                            setIdProductoFilter(idProducto);
+                                                                        }
+                                                                    } >
+                                                                        {producto["nombre"]}
+                                                                    </Dropdown.Item>
+                                                                ))) : <></>}
 
                                                     </Dropdown.Menu>
                                                 </Dropdown>
@@ -527,10 +524,15 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                 <Dropdown.Menu>
                                                     {compras && productos && versiones ?
-                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
+                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter && versiones.find(version => version.id === compra.idVersion)['estado'] === "Activa")
                                                             .map((compra) => (
-                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
+                                                                versiones.filter(version => version.id === compra.idVersion).map((version) => (
+
+                                                                    //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                                    <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}>
+                                                                        {version.nombre}
+                                                                    </Dropdown.Item>
+                                                                )))) : <></>
 
                                                     }
                                                 </Dropdown.Menu>
