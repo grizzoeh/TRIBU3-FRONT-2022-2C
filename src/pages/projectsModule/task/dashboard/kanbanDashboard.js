@@ -4,6 +4,7 @@ import axios from "axios";
 import { Col , Row} from "react-bootstrap";
 import { Fragment, useState } from "react";
 import { DragDropContext } from 'react-beautiful-dnd';
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function KanbanDashboard({initialTasks, setTasks}) {
 
@@ -49,6 +50,7 @@ export default function KanbanDashboard({initialTasks, setTasks}) {
 
   return (
     <Fragment>
+      <NavbarProyectos/>
       <DragDropContext onDragEnd={(result) => {
           const {source, destination} = result;
           if (!destination) {
