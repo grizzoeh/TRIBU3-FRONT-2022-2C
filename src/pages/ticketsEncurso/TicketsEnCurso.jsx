@@ -276,7 +276,7 @@ const TicketsEnCurso = () => {
 
                 {showEnTicketsEnCurso === "En Curso" ? (
 
-                    <Row className="row-cards mt-4">
+                    <Row className="row-cards mt-4" md={3} >
                         {ticketsEnCursoData.length > 0 && clientes ?
 
                             ticketsEnCursoData.filter(
@@ -358,7 +358,7 @@ const TicketsEnCurso = () => {
 
                     </Row>
                 ) : (
-                    <Row className="row-cards mt-4">
+                    <Row className="row-cards mt-4" md={3}>
                         {ticketsCerradosData.length > 0 ?
                             ticketsCerradosData.filter(
                                 (ticket) => {
