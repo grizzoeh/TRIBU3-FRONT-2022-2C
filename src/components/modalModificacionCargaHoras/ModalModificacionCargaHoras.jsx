@@ -29,7 +29,9 @@ const ModalModificacionCargaHoras = () => {
     const[carId, setCarId]=useState([])
     const[fecha, setFecha]=useState([])
     const[cantidad_horas, setCantidadHoras]=useState([])
-    
+    const[categoria, setCategoria]=useState([])
+    const[estado, setEstado]=useState([])
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -54,9 +56,9 @@ const ModalModificacionCargaHoras = () => {
       ];
 */
     const handleClick=()=>{
-        const cargaHorasNueva={carId, fecha,cantidad_horas} /* manda array si esta vacio */
+        const cargaHorasNueva={carId, fecha,cantidad_horas, estado, categoria} /* manda array si esta vacio */
         console.log(cargaHorasNueva)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas,{
+        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas + '&estado=' + estado + '&categoria=' + categoria,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
         }).then(()=>{
@@ -69,7 +71,7 @@ const ModalModificacionCargaHoras = () => {
         <container>
             <div id = 'cargaId'>
                 <TextField id="outlined-basic" label="Buscar Carga por Id" variant="outlined" sx={{ minWidth: 650 }} value={carId} onChange={(e)=>{setCarId(e.target.value)}}/>
-                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar fecha</Button></Col>
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow} id='boton'>Modificar</Button></Col>
                     <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                     <Modal.Header closeButton onClick={handleClose}>
                         <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Carga con id: {carId}</Modal.Title>
@@ -80,11 +82,15 @@ const ModalModificacionCargaHoras = () => {
                             <Form.Control name="fecha" type="filtro" placeholder="Fecha" onChange={(e)=>setFecha(e.target.value)}/>
                             <Col><h6>Horas actualizadas:</h6></Col>
                             <Form.Control name="horas" type="filtro" placeholder="Horas" onChange={(e)=>setCantidadHoras(e.target.value)}/>
+                            <Col><h6>Estado:</h6></Col>
+                            <Form.Control name="estado" type="filtro" placeholder="Estado" onChange={(e)=>setEstado(e.target.value)}/>
+                            <Col><h6>Categoria:</h6></Col>
+                            <Form.Control name="categoria" type="filtro" placeholder="Categoria" onChange={(e)=>setCategoria(e.target.value)}/>
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
-                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar fecha</Button>
+                        <Button className="h-end" variant="primary" onClick={handleClick}>Modificar carga</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -93,9 +99,11 @@ const ModalModificacionCargaHoras = () => {
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Id</TableCell>
+                                <TableCell align="center">Id</TableCell>
                                 <TableCell align="right">Fecha</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
+                                <TableCell align="right">Estado</TableCell>
+                                <TableCell align="right">Categoria</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -104,9 +112,11 @@ const ModalModificacionCargaHoras = () => {
                                     key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.codigo_carga}</TableCell>
-                                    <TableCell align="left">{carga.fecha}</TableCell>
-                                    <TableCell align="left">{carga.cantidad_horas}</TableCell>
+                                    <TableCell align="center" component="th" scope="row">{carga.codigo_carga}</TableCell>
+                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="right">{carga.cantidad_horas}</TableCell>
+                                    <TableCell align="right">{carga.estado}</TableCell>
+                                    <TableCell align="right">{carga.categoriaId}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

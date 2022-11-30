@@ -29,7 +29,7 @@ const ModalEliminacionCargaHoras = () => {
     const[carId, setCarId]=useState([])
 
     useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/carga")
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
         .then(res=>res.json())
         .then((result)=>{
             setCargas(result);
@@ -37,7 +37,7 @@ const ModalEliminacionCargaHoras = () => {
     },[])
 
     const handleClick=(e)=>{
-        const url = "https://squad920222c-production.up.railway.app/recursos/carga/" + carId;
+        const url = `https://squad920222c-production.up.railway.app/recursos/cargas/` + carId;
         console.log(url);
         fetch(url, {
             method: 'DELETE',
@@ -56,27 +56,31 @@ const ModalEliminacionCargaHoras = () => {
         <Container>
             <div>
                 <TextField id="outlined-basic" label="Buscar Carga por Id" variant="outlined" sx={{ minWidth: 650 }} value={carId} onChange={(e)=>setCarId(e.target.value)}/>
-                <button onClick={() => {handleClick()}} id = 'borrar'>Borrar</button> 
+                <Button onClick={() => {handleClick()}} id = 'borrar'>Borrar</Button> 
             </div>
             <div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Id</TableCell>
+                                <TableCell align="center">Id</TableCell>
                                 <TableCell align="right">Fecha</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
+                                <TableCell align="right">Estado</TableCell>
+                                <TableCell align="right">Categoria</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {cargas.map((carga) => (
                                 <TableRow
-                                    key={carga.cargaId}
+                                    key={carga.codigo_carga}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.cargaId}</TableCell>
-                                    <TableCell align="left">{carga.fecha}</TableCell>
-                                    <TableCell align="left">{carga.cantidad_horas}</TableCell>
+                                    <TableCell align="center" component="th" scope="row">{carga.codigo_carga}</TableCell>
+                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="right">{carga.cantidad_horas}</TableCell>
+                                    <TableCell align="right">{carga.estado}</TableCell>
+                                    <TableCell align="right">{carga.categoriaId}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

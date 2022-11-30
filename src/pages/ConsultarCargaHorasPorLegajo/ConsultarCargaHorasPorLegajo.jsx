@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import "./ConsultarCargaHorasLegajo.css";
+import "./ConsultarCargaHorasPorLegajo.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +10,7 @@ const InformacionCargaDeHorasPorLegajo = () => {
     return (
         <Fragment>
 
-
+        
 
             <Container className="container-title">
 
