@@ -16,7 +16,7 @@ const InformacionCargaDeHorasPorLegajo = () => {
 
                 <Row>
                     <Col >
-                        <h1>Consultar carga</h1>
+                        <h1>Consultar por legajo</h1>
                     </Col>
 
 

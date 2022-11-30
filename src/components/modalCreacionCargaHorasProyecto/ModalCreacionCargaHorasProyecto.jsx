@@ -17,9 +17,9 @@ import { render } from "@testing-library/react";
 import IconButton from '@mui/material/IconButton';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import TextField from '@mui/material/TextField';
 
-
-const MAXHORAS = 24;
+const MAXHORAS = 8;
 const MINHORAS = 0;
 
 const ModalCreacionCargaDeHorasProyecto = () => {
@@ -30,15 +30,17 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [mostrarHoras, setMostrarHoras] = useState(false);
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
     let [cantidad_horas, setCount] = useState(0);
-    const[fecha2, setFecha] = useState(null);
     const [startDate, setStartDate] = useState(new Date());
     const [proyectoId,setProyectoId] = useState();
     const [proyectoNombre, setProyectoNombre] = useState();
-    
-    
+    const [legajo, setLegajo] = useState();
+    const [tarea_id, setTarea_id] = useState();
+    const [tareaNombre, setTareaNombre] = useState();
+
+
     const Tareas = [{id: 1, name: 'Tarea A'}, {id: 2, name: 'Tarea B'}, {id: 3, name: 'Tarea C'}];
     let listTareas = Tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
-                                            onClick={() => procedimientoTareaElegida(tarea.name)}>{tarea.name}</NavDropdown.Item>)
+                                            onClick={() => {procedimientoTareaElegida(tarea.name);setTareaNombre(tarea.name);setTarea_id(1)}}>{tarea.name}</NavDropdown.Item>)
 
     function procedimientoTareaElegida(nombreTarea){
         setdropdownTareaText(nombreTarea)
@@ -52,16 +54,14 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             setProyectos(result);
         })
     },[])
+    
+    const fecha = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
 
 
-    const fecha = "10-10-2022";
-    const legajo = 1;
-    const tareaId = 1;
-    const tareaNombre = "esto";
 
     const postClick=(e)=>{
         e.preventDefault()
-        const carga={cantidad_horas, fecha, legajo, proyectoId, proyectoNombre, tareaId, tareaNombre}
+        const carga={cantidad_horas, fecha, legajo, proyectoId, proyectoNombre, tarea_id, tareaNombre}
         console.log(carga)
         fetch(`https://squad920222c-production.up.railway.app/recursos/cargas`, {
             method:"POST",
@@ -74,9 +74,9 @@ const ModalCreacionCargaDeHorasProyecto = () => {
 
     
 
-    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" 
+    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" /*proyecto.id ???????????? */
                                                     onClick={() => {handleClick(); 
-                                                    setProjectText(proyecto.name);setProyectoNombre(proyecto.nombre);setProyectoId(proyecto.Id)}}>{proyecto.name}
+                                                    setProjectText(proyecto.name);setProyectoNombre(proyecto.name);setProyectoId(proyecto.id)}}>{proyecto.name}
                                                     </NavDropdown.Item>)
 
 
@@ -104,6 +104,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 <NavDropdown title={ProjectText} id="navBarProyectos">
                     {listProyectos}
                 </NavDropdown>
+                <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                 {isShown && <div id='cargar-horas-licencia'>
                                 <h2 id="titulo">Seleccionar Tarea</h2>
                                 <NavDropdown title={dropdownTareaText} id="navBarTareas">
@@ -118,7 +119,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                     <button id="suma"  onClick={incrementCount}>+</button>
                                     <button id="resta" onClick={decrementCount}>-</button>
                                 </div>}
-                <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} />                
+                <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} />              
                 
             </div>
             <Button onClick={postClick}>Boton para postear aca</Button>

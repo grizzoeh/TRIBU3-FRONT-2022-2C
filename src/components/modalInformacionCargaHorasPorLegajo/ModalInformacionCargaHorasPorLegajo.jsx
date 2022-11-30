@@ -53,7 +53,7 @@ const ModalInformacionCargaHorasPorLegajo = () => {
         },[])
 
         const handleClick=(e)=>{
-            const url = `https://squad920222c-production.up.railway.app/recursos/cargas/` + legajo;
+            const url = `https://squad920222c-production.up.railway.app/recursos/cargas/` + legajo; /*hacerlo array */
             console.log(url);
             fetch(url, {
                 method: 'GET',
@@ -61,9 +61,8 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*' 
                 },
-                body: JSON.catId
-            }).then(()=>{
-            });
+                body: JSON.legajo
+            }).then((res)=>{});
         }
         
 
@@ -71,7 +70,7 @@ const ModalInformacionCargaHorasPorLegajo = () => {
         <container>
             <div id = 'legajo'>
                 <TextField id="outlined-basic" label="Consultar Carga por Legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
-                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Consultar legajo</Button></Col>
+                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow} id='boton'>Consultar legajo</Button></Col>
                     <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                     <Modal.Header closeButton onClick={handleClose}>
                         <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Legajo: {legajo}</Modal.Title>
@@ -88,19 +87,23 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">Legajo</TableCell>
+                                <TableCell align="right">Proyecto</TableCell>
+                                <TableCell align="right">Tarea</TableCell>
+                                <TableCell align="right">Horas</TableCell>
+                                <TableCell align="right">Fecha</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {cargas.map((carga) => (
                                 <TableRow
-                                    key={carga.codigo_carga}
+                                    key={carga.legajo}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                    <TableCell align="center" component="th" scope="row">{carga.codigo_carga}</TableCell>
-                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
+                                    <TableCell align="right">{carga.proyectoNombre}</TableCell>
+                                    <TableCell align="right">{carga.tareaNombre}</TableCell>
                                     <TableCell align="right">{carga.cantidad_horas}</TableCell>
-                                    <TableCell align="right">{carga.estado}</TableCell>
-                                    <TableCell align="right">{carga.categoriaId}</TableCell>
+                                    <TableCell align="right">{carga.fecha}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

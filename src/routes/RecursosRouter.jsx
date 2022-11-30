@@ -35,7 +35,7 @@ const RecursosRouter = () => {
                     <Route path="/cargar-horas/proyectos" element={<CargaDeHorasProyecto />} />
                     <Route path="/cargar-horas/licencias" element={<CargaDeHorasLicencia />} />
                     <Route path="/modificar-carga-horas" element={<ModificacionCargaHoras />} />
-                    <Route path="/consultar-carga" element={<InformacionCargaDeHorasPorLegajo />} />
+                    <Route path="/consultar-por-legajo" element={<InformacionCargaDeHorasPorLegajo />} />
                     <Route path="/eliminar-carga-horas" element={<EliminarCargaHoras />} />
                     <Route path="/consultar-reportes-por-proyecto" element={<ConsultarReportes />} />
                     <Route path="/crear-categoria" element={<CrearCategoria />} />
