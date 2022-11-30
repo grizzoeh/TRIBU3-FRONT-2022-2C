@@ -130,10 +130,6 @@ export default function DashboardTareas() {
         });
     };
 
-    // getProyecto();
-    // getTarea();
-    // getAssignees();
-    
   useEffect(() => {
     getProyecto();
     getTarea();
