@@ -109,34 +109,37 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
                 </Modal.Header>
                 <Modal.Body>
 
-                    <h3>Crea una tarea</h3>
 
-                    <Row className="mt-5">
-                        <Col xs={1} >
-                            <h4>Título</h4>
+                    <Row className="mt-1">
+                        <Col xs={1} md={2}>
+                            <h5>Título:</h5>
+                        </Col>
+                        <Col xs={3} >
+                            <Form.Control size="sm" type="text" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
+                        </Col>
+                    </Row>
+
+
+                    <Row className="mt-3">
+                        <Col xs={2}>
+                            <h6> Prioridad: </h6>
+
                         </Col>
                         <Col xs={3}>
-                            <Form.Control type="text" name="tituloTarea" onChange={(e) => onChangeTituloTarea(e)} />
-                        </Col>
-
-                        <Col xs={2}>
-                            <h4> Prioridad:</h4>
-
-                        </Col>
-                        <Col xs={2}>
-                            <Form.Control type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
+                            <Form.Control size="sm" type="number" min="0" name="prioridadTarea" onChange={(e) => onChangePrioridadTarea(e)} />
 
 
                         </Col>
 
                     </Row>
-                    <Row className="mt-5">
-                        <Col xs={2}>
-                            <h4> Proyecto Destino:</h4>
+
+                    <Row className="mt-4">
+                        <Col sm={2}>
+                            <h6> Proyecto Destino:</h6>
                         </Col>
-                        <Col xs={3}>
+                        <Col >
                             <Dropdown >
-                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                     {proyectoSeleccionadoNombre ? proyectoSeleccionadoNombre : "Selecciona un proyecto"}
 
 
@@ -153,9 +156,11 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
                         </Col>
 
+
+
                     </Row>
 
-                    <h4 className="mt-5">Descripción</h4>
+                    <h6 className="mt-4">Descripción</h6>
                     <textarea className="box-reporte-final mt-4" name="reporteFinal" onChange={(e) => onChangeCuerpoTarea(e)} />
 
 
