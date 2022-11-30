@@ -14,6 +14,7 @@ import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import Alert from 'react-bootstrap/Alert';
 import SpacerLine from "../../components/spacerLine/spacerLine";
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
 
 
 const TicketsEnCurso = () => {
@@ -23,8 +24,10 @@ const TicketsEnCurso = () => {
     const [clientes, setClientes] = useState();
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
+    const handleCloseCreadoExito = () => setTicketCreadoExito(false);
 
     const [ticketResueltoExito, setTicketResueltoExito] = useState(false);
+    const handleCloseResueltoExito = () => setTicketResueltoExito(false);
 
 
     const [filters, setFilters] = useState({
@@ -34,9 +37,8 @@ const TicketsEnCurso = () => {
         "cliente": "Todos",
     });
 
-
-
-
+    const vertical = "top"
+    const horizontal = "center"
 
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
@@ -56,14 +58,12 @@ const TicketsEnCurso = () => {
 
     const handleDropdownFilter = (e) => {
         setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
-
-
-
     };
 
 
     const [ticketsEnCursoData, setTicketsEnCursoData] = useState([]);
     const [ticketsCerradosData, setTicketsCerradosData] = useState([]);
+    
 
     const [ticketSeleccionadoData, setTicketSeleccionadoData] = useState();
 
@@ -134,14 +134,17 @@ const TicketsEnCurso = () => {
     return (
         <Fragment>
             <NavbarSoporte></NavbarSoporte>
-            <Alert show={ticketCreadoExito} variant='success'>
-                Ticket creado con exito!
+            <Snackbar open={ticketCreadoExito} autoHideDuration={2000} onClose={handleCloseCreadoExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                <Alert show={ticketCreadoExito} variant='success'>
+                    Ticket creado con exito!
+                </Alert>
+            </Snackbar>
 
-            </Alert>
-
-            <Alert show={ticketResueltoExito} variant='success'>
-                Ticket resuelto!
-            </Alert>
+            <Snackbar open={ticketResueltoExito} autoHideDuration={2000} onClose={handleCloseResueltoExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                <Alert show={ticketResueltoExito} variant='success'>
+                    Ticket resuelto!
+                </Alert>
+            </Snackbar>
             <Container className="container-title">
                 <Row>
                     <Col className="v-center"><h1>Tickets:</h1></Col>
