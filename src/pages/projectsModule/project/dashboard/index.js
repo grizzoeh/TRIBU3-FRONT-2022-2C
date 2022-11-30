@@ -11,7 +11,7 @@ import * as SERVER_NAMES from "../../APIRoutes";
 import Form from "react-bootstrap/Form";
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 
 export default function Dashboard() {
@@ -93,6 +93,7 @@ export default function Dashboard() {
 
     return (
         <>
+            <NavbarProyectos/>
             <Header/>
 
             <Container className="container-filters">

@@ -14,6 +14,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewProject() {
   const navigate = useNavigate();
@@ -109,10 +110,8 @@ export default function NewProject() {
 
   return (
     <Fragment>
-      <Container>
-        <br />
-        <br />
-        <br />
+      <NavbarProyectos/>
+      <Container className="container-title">
         <br />
         <Row>
           <Col>
