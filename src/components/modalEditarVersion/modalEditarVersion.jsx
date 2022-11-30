@@ -6,26 +6,27 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
+import { SERVER_NAME_SOPORTE } from "../../environment";
 
 function ModalEditarVersion(version) {
-    
+
     const [nuevoNombre, setNuevoNombre] = useState(version["version"])
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const SERVER_NAME = "http://localhost:3000";
+
 
     const modificarVersion = async () => {
-        axios.patch(SERVER_NAME + "/versiones/version", nuevoNombre)
-        .then((data) => {
-            if (data.data.ok) {
-                console.log("Version editado");
-                window.location.reload();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", nuevoNombre)
+            .then((data) => {
+                if (data.data.ok) {
+                    console.log("Version editado");
+                    window.location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     const onChangeNuevoNombre = async (e) => {
@@ -47,7 +48,7 @@ function ModalEditarVersion(version) {
                 <Modal.Body>
                     <Row className="campo">
                         <Col><h6>Version:</h6></Col>
-                        <Col><Form.Control name="nombre" type="filtro" value={nuevoNombre.nombre} onChange={(e) => onChangeNuevoNombre(e)}/></Col>
+                        <Col><Form.Control name="nombre" type="filtro" value={nuevoNombre.nombre} onChange={(e) => onChangeNuevoNombre(e)} /></Col>
                     </Row>
                 </Modal.Body>
 
@@ -56,7 +57,7 @@ function ModalEditarVersion(version) {
                     <Button className="h-end" variant="primary" onClick={modificarVersion}>Guardar Cambios</Button>
                 </Modal.Footer>
             </Modal>
-            
+
         </>
     )
 
