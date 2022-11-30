@@ -82,10 +82,7 @@ export default function DashboardTareas() {
  const updateColumnsTasks = (tasks, taskId, newStatus) => {
     tasks.map((task) => {
         if (task.id.toString() === taskId) {
-            console.log("coincide")
             task.status = newStatus;
-            console.log("task antes de devolver")
-            console.log(task)
             return task;
         } else {
         return task;
