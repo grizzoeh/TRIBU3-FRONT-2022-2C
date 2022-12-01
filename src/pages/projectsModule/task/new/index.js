@@ -24,8 +24,11 @@ export default function NewTask() {
   };
 
   const findFormErrors = (tarea) => {
-    if ( !tarea.name || tarea.name === '' ) alert("La tarea debe tener un nombre");
-    navigateTaskDashboard();
+    if ( !tarea.name || tarea.name === '' ) {
+      alert("La tarea debe tener un nombre");
+      navigateTaskDashboard();
+      return null;}
+    else return 1; 
   }
 
   const initialTask = {
@@ -114,9 +117,10 @@ export default function NewTask() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createTask();
-    findFormErrors(initialTask);
-    setProjectData(initialTask);
+    if (findFormErrors(initialTask)) {
+        createTask();
+        setProjectData(initialTask);
+    }
     
   };
 
