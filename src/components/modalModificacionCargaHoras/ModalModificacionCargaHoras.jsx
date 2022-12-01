@@ -43,18 +43,7 @@ const ModalModificacionCargaHoras = () => {
             setCargas(result);
         })
     },[])
-/*
-    function createData(id, fecha, legajo) {
-        return { id, fecha, legajo };
-      }
 
-    const cargasHoras = [
-        createData(1,'26/11/2022',1),
-        createData(2,'26/11/2022',1),
-        createData(3,'27/11/2022',6),
-        createData(4,'28/11/2022',9)
-      ];
-*/
     const handleClick=()=>{
         const cargaHorasNueva={carId, fecha,cantidad_horas, estado, categoria} /* manda array si esta vacio */
         console.log(cargaHorasNueva)

@@ -20,14 +20,9 @@
   border: solid;
   text-align: center;
   border: 1px solid rgb(2, 2, 2);
-  text-align: center ;
-  position: relative;
+  margin: 0 auto;
   height: 2vw;
   width: 20vw;
-  right: 10vw;
-  top: 3vw;
-  transform: translate(167%, 0);
-  font-size: 1vw;
 }
 
 

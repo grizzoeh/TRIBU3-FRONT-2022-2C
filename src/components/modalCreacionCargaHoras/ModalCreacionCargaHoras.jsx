@@ -66,13 +66,13 @@ const ModalCreacionCargaDeHoras = () => {
             <div id="page">
                 <h2 id="titulo">Seleccionar Categoria</h2>
                 <Dropdown title="Seleccionar" id="collasible-dropdown">
-                    <Dropdown.Item id="dropdown-item">
-                        <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/proyectos'>
+                    <Dropdown.Item id="dropdown-item" href='/cargar-horas/proyectos'>
+                        <a id='proyecto-dropdown'>
                             Proyecto
                         </a>
                     </Dropdown.Item>
-                    <Dropdown.Item id="dropdown-item">
-                        <a  onClick='Proyecto' id='proyecto-dropdown' href='/cargar-horas/licencias'>
+                    <Dropdown.Item id="dropdown-item" href='/cargar-horas/licencias'>
+                        <a id='proyecto-dropdown'>
                             Otros
                         </a>
                     </Dropdown.Item>

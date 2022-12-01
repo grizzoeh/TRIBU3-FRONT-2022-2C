@@ -33,15 +33,18 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [startDate, setStartDate] = useState(new Date());
     const [proyectoNombre, setProyectoNombre] = useState();
     const [legajo, setLegajo] = useState();
-    const [tarea_id, setTarea_id] = useState();
+    let [tarea_id, setTarea_id] = useState();
     const [tareaNombre, setTareaNombre] = useState();
     const [tareas, setTareas] = useState([]);
     const [proyectoId, setProyectoId] = useState();
    
-    function procedimientoTareaElegida(nombreTarea){
+    function procedimientoTareaElegida(nombreTarea, tareaId){
         setdropdownTareaText(nombreTarea)
         setMostrarHoras(true)
+        setTareaNombre(nombreTarea)
+        setTarea_id(tareaId)
     }
+    
 
     useEffect(()=>{
         fetch("https://squad-8-projects.herokuapp.com/psa/projects/")
@@ -54,15 +57,16 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const fecha = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
 
 
-    /*estado => revision */
-    function postClick(proyectoId){
-        const carga={cantidad_horas, fecha, legajo, proyectoId, proyectoNombre, tarea_id, tareaNombre}
+    const handleClick =() => {
+        const estado = 'Emitido'
+        const categoria = 1
+        const carga={cantidad_horas, categoria, estado, fecha, legajo, proyectoId, proyectoNombre, tarea_id, tareaNombre}
         fetch(`https://squad920222c-production.up.railway.app/recursos/cargas`, {
             method:"POST",
             headers:{"Content-Type": "application/json"},
             body:JSON.stringify(carga),
         }).then(()=>{
-            console.log("anda")
+            console.log("Se realizo un Post")
         })
     }
 
@@ -72,7 +76,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         .then((res) => res.json())
         .then((data) => {
             setTareas(data);
-            console.log(tareas)
+            console.log("Tarea = "+ tareas)
         });
         setIsShown(true)
     }
@@ -87,12 +91,14 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             cantidad_horas = cantidad_horas + 1;
             setCount(cantidad_horas);
         }
+        console.log("cantidad de horas: "+cantidad_horas)
     }
     function decrementCount() {
         if(cantidad_horas-1 >= MINHORAS){
             cantidad_horas = cantidad_horas - 1;
             setCount(cantidad_horas);
         }
+        console.log("cantidad de horas: "+cantidad_horas)
     }
 
     function funcion1(proyecto){
@@ -115,11 +121,11 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                 <h2 id="titulo">Seleccionar Tarea</h2>
                                 <NavDropdown title={dropdownTareaText} id="navBarTareas">
                                     {tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
-                                            onClick={() => {procedimientoTareaElegida(tarea.name);setTareaNombre(tarea.name);setTarea_id(tarea.id)}}>{tarea.name}</NavDropdown.Item>)}
+                                            onClick={() => {procedimientoTareaElegida(tarea.name, tarea.id);setTarea_id(tarea.id)}}>{tarea.name}</NavDropdown.Item>)}
    
                                 </NavDropdown>
                             </div>}
-                {mostrarHoras &&  <div className="App">
+                {mostrarHoras && <div className="App">
                                     <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                                     <div>
                                         <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>
@@ -127,12 +133,13 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                     </div>
                                     <button id="suma"  onClick={incrementCount}>+</button>
                                     <button id="resta" onClick={decrementCount}>-</button>
-                                </div>}
-                <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} />              
-                
+                                </div>               
+                }
+                <div id='calendarioBoton'>
+                    <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
+                    <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
+                </div> 
             </div>
-            <Button onClick={postClick(proyectoId)}>Boton para postear aca</Button>
-
         </container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
 }; /* Si no anda Calendar -> npm install react-calendar */
@@ -148,4 +155,5 @@ export default ModalCreacionCargaDeHorasProyecto
                         <NavDropdown.Item href="/cargar-horas-licencia" id="dropdown-item">Proyecto B</NavDropdown.Item>
                     </NavDropdown>
             </div>
-*/
+            */
+

@@ -13,23 +13,14 @@
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    margin: 0 auto;
 }
 
-#titulo2{
+#titulo{
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-}
-
-#borrar{
-    border: 1px solid;
-    height: 3vw;
-    width: 5vw;
-    text-align: center;
-    position: relative;
-    left: 3vw;
-    top: 0vw;
-    background-color: orange;
+  margin: 0 auto;
 }
 
 #navBarProyectos{
@@ -38,43 +29,51 @@
   text-align: center;
   height: 2vw;
   width: 20vw;
-  right: 10vw;
-  top: 3vw;
+  margin: 0 auto;
   border: 1px solid rgb(2, 2, 2);
-  text-align: center ;
-  position: relative;
-  transform: translate(167%, 0);
   font-size: 1vw;
 }
 
-#search{
+#navBarTareas{
   border-width: 1px;
   border: solid;
   text-align: center;
-  height: 3vw;
-  width: 17vw;
-  right: 4vw;
-  top: 8vw;
+  height: 2vw;
+  width: 20vw;
+  margin: 0 auto;
+  border: 1px solid rgb(2, 2, 2);
+  font-size: 1vw; 
+}
+
+
+
+#calendarioBoton{
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 0 auto;
+}
+
+#Calendar{
+  border-width: 1px;
+  border: solid;
+  text-align: center;
+  width: 20vw;
+  top:1vw;
+  margin: 0 auto;
   border: 1px solid rgb(2, 2, 2);
   text-align: center ;
   position: relative;
-  transform: translate(167%, 0);
-  font-size: 1vw;
 }
 
-
-
-#dropdown-item {
-  width: 20vw;
-  text-align: center ;
-}
-
-#tuma{
-    width: 300px;
-  text-align: center ;
-}
-
-#page {
-  align-items: center;
+#button{
+  border-width: 1px;
+  border: solid;
   text-align: center;
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  border: 1px solid rgb(2, 2, 2);
+  text-align: center ;
+  position: relative;
 }
