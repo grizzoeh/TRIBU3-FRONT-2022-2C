@@ -46,7 +46,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
     const [clientes, setClientes] = useState();
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
-    const handleCloseAlertaDatosNulos= () => setAlertaDatosNulos(false);
+    const handleCloseAlertaDatosNulos = () => setAlertaDatosNulos(false);
 
     const [productos, setProductos] = useState();
 
@@ -337,10 +337,8 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
-                                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
 
 

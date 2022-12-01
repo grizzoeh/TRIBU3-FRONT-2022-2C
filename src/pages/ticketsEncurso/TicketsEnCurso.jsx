@@ -56,8 +56,8 @@ const TicketsEnCurso = () => {
     const handleDropdownEnCursoCerrado = (e) => {
         if (e.target.name === "En curso") {
             setShowEnTicketsEnCurso("En Curso");
-        } else if (e.target.name === "Cerrados") {
-            setShowEnTicketsEnCurso("Cerrados");
+        } else if (e.target.name === "Resueltos") {
+            setShowEnTicketsEnCurso("Resueltos");
         }
 
     };
@@ -201,7 +201,7 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="En curso" onClick={(e) => handleDropdownEnCursoCerrado(e)}>En curso</Dropdown.Item>
-                                <Dropdown.Item name="Cerrados" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Cerrados</Dropdown.Item>
+                                <Dropdown.Item name="Resueltos" onClick={(e) => handleDropdownEnCursoCerrado(e)}>Resueltos</Dropdown.Item>
 
 
                             </Dropdown.Menu>
@@ -259,10 +259,8 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Todos</Dropdown.Item>
-                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Abierto</Dropdown.Item>
                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>En análisis</Dropdown.Item>
                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Derivado</Dropdown.Item>
-                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Resuelto</Dropdown.Item>
                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownFilter(e)}>Cancelado</Dropdown.Item>
 
 
@@ -463,6 +461,16 @@ const TicketsEnCurso = () => {
                                                     </Col>
                                                     <Col>
                                                         {ticketCerrado.criticidad}
+                                                    </Col>
+
+                                                </Row>
+
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h6>Estado: </h6>
+                                                    </Col>
+                                                    <Col>
+                                                        {ticketCerrado.estado}
                                                     </Col>
 
                                                 </Row>
