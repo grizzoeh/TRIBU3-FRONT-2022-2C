@@ -265,7 +265,7 @@ export default function NewTask() {
             <Col>
               <h4>Dependencias:</h4>
             </Col>
-              {tareaActual.dependencies.map((dependency) => <Col xs={9}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>)}
+              {tareaActual.dependencies.map((dependency) => <Col xs={2}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>)}
               
           </Row>}
 
@@ -451,8 +451,13 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
+          <Col xs={1}>
+            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
+              <Button>Atrás</Button>
+            </Link>
+          </Col>
           <Col></Col>
-            <Col xs={10}>
+            <Col xs={9}>
             <Link to={`/proyectos/${params.id}/ver-tareas/`}>
               <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
             </Link>

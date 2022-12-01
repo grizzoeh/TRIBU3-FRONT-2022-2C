@@ -15,6 +15,8 @@ import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 import moment from 'moment';
+import { Link } from "react-router-dom";
+
 export default function NewTask() {
   const navigate = useNavigate();
   const navigateTaskDashboard = () => {
@@ -290,7 +292,11 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
-            <Col></Col>
+          <Col xs={11}>
+            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
+              <Button>Cancelar</Button>
+            </Link>
+            </Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Crear</Button>
             </Col>

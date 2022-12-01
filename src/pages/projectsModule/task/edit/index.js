@@ -24,10 +24,12 @@ export default function NewTask() {
     estimated_hours_effort: null,
     estimated_start_date: null,
     estimated_finalization_date: null,
-    creation_date: null,
     dependencies: [],
     assignees: [],
-    priority: null,
+    creation_date: null,
+    priority: 1,
+    realEffort: null,
+    parent_task: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
@@ -62,7 +64,7 @@ export default function NewTask() {
   }
 
   const handleGuardado = async () => {
-    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`, projectData)
+    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}/`, projectData)
         .then((data) => {
             if (data.data.ok) {
                 console.log("Proyecto borrado");
@@ -156,7 +158,7 @@ export default function NewTask() {
 
   const createTask = async () => {
     axios
-      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
+      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, projectData)
       .then((data) => {
         if (data.status === 200) {
           alert("Nueva tarea creada");
