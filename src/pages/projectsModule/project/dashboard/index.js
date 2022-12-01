@@ -20,11 +20,12 @@ export default function Dashboard() {
     const [assignees, setAssignees] = useState([]);
     const [clients, setClients] = useState([]);
 
-    let stateQuery="";
-    let assigneeQuery="";
-    let finishDateQuery="";
-    let typeQuery="";
-    let clientQuery="";
+    const [stateQuery, setStateQuery] = useState('');
+    const [assigneeQuery, setAssigneeQuery] = useState('');
+    //const [finishDateQuery, setFinishDateQuery] = useState("");
+    const [typeQuery, setTypeQuery] = useState('');
+    const [clientQuery, setClientQuery] = useState('');
+    const [url, setUrl] = useState("/psa/projects/?");
 
     const [state, setState] = useState('Seleccionar');
     const [assignee, setAssignee] = useState('Seleccionar');
@@ -32,28 +33,52 @@ export default function Dashboard() {
     const [client, setClient] = useState('Seleccionar');
 
     const handleStateFilter = (e) => {
+        handleStateFilter2(e);
+    };
+    const handleStateFilter2 = (e) => {
+  
+        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
         setState(statusMapping[e]);
-        e==="Todos"?stateQuery="":stateQuery="status="+e+"&";
+        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+        setState(statusMapping[e]);
         getProyectos();
     };
 
     const handleAssigneeFilter = (e) => {
+        handleAssigneeFilter2(e);
+        handleAssigneeFilter2(e);
+    };
+    const handleAssigneeFilter2 = (e) => {
         let assignee = assignees.find( element => element.legajo == e );
         e==="Todos"?setAssignee(e):setAssignee(assignee.Nombre+" "+assignee.Apellido);
-        e==="Todos"?assigneeQuery="":assigneeQuery="project_manager="+e+"&";
+        e==="Todos"?setAssigneeQuery(''):setAssigneeQuery("project_manager="+e+"&");
         getProyectos();
     };
+
 
     const handlerClientFilter = (e) => {
+        handlerClientFilter2(e);
+        handlerClientFilter2(e);
+    };
+
+
+    const handlerClientFilter2 = (e) => {
         let client = clients.find( element => element.id == e );
         e==="Todos"?setClient(e):setClient(client["razon social"]);
-        e==="Todos"?clientQuery="":clientQuery="client_id="+e+"&";
+        e==="Todos"?setClientQuery(''):setClientQuery("client_id="+e+"&");
         getProyectos();
     };
 
+
     const handleTypeFilter = (e) => {
+        handleTypeFilter2(e);
+        handleTypeFilter2(e);
+
+    };
+
+    const handleTypeFilter2 = (e) => {
         setType(typeMapping[e]);
-        e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
+        e==="Todos"?setTypeQuery(''):setTypeQuery("type="+e+"&");
         getProyectos();
     };
 
@@ -82,29 +107,23 @@ export default function Dashboard() {
     };
 
     const getProyectos = async () => {
-        let url = "/psa/projects/?";
-        setProyectos([])
-        url += stateQuery;
-        url += typeQuery;
-        url += finishDateQuery;
-        url += assigneeQuery;
-        url += clientQuery;
-        console.log(url)
+        console.log(SERVER_NAME +url+stateQuery+typeQuery+assigneeQuery+clientQuery)
         axios
-            .get(SERVER_NAME + url, {})
+            .get(SERVER_NAME + url+stateQuery+typeQuery+assigneeQuery+clientQuery, {})
             .then((res) => {
                 setProyectos(res.data);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar los proyectos', err);
             });
+            
     };
 
 
     useEffect(() => {
         getAssignees();
-        getProyectos();
         getClients();
+        getProyectos();
         const interval = setInterval(() => {
             getAssignees();
             getProyectos();
@@ -216,7 +235,7 @@ export default function Dashboard() {
                 </Row>
             </Container>
 
-            <Body projects={proyectos} filtrosStado={states}/>
+            <Body projects={proyectos} />
         </>
     );
 }
