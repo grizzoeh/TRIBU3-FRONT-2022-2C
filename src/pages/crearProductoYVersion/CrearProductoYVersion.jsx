@@ -156,9 +156,9 @@ const CrearProductoYVersion = () => {
             <Container className="filtros-tabla">
                 <Form>
                     <Row>
-                        <Col className="v-center" sm={1}><h6>Buscar:</h6></Col>
-                        <Col className="v-center" sm={4}><Form.Control name="nombre" type="filtro" placeholder="Nombre de producto" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
-                        <Col className="v-center" sm={2}>
+                        <Col md="auto" className="v-center" ><h6>Buscar:</h6></Col>
+                        <Col sm={4} className="v-center" ><Form.Control name="nombre" type="filtro" placeholder="Nombre de producto" onChange={(e) => onChangeFiltroTexto(e)} /></Col>
+                        <Col md="auto" className="v-center" >
                             <Dropdown>
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="1">
                                     {filtroTexto.estado ? filtroTexto.estado : "Cualquiera"}
@@ -170,11 +170,11 @@ const CrearProductoYVersion = () => {
                                 </Dropdown.Menu>
                             </Dropdown></Col>
                         {filtrado ? (
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
+                            <Col md="auto" className="v-center"><Button variant="secondary" size="1" onClick={handleBotonQuitarFiltrado}>Remover busqueda</Button></Col>
                         ) : (
-                            <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
+                            <Col md="auto" className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col className="v-center" sm={3}><ModalProductoNuevo refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoCreadoOK}/></Col>
+                        <Col className="v-center" sm={3}><ModalProductoNuevo refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoCreadoOK} /></Col>
                     </Row>
                 </Form>
             </Container>
@@ -204,7 +204,7 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={4}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={4}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK} /></Col>
                                                     <Col sm={4}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoDeprecadoOK}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
@@ -219,7 +219,7 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoEditadoOK} /></Col>
                                                     <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowProductoActivadoOK}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
@@ -238,7 +238,7 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK} /></Col>
                                                     <Col sm={3}><BotonDeprecarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoDeprecadoOK}></BotonDeprecarProducto></Col>
                                                 </Row>
                                             </td>
@@ -253,7 +253,7 @@ const CrearProductoYVersion = () => {
                                             </td>
                                             <td>
                                                 <Row>
-                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK}/></Col>
+                                                    <Col sm={3}><ModalEditarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoEditadoOK} /></Col>
                                                     <Col sm={3}><BotonActivarProducto producto={producto} refreshProductos={getProductos} refreshAlert={handleShowProductoActivadoOK}></BotonActivarProducto></Col>
                                                 </Row>
                                             </td>
