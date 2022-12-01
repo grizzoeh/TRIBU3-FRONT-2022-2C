@@ -3,14 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
-import Select from "react-select";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
@@ -40,68 +36,66 @@ export default function ViewProject() {
 
   const [project, setProject] = useState(initialPoject);
 
-  const [projectManagers, setProjectManagers] = useState([]);
-  const [sponsors, setSponsors] = useState([]);
+  const [projectManager, setProjectManager] = useState([]);
   const [resources, setResources] = useState([]);
-  const [stakeholders, setStakeholders] = useState([]);
+  const [client, setClient] = useState([]);
+
+  var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
+  "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
+  var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
+
+  const handleBorrado = async () => {
+    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${projectId}`)
+        .then((data) => { 
+            if (data.data.ok) {
+                console.log("Proyecto borrado");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+      }
 
   const getProject = () => {
     axios
-      .get(`${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`, {})
+      .get(SERVER_NAMES.PROJECTS+"/psa/projects/"+projectId, {})
       .then((res) => {
-        setProject({
-          id: res.data.id,
-          name: res.data.name,
-          type: res.data.type,
-          description: res.data.description,
-          project_manager: res.data.project_manager,
-          sponsor: res.data.sponsor,
-          client: res.data.client,
-          resources: res.data.resources,
-          stake_holders: res.data.stake_holders,
-          estimated_start_date: res.data.estimated_start_date,
-          status: res.data.status,
-          client_id: res.data.client_id,
-          estimated_finalization_date: res.data.estimated_finalization_date,
-        });
-
-        // if (projectManagers.length !== 0) {
-        //   let selectedProjectManager = projectManagers.find(
-        //     (projectManager) =>
-        //       projectManager.legajo == res.data.project_manager.id
-        //   );
-        //   setProjectManagerButtonTitle(
-        //     `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
-        //   );
-        // }
-
-        // if (resources.length !== 0) {
-        //   let selectedResources = res.data.resources.map((resource) => {
-        //     let selectedResource = resources.find(
-        //       (resources) => resources.legajo == resource.id
-        //     );
-
-        //     return {
-        //       lejago: resource.id,
-        //       Nombre: selectedResource.Nombre,
-        //       Apellido: selectedResource.Apellido,
-        //     };
-        //   });
-        // }
+        setProject(res.data);
       })
       .catch((err) => {
         alert("Se produjo un error al consultar el proyecto", err);
       });
+    
+  };
+  const getProjectManager= async () => {
+    axios
+        .get(SERVER_NAMES.ASSIGNEES+ "/"+project.project_manager
+            , {})
+        .then((res) => {
+          setProjectManager(res.data);
+        })
+        .catch(() => {
+          setProjectManager({ Nombre: "", Apellido: "" });
+        });
+  };
+  const getClient = async () => {
+    axios
+    .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+        })
+        .then((res) => {
+          setClient(res.data);
+        })
+        .catch(() => {
+          setClient("");
+        });
   };
 
   const getResources = async () => {
     axios
       .get(SERVER_NAMES.ASSIGNEES, {})
       .then((res) => {
-        setProjectManagers(res.data);
-        setSponsors(res.data);
         setResources(res.data);
-        setStakeholders(res.data);
+
       })
       .catch((err) => {
         alert("Se produjo un error al consultar los recursos", err);
@@ -109,8 +103,11 @@ export default function ViewProject() {
   };
 
   useEffect(() => {
-    getResources();
+    
     getProject();
+    getResources();
+    getProjectManager();
+    getClient();
   }, []);
 
   return (
@@ -122,7 +119,7 @@ export default function ViewProject() {
         <br />
         <Row>
           <Col>
-            <h1>Ver proyecto</h1>
+            <h1>Proyecto #{projectId}</h1>
           </Col>
         </Row>
       </Container>
@@ -149,7 +146,7 @@ export default function ViewProject() {
             <h4>Tipo</h4>
           </Col>
           <Col xs={9}>
-            <h4>{project.type}</h4>
+            <h4>{typeMapping[project.type]}</h4>
           </Col>
         </Row>
         <Row className="mt-5">
@@ -157,12 +154,87 @@ export default function ViewProject() {
             <h4>Estado</h4>
           </Col>
           <Col xs={9}>
-            <h4>{project.status}</h4>
+            <h4>{statusMapping[ project.status]}</h4>
           </Col>
         </Row>
         <Row className="mt-5">
           <Col>
-            <h4>Fecha de inicio</h4>
+            <h4>Project Manager</h4>
+          </Col>
+          <Col xs={9}>
+  <h4>{project.project_manager!=null?
+      resources.find( element => element.legajo == project.project_manager.id)!=null?
+      resources.find( element => element.legajo == project.project_manager.id).Apellido+" "+resources.find( element => element.legajo == project.project_manager.id).Apellido
+      :"":""
+      }</h4>
+</Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Sponsors</h4>
+          </Col>
+  <Col xs={9}>
+  <h4>{project.sponsor!=null?
+      resources.find( element => element.legajo == project.sponsor.id)!=null?
+      resources.find( element => element.legajo == project.sponsor.id).Apellido+" "+resources.find( element => element.legajo == project.sponsor.id).Apellido
+      :"":""
+      }</h4>
+</Col>
+
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Cliente</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.client_id!=null?
+      client.find( element => element.id == project.client_id)!=null?
+      client.find( element => element.id == project.client_id)["razon social"]
+      :"":""
+      }</h4>
+      </Col>
+        </Row>
+
+        <Row className="mt-5">
+          <Col>
+            <h4>Recursos</h4>
+          </Col>
+          <Col xs={9}>
+{project.resources.map(element => {
+   return (
+  <Col >  <h4>{
+      element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
+      resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
+      :"":""
+      }</h4>
+    
+</Col>)
+})}
+             </Col>           
+
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Stakerholders</h4>
+          </Col>
+
+          {project.stake_holders.map(element => {
+   return (
+  <Col xs={9}>
+    {console.log(resources)}
+
+  <h4>{
+      element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
+      resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
+      :"":""
+      }</h4>
+</Col>)
+})};
+          
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Fecha estimada de inicio</h4>
           </Col>
           <Col xs={9}>
             <h4>
@@ -186,7 +258,16 @@ export default function ViewProject() {
         </Row>
 
         <Row className="mt-5">
-          <Col></Col>
+          <Col xs={9}>
+            <Link to={`/proyectos`}>
+              <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
+            </Link>
+            </Col>
+            <Col xs={1}>
+            <Link to={`/proyectos/`}>
+              <Button>Atrás</Button>
+            </Link>
+          </Col>
           <Col xs={1}>
             <Link to={`/proyectos/${projectId}/editar-proyecto/`}>
               <Button>Editar</Button>
