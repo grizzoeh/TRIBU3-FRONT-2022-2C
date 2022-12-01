@@ -6,6 +6,18 @@ import axios from "axios";
 import {useParams} from 'react-router-dom';
 import moment from 'moment';
 import { Container } from "react-bootstrap";
+
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
+import Dropdown from 'react-bootstrap/Dropdown';
+import { DragDropContext } from 'react-beautiful-dnd';
+import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
+import { wait } from "@testing-library/user-event/dist/utils";
+
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 
@@ -24,42 +36,80 @@ export default function GannChart() {
         { type: "string", label: "Dependencies" },
     ]
 
+    const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
     const params = useParams();
     const [tareas, setTareas] = useState([]);
     const [clients, setClients] = useState([]);
-   // const dataToGann= [];
+    const [assignees, setAssignees] = useState([]);
 
-    const getTareas = async () => {
-        axios
-            .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
-            .then((res) => {
-                setTareas(res.data);
-            })
-            .catch((err) => {
-                alert('Se produjo un error al consultar las tareas para el proyecto', err);
-            });
-    };
+    let assigneeQuery="";
+    let priorityQuery="";
+    const [assignee, setAssignee] = useState('Seleccionar');
+    const [priority, setPriority] = useState('---');
+  
+   
+   const [filters, setFilters] = useState({
+    "Estado": "Todas",
+    "estado": "Todos",
+    "criticidad": "Todas",
+    "cliente": "Todos",
+});
 
-    const getAssignees = async () => {
-        axios
-            .get(SERVER_NAMES.ASSIGNEES, {})
-            .then((res) => {
-                setClients(res.data);
-            })
-            .catch((err) => {
-                alert('Se produjo un error al consultar los clientes', err);
-            });
-    };
-    useEffect(() => {
-        // const interval = setInterval(() => {
-        //     getAssignees();
-        //     getTareas();
-        // }, 3000);
-        // return () => clearInterval(interval);
-        getAssignees();
-        getTareas();
+const handleAssigneeFilter = (e) => {
+  e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+  e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+  getTarea();
+};
+
+const handlePriorityFilter = (e) => {
+  setPriority(e.target.value);
+  e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
+  getTarea();
+};
+
+const getTarea = async () => {
+  let url = `/psa/projects/${params.id}/tasks/?`;
+  setTareas([])
+  url += priorityQuery;
+  url += assigneeQuery;
+  console.log(priorityQuery);
+  console.log(assigneeQuery);
+  axios
+      .get(SERVER_NAME + url, {})
+      .then((res) => {
+          setTareas(res.data);
+      })
+      .catch((err) => {
+          alert('Se produjo un error al consultar las tareas para el proyecto', err);
+      });
+      setTareas( tareas.filter(tarea=>!(tarea.estimated_start_date==null &&
+        (tarea.estimated_finalization_date!=null && tarea.estimated_hours_effort!=null ) )|| 
+        (tarea.estimated_finalization_date==null &&( tarea.estimated_start_date!=null && tarea.estimated_hours_effort!=null ) )||
+        (tarea.estimated_hours_effort==null  && ( tarea.estimated_start_date!=null&& tarea.estimated_hours_effort!=null ))))
+  };
+
+const getAssignees = async () => {
+    axios
+        .get(SERVER_NAMES.ASSIGNEES, {})
+        .then((res) => {
+             setAssignees(res.data);
+        })
+        .catch((err) => {
+             alert('Se produjo un error al consultar los clientes', err);
+         });
+};
+useEffect(() => {
+     // const interval = setInterval(() => {
+     //     getAssignees();
+     //     getTareas();
+     // }, 3000);
+     // return () => clearInterval(interval);
+getAssignees();
+getTarea();
     }, []);
-
+<Button variant="primary">
+          Volver atrás
+                    </Button>
     // const options = {
     //     height: 600,
     //     gantt: {
@@ -67,22 +117,76 @@ export default function GannChart() {
     //     },
     //   };
 
-    const options = {
-        height: 700,
-        width: 1000,
-        title: "Nearby galaxies",
-        gantt: {
-          trackHeight: 30
-        },
-      };
-    return (
-        <Fragment>
+const options = {
+    height: 700,
+    width: 1000,
+    title: "Nearby galaxies",
+    gantt: {
+      trackHeight: 30
+    },
+  };
+return (
+
+
+<Fragment>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
+  <h1> Diagrama de Gantt</h1>
+  <div>
+  <Link to={`/proyectos/${params.id}/ver-tareas/`}>
+            <Button variant="primary" onClick={() => console.log("click diagrama gannt")}>
+                Volver Atras
+            </Button>
+        </Link>     
+      </div>
+      <br></br>
+
+      <Row className="mt-5"> <Col>
+                        <h4>Empleado asignado:</h4>
+                    </Col>
+                    <Col >
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={assignee}
+                            onSelect={handleAssigneeFilter}
+                        >
+                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                            </Dropdown.Item>
+                            {assignees.map((assignee) => {
+                                return (
+                                    <Dropdown.Item eventKey={assignee.legajo} name="management">
+                                        {assignee.Nombre + " " + assignee.Apellido}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                    </Col>
+                            
+                      <Col>
+                        <h4>Prioridad:</h4>
+                    </Col>
+                    <Col >
+                    <Form.Control
+                        type="number"
+                        min="0"
+                        placeholder="Ej: 2"
+                        name="priority"
+                        onChange={(e) => handlePriorityFilter(e)}/>
+                    </Col></Row>
+                    
+                
         <NavbarProyectos/>
         <Container key="chart-container">
         <br></br>
         <br></br>
         <br></br>
+
+           
         <Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={false} data={
+
             [columns,...tareas.map((tarea) => {
                 return [tarea.id,
                      tarea.name,
@@ -104,6 +208,8 @@ export default function GannChart() {
                  ]
              })]
         }/>
+        
+
         </Container>
         </Fragment>
 
