@@ -30,6 +30,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const ModalInformacionReportes = () => {
+    const [proyecto,setProyecto] = useState([]);
     const [proyectoId,setProyectoId] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
@@ -37,13 +38,15 @@ const ModalInformacionReportes = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [listaTareas,setListaTareas] = useState([]);
-    const [proyectoName,setProyectoNombre] = useState([]);
-    const [cargas, setCargas] = useState([]);
+    const [proyectoName,setProyectoName] = useState('');
+    const [cargasDeProyecto, setCargasDeProyecto] = useState([]);
     const [sumaDesvios, setSumaDesvios] = useState(0);
     const [sumaHoras, setSumaHoras] = useState(0);
     const [sumaHorasTotales, setSumaHorasTotales]  = useState(0);
     const [sumaTiempoEstimado, setSumaTiempoEstimado] = useState(0);
     const [prueba,setPrueba] = useState([]);
+
+    const [input, setInput] = useState(0)
 
     const [sumaHorasProyecto, setSumaHorasProyecto] = useState(0);
 
@@ -53,8 +56,20 @@ const ModalInformacionReportes = () => {
         fetch(urlProyecto)
         .then(res=>res.json())
         .then((result)=>{
-            setProyectoNombre(result.name)
-    })    
+            setProyecto(result)
+        })    
+        setProyectoName(proyecto.name)
+        console.log('----------------------------')
+        console.log(proyectoName)
+
+        const urlCargasDeProyecto = `squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
+        fetch(urlCargasDeProyecto)
+        .then(res=>res.json())
+        .then((result)=>{
+            console.log(result)
+            setCargasDeProyecto(result)
+        })
+        console.log(cargasDeProyecto)
     }
 
     const cargarListaTareas = () => {
@@ -82,19 +97,17 @@ const ModalInformacionReportes = () => {
 
     function calcularSumaHoras(idTarea){
         let suma = 0;
-        
-        const url = `https://squad920222c-production.up.railway.app/recursos/reporte/tarea/` + idTarea; 
-        fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-            setCargas(data);
-        });
+        let cargas = []
+        for (let i = 0; i<cargasDeProyecto.length;i++){
+            if(cargasDeProyecto[i].tarea_id == idTarea)
+                cargas.push(cargasDeProyecto[i]);   
+        }
 
-        cargas.map((carga) =>{
-            if(carga.cantidad_horas != null)
-            suma = suma+carga.cantidad_horas
-        
-        })
+        for(let i=0; i<cargas.length; i++){
+            if(cargas[i].proyectoId == idTarea){
+                suma += cargas[i].cantidad_horas
+            }
+        }
         
         
         return suma;
@@ -116,7 +129,6 @@ const ModalInformacionReportes = () => {
     }
 
     function calcularDesvio(sumaHoras, tiempoEstimado){
-        let resultado = 0;
         
         if (tiempoEstimado == null){
             return sumaHoras;
@@ -129,6 +141,12 @@ const ModalInformacionReportes = () => {
             return 0
         }
         return horasEstimadas;
+    }
+
+    function onChangeInput(e){
+        if (e.target.value){
+            setProyectoId(e.target.value)
+        }
     }
     
 
