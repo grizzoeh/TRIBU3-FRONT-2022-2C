@@ -811,7 +811,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                             </Col>
                             <Col xs={1}>
                                 <Button variant="secondary" onClick={handleClose}>
-                                    Close
+                                    Cerrar
                                 </Button>
                             </Col>
                         </Fragment>

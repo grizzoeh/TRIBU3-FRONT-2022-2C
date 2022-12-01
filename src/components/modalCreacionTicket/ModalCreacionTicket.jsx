@@ -568,7 +568,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
                         <Col>
                             <Button variant="secondary" onClick={handleClose}>
-                                Close
+                                Cerrar
                             </Button>
                         </Col>
                     </Row>

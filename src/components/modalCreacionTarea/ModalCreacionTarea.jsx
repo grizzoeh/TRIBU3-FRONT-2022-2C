@@ -190,7 +190,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
                     <Col xs={10}>
                         <Button variant="secondary" onClick={handleClose}>
-                            Close
+                            Cerrar
                         </Button>
                     </Col>
 

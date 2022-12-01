@@ -57,14 +57,14 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
                 if (data.data.ok) {
                     console.log("Reporte creado");
                     axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
-                    .then((data) => {
-                        if (data.data.ok) {
-                            console.log("Ticket eliminado");
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });       
+                        .then((data) => {
+                            if (data.data.ok) {
+                                console.log("Ticket eliminado");
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 }
             })
             .catch((error) => {
@@ -209,7 +209,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
                     <Col xs={8}>
                         <Button size="xs" variant="secondary" onClick={handleClose}>
-                            Close
+                            Cerrar
                         </Button>
                     </Col>
                     <Col>
