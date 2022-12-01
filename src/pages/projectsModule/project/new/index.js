@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import moment from 'moment';
 
 import axios from "axios";
 
@@ -109,6 +110,10 @@ export default function NewProject() {
     getResources();
     getClients();
   }, []);
+
+  const onChangeDateData = (e) => {
+    setProjectData({ ...projectData, [e.target.name]: moment(e.target.value, "DD/MM/YYYY").format() });
+  };
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -285,7 +290,7 @@ export default function NewProject() {
                 type="text"
                 name="estimated_start_date"
                 placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeProjectData(e)}
+                onChange={(e) => onChangeDateData(e)}
               />
             </Col>
           </Row>
@@ -299,7 +304,7 @@ export default function NewProject() {
                 type="text"
                 name="estimated_finalization_date"
                 placeholder="Ej: 15/10/2025"
-                onChange={(e) => onChangeProjectData(e)}
+                onChange={(e) => onChangeDateData(e)}
               />
             </Col>
           </Row>
