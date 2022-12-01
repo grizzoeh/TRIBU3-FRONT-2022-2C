@@ -343,7 +343,7 @@ export default function NewTask() {
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
               />*/}
-              <h4>{moment(tareaActual.creation_date, "DD-MM-YYYY").format('DD.MM.YYYY')}</h4>
+              <h4>{moment(tareaActual.creation_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -464,6 +464,11 @@ export default function NewTask() {
             </Col>
 
             <Col></Col>
+            <Col xs={1}>
+            <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/crear-subtarea/`}>
+              <Button>Crear subtarea</Button>
+            </Link>
+            </Col>
             <Col xs={1}>
             <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/editar-tarea/`}>
               <Button>Editar</Button>
