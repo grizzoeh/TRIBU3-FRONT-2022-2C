@@ -64,7 +64,7 @@ export default function NewTask() {
   }
 
   const handleGuardado = async () => {
-    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}/`, projectData)
+    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${params.idTarea}/`, projectData)
         .then((data) => {
             if (data.data.ok) {
                 console.log("Proyecto borrado");
@@ -480,8 +480,9 @@ export default function NewTask() {
           <Row className="mt-3">
             <textarea
               name="description"
-              value={tareaActual.description}
-              placeholder="Escribe una descripción..."
+              //value={tareaActual.description}
+              //placeholder="Escribe una descripción..."
+              placeholder={tareaActual.description}
               onChange={(e) => onChangeProjectData(e)}
             />
           </Row>
