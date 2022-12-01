@@ -29,6 +29,7 @@ export default function NewProject() {
     description: null,
     projectManager: null,
     sponsor: null,
+    client: null,
     resources: [],
     stakeholders: [],
     estimated_start_date: null,
@@ -37,6 +38,7 @@ export default function NewProject() {
 
   const [sponsorButtonTitle, setSponsorButtonTitle] = useState('Seleccionar');
   const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
+  const [clientButtonTitle, setClientButtonTitle] = useState('Seleccionar');
 
   const [projectData, setProjectData] = useState(initialProject);
 
@@ -44,20 +46,29 @@ export default function NewProject() {
   const [sponsors, setSponsors] = useState([]);
   const [resources, setResources] = useState([]);
   const [stakeholders, setStakeholders] = useState([]);
+  const [clients, setClients] = useState([]);
   
   const handleDropdownSponsorsButtonChange = (e) => {
-    setProjectData({ ...projectData, projectManager: e });
-    setSponsorButtonTitle(sponsors.find((client) => client.id == e).CUIT);
+    setProjectData({ ...projectData, sponsor: e });
+    let selectedSponsor = sponsors.find((sponsor) => sponsor.legajo == e);
+    setSponsorButtonTitle(`${selectedSponsor.Nombre} ${selectedSponsor.Apellido}`);
   };
 
   const handleDropdownProjectManagerButtonChange = (e) => {
-    setProjectData({ ...projectData, sponsor: e });
-    setProjectManagerButtonTitle(projectManagers.find((client) => client.id == e).CUIT);
+    setProjectData({ ...projectData, projectManager: e });
+    let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == e);
+    setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
+  };
+
+  const handleDropdownClientButtonChange = (e) => {
+    setProjectData({ ...projectData, client: e });
+    let selectedClient = clients.find((client) => client.id == e);
+    setClientButtonTitle(selectedClient["razon social"]);
   };
 
   const getResources = async () => {
     axios
-      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+      .get(SERVER_NAMES.ASSIGNEES, {})
       .then((res) => {
         setProjectManagers(res.data);
         setSponsors(res.data);
@@ -66,6 +77,18 @@ export default function NewProject() {
       })
       .catch((err) => {
         alert('Se produjo un error al consultar los recursos', err);
+      });
+  };
+
+  const getClients = async () => {
+    axios
+      .get("/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes", {})
+      .then((res) => {
+        debugger
+        setClients(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los clientes', err);
       });
   };
 
@@ -84,6 +107,7 @@ export default function NewProject() {
 
   useEffect(() => {
     getResources();
+    getClients();
   }, []);
 
   const onChangeProjectData = (e) => {
@@ -95,11 +119,11 @@ export default function NewProject() {
   };
 
   const handleResourcesDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, resources: e.map((item) => item.id) });
+    setProjectData({ ...projectData, resources: e.map((item) => item.legajo) });
   };
 
   const handleStakeHoldersDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, stakeholders: e.map((item) => item.id) });
+    setProjectData({ ...projectData, stakeholders: e.map((item) => item.legajo) });
   };
 
   const handleSubmit = (event) => {
@@ -112,6 +136,8 @@ export default function NewProject() {
     <Fragment>
       <NavbarProyectos/>
       <Container className="container-title">
+        <br />
+        <br />
         <br />
         <Row>
           <Col>
@@ -179,8 +205,8 @@ export default function NewProject() {
               >
                 {projectManagers.map((projectManager) => {
                   return (
-                    <Dropdown.Item eventKey={projectManager.id} name="projectManager">
-                      {projectManager["razon social"]}
+                    <Dropdown.Item eventKey={projectManager.legajo} name="projectManager">
+                      {`${projectManager.Nombre} ${projectManager.Apellido}`}
                     </Dropdown.Item>
                   );
                 })}
@@ -200,8 +226,29 @@ export default function NewProject() {
               >
                 {sponsors.map((sponsor) => {
                   return (
-                    <Dropdown.Item eventKey={sponsor.id} name="sponsor">
-                      {sponsor["razon social"]}
+                    <Dropdown.Item eventKey={sponsor.legajo} name="sponsor">
+                      {`${sponsor.Nombre} ${sponsor.Apellido}`}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Cliente</h4>
+            </Col>
+            <Col xs={9}>
+              <DropdownButton
+                variant="secondary"
+                title={clientButtonTitle}
+                onSelect={handleDropdownClientButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client["razon social"]}
                     </Dropdown.Item>
                   );
                 })}
@@ -214,8 +261,8 @@ export default function NewProject() {
               <h4>Recursos</h4>
             </Col>
             <Col xs={9}>
-              <Select isMulti options={resources} getOptionLabel={(resource) => resource["razon social"]}
-                getOptionValue={(resource) => resource.id} onChange={handleResourcesDropdownButtonChange} />
+              <Select isMulti options={resources} getOptionLabel={(resource) => `${resource.Nombre} ${resource.Apellido}`}
+                getOptionValue={(resource) => resource.legajo} onChange={handleResourcesDropdownButtonChange} />
             </Col>
           </Row>
 
@@ -224,8 +271,8 @@ export default function NewProject() {
               <h4>Stake holders</h4>
             </Col>
             <Col xs={9}>
-              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => stakeholder["razon social"]}
-                getOptionValue={(stakeholder) => stakeholder.id} onChange={handleStakeHoldersDropdownButtonChange} />
+              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => `${stakeholder.Nombre} ${stakeholder.Apellido}`}
+                getOptionValue={(stakeholder) => stakeholder.legajo} onChange={handleStakeHoldersDropdownButtonChange} />
             </Col>
           </Row>
 
