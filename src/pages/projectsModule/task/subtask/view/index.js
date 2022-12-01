@@ -11,6 +11,7 @@ import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Select from 'react-select'
 import axios from "axios";
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
 import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
@@ -37,14 +38,15 @@ export default function NewTask() {
   const [ticket, setTicket] = useState([]);
   const [empleadoAsignado, setEmpleadoAsignado] = useState([]);
   const mapIDResourceToName= (assignees) => {
-    console.log(clients);
-    console.log(assignees);
+    //console.log(clients);
+    //console.log(assignees);
     
     return assignees.map((assignee) => {
       let selectedSponsor = clients.find((client) => client.legajo === assignee.id)
-      return `${selectedSponsor.Nombre} ${selectedSponsor.Apellido}`
+      return selectedSponsor?`${selectedSponsor.Nombre} ${selectedSponsor.Apellido}`:null
     })
   }
+  var statusMapping = {pending:"PENDIENTE",in_progress:"EN PROGRESO",finished:"TERMINADA"};
   useEffect(() => {
         const getTareas = async () => {
             axios
@@ -198,37 +200,16 @@ export default function NewTask() {
             </Col>
           </Row>
           */}
-          <Row className="mt-5">
+
+           <Row className="mt-5">
             <Col>
-              <h4>Esfuerzo estimado en horas</h4>
+              <h4>Tipo:</h4>
             </Col>
-            <Col xs={9}>
-              <Form.Control
-                type="number"
-                value={tareaActual.estimated_hours_effort}
-                min="0"
-                name="estimated_hours_effort"
-                placeholder="Ej: 10"
-                onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
+              <Col xs={9}><h4>{tareaActual.parent_task_id?"Subtarea":"Tarea"}</h4></Col>
+              
           </Row>
-          <Row className="mt-5">
-            <Col>
-              <h4>Esfuerzo real en horas</h4>
-            </Col>
-            <Col xs={9}>
-              <Form.Control
-                type="number"
-                value={tareaActual.real_hours_effort}
-                min="0"
-                name="real_hours_effort"
-                placeholder="Ej: 10"
-                onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-5">
+
+          {tareaActual.parent_task_id && <Row className="mt-5">
             <Col>
               <h4>Tarea padre</h4>
             </Col>
@@ -250,7 +231,49 @@ export default function NewTask() {
                 })}
               </DropdownButton>
             </Col>
+          </Row>}
+
+          {tareaActual.dependencies && <Row className="mt-5">
+            <Col>
+              <h4>Dependencias:</h4>
+            </Col>
+              {tareaActual.dependencies.map((dependency) => <Col xs={9}><Button>{dependency.name}</Button></Col>)}
+              
+          </Row>}
+
+           <Row className="mt-5">
+            <Col>
+              <h4>Esfuerzo estimado en horas</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="number"
+                value={tareaActual.estimated_hours_effort}
+                min="0"
+                name="estimated_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+        />*/}
+              <h4>{tareaActual.estimated_hours_effort}</h4>
+            </Col>
           </Row>
+          <Row className="mt-5">
+            <Col>
+              <h4>Esfuerzo real en horas</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="number"
+                value={tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}
+                //min="0"
+                name="real_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+        />*/}
+              <h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}</h4>
+            </Col>
+          </Row>
+          
 
           <Row className="mt-5">
             <Col>
@@ -292,7 +315,7 @@ export default function NewTask() {
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
               />*/}
-              <h4>{tareaActual.creation_date}</h4>
+              <h4>{moment(tareaActual.creation_date, "DD-MM-YYYY").format('DD.MM.YYYY')}</h4>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -308,7 +331,7 @@ export default function NewTask() {
                 onChange={(e) => onChangeProjectData(e)}
               />
               </Col>*/}
-              <Col xs={9}><h4>{tareaActual.estimated_start_date}</h4></Col>
+              <Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>
               
           </Row>
 
@@ -324,24 +347,26 @@ export default function NewTask() {
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
             />*/}
-            <h4>{tareaActual.estimated_finalization_date}</h4>
+            <h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
             </Col>
           </Row>
 
-          <Row className="mt-5">
+          {tareaActual.real_finalization_date && <Row className="mt-5">
             <Col>
               <h4>Fecha real de finalización</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
+              {/*<Form.Control
                 type="text"
                 name="estimated_finalization_date"
                 value={tareaActual.real_finalization_date}
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
-          </Row>
+              />*/}
+              <h4>{tareaActual.real_finalization_date}</h4>
+          </Col>
+          
+          </Row>}
 
           <Row className="mt-5">
             <Col>
@@ -357,14 +382,16 @@ export default function NewTask() {
               <h4>Estado</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
+              {/*<Form.Control
                 type="string"
                 placeholder="Ej: In progress"
                 name="status"
-                value={tareaActual.status}
+                value={statusMapping[tareaActual.status]}
                 onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
+              />*/}
+              <h4>{statusMapping[tareaActual.status]}</h4>
+          </Col>
+          
           </Row>
 
           {ticket && <Row className="mt-5">
@@ -372,13 +399,14 @@ export default function NewTask() {
               <h4>Número de ticket relacionado</h4>
             </Col>
             {ticket && <Col xs={9}>
-              <Form.Control
+              {/*<Form.Control
                 type="number"
                 placeholder="Ej: In progress"
                 name="status"
                 value={ticket?ticket.id:0}
                 onChange={(e) => onChangeProjectData(e)}
-              />
+            />*/}
+            <h4>{ticket.id}</h4>
             </Col>}
           </Row>}
 
