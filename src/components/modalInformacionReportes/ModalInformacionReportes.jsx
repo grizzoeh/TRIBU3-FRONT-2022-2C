@@ -40,8 +40,10 @@ const ModalInformacionReportes = () => {
     const [proyectoName,setProyectoNombre] = useState([]);
     const [cargas, setCargas] = useState([]);
     const [sumaDesvios, setSumaDesvios] = useState(0);
+    const [sumaHoras, setSumaHoras] = useState(0);
     const [sumaHorasTotales, setSumaHorasTotales]  = useState(0);
     const [sumaTiempoEstimado, setSumaTiempoEstimado] = useState(0);
+    const [prueba,setPrueba] = useState([]);
 
     const handleClick =() => {
           
@@ -75,11 +77,10 @@ const ModalInformacionReportes = () => {
 
         cargas.map((carga) =>{
             suma = suma+carga.cantidad_horas
-            console.log("Esto es la suma:" + carga.cantidad_horas)
+          
         })
-
         
-
+        
         return suma;
     }
 
@@ -122,13 +123,13 @@ const ModalInformacionReportes = () => {
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
-                                <TableRow>
+                                <TableRow id="datos">
                                     <TableCell align="center">ID del proyecto</TableCell>
                                     <TableCell align="center">Nombre del proyecto</TableCell>
                                     <TableCell align="center">Suma de horas del proyecto</TableCell>
                                     <TableCell align="center">Desvio Total</TableCell>
                                 </TableRow>
-                                <TableRow>
+                                <TableRow id="datos">
                                     <TableCell align="center">{proyectoId}</TableCell>
                                     <TableCell align="center">{proyectoName}</TableCell>
                                     <TableCell align="center">{sumaHorasTotales}</TableCell>
@@ -143,10 +144,6 @@ const ModalInformacionReportes = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {show && 
-                                <TableRow>
-                                    <TableCell align="center">{proyectoName}</TableCell>
-                                </TableRow>}
                                 {show && listaTareas.map((tarea)=>(
                                     <TableRow>
                                         <TableCell align="center">{tarea.name}</TableCell>

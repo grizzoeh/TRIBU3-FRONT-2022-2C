@@ -26,19 +26,20 @@
   margin: 0 auto;
 }
 
-#titulo{
-text-align: center;
-margin-top: 20px;
-margin-bottom: 20px;
-margin: 0 auto;
+#navBarCatego {
+  top:1vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  margin-bottom: 0.9%;
 }
-
 
 #calendarioBoton{
 text-align: center;
-margin-top: 20px;
 margin-bottom: 20px;
 margin: 0 auto;
+margin-top: 0.9%;
 }
 
 #Calendar{
@@ -54,22 +55,33 @@ position: relative;
 }
 
 #botonera{
-border-width: 1px;
-border: solid;
-text-align: center;
 top:2vw;
 width: 20vw;
 margin: 0 auto;
-border: 1px solid rgb(2, 2, 2);
 text-align: center ;
 position: relative;
 }
 
 #Texto-seleccionar-horas{
-  text-align: center;
   top:2vw;
   width: 20vw;
   margin: 0 auto;
-  margin-top: 0.5%;
-  position: center;
+  text-align: center;
+  position: relative;
+  margin-top: 0.9%;
+  margin-bottom: 2%;
+  }
+
+.Boton-botonera{
+  margin-left: 0.9%;
+  margin-right: 0.9%;
+}
+
+#confirmar{
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center ;
+  position: relative;
+  margin-top: 0.9%;
   }

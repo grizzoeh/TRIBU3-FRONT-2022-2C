@@ -65,3 +65,8 @@ tr:hover {background-color: coral;}
   left: 0vw;
   top: 1vw;
 }
+
+#datos{
+  background-color: darkgrey;
+  border-color: black;
+}

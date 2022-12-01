@@ -16,6 +16,7 @@ import 'react-calendar/dist/Calendar.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { render } from "@testing-library/react";
+import TextField from '@mui/material/TextField';
 
 const MAXHORAS = 8;
 const MINHORAS = 0;
@@ -26,16 +27,17 @@ const ModalCreacionCargaDeHorasLicencia = () => {
     const [value, onChange] = useState(new Date());
     const [categorias, setCategorias] = useState([])
     const [CategoriaText, setCategoriaText] = useState('Seleccionar')
-    const [categoriaId,setCategoriaId] = useState([])
+    const [categoria,setCategoria] = useState([])
     const [nombre, setNombre] = useState([])
-    const [descripcion, setDescripcion] = useState([])
-    const [isShown, setIsShown] = useState(false);
-    const [mostrarHoras, setMostrarHoras] = useState(false);
+    const [estado, setEstado] = useState([])
+    const [legajo, setLegajo] = useState([])
     let [cantidad_horas, setCount] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
 
     useEffect(()=>{
         fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
@@ -46,20 +48,23 @@ const ModalCreacionCargaDeHorasLicencia = () => {
     },[]);
 
     const handleClick =() => {
-        const cargaLicencia={categoriaId,nombre,descripcion}
-        fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, {
+        const estado = 'Emitido';
+        const fecha = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear();
+        const carga={cantidad_horas, categoria, estado, fecha, legajo}
+        
+        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/`, {
             method:"POST",
             headers:{"Content-Type": "application/json"},
-            body:JSON.stringify(cargaLicencia),
+            body:JSON.stringify(carga),
         }).then(()=>{
             console.log("Se realizo un Post")
         })
     }
 
-    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" onClick={() => {setCategoriaText(categoria.nombre)}}>{categoria.nombre}</NavDropdown.Item>)
+    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" onClick={() => {setCategoria(categoria.idCategoria);setCategoriaText(categoria.nombre)}}>{categoria.nombre}</NavDropdown.Item>)
 
     function incrementCount() {
-        if(cantidad_horas+1 <= MAXHORAS){
+        if(cantidad_horas+1 <= MAXHORAS && cantidad_horas != DIA){
             cantidad_horas = cantidad_horas + 1;
             setCount(cantidad_horas);
         }
@@ -70,7 +75,7 @@ const ModalCreacionCargaDeHorasLicencia = () => {
         console.log("cantidad de horas: "+cantidad_horas)
     }
     function decrementCount() {
-        if(cantidad_horas-1 >= MINHORAS){
+        if(cantidad_horas-1 >= MINHORAS && cantidad_horas != DIA){
             cantidad_horas = cantidad_horas - 1;
             setCount(cantidad_horas);
         }
@@ -82,10 +87,8 @@ const ModalCreacionCargaDeHorasLicencia = () => {
     }
 
     function dayCount(){
-        if(cantidad_horas-1 >= MINHORAS || cantidad_horas == DIA){
-            cantidad_horas = DIA;
-            setCount(cantidad_horas);
-        }
+        cantidad_horas = DIA;
+        setCount(cantidad_horas);
         console.log("cantidad de horas: "+cantidad_horas)
     }
 
@@ -100,17 +103,20 @@ const ModalCreacionCargaDeHorasLicencia = () => {
                 <div id='calendarioBoton'>
                 <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
             </div> 
-            <div id="cargarHorasLicencia">
-                <h6>Seleccionar horas de actividad</h6>
-                {cantidad_horas}
+            <div id="cargar-horas-licencia">
+                <div id="Texto-seleccionar-horas" >
+                    <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+                    <h6 id='texto'>Seleccionar horas de actividad</h6>
+                    {cantidad_horas}
+                </div>
                 <div id="botonera">           
-                   <Button id="suma"  onClick={incrementCount}>+</Button>
-                   <Button id="resta" onClick={decrementCount}>-</Button>
-                   <Button id="dia"   onClick={dayCount}>24 horas</Button>
+                   <Button id="suma"  className="Boton-botonera" onClick={incrementCount}>+</Button>
+                   <Button id="resta" className="Boton-botonera" onClick={decrementCount}>-</Button>
+                   <Button id="dia"   className="Boton-botonera" onClick={dayCount}>24 horas</Button>
                 </div> 
             </div>
             <div id="confirmar">
-                <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow} id='boton'>Confirmar</Button></Col>  
+                <Col className="h-end"><Button variant="primary" size="1" onClick={()=> {handleShow();handleClick()}} id='boton'>Confirmar</Button></Col>  
                     <Modal dialogClassName="modalContent2" show={show} onHide={handleClose}>
                         <Modal.Header closeButton onClick={handleClose}>
                             <Modal.Body>

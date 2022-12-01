@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField';
 const MAXHORAS = 8;
 const MINHORAS = 0;
 
+
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
     const [isShown, setIsShown] = useState(false);
@@ -44,7 +45,6 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         setTareaNombre(nombreTarea)
         setTarea_id(tareaId)
     }
-    
 
     useEffect(()=>{
         fetch("https://squad-8-projects.herokuapp.com/psa/projects/")
