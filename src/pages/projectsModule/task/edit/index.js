@@ -24,10 +24,12 @@ export default function NewTask() {
     estimated_hours_effort: null,
     estimated_start_date: null,
     estimated_finalization_date: null,
-    creation_date: null,
     dependencies: [],
     assignees: [],
-    priority: null,
+    creation_date: null,
+    priority: 1,
+    realEffort: null,
+    parent_task: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
@@ -62,7 +64,7 @@ export default function NewTask() {
   }
 
   const handleGuardado = async () => {
-    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`)
+    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${params.idTarea}/`, projectData)
         .then((data) => {
             if (data.data.ok) {
                 console.log("Proyecto borrado");
@@ -156,7 +158,7 @@ export default function NewTask() {
 
   const createTask = async () => {
     axios
-      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
+      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, projectData)
       .then((data) => {
         if (data.status === 200) {
           alert("Nueva tarea creada");
@@ -274,9 +276,10 @@ export default function NewTask() {
               <h4>Dependencias:</h4>
             </Col>
               {tareaActual.dependencies.map((dependency) => <Col xs={9}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>)}
-              
+            
           </Row>}
-
+              <Row><Select isMulti options={tareas} getOptionLabel={(dependency) => dependency.name}
+                getOptionValue={(dependency) => dependency.id} /></Row>
            <Row className="mt-5">
             <Col>
               <h4>Esfuerzo estimado en horas</h4>
@@ -334,8 +337,8 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              {/*<Select isMulti options={clients} getOptionLabel={(client) => client.name}
-                getOptionValue={(client) => client.id} defaultValue={mapIDResourceToName(AssigneebuttonTitle)} />*/}
+              <Select isMulti options={clients} getOptionLabel={(client) => client.Nombre}
+                getOptionValue={(client) => client.legajo} onSelect={handleDependencyDropdownButtonChange2} onChange={handleDependencyDropdownButtonChange2}/>
                 {/*<Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>*/}
             </Col>
           </Row>
@@ -477,8 +480,9 @@ export default function NewTask() {
           <Row className="mt-3">
             <textarea
               name="description"
-              value={tareaActual.description}
-              placeholder="Escribe una descripción..."
+              //value={tareaActual.description}
+              //placeholder="Escribe una descripción..."
+              placeholder={tareaActual.description}
               onChange={(e) => onChangeProjectData(e)}
             />
           </Row>
