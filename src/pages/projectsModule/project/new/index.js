@@ -141,10 +141,8 @@ export default function NewProject() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (findFormErrors(initialProject)) {
-        createProject();
-        setProjectData(initialProject);
-    }
+    createProject();
+    setProjectData(initialProject);
   };
 
   return (
