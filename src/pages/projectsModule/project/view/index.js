@@ -11,7 +11,8 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import moment from 'moment';
+import moment from "moment";
+import { Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -181,6 +182,15 @@ export default function ViewProject() {
                 "DD.MM.YYYY"
               )}
             </h4>
+          </Col>
+        </Row>
+
+        <Row className="mt-5">
+          <Col></Col>
+          <Col xs={1}>
+            <Link to={`/proyectos/${projectId}/editar-proyecto/`}>
+              <Button>Editar</Button>
+            </Link>
           </Col>
         </Row>
       </Container>
