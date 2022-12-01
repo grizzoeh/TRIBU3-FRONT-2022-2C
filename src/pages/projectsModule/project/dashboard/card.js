@@ -39,9 +39,7 @@ export default function CardCustom({project}) {
     var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
     "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
 var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
-//(clients.find( element => element.id == project.client_id)["razon social"])
-console.log(clients.find( element => element.id == project.client_id)!=null?clients.find( element => element.id == project.client_id)["razon social"]:"")
-    return (
+return (
         <Row>
                 <Card>
                     <Card.Header as="h4">Proyecto #{project.id}</Card.Header>

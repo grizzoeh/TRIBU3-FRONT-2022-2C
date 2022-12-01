@@ -8,9 +8,6 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from 'react-bootstrap/Container';
 import * as SERVER_NAMES from "../../APIRoutes";
-import Form from "react-bootstrap/Form";
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 
@@ -31,7 +28,6 @@ export default function Dashboard() {
 
     const [state, setState] = useState('Seleccionar');
     const [assignee, setAssignee] = useState('Seleccionar');
-    const [finishDate, setFinishDate] = useState('---');
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
@@ -44,19 +40,14 @@ export default function Dashboard() {
     const handleAssigneeFilter = (e) => {
         let assignee = assignees.find( element => element.legajo == e );
         e==="Todos"?setAssignee(e):setAssignee(assignee.Apellido+" "+assignee.Nombre);
-        e==="Todos"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
-        getProyectos();
-    };
-    const handlePriorityFilter = (e) => {
-        setFinishDate(e);
-        finishDateQuery="finishDate="+e+"&";
+        e==="Todos"?assigneeQuery="":assigneeQuery="project_manager="+e+"&";
         getProyectos();
     };
 
     const handlerClientFilter = (e) => {
         let client = clients.find( element => element.id == e );
         e==="Todos"?setClient(e):setClient(client["razon social"]);
-        e==="Todos"?clientQuery="":clientQuery="client="+e+"&";
+        e==="Todos"?clientQuery="":clientQuery="client_id="+e+"&";
         getProyectos();
     };
 
@@ -65,6 +56,7 @@ export default function Dashboard() {
         e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
         getProyectos();
     };
+
     const getAssignees = async () => {
         axios
             .get(SERVER_NAMES.ASSIGNEES , {})
@@ -97,6 +89,7 @@ export default function Dashboard() {
         url += finishDateQuery;
         url += assigneeQuery;
         url += clientQuery;
+        console.log(url)
         axios
             .get(SERVER_NAME + url, {})
             .then((res) => {
@@ -181,21 +174,6 @@ export default function Dashboard() {
                 </Row>
 
                     <Row className="mt-5">
-                    <Col>
-                        <h4>Fecha de Finalizacion</h4>
-                    </Col>
-                    <Col>
-                        <ButtonGroup className="me-5" aria-label="First group"    onClick={handlePriorityFilter}>
-                            <Form.Control
-                                type="text"
-                                placeholder={finishDate}
-                                aria-label={finishDate}
-                                aria-describedby="btnGroupAddon"
-                            />
-                            <Button variant="secondary">Filtrar</Button>{' '}
-
-                        </ButtonGroup>
-                    </Col>
                     <Col>
                         <h4>Tipo</h4>
                     </Col>
