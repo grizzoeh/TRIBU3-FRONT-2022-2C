@@ -32,6 +32,7 @@ export default function EditProject() {
   const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
   const [projectManagers, setProjectManagers] = useState([]);
   const [resources, setResources] = useState([]);
+  const [selectedResources, setselectedResources] = useState([]);
 
   const navigate = useNavigate();
 
@@ -105,8 +106,26 @@ export default function EditProject() {
           project_manager: res.data.project_manager,
         });
 
-        // let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == res.data.project_manager.id);
-        // setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
+        if (projectManagers.length !== 0) {
+          let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == res.data.project_manager.id);
+          setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
+        }
+
+        if (resources.length !== 0) {
+          let selectedResources = res.data.resources.map((resource) => {
+
+            let selectedResource = resources.find((resources) => resources.legajo == resource.id);
+
+            return {
+              lejago: resource.id,
+              Nombre: selectedResource.Nombre,
+              Apellido: selectedResource.Apellido,
+            }
+          });
+          
+          setselectedResources(selectedResources);
+          debugger
+        }
       })
       .catch((err) => {
         alert("Se produjo un error al consultar el proyecto", err);
@@ -115,8 +134,11 @@ export default function EditProject() {
 
   useEffect(() => {
     getResources();
-    getProject();
   }, []);
+
+  useEffect(() => {
+    getProject();
+  }, [projectManagers]);
 
   return (
     <Fragment>
