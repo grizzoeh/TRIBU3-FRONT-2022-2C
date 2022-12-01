@@ -13,12 +13,15 @@ const NavbarRecursos = () => {
 
                 <NavDropdown title="PSA" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/">
+                        Home
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/proyectos">
                         Módulo Proyectos
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/">
+                    <NavDropdown.Item href="/tickets-en-curso">
                         Módulo Soporte
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="/">
+                    <NavDropdown.Item href="/cargar-horas">
                         Módulo Recursos
                     </NavDropdown.Item>
                 </NavDropdown>
@@ -27,18 +30,18 @@ const NavbarRecursos = () => {
             <Nav className="me-auto">
                 <NavDropdown title="Horas" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/cargar-horas">Cargar</NavDropdown.Item>
-                    <NavDropdown.Item href="/modificar-carga-horas">Modificar</NavDropdown.Item> 
+                    <NavDropdown.Item href="/modificar-carga-horas">Modificar</NavDropdown.Item>
                     <NavDropdown.Item href="/eliminar-carga-horas">Eliminar</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Consultar" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/consultar-por-legajo">Cargas por legajo</NavDropdown.Item>
                     <NavDropdown.Item href="/consultar-reportes-por-proyecto">Reportes por proyecto</NavDropdown.Item>
-                    <NavDropdown.Item href="/consultar-reportes-por-persona">Reportes por persona</NavDropdown.Item>                            
+                    <NavDropdown.Item href="/consultar-reportes-por-persona">Reportes por persona</NavDropdown.Item>
                 </NavDropdown>
                 <NavDropdown title="Categoria" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/crear-categoria">Crear</NavDropdown.Item>
                     <NavDropdown.Item href="/modificar-categoria">Modificar</NavDropdown.Item>
-                    <NavDropdown.Item href="/eliminar-categoria">Eliminar</NavDropdown.Item>                                   
+                    <NavDropdown.Item href="/eliminar-categoria">Eliminar</NavDropdown.Item>
                 </NavDropdown>
             </Nav>
 
