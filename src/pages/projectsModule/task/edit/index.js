@@ -28,12 +28,13 @@ export default function NewTask() {
     assignees: [],
     creation_date: null,
     priority: 1,
+    status: null,
     realEffort: null,
     parent_task: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
-  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
   const [StatusbuttonTitle, setStatusButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
@@ -152,7 +153,7 @@ export default function NewTask() {
   };
 
   const handleAssigneeDropdownButtonChange = (e) => {
-    if (e!= "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
+    if (e!== "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
     e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
@@ -279,7 +280,7 @@ export default function NewTask() {
             
           </Row>}
               <Row><Select isMulti options={tareas} getOptionLabel={(dependency) => dependency.name}
-                getOptionValue={(dependency) => dependency.id} /></Row>
+                getOptionValue={(dependency) => dependency.id} onChange={handleDependencyDropdownButtonChange2}/></Row>
            <Row className="mt-5">
             <Col>
               <h4>Esfuerzo estimado en horas</h4>
@@ -337,9 +338,29 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              <Select isMulti options={clients} getOptionLabel={(client) => client.Nombre}
-                getOptionValue={(client) => client.legajo} onSelect={handleDependencyDropdownButtonChange2} onChange={handleDependencyDropdownButtonChange2}/>
+              {/*<Select isMulti options={clients} getOptionLabel={(client) => client.Nombre}
+                getOptionValue={(client) => client.legajo} onSelect={handleAssigneeDropdownButtonChange} onChange={handleAssigneeDropdownButtonChange}/>*/}
                 {/*<Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>*/}
+                <Col xs={9}>
+              {/* TODO: get clients */}
+              <DropdownButton
+                variant="secondary"
+                title={AssigneebuttonTitle.legajo}
+                //title="Seleccionar"
+                onSelect={handleAssigneeDropdownButtonChange}
+              >
+                <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                </Dropdown.Item>
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.legajo} name="client">
+                      {client.Nombre + " " + client.Apellido}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
             </Col>
           </Row>
           {/*<Row className="mt-5">
@@ -438,10 +459,12 @@ export default function NewTask() {
                 name="status"
                 value={statusMapping[tareaActual.status]}
                 onChange={(e) => onChangeProjectData(e)}
+                onSelect={handleStatusDropdownButtonChange}
+                inverseStatusMapping[tareaActual.status]
               />*/}
               {/*<h4>{statusMapping[tareaActual.status]}</h4>*/}
-                <Dropdown title={inverseStatusMapping[tareaActual.status]}
-                onSelect={handleStatusDropdownButtonChange}>
+                <Dropdown title={StatusbuttonTitle}
+                >
                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
                     </Dropdown.Toggle>
                         <Dropdown.Menu>

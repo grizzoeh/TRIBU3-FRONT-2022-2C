@@ -12,20 +12,28 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewTask() {
+  const navigate = useNavigate();
+  const navigateTaskDashboard = () => {
+    navigate(`/proyectos/${params.id}/ver-tareas/`);
+  };
+
   const initialTask = {
     name: null,
     description: null,
     estimated_hours_effort: null,
     estimated_start_date: null,
     estimated_finalization_date: null,
-    creation_date: null,
     dependencies: [],
     assignees: [],
-    priority: null,
+    creation_date: null,
+    priority: 1,
+    realEffort: null,
+    parent_task: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
@@ -69,7 +77,7 @@ export default function NewTask() {
   };
 
   const handleDependencyDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, dependencies: [e] });
+    setProjectData({ ...projectData, parent_task: e });
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
@@ -85,10 +93,10 @@ export default function NewTask() {
 
   const createTask = async () => {
     axios
-      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks`, projectData)
+      .post(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, projectData)
       .then((data) => {
         if (data.status === 200) {
-          alert("Nueva tarea creada");
+          navigateTaskDashboard();
         }
       })
       .catch((err) => {
