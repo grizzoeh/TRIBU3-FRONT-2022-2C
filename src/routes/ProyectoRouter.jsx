@@ -14,6 +14,7 @@ const TareaNueva = lazy(() => import("../pages/projectsModule/task/new/index"));
 const SubtareaNueva = lazy(() => import("../pages/projectsModule/task/subtask/new/index"));
 const VerTarea = lazy(() => import("../pages/projectsModule/task/subtask/view/index"));
 const EditarTarea = lazy(() => import("../pages/projectsModule/task/edit/index"));
+const VerProyecto = lazy(() => import("../pages/projectsModule/project/view/index")); 
 
 const ProyectoRouter = () => {
     return (
@@ -30,6 +31,7 @@ const ProyectoRouter = () => {
                     <Route path="/proyectos/:id/tareas/:idTarea/crear-subtarea" element={<SubtareaNueva/>} />
                     <Route path="/proyectos/:id/tareas/:idTarea/ver-tarea" element={<VerTarea/>} />
                     <Route path="/proyectos/:id/tareas/:idTarea/editar-tarea" element={<EditarTarea/>} />
+                    <Route path="/proyectos/:id/ver-proyecto" element={<VerProyecto/>} />
                 </Routes>
             </Suspense>
         </Router>
