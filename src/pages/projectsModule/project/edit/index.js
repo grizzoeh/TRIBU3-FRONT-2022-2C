@@ -3,11 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
+import Select from 'react-select'
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 import axios from "axios";
 
@@ -17,20 +20,40 @@ export default function EditProject() {
   const initialUpdatedProject = {
     name: null,
     description: null,
-    estimatedStartDate: null,
-    estimatedFinalizationDate: null,
     status: null,
+    client: null,
+    sponsor: null,
+    resources: null,
+    stakeholders: null,
+    project_manager: null,
   };
 
   const [updatedProject, setUpdatedProject] = useState(initialUpdatedProject);
+  const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [resources, setResources] = useState([]);
 
   const navigate = useNavigate();
 
   const params = useParams();
   let projectId = params.id;
 
+  const handleDropdownProjectManagerButtonChange = (e) => {
+    setUpdatedProject({ ...updatedProject, project_manager: e });
+    let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == e);
+    setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
+  };
+
+  const handleResourcesDropdownButtonChange = (e) => {
+    setUpdatedProject({ ...updatedProject, resources: e.map((item) => item.legajo) });
+  };
+
   const onChangeProjectData = (e) => {
     setUpdatedProject({ ...updatedProject, [e.target.name]: e.target.value });
+  };
+
+  const handleDropdownChange = (e) => {
+    setUpdatedProject({ ...updatedProject, [e.target.name]: e.target.innerHTML });
   };
 
   const navigateProjectDashboard = () => {
@@ -39,10 +62,7 @@ export default function EditProject() {
 
   const editProject = async () => {
     axios
-      .patch(
-        `${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`,
-        updatedProject
-      )
+      .patch(`${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`, {updatedProject})
       .then((data) => {
         if (data.status === 200) {
           navigateProjectDashboard();
@@ -53,24 +73,40 @@ export default function EditProject() {
       });
   };
 
+  const getResources = () => {
+    axios
+      .get(SERVER_NAMES.ASSIGNEES, {})
+      .then((res) => {
+        setProjectManagers(res.data);
+        setResources(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los recursos', err);
+      });
+  };
+
   const handleSubmit = (event) => {
-    debugger
     event.preventDefault();
     editProject();
   };
 
-  const getProject = async () => {
+  const getProject = () => {
     axios
       .get(`${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`, {})
       .then((res) => {
         setUpdatedProject({
           name: res.data.name,
           description: res.data.description,
-          estimatedStartDate: res.data.estimated_start_date,
-          estimatedFinalizationDate: res.data.estimated_finalization_date,
           status: res.data.status,
+          client: res.data.client_id,
+          sponsor: res.data.sponsor,
+          resources: res.data.resources,
+          stakeholders: res.data.stake_holders,
+          project_manager: res.data.project_manager,
         });
-        debugger
+
+        // let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == res.data.project_manager.id);
+        // setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
       })
       .catch((err) => {
         alert("Se produjo un error al consultar el proyecto", err);
@@ -78,12 +114,15 @@ export default function EditProject() {
   };
 
   useEffect(() => {
+    getResources();
     getProject();
   }, []);
 
   return (
     <Fragment>
       <NavbarProyectos />
+      <br />
+      <br />
       <br />
       <Container className="container-title">
         <Row>
@@ -105,6 +144,87 @@ export default function EditProject() {
                 value={updatedProject.name}
                 onChange={(e) => onChangeProjectData(e)}
               />
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Estado</h4>
+            </Col>
+            <Col xs={9}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="secondary"
+                  id="dropdown-basic"
+                  size="xl"
+                >
+                  {updatedProject.status ? updatedProject.status : "Seleccionar"}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    name="status"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    pending
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    name="status"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    analysis
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    name="status"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    development
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    name="status"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    production
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    name="status"
+                    onClick={(e) => handleDropdownChange(e)}
+                  >
+                    post_production
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Project Manager</h4>
+            </Col>
+            <Col xs={9}>
+              <DropdownButton
+                variant="secondary"
+                title={projectManagerButtonTitle}
+                onSelect={handleDropdownProjectManagerButtonChange}
+              >
+                {projectManagers.map((projectManager) => {
+                  return (
+                    <Dropdown.Item eventKey={projectManager.legajo} name="projectManager">
+                      {`${projectManager.Nombre} ${projectManager.Apellido}`}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Recursos</h4>
+            </Col>
+            <Col xs={9}>
+              <Select isMulti options={resources} getOptionLabel={(resource) => `${resource.Nombre} ${resource.Apellido}`}
+                getOptionValue={(resource) => resource.legajo} onChange={handleResourcesDropdownButtonChange} />
             </Col>
           </Row>
 
