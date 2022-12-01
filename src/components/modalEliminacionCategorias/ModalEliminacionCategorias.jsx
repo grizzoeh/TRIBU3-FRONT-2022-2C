@@ -56,16 +56,16 @@ const ModalEliminacionCategorias = () => {
         <Container>
             <div>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
-                <button onClick={() => {handleClick()}} id = 'borrar'>Borrar</button> 
+                <Button id = "borrar" onClick={() => {handleClick()}} >Borrar</Button> 
             </div>
             <div>
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell align="left">Id</TableCell>
-                                <TableCell align="right">Nombre</TableCell>
-                                <TableCell align="right">Descripcion</TableCell>
+                                <TableCell align="center">Id</TableCell>
+                                <TableCell align="center">Nombre</TableCell>
+                                <TableCell align="center">Descripcion</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -74,9 +74,9 @@ const ModalEliminacionCategorias = () => {
                                     key={carga.idCategoria}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
-                                    <TableCell align="left" component="th" scope="row">{carga.idCategoria}</TableCell>
-                                    <TableCell align="left">{carga.nombre}</TableCell>
-                                    <TableCell align="left">{carga.descripcion}</TableCell>
+                                    <TableCell align="center" component="th" scope="row">{carga.idCategoria}</TableCell>
+                                    <TableCell align="center">{carga.nombre}</TableCell>
+                                    <TableCell align="center">{carga.descripcion}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

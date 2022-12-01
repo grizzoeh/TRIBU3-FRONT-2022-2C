@@ -49,10 +49,4 @@
   position: right;
   left: 3vw;
   top: 0vw;
-  background-color: orange;
-}
-
-#boton:hover{
-  background-color: #550A21;
-  color: white;
 }

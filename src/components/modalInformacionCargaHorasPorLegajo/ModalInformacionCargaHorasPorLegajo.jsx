@@ -56,10 +56,10 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                             <TableHead>
                                 <TableRow>
                                     <TableCell align="center">Legajo</TableCell>
-                                    <TableCell align="right">Proyecto</TableCell>
-                                    <TableCell align="right">Tarea</TableCell>
-                                    <TableCell align="right">Horas</TableCell>
-                                    <TableCell align="right">Fecha</TableCell>
+                                    <TableCell align="center">Proyecto</TableCell>
+                                    <TableCell align="center">Tarea</TableCell>
+                                    <TableCell align="center">Horas</TableCell>
+                                    <TableCell align="center">Fecha</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -68,10 +68,10 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                                         key={carga.legajo}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
-                                        <TableCell align="right">{carga.proyectoNombre}</TableCell>
-                                        <TableCell align="right">{carga.tareaNombre}</TableCell>
-                                        <TableCell align="right">{carga.cantidad_horas}</TableCell>
-                                        <TableCell align="right">{carga.fecha}</TableCell>
+                                        <TableCell align="center">{carga.proyectoNombre}</TableCell>
+                                        <TableCell align="center">{carga.tareaNombre}</TableCell>
+                                        <TableCell align="center">{carga.cantidad_horas}</TableCell>
+                                        <TableCell align="center">{carga.fecha}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

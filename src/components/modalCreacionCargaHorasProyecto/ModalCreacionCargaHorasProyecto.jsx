@@ -126,7 +126,9 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                 </NavDropdown>
                             </div>}
                 {mostrarHoras && <div className="App">
-                                    <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+                                    <div id="ingresar-legajo">
+                                        <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+                                    </div>
                                     <div>
                                         <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>
                                         {cantidad_horas}
