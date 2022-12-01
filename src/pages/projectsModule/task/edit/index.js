@@ -62,7 +62,7 @@ export default function NewTask() {
   }
 
   const handleGuardado = async () => {
-    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`)
+    axios.patch(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`, projectData)
         .then((data) => {
             if (data.data.ok) {
                 console.log("Proyecto borrado");
@@ -274,9 +274,10 @@ export default function NewTask() {
               <h4>Dependencias:</h4>
             </Col>
               {tareaActual.dependencies.map((dependency) => <Col xs={9}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>)}
-              
+            
           </Row>}
-
+              <Row><Select isMulti options={tareas} getOptionLabel={(dependency) => dependency.name}
+                getOptionValue={(dependency) => dependency.id} /></Row>
            <Row className="mt-5">
             <Col>
               <h4>Esfuerzo estimado en horas</h4>
@@ -334,8 +335,8 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              {/*<Select isMulti options={clients} getOptionLabel={(client) => client.name}
-                getOptionValue={(client) => client.id} defaultValue={mapIDResourceToName(AssigneebuttonTitle)} />*/}
+              <Select isMulti options={clients} getOptionLabel={(client) => client.Nombre}
+                getOptionValue={(client) => client.legajo} onSelect={handleDependencyDropdownButtonChange2} onChange={handleDependencyDropdownButtonChange2}/>
                 {/*<Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>*/}
             </Col>
           </Row>
