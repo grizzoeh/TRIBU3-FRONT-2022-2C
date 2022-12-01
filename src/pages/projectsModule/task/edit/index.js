@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import * as SERVER_NAMES from "../../../APIRoutes";
+import * as SERVER_NAMES from "../../APIRoutes";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -15,7 +15,7 @@ import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import { Link } from "react-router-dom";
 
-import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewTask() {
   const initialTask = {
@@ -32,6 +32,7 @@ export default function NewTask() {
   const params = useParams();
   const [tareas, setTareas] = useState([]);
   const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
+  const [StatusbuttonTitle, setStatusButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
@@ -60,7 +61,7 @@ export default function NewTask() {
     //return tareaPadre
   }
 
-  const handleBorrado = async () => {
+  const handleGuardado = async () => {
     axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`)
         .then((data) => {
             if (data.data.ok) {
@@ -72,7 +73,7 @@ export default function NewTask() {
         });
   }
 
-  var statusMapping = {pending:"PENDIENTE",in_progress:"EN PROGRESO",finished:"TERMINADA"};
+  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Finalizada:"finished"};
   useEffect(() => {
         const getTareas = async () => {
             axios
@@ -83,6 +84,7 @@ export default function NewTask() {
                 //setDependencyButtonTitle(res.data.dependencies[0]);
                 //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
                 setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees);
+                setStatusButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).status);
                 //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
                 //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
                 setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
@@ -137,6 +139,11 @@ export default function NewTask() {
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
+  const handleStatusDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, [e.target.name]: e.target.value });
+    setStatusButtonTitle(e.status);
+  };
+
   const handleDependencyDropdownButtonChange2 = (e) => {
     setProjectData({ ...projectData, dependencies: [e] });
     //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
@@ -174,14 +181,14 @@ export default function NewTask() {
         <br />
         <Row>
           <Col>
-            <h1>{tareaActual.name}</h1>
+            <h1>{/*tareaActual.name*/} Editar tarea</h1>
           </Col>
         </Row>
       </Container>
 
       <Container>
         <form onSubmit={handleSubmit}>
-          {/*<Row className="mt-5">
+          <Row className="mt-5">
             <Col>
               <h4>Nombre de la tarea</h4>
             </Col>
@@ -189,10 +196,11 @@ export default function NewTask() {
               <Form.Control
                 type="text"
                 name="name"
+                placeholder={tareaActual.name}
                 onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
-  </Row>*/}
+          </Row>
           {  /*
           <Row className="mt-5">
             
@@ -228,13 +236,13 @@ export default function NewTask() {
           </Row>
           */}
 
-           <Row className="mt-5">
+           {/*<Row className="mt-5">
             <Col>
               <h4>Tipo:</h4>
             </Col>
               <Col xs={9}><h4>{tareaActual.parent_task_id?"Subtarea":"Tarea"}</h4></Col>
               
-          </Row>
+        </Row>*/}
 
           {tareaActual.parent_task_id && <Row className="mt-5">
             <Col>
@@ -274,15 +282,15 @@ export default function NewTask() {
               <h4>Esfuerzo estimado en horas</h4>
             </Col>
             <Col xs={9}>
-              {/*<Form.Control
+              <Form.Control
                 type="number"
-                value={tareaActual.estimated_hours_effort}
+                //value={tareaActual.estimated_hours_effort}
                 min="0"
                 name="estimated_hours_effort"
-                placeholder="Ej: 10"
+                placeholder={tareaActual.estimated_hours_effort}
                 onChange={(e) => onChangeProjectData(e)}
-        />*/}
-              <h4>{tareaActual.estimated_hours_effort}</h4>
+              />
+              {/*<h4>{tareaActual.estimated_hours_effort}</h4>*/}
             </Col>
           </Row>
           <Row className="mt-5">
@@ -290,15 +298,15 @@ export default function NewTask() {
               <h4>Esfuerzo real en horas</h4>
             </Col>
             <Col xs={9}>
-              {/*<Form.Control
+              <Form.Control
                 type="number"
-                value={tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}
-                //min="0"
+                //value={tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}
+                min="0"
                 name="real_hours_effort"
-                placeholder="Ej: 10"
+                placeholder={tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}
                 onChange={(e) => onChangeProjectData(e)}
-        />*/}
-              <h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}</h4>
+              />
+              {/*<h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}</h4>*/}
             </Col>
           </Row>
           
@@ -328,38 +336,38 @@ export default function NewTask() {
               </DropdownButton>*/}
               {/*<Select isMulti options={clients} getOptionLabel={(client) => client.name}
                 getOptionValue={(client) => client.id} defaultValue={mapIDResourceToName(AssigneebuttonTitle)} />*/}
-                <Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>
+                {/*<Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>*/}
             </Col>
           </Row>
-          <Row className="mt-5">
+          {/*<Row className="mt-5">
             <Col>
               <h4>Fecha de creación</h4>
             </Col>
             <Col xs={9}>
-              {/*<Form.Control
+              <Form.Control
                 type="text"
                 name="creation_date"
-                value={tareaActual.creation_date}
-                placeholder="Ej: 18/12/2022"
+                //value={tareaActual.creation_date}
+                placeholder={tareaActual.creation_date}
                 onChange={(e) => onChangeProjectData(e)}
-              />*/}
-              <h4>{moment(tareaActual.creation_date, "DD-MM-YYYY").format('DD.MM.YYYY')}</h4>
-            </Col>
-          </Row>
+            />*/}
+              {/*<h4>{moment(tareaActual.creation_date, "DD-MM-YYYY").format('DD.MM.YYYY')}</h4>*/}
+            {/*</Col>*/}
+          {/*</Row>*/}
           <Row className="mt-5">
             <Col>
               <h4>Fecha estimada de inicio</h4>
             </Col>
-            {/*<Col xs={9}>
+            <Col xs={9}>
               <Form.Control
                 type="text"
                 name="estimated_start_date"
-                value={tareaActual.estimated_start_date}
-                placeholder="Ej: 18/12/2022"
+                //value={tareaActual.estimated_start_date}
+                placeholder={moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
                 onChange={(e) => onChangeProjectData(e)}
               />
-              </Col>*/}
-              <Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>
+              </Col>
+              {/*<Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>*/}
               
           </Row>
 
@@ -368,14 +376,14 @@ export default function NewTask() {
               <h4>Fecha estimada de fin</h4>
             </Col>
             <Col xs={9}>
-              {/*<Form.Control
+              <Form.Control
                 type="text"
                 name="estimated_finalization_date"
-                value={tareaActual.estimated_finalization_date}
-                placeholder="Ej: 18/12/2022"
+                //value={tareaActual.estimated_finalization_date}
+                placeholder={moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
                 onChange={(e) => onChangeProjectData(e)}
-            />*/}
-            <h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
+            />
+            {/*<h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>*/}
             </Col>
           </Row>
 
@@ -400,8 +408,19 @@ export default function NewTask() {
             <Col>
               <h4>Prioridad:</h4>
             </Col>
-            <Col xs={9}>
+            {/*<Col xs={9}>
               <h4>{tareaActual.priority}</h4>
+            </Col>*/}
+            <Col xs={9}>
+              <Form.Control
+                type="number"
+                //value={tareaActual.estimated_hours_effort}
+                min="1"
+                name="priority"
+                placeholder={tareaActual.priority}
+                onChange={(e) => onChangeProjectData(e)}
+              />
+              {/*<h4>{tareaActual.estimated_hours_effort}</h4>*/}
             </Col>
           </Row>
 
@@ -417,12 +436,25 @@ export default function NewTask() {
                 value={statusMapping[tareaActual.status]}
                 onChange={(e) => onChangeProjectData(e)}
               />*/}
-              <h4>{statusMapping[tareaActual.status]}</h4>
+              {/*<h4>{statusMapping[tareaActual.status]}</h4>*/}
+                <Dropdown title={inverseStatusMapping[tareaActual.status]}
+                onSelect={handleStatusDropdownButtonChange}>
+                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                    </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                                {"Ninguno"}
+                            </Dropdown.Item>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Pendiente</Dropdown.Item>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>En progreso</Dropdown.Item>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Finalizada</Dropdown.Item>
+                        </Dropdown.Menu>
+            </Dropdown>
           </Col>
           
           </Row>
 
-          {ticket && <Row className="mt-5">
+          {/*<Row className="mt-5">
             <Col>
               <h4>Número de ticket relacionado</h4>
             </Col>
@@ -434,9 +466,10 @@ export default function NewTask() {
                 value={ticket?ticket.id:0}
                 onChange={(e) => onChangeProjectData(e)}
             />*/}
-            <h4>{ticket.id}</h4>
-            </Col>}
-          </Row>}
+            {/*<h4>{ticket.id}</h4>*/}
+            {/*</Col>*/}
+            <Row>
+          </Row>
 
           <Row className="mt-5">
             <h4>Descripción</h4>
@@ -453,15 +486,15 @@ export default function NewTask() {
           <Row className="mt-5">
           <Col></Col>
             <Col xs={10}>
-            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
-              <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
+            <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/ver-tarea/`}>
+              <Button  onClick={handleGuardado}>Guardar</Button>
             </Link>
             </Col>
 
             <Col></Col>
             <Col xs={1}>
-            <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/editar-tarea/`}>
-              <Button>Editar</Button>
+            <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/ver-tarea/`}>
+              <Button variant="danger">Cancelar</Button>
             </Link>
             </Col>
           </Row>
