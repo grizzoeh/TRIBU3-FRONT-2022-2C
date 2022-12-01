@@ -93,6 +93,9 @@ export default function Dashboard() {
 
     return (
         <>
+        <br></br>
+        <br></br>
+        <br></br>
             <NavbarProyectos/>
             <Header/>
 
