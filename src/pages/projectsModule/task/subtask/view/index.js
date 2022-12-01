@@ -61,7 +61,7 @@ export default function NewTask() {
   }
 
   const handleBorrado = async () => {
-    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`)
+    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${params.idTarea}`)
         .then((data) => {
             if (data.data.ok) {
                 console.log("Proyecto borrado");

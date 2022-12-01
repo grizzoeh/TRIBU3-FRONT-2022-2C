@@ -24,7 +24,9 @@ export default function NewTask() {
   };
 
   const findFormErrors = (tarea) => {
-    if ( !tarea.name || tarea.name === '' ) alert("La tarea debe tener un nombre");
+    if ( !tarea.name || tarea.name === '' ) {
+      alert("La tarea debe tener un nombre");
+      return 1;}
     navigateTaskDashboard();
   }
 
