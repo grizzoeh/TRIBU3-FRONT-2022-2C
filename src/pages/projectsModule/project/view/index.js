@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import moment from 'moment';
 
 import axios from "axios";
 
@@ -37,6 +38,11 @@ export default function ViewProject() {
   let projectId = params.id;
 
   const [project, setProject] = useState(initialPoject);
+
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
+  const [resources, setResources] = useState([]);
+  const [stakeholders, setStakeholders] = useState([]);
 
   const getProject = () => {
     axios
@@ -87,7 +93,22 @@ export default function ViewProject() {
       });
   };
 
+  const getResources = async () => {
+    axios
+      .get(SERVER_NAMES.ASSIGNEES, {})
+      .then((res) => {
+        setProjectManagers(res.data);
+        setSponsors(res.data);
+        setResources(res.data);
+        setStakeholders(res.data);
+      })
+      .catch((err) => {
+        alert("Se produjo un error al consultar los recursos", err);
+      });
+  };
+
   useEffect(() => {
+    getResources();
     getProject();
   }, []);
 
@@ -112,6 +133,54 @@ export default function ViewProject() {
           </Col>
           <Col xs={9}>
             <h4>{project.name}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Descripcion</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.description}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Tipo</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.type}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Estado</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Fecha de inicio</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>
+              {moment(project.estimated_start_date, "YYYY-MM-DD").format(
+                "DD.MM.YYYY"
+              )}
+            </h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Fecha estimada de fin</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>
+              {moment(project.estimated_finalization_date, "YYYY-MM-DD").format(
+                "DD.MM.YYYY"
+              )}
+            </h4>
           </Col>
         </Row>
       </Container>
