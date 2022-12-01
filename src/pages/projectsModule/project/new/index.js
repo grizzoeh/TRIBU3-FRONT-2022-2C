@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
+import Select from 'react-select'
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -10,9 +11,11 @@ import Button from "react-bootstrap/Button";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import moment from 'moment';
 
 import axios from "axios";
 
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewProject() {
   const navigate = useNavigate();
@@ -21,25 +24,76 @@ export default function NewProject() {
     navigate('/proyectos');
   };
 
+  const findFormErrors = (proyecto) => {
+    if ( !proyecto.name || proyecto.name === '' ) {
+      alert("El proyecto debe tener un nombre");
+      navigateProjectDashboard();
+      return null;}
+    else return 1; 
+  }
+
   const initialProject = {
     name: null,
-    description: null,
     type: null,
+    description: null,
+    projectManager: null,
+    sponsor: null,
+    client: null,
+    resources: [],
+    stakeholders: [],
     estimated_start_date: null,
     estimated_finalization_date: null,
-    project_manager: null,
-    resources: [],
-    stakeholders: null,
   };
 
-  const [buttonTitle, setButtonTitle] = useState('Seleccionar');
+  const [sponsorButtonTitle, setSponsorButtonTitle] = useState('Seleccionar');
+  const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
+  const [clientButtonTitle, setClientButtonTitle] = useState('Seleccionar');
+
   const [projectData, setProjectData] = useState(initialProject);
+
+  const [projectManagers, setProjectManagers] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
+  const [resources, setResources] = useState([]);
+  const [stakeholders, setStakeholders] = useState([]);
   const [clients, setClients] = useState([]);
+  
+  const handleDropdownSponsorsButtonChange = (e) => {
+    setProjectData({ ...projectData, sponsor: e });
+    let selectedSponsor = sponsors.find((sponsor) => sponsor.legajo == e);
+    setSponsorButtonTitle(`${selectedSponsor.Nombre} ${selectedSponsor.Apellido}`);
+  };
+
+  const handleDropdownProjectManagerButtonChange = (e) => {
+    setProjectData({ ...projectData, projectManager: e });
+    let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == e);
+    setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
+  };
+
+  const handleDropdownClientButtonChange = (e) => {
+    setProjectData({ ...projectData, client: e });
+    let selectedClient = clients.find((client) => client.id == e);
+    setClientButtonTitle(selectedClient["razon social"]);
+  };
+
+  const getResources = async () => {
+    axios
+      .get(SERVER_NAMES.ASSIGNEES, {})
+      .then((res) => {
+        setProjectManagers(res.data);
+        setSponsors(res.data);
+        setResources(res.data);
+        setStakeholders(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los recursos', err);
+      });
+  };
 
   const getClients = async () => {
     axios
-      .get(SERVER_NAMES.EXTERNAL_RESOURCES + "/clientes", {})
+      .get("/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes", {})
       .then((res) => {
+        debugger
         setClients(res.data);
       })
       .catch((err) => {
@@ -47,9 +101,27 @@ export default function NewProject() {
       });
   };
 
+  const createProject = async () => {
+    axios
+      .post(SERVER_NAMES.PROJECTS + "/psa/projects", projectData)
+      .then((data) => {
+        if (data.status === 200) {
+          navigateProjectDashboard();
+        }
+      })
+      .catch((err) => {
+        alert("Se produjo un error al crear el proyecto", err);
+      });
+  };
+
   useEffect(() => {
+    getResources();
     getClients();
   }, []);
+
+  const onChangeDateData = (e) => {
+    setProjectData({ ...projectData, [e.target.name]: moment(e.target.value, "DD/MM/YYYY").format() });
+  };
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -59,34 +131,26 @@ export default function NewProject() {
     setProjectData({ ...projectData, [e.target.name]: e.target.innerHTML });
   };
 
-  const handleDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, stakeholders: [e] });
-    setButtonTitle(clients.find((client) => client.id == e).CUIT);
+  const handleResourcesDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, resources: e.map((item) => item.legajo) });
   };
 
-  const createProject = async () => {
-    axios
-      .post(SERVER_NAMES.PROJECTS + "/psa/projects/", projectData)
-      .then((data) => {
-        if (data.status === 200) {
-          navigateProjectDashboard();
-        }
-      })
-      .catch((err) => {
-        alert("Se produjo un error al crear proyectos", err);
-      });
+  const handleStakeHoldersDropdownButtonChange = (e) => {
+    setProjectData({ ...projectData, stakeholders: e.map((item) => item.legajo) });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject();
-    setProjectData(initialProject);
+    if (findFormErrors(initialProject)) {
+        createProject();
+        setProjectData(initialProject);
+    }
   };
 
   return (
     <Fragment>
-      <Container>
-        <br />
+      <NavbarProyectos/>
+      <Container className="container-title">
         <br />
         <br />
         <br />
@@ -146,23 +210,84 @@ export default function NewProject() {
 
           <Row className="mt-5">
             <Col>
-              <h4>Cliente</h4>
+              <h4>Project Manager</h4>
             </Col>
             <Col xs={9}>
-              {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={buttonTitle}
-                onSelect={handleDropdownButtonChange}
+                title={projectManagerButtonTitle}
+                onSelect={handleDropdownProjectManagerButtonChange}
               >
-                {clients.map((client) => {
+                {projectManagers.map((projectManager) => {
                   return (
-                    <Dropdown.Item eventKey={client.id} name="client">
-                      {client.CUIT}
+                    <Dropdown.Item eventKey={projectManager.legajo} name="projectManager">
+                      {`${projectManager.Nombre} ${projectManager.Apellido}`}
                     </Dropdown.Item>
                   );
                 })}
               </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Sponsor</h4>
+            </Col>
+            <Col xs={9}>
+              <DropdownButton
+                variant="secondary"
+                title={sponsorButtonTitle}
+                onSelect={handleDropdownSponsorsButtonChange}
+              >
+                {sponsors.map((sponsor) => {
+                  return (
+                    <Dropdown.Item eventKey={sponsor.legajo} name="sponsor">
+                      {`${sponsor.Nombre} ${sponsor.Apellido}`}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Cliente</h4>
+            </Col>
+            <Col xs={9}>
+              <DropdownButton
+                variant="secondary"
+                title={clientButtonTitle}
+                onSelect={handleDropdownClientButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client["razon social"]}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Recursos</h4>
+            </Col>
+            <Col xs={9}>
+              <Select isMulti options={resources} getOptionLabel={(resource) => `${resource.Nombre} ${resource.Apellido}`}
+                getOptionValue={(resource) => resource.legajo} onChange={handleResourcesDropdownButtonChange} />
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Stake holders</h4>
+            </Col>
+            <Col xs={9}>
+              <Select isMulti options={stakeholders} getOptionLabel={(stakeholder) => `${stakeholder.Nombre} ${stakeholder.Apellido}`}
+                getOptionValue={(stakeholder) => stakeholder.legajo} onChange={handleStakeHoldersDropdownButtonChange} />
             </Col>
           </Row>
 
@@ -175,7 +300,7 @@ export default function NewProject() {
                 type="text"
                 name="estimated_start_date"
                 placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeProjectData(e)}
+                onChange={(e) => onChangeDateData(e)}
               />
             </Col>
           </Row>
@@ -188,21 +313,8 @@ export default function NewProject() {
               <Form.Control
                 type="text"
                 name="estimated_finalization_date"
-                placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
-          </Row>
-
-          <Row className="mt-5">
-            <Col>
-              <h4>Project manager</h4>
-            </Col>
-            <Col xs={9}>
-              <Form.Control
-                type="text"
-                name="project_manager"
-                onChange={(e) => onChangeProjectData(e)}
+                placeholder="Ej: 15/10/2025"
+                onChange={(e) => onChangeDateData(e)}
               />
             </Col>
           </Row>

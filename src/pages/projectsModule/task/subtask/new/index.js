@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-import * as SERVER_NAMES from "../../APIRoutes";
+import * as SERVER_NAMES from "../../../APIRoutes";
 
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -13,9 +13,8 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
-import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
-import moment from 'moment';
-import { Link } from "react-router-dom";
+
+import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function NewTask() {
   const navigate = useNavigate();
@@ -58,6 +57,7 @@ export default function NewTask() {
             .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
             .then((res) => {
                 setTareas(res.data);
+                setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar las tareas para el proyecto', err);
@@ -77,18 +77,15 @@ export default function NewTask() {
 
         getAssignees();
         getTareas();
-   }, [params.id]);
+        //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == params.idTarea).name);
+   }, [params]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
   };
 
-  const onChangeDateData = (e) => {
-    setProjectData({ ...projectData, [e.target.name]: moment(e.target.value, "DD/MM/YYYY").format() });
-  };
-
   const handleDependencyDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, dependencies: [e] });
+    setProjectData({ ...projectData, parent_task: e });
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
@@ -118,10 +115,9 @@ export default function NewTask() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (findFormErrors(initialTask)) {
-        createTask();
-        setProjectData(initialTask);
+      createTask();
+      setProjectData(initialTask);
     }
-    
   };
 
   return (
@@ -132,7 +128,7 @@ export default function NewTask() {
         <br />
         <Row>
           <Col>
-            <h1>Creacion de nueva tarea</h1>
+            <h1>Creación de nueva subtarea</h1>
           </Col>
         </Row>
       </Container>
@@ -257,7 +253,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_start_date"
                 placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeDateData(e)}
+                onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
           </Row>
@@ -271,7 +267,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_finalization_date"
                 placeholder="Ej: 18/12/2022"
-                onChange={(e) => onChangeDateData(e)}
+                onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
           </Row>
@@ -303,11 +299,7 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
-          <Col xs={11}>
-            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
-              <Button>Cancelar</Button>
-            </Link>
-            </Col>
+            <Col></Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Crear</Button>
             </Col>

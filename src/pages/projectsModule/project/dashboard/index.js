@@ -8,10 +8,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Container from 'react-bootstrap/Container';
 import * as SERVER_NAMES from "../../APIRoutes";
-import Form from "react-bootstrap/Form";
-import Button from 'react-bootstrap/Button';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
+import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 
 export default function Dashboard() {
@@ -21,35 +18,67 @@ export default function Dashboard() {
     const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
     const [proyectos, setProyectos] = useState([]);
     const [assignees, setAssignees] = useState([]);
-    let stateQuery="";
-    let assigneeQuery="";
-    let finishDateQuery="";
-    let typeQuery="";
+    const [clients, setClients] = useState([]);
+
+    const [stateQuery, setStateQuery] = useState('');
+    const [assigneeQuery, setAssigneeQuery] = useState('');
+    //const [finishDateQuery, setFinishDateQuery] = useState("");
+    const [typeQuery, setTypeQuery] = useState('');
+    const [clientQuery, setClientQuery] = useState('');
+    const [url, setUrl] = useState("/psa/projects/?");
 
     const [state, setState] = useState('Seleccionar');
     const [assignee, setAssignee] = useState('Seleccionar');
-    const [finishDate, setFinishDate] = useState('---');
     const [type, setType] = useState('Seleccionar');
+    const [client, setClient] = useState('Seleccionar');
 
     const handleStateFilter = (e) => {
-        setState(e);
-        e==="Todos"?stateQuery="":stateQuery="status="+e+"&";
+        handleStateFilter2(e);
+    };
+    const handleStateFilter2 = (e) => {
+  
+        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+        setState(statusMapping[e]);
+        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+        setState(statusMapping[e]);
         getProyectos();
     };
-    const handleAssigneeFilter = (e) => {
 
-        setAssignee(e);
-        e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+    const handleAssigneeFilter = (e) => {
+        handleAssigneeFilter2(e);
+        handleAssigneeFilter2(e);
+    };
+    const handleAssigneeFilter2 = (e) => {
+        let assignee = assignees.find( element => element.legajo == e );
+        e==="Todos"?setAssignee(e):setAssignee(assignee.Nombre+" "+assignee.Apellido);
+        e==="Todos"?setAssigneeQuery(''):setAssigneeQuery("project_manager="+e+"&");
         getProyectos();
     };
-    const handlePriorityFilter = (e) => {
-        setFinishDate(e);
-        finishDateQuery="finishDate="+e+"&";
+
+
+    const handlerClientFilter = (e) => {
+        handlerClientFilter2(e);
+        handlerClientFilter2(e);
+    };
+
+
+    const handlerClientFilter2 = (e) => {
+        let client = clients.find( element => element.id == e );
+        e==="Todos"?setClient(e):setClient(client["razon social"]);
+        e==="Todos"?setClientQuery(''):setClientQuery("client_id="+e+"&");
         getProyectos();
     };
+
+
     const handleTypeFilter = (e) => {
-        setType(e);
-        e==="Todos"?typeQuery="":typeQuery="type="+e+"&";
+        handleTypeFilter2(e);
+        handleTypeFilter2(e);
+
+    };
+
+    const handleTypeFilter2 = (e) => {
+        setType(typeMapping[e]);
+        e==="Todos"?setTypeQuery(''):setTypeQuery("type="+e+"&");
         getProyectos();
     };
 
@@ -60,39 +89,61 @@ export default function Dashboard() {
                 setAssignees(res.data);
             })
             .catch((err) => {
+                alert('Se produjo un error al consultar los recursos', err);
+            });
+    };
+
+    const getClients = async () => {
+        axios
+        .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+
+            })
+            .then((res) => {
+                setClients(res.data);
+            })
+            .catch((err) => {
                 alert('Se produjo un error al consultar los clientes', err);
             });
-        console.log(assignees);
     };
+
     const getProyectos = async () => {
-        let url = "/psa/projects/?";
-        setProyectos([])
-        url += stateQuery;
-        url += typeQuery;
-        url += finishDateQuery;
-        url += assigneeQuery;
+        console.log(SERVER_NAME +url+stateQuery+typeQuery+assigneeQuery+clientQuery)
         axios
-            .get(SERVER_NAME + url, {})
+            .get(SERVER_NAME + url+stateQuery+typeQuery+assigneeQuery+clientQuery, {})
             .then((res) => {
                 setProyectos(res.data);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar los proyectos', err);
             });
+            
     };
 
 
     useEffect(() => {
+        getAssignees();
+        getClients();
+        getProyectos();
         const interval = setInterval(() => {
             getAssignees();
             getProyectos();
+            getClients();
 
         }, 600000);
         return () => clearInterval(interval);
     }, []);
-
+    var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
+                "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
+    var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
+  
+ //   statusMapping[tareaActual.status]
+    
     return (
         <>
+        <br></br>
+        <br></br>
+        <br></br>
+            <NavbarProyectos/>
             <Header/>
 
             <Container className="container-filters">
@@ -110,7 +161,7 @@ export default function Dashboard() {
                             {states.map((state) => {
                                 return (
                                     <Dropdown.Item eventKey={state.name} name="state">
-                                        {state.name}
+                                        {statusMapping[state.name]}
                                     </Dropdown.Item>
                                 );
                             })}
@@ -143,21 +194,6 @@ export default function Dashboard() {
 
                     <Row className="mt-5">
                     <Col>
-                        <h4>Fecha de Finalizacion</h4>
-                    </Col>
-                    <Col>
-                        <ButtonGroup className="me-5" aria-label="First group"    onClick={handlePriorityFilter}>
-                            <Form.Control
-                                type="text"
-                                placeholder={finishDate}
-                                aria-label={finishDate}
-                                aria-describedby="btnGroupAddon"
-                            />
-                            <Button variant="secondary">Filtrar</Button>{' '}
-
-                        </ButtonGroup>
-                    </Col>
-                    <Col>
                         <h4>Tipo</h4>
                     </Col>
                     <Col>
@@ -169,7 +205,28 @@ export default function Dashboard() {
                             {types.map((type) => {
                                 return (
                                     <Dropdown.Item eventKey={type.name} name="client">
-                                        {type.name}
+                                        {typeMapping[type.name]}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                    </Col>
+                    <Col>
+                        <h4>Cliente</h4>
+                    </Col>
+                    <Col>
+                        <DropdownButton
+                            variant="secondary" id="dropdown-basic" size="xl"
+                            title={client}
+                            onSelect={handlerClientFilter}
+                        >
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
+                            </Dropdown.Item>
+                            {clients.map((client) => {
+                                return (
+                                    <Dropdown.Item eventKey={client.id} name="management">
+                                        {client["razon social"]}
                                     </Dropdown.Item>
                                 );
                             })}
@@ -178,7 +235,7 @@ export default function Dashboard() {
                 </Row>
             </Container>
 
-            <Body projects={proyectos} filtrosStado={states}/>
+            <Body projects={proyectos} />
         </>
     );
 }
