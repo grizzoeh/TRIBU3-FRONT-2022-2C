@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ModalCreacionCargaHorasProyecto from "../../components/modalCreacionCargaHorasProyecto/ModalCreacionCargaHorasProyecto";
+import NavbarRecursos from "../../components/navbarRecursos/NavbarRecursos";
 
 const CargaDeHorasProyecto = () => {
 
@@ -11,6 +12,8 @@ const CargaDeHorasProyecto = () => {
 
     return (
         <Fragment>
+
+            <NavbarRecursos />
 
             <Container className="container-cards">
 

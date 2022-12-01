@@ -56,7 +56,7 @@ const ModalCreacionCategorias = () => {
             <div id='top-categoria'>
                 <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
             </div>
-            <button onClick={handleClick} id = 'click'>Crear</button>
+            <Button id = "click" onClick={handleClick} >Crear</Button>
     </container>
     );
 }; 

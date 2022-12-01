@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ModalModificacionCargaHoras from "../../components/modalModificacionCargaHoras/ModalModificacionCargaHoras";
+import NavbarRecursos from "../../components/navbarRecursos/NavbarRecursos";
 
 const ModificacionCargaDeHoras = () => {
 
@@ -12,7 +13,7 @@ const ModificacionCargaDeHoras = () => {
     return (
         <Fragment>
 
-
+            <NavbarRecursos />            
 
             <Container className="container-title">
 

@@ -43,18 +43,7 @@ const ModalModificacionCargaHoras = () => {
             setCargas(result);
         })
     },[])
-/*
-    function createData(id, fecha, legajo) {
-        return { id, fecha, legajo };
-      }
 
-    const cargasHoras = [
-        createData(1,'26/11/2022',1),
-        createData(2,'26/11/2022',1),
-        createData(3,'27/11/2022',6),
-        createData(4,'28/11/2022',9)
-      ];
-*/
     const handleClick=()=>{
         const cargaHorasNueva={carId, fecha,cantidad_horas, estado, categoria} /* manda array si esta vacio */
         console.log(cargaHorasNueva)
@@ -103,7 +92,7 @@ const ModalModificacionCargaHoras = () => {
                                 <TableCell align="right">Fecha</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
                                 <TableCell align="right">Estado</TableCell>
-                                <TableCell align="right">Categoria</TableCell>
+                                <TableCell align="right">Categoria nombre</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -116,7 +105,7 @@ const ModalModificacionCargaHoras = () => {
                                     <TableCell align="right">{carga.fecha}</TableCell>
                                     <TableCell align="right">{carga.cantidad_horas}</TableCell>
                                     <TableCell align="right">{carga.estado}</TableCell>
-                                    <TableCell align="right">{carga.categoriaId}</TableCell>
+                                    <TableCell align="right">{!carga.tarea_id? carga.categoriaNombre : carga.proyectoNombre}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

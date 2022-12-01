@@ -34,8 +34,8 @@ const ModalModificarCategorias = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    useEffect(()=>{
-        fetch("https://squad920222c-production.up.railway.app/recursos/categorias")
+    useEffect(()=>{ 
+        fetch("https://squad920222c-production.up.railway.app/recursos/categorias") /*no va  */
         .then(res=>res.json())
         .then((result)=>{
             setCategorias(result);
@@ -86,8 +86,8 @@ const ModalModificarCategorias = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="left">Id</TableCell>
-                                <TableCell align="right">Nombre</TableCell>
-                                <TableCell align="right">Descripcion</TableCell>
+                                <TableCell align="left">Nombre</TableCell>
+                                <TableCell align="left">Descripcion</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
