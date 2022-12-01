@@ -11,6 +11,7 @@ import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Select from 'react-select'
 import axios from "axios";
+import moment from 'moment';
 import { useParams } from 'react-router-dom';
 
 import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
@@ -29,19 +30,37 @@ export default function NewTask() {
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
-  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
-  
-  
-   useEffect(() => {
+  const [tareaActual, setTareaActual] = useState([]);
+  const [ticket, setTicket] = useState([]);
+  const [empleadoAsignado, setEmpleadoAsignado] = useState([]);
+  const mapIDResourceToName= (assignees) => {
+    //console.log(clients);
+    //console.log(assignees);
+    
+    return assignees.map((assignee) => {
+      let selectedSponsor = clients.find((client) => client.legajo === assignee.id)
+      return selectedSponsor?`${selectedSponsor.Nombre} ${selectedSponsor.Apellido}`:null
+    })
+  }
+  var statusMapping = {pending:"PENDIENTE",in_progress:"EN PROGRESO",finished:"TERMINADA"};
+  useEffect(() => {
         const getTareas = async () => {
             axios
             .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
             .then((res) => {
                 setTareas(res.data);
                 setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
+                //setDependencyButtonTitle(res.data.dependencies[0]);
+                //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
+                setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees);
+                //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
+                //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
+                setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
+                setTicket(res.data.find((tarea) => tarea.id == params.idTarea).related_ticket);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar las tareas para el proyecto', err);
@@ -50,19 +69,37 @@ export default function NewTask() {
 
         const getAssignees = async () => {
           axios
-              .get(SERVER_NAMES.ASSIGNEES , {})
+              .get(SERVER_NAMES.ASSIGNEES, {})
               .then((res) => {
                   setClients(res.data);
+                  //setEmpleadoAsignado(clients.find((client) => client.legajo === tareaActual.assignees[0].id).Nombre + " " + clients.find((client) => client.legajo === tareaActual.assignees[0].id).Apellido);
+                  //setAssigneeButtonTitle(clients.find((client) => client.legajo === tareaActual.assignees[0].id).Nombre);
+                  //setAssigneeButtonTitle(res.data.find((assignee) => assignee.id == tareaActual.assignees[0].id).name);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes', err);
+                  alert('Se produjo un error al consultar los clientes1', err);
               });
         };
 
-        getAssignees();
+        const getEmpleadoAsignado = async () => {
+            axios
+                .get(SERVER_NAMES.ASSIGNEES + `/${AssigneebuttonTitle}`, {})
+                .then((res) => {
+                    //if (res.data.keys().length>0)
+                        setEmpleadoAsignado(res.data);
+                    //else setEmpleadoAsignado("Seleccionar")
+                })
+                .catch((err) => {
+                    alert('SSe produjo un error al consultar los clientes', err);
+                });
+          };
         getTareas();
+        getAssignees();
+        //if (AssigneebuttonTitle !== "Seleccionar") getEmpleadoAsignado();
+        //else setEmpleadoAsignado(null);
+        //getTareas();
         //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == params.idTarea).name);
-   }, [params]);
+   }, [params,AssigneebuttonTitle]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -110,14 +147,14 @@ export default function NewTask() {
         <br />
         <Row>
           <Col>
-            <h1>Creación de nueva subtarea</h1>
+            <h1>{tareaActual.name}</h1>
           </Col>
         </Row>
       </Container>
 
       <Container>
         <form onSubmit={handleSubmit}>
-          <Row className="mt-5">
+          {/*<Row className="mt-5">
             <Col>
               <h4>Nombre de la tarea</h4>
             </Col>
@@ -128,7 +165,7 @@ export default function NewTask() {
                 onChange={(e) => onChangeProjectData(e)}
               />
             </Col>
-          </Row>
+  </Row>*/}
           {  /*
           <Row className="mt-5">
             
@@ -163,21 +200,16 @@ export default function NewTask() {
             </Col>
           </Row>
           */}
-          <Row className="mt-5">
+
+           <Row className="mt-5">
             <Col>
-              <h4>Esfuerzo estimado en horas</h4>
+              <h4>Tipo:</h4>
             </Col>
-            <Col xs={9}>
-              <Form.Control
-                type="number"
-                min="0"
-                name="estimated_hours_effort"
-                placeholder="Ej: 10"
-                onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
+              <Col xs={9}><h4>{tareaActual.parent_task_id?"Subtarea":"Tarea"}</h4></Col>
+              
           </Row>
-          <Row className="mt-5">
+
+          {tareaActual.parent_task_id && <Row className="mt-5">
             <Col>
               <h4>Tarea padre</h4>
             </Col>
@@ -199,7 +231,49 @@ export default function NewTask() {
                 })}
               </DropdownButton>
             </Col>
+          </Row>}
+
+          {tareaActual.dependencies && <Row className="mt-5">
+            <Col>
+              <h4>Dependencias:</h4>
+            </Col>
+              {tareaActual.dependencies.map((dependency) => <Col xs={9}><Button>{dependency.name}</Button></Col>)}
+              
+          </Row>}
+
+           <Row className="mt-5">
+            <Col>
+              <h4>Esfuerzo estimado en horas</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="number"
+                value={tareaActual.estimated_hours_effort}
+                min="0"
+                name="estimated_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+        />*/}
+              <h4>{tareaActual.estimated_hours_effort}</h4>
+            </Col>
           </Row>
+          <Row className="mt-5">
+            <Col>
+              <h4>Esfuerzo real en horas</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="number"
+                value={tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}
+                //min="0"
+                name="real_hours_effort"
+                placeholder="Ej: 10"
+                onChange={(e) => onChangeProjectData(e)}
+        />*/}
+              <h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}</h4>
+            </Col>
+          </Row>
+          
 
           <Row className="mt-5">
             <Col>
@@ -207,9 +281,10 @@ export default function NewTask() {
             </Col>
             <Col xs={9}>
               {/* TODO: get clients */}
-              <DropdownButton
+              {/*<DropdownButton
                 variant="secondary"
-                title={AssigneebuttonTitle}
+                title={empleadoAsignado?empleadoAsignado.Nombre + " " + empleadoAsignado.Apellido:"Seleccionari"}
+                //title={clients.find((client) => client.legajo === tareaActual.assignees[0].id).Nombre + " " + clients.find((client) => client.legajo === tareaActual.assignees[0].id).Apellido}
                 onSelect={handleAssigneeDropdownButtonChange}
               >
                 <Dropdown.Item eventKey={"Ninguno"} name="management">
@@ -222,22 +297,42 @@ export default function NewTask() {
                     </Dropdown.Item>
                   );
                 })}
-              </DropdownButton>
+              </DropdownButton>*/}
+              {/*<Select isMulti options={clients} getOptionLabel={(client) => client.name}
+                getOptionValue={(client) => client.id} defaultValue={mapIDResourceToName(AssigneebuttonTitle)} />*/}
+                <Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>
             </Col>
           </Row>
-
+          <Row className="mt-5">
+            <Col>
+              <h4>Fecha de creación</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="text"
+                name="creation_date"
+                value={tareaActual.creation_date}
+                placeholder="Ej: 18/12/2022"
+                onChange={(e) => onChangeProjectData(e)}
+              />*/}
+              <h4>{moment(tareaActual.creation_date, "DD-MM-YYYY").format('DD.MM.YYYY')}</h4>
+            </Col>
+          </Row>
           <Row className="mt-5">
             <Col>
               <h4>Fecha estimada de inicio</h4>
             </Col>
-            <Col xs={9}>
+            {/*<Col xs={9}>
               <Form.Control
                 type="text"
                 name="estimated_start_date"
+                value={tareaActual.estimated_start_date}
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
               />
-            </Col>
+              </Col>*/}
+              <Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>
+              
           </Row>
 
           <Row className="mt-5">
@@ -245,29 +340,75 @@ export default function NewTask() {
               <h4>Fecha estimada de fin</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
+              {/*<Form.Control
                 type="text"
                 name="estimated_finalization_date"
+                value={tareaActual.estimated_finalization_date}
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
-              />
+            />*/}
+            <h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
+            </Col>
+          </Row>
+
+          {tareaActual.real_finalization_date && <Row className="mt-5">
+            <Col>
+              <h4>Fecha real de finalización</h4>
+            </Col>
+            <Col xs={9}>
+              {/*<Form.Control
+                type="text"
+                name="estimated_finalization_date"
+                value={tareaActual.real_finalization_date}
+                placeholder="Ej: 18/12/2022"
+                onChange={(e) => onChangeProjectData(e)}
+              />*/}
+              <h4>{tareaActual.real_finalization_date}</h4>
+          </Col>
+          
+          </Row>}
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Prioridad:</h4>
+            </Col>
+            <Col xs={9}>
+              <h4>{tareaActual.priority}</h4>
             </Col>
           </Row>
 
           <Row className="mt-5">
             <Col>
-              <h4>Prioridad</h4>
+              <h4>Estado</h4>
             </Col>
             <Col xs={9}>
-              <Form.Control
-                type="number"
-                min="1"
-                placeholder="Ej: 2"
-                name="priority"
+              {/*<Form.Control
+                type="string"
+                placeholder="Ej: In progress"
+                name="status"
+                value={statusMapping[tareaActual.status]}
                 onChange={(e) => onChangeProjectData(e)}
-              />
-            </Col>
+              />*/}
+              <h4>{statusMapping[tareaActual.status]}</h4>
+          </Col>
+          
           </Row>
+
+          {ticket && <Row className="mt-5">
+            <Col>
+              <h4>Número de ticket relacionado</h4>
+            </Col>
+            {ticket && <Col xs={9}>
+              {/*<Form.Control
+                type="number"
+                placeholder="Ej: In progress"
+                name="status"
+                value={ticket?ticket.id:0}
+                onChange={(e) => onChangeProjectData(e)}
+            />*/}
+            <h4>{ticket.id}</h4>
+            </Col>}
+          </Row>}
 
           <Row className="mt-5">
             <h4>Descripción</h4>
@@ -275,6 +416,7 @@ export default function NewTask() {
           <Row className="mt-3">
             <textarea
               name="description"
+              value={tareaActual.description}
               placeholder="Escribe una descripción..."
               onChange={(e) => onChangeProjectData(e)}
             />
