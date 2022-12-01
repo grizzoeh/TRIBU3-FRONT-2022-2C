@@ -64,7 +64,7 @@ export default function NewTask() {
     axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/${params.idTarea}`)
         .then((data) => {
             if (data.data.ok) {
-                console.log("Proyecto borrado");
+                console.log("Tarea borrado");
             }
         })
         .catch((error) => {
@@ -451,20 +451,14 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
-          <Col xs={1}>
-            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
-              <Button>Atrás</Button>
-            </Link>
-          </Col>
-          <Col></Col>
-            <Col xs={9}>
+          <Col xs={7}>
             <Link to={`/proyectos/${params.id}/ver-tareas/`}>
               <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
             </Link>
             </Col>
-
+          <Col></Col>
             <Col></Col>
-            <Col xs={1}>
+            <Col xs={2}>
             <Link to={`/proyectos/${params.id}/tareas/${tareaActual.id}/crear-subtarea/`}>
               <Button>Crear subtarea</Button>
             </Link>
@@ -474,6 +468,11 @@ export default function NewTask() {
               <Button>Editar</Button>
             </Link>
             </Col>
+            <Col xs={1}>
+            <Link to={`/proyectos/${params.id}/ver-tareas/`}>
+              <Button>Atrás</Button>
+            </Link>
+          </Col>
           </Row>
         </form>
       </Container>

@@ -44,6 +44,18 @@ export default function ViewProject() {
   "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
   var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
 
+  const handleBorrado = async () => {
+    axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${projectId}`)
+        .then((data) => { 
+            if (data.data.ok) {
+                console.log("Proyecto borrado");
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+      }
+
   const getProject = () => {
     axios
       .get(SERVER_NAMES.PROJECTS+"/psa/projects/"+projectId, {})
@@ -246,7 +258,16 @@ export default function ViewProject() {
         </Row>
 
         <Row className="mt-5">
-          <Col></Col>
+          <Col xs={9}>
+            <Link to={`/proyectos`}>
+              <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
+            </Link>
+            </Col>
+            <Col xs={1}>
+            <Link to={`/proyectos/`}>
+              <Button>Atrás</Button>
+            </Link>
+          </Col>
           <Col xs={1}>
             <Link to={`/proyectos/${projectId}/editar-proyecto/`}>
               <Button>Editar</Button>
