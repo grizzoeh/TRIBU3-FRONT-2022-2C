@@ -56,6 +56,15 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Reporte creado");
+                    axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
+                    .then((data) => {
+                        if (data.data.ok) {
+                            console.log("Ticket eliminado");
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });       
                 }
             })
             .catch((error) => {
@@ -67,15 +76,6 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
             type: "enCurso"
         }
 
-        axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Ticket eliminado");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
 
 
         getDataEnCurso();
