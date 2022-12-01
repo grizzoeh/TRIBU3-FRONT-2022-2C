@@ -76,7 +76,18 @@ export default function GannChart() {
         },
       };
     return (
+
+      
         <Fragment>
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+          <h1> Diagrama de Gantt</h1>
+          <div>
+          <a href="javascript: history.go(-1)">Volver atrás</a>
+      </div>
+                
         <NavbarProyectos/>
         <Container key="chart-container">
         <br></br>
