@@ -161,6 +161,7 @@ export default function DashboardTareas() {
                 </Link>                
             </Col>
             </Row>
+            <br></br>
             <Row>
                     {/*<Col >
                         <Dropdown>

@@ -28,6 +28,9 @@ export default function EditProject() {
     project_manager: null,
   };
 
+  var inverseStatusMapping = {pending:"PENDIENTE",analysis:"EN ANALISIS",development:"DESARROLLO", production: "PRODUCCION", post_production: "POST PRODUCTION"};
+  var statusMapping ={Todos:"Todos",PENDIENTE:"pending","ANALISIS":"analysis",
+  DESARROLLO:"development",PRODUCCION:"production","POST PRODUCCION":"post_production"}
   const [updatedProject, setUpdatedProject] = useState(initialUpdatedProject);
   const [projectManagerButtonTitle, setProjectManagerButtonTitle] =
     useState("Seleccionar");
@@ -74,7 +77,13 @@ export default function EditProject() {
       [e.target.name]: e.target.innerHTML,
     });
   };
-
+  
+  const handleStatusChange = (e) => {
+    setUpdatedProject({
+      ...updatedProject,
+      [e.target.name]: statusMapping[e.target.innerHTML],
+    });
+  };
   const navigateProjectDashboard = () => {
     navigate("/proyectos");
   };
@@ -208,40 +217,40 @@ export default function EditProject() {
                   size="xl"
                 >
                   {updatedProject.status
-                    ? updatedProject.status
+                    ? inverseStatusMapping[updatedProject.status]
                     : "Seleccionar"}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
                   <Dropdown.Item
                     name="status"
-                    onClick={(e) => handleDropdownChange(e)}
+                    onClick={(e) => handleStatusChange(e)}
                   >
-                    pending
+                    PENDIENTE
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="status"
-                    onClick={(e) => handleDropdownChange(e)}
+                    onClick={(e) => handleStatusChange(e)}
                   >
-                    analysis
+                    ANALISIS
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="status"
-                    onClick={(e) => handleDropdownChange(e)}
+                    onClick={(e) => handleStatusChange(e)}
                   >
-                    development
+                    DESARROLLO
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="status"
-                    onClick={(e) => handleDropdownChange(e)}
+                    onClick={(e) => handleStatusChange(e)}
                   >
-                    production
+                    PRODUCCION
                   </Dropdown.Item>
                   <Dropdown.Item
                     name="status"
-                    onClick={(e) => handleDropdownChange(e)}
+                    onClick={(e) => handleStatusChange(e)}
                   >
-                    post_production
+                    POST PRODUCCION
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
