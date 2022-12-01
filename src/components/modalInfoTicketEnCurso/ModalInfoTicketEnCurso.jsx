@@ -90,7 +90,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
             idVersion: ticketEditable.idVersion,
         }
 
-        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.notas === null || ticketEditado.notas === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
+        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
             setAlertaDatosNulos(true);
         } else {
 
@@ -104,6 +104,22 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     console.log(error);
                 });
 
+            data.id = ticketEditable.id;
+            data.titulo = ticketEditable.titulo;
+            data.categoria = ticketEditable.categoria;
+            data.criticidad = ticketEditable.criticidad;
+            data.estado = ticketEditable.estado;
+            data.fechaCreacion = ticketEditable.fechaCreacion;
+            data.idCliente = ticketEditable.idCliente;
+            data.descripcion = ticketEditable.descripcion;
+            data.medioContactoCliente = ticketEditable.medioContactoCliente;
+            data.idProducto = ticketEditable.idProducto;
+            data.idAsesor = ticketEditable.idAsesor;
+            data.nombreAsesor = ticketEditable.nombreAsesor;
+            data.areaAsesor = ticketEditable.areaAsesor;
+            data.notas = ticketEditable.notas;
+            data.idVersion = ticketEditable.idVersion;
+
 
             setEditMode(false);
             setAlertaEdicionExito(true);
@@ -115,6 +131,10 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
     }
     const handleCancelarEdicion = () => {
+
+
+        // getDataEnCurso();
+        // getDataEnCurso();
         setEditMode(false);
         setAlertaDatosNulos(false);
     }
@@ -132,6 +152,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const handleDropdownChangeRecurso = (e) => {
 
         setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
+
     }
 
     const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
@@ -266,17 +287,17 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Snackbar open={alertaEdicionExito} autoHideDuration={2000} onClose={handleCloseEdicionExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert show={alertaEdicionExito} variant='success'>
-                        Ticket editado con exito!
-                    </Alert>
-                </Snackbar>
+                    <Snackbar open={alertaEdicionExito} autoHideDuration={2000} onClose={handleCloseEdicionExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaEdicionExito} variant='success'>
+                            Ticket editado con exito!
+                        </Alert>
+                    </Snackbar>
 
-                <Snackbar open={alertaTareaExito} autoHideDuration={2000} onClose={handleCloseAlertaTareaExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
-                    <Alert show={alertaTareaExito} variant='success'>
-                        Tarea creada con exito!
-                    </Alert>
-                </Snackbar>
+                    <Snackbar open={alertaTareaExito} autoHideDuration={2000} onClose={handleCloseAlertaTareaExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaTareaExito} variant='success'>
+                            Tarea creada con exito!
+                        </Alert>
+                    </Snackbar>
 
 
                     {editMode ? (
@@ -599,7 +620,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h5> Título: </h5>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.titulo}
+                                            {data.titulo}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -607,7 +628,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Categoría: </h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.categoria}
+                                            {data.categoria}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -615,7 +636,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Criticidad:   </h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.criticidad}
+                                            {data.criticidad}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -624,7 +645,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Estado: </h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.estado}
+                                            {data.estado}
                                         </Col>
 
                                     </Row>
@@ -635,7 +656,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Fecha de creación:</h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.fechaCreacion.slice(0, 10)}
+                                            {data.fechaCreacion.slice(0, 10)}
                                         </Col>
 
                                     </Row>
@@ -647,7 +668,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                     <Row className="mt-1">
                                         <Col xs={10}>
                                             <p className="linea-box">
-                                                {ticketEditable.descripcion}
+                                                {data.descripcion}
                                             </p>
                                         </Col>
                                     </Row>
@@ -659,7 +680,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                     <Row className="mt-1">
                                         <Col xs={10}>
                                             <p className="linea-box">
-                                                {ticketEditable.notas}
+                                                {data.notas}
                                             </p>
                                         </Col>
                                     </Row>
@@ -680,7 +701,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         <Col>
 
                                             {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                clientes.filter(cliente => cliente.id === data.idCliente)[0]['razon social']
 
                                                 : null}
 
@@ -693,7 +714,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Medio de Contacto: </h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.medioContactoCliente}
+                                            {data.medioContactoCliente}
                                         </Col>
 
                                     </Row>
@@ -705,7 +726,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         </Col>
                                         <Col>
                                             {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+                                                clientes.filter(cliente => cliente.id === data.idCliente)[0]['CUIT']
 
                                                 : null}
 
@@ -724,8 +745,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
-                                            {productos && ticketEditable.idProducto ?
-                                                productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                            {productos && data.idProducto ?
+                                                productos.filter(producto => producto.id === data.idProducto)[0]['nombre']
                                                 : null}
                                         </Col>
                                     </Row>
@@ -736,8 +757,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Versión:   </h6>
                                         </Col>
                                         <Col>
-                                            {versiones && ticketEditable.idVersion ?
-                                                versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                            {versiones && data.idVersion ?
+                                                versiones.filter(version => version.id === data.idVersion)[0]['nombre']
                                                 : null}
                                         </Col>
 
@@ -752,7 +773,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre:</h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.nombreAsesor}
+                                            {data.nombreAsesor}
                                         </Col>
                                     </Row>
 
@@ -786,7 +807,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                             <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
                             <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>
                             <Col xs={-1}>
-                                <Button onClick={() => setEditMode(true)}>Editar</Button>
+                                <Button onClick={() => { setTicketEditable(data); setEditMode(true) }}>Editar</Button>
                             </Col>
                             <Col xs={1}>
                                 <Button variant="secondary" onClick={handleClose}>
