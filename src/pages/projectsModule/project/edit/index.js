@@ -23,9 +23,8 @@ export default function EditProject() {
     description: null,
     status: null,
     client: null,
-    sponsor: null,
-    resources: null,
-    stakeholders: null,
+    resources: [],
+    stakeholders: [],
     project_manager: null,
   };
 
@@ -67,8 +66,7 @@ export default function EditProject() {
   };
 
   const editProject = async () => {
-    axios
-      .patch(`${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`, {updatedProject})
+    axios.patch(`${SERVER_NAMES.PROJECTS}/psa/projects/${projectId}`, updatedProject)
       .then((data) => {
         if (data.status === 200) {
           navigateProjectDashboard();
@@ -105,10 +103,9 @@ export default function EditProject() {
           description: res.data.description,
           status: res.data.status,
           client: res.data.client_id,
-          sponsor: res.data.sponsor,
-          resources: res.data.resources,
-          stakeholders: res.data.stake_holders,
-          project_manager: res.data.project_manager,
+          resources: res.data.resources.map((resource) => resource.id),
+          stakeholders: res.data.stake_holders.map((stake_holder) => stake_holder.id),
+          project_manager: res.data.project_manager.id,
         });
 
         if (projectManagers.length !== 0) {
