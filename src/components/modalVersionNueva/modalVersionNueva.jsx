@@ -43,10 +43,22 @@ function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, ref
     }
 
     const handleDropdownChange = (e) => {
-        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML });
+        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML}); 
     }
 
     const crearVersion = async () => {
+        const newVersion = {
+            id: VersionData.id,
+            nombre: VersionData.nombre,
+            idProducto: VersionData.idProducto,
+            estado: VersionData.estado,
+            fechaRelease: VersionData.fechaRelease,
+            fechaDeprecacion: VersionData.fechaDeprecacion
+        }
+        if (newVersion.estado === "Deprecada" && newVersion.fechaDeprecacion === null) {
+            handleShowVersionError();
+            return;
+        }
         axios.post(SERVER_NAME_SOPORTE + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
@@ -98,6 +110,14 @@ function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, ref
                             </Dropdown>
                         </Col>
                     </Row>
+                    {VersionData.estado === "Deprecada" ? (
+                        <Row className="campo">
+                            <Col className="v-center"><h6>Fecha deprecacion:</h6></Col>
+                            <Col><Form.Control name="fechaDeprecacion" type="date" placeholder="Fecha de deprecacion" onChange={(e) => onChangeVersionEditable(e)} /></Col>
+                        </Row>
+                    ):(
+                        <></>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
