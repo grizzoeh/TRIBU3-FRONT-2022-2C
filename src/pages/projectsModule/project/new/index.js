@@ -24,6 +24,14 @@ export default function NewProject() {
     navigate('/proyectos');
   };
 
+  const findFormErrors = (proyecto) => {
+    if ( !proyecto.name || proyecto.name === '' ) {
+      alert("El proyecto debe tener un nombre");
+      navigateProjectDashboard();
+      return null;}
+    else return 1; 
+  }
+
   const initialProject = {
     name: null,
     type: null,
@@ -133,8 +141,10 @@ export default function NewProject() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject();
-    setProjectData(initialProject);
+    if (findFormErrors(initialProject)) {
+        createProject();
+        setProjectData(initialProject);
+    }
   };
 
   return (
