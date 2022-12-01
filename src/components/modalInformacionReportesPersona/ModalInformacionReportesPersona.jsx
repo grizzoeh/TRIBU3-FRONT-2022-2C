@@ -48,13 +48,14 @@ const ModalInformacionReportesPersona = () => {
             setProyectos(result)
     })}
 
-    const getProjectSum=(projectId) => { /*cambiar url ponerle fechas tambien */
-        const url = 'https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/' + legajo + '/' + projectId + '/tiempoEstimadoLegajo?fecha_inferior=1-1-1000&fecha_superior=1-1-3000'
-        fetch(url)
-        .then((res) => res.json())
-        .then((result) => {
-            setTempval(result)
-        })
+    const sumaHorasTareas = (proyId) =>{
+        let x=0
+        for(let i=0; i<proyectos.length; i++){
+            if(proyectos[i].proyectoId == proyId){
+                x+=proyectos[i].cantidad_horas
+            }
+        }
+        return x
     }
     
     return (
@@ -71,18 +72,13 @@ const ModalInformacionReportesPersona = () => {
                                     <TableCell align="center">ID:</TableCell>
                                     <TableCell align="center">Suma de horas</TableCell>
                                 </TableRow>
-                               {show && proyectos.map((proyecto, i)=>(
-                                    
+                               {show && proyectos.map((proyecto)=>(
                                     alreadyThere.includes(proyecto.proyectoId)? null : (
                                         alreadyThere.push(proyecto.proyectoId),
-                                        console.log(valor),
-                                        getProjectSum(proyecto.proyectoId),
-                                        valor.push(tempval),
-                                        console.log(valor),
                                         <TableRow>
                                             <TableCell align="center">{proyecto.proyectoNombre}</TableCell>
                                             <TableCell align="center">{proyecto.proyectoId}</TableCell>
-                                            <TableCell align="center" >{valor[i]}</TableCell>
+                                            <TableCell align="center" >{sumaHorasTareas(proyecto.proyectoId)}</TableCell>
                                         </TableRow>)
                                     )
                                 )
