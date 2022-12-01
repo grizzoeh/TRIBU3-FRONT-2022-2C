@@ -162,7 +162,61 @@ export default function ViewProject() {
         </Row>
         <Row className="mt-5">
           <Col>
-            <h4>Fecha de inicio</h4>
+            <h4>Estado</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Project Manager</h4>
+          </Col>
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Sponsor</h4>
+          </Col>
+
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Cliente</h4>
+          </Col>
+
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Recursos</h4>
+          </Col>
+
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+          
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Stakerholders</h4>
+          </Col>
+
+          <Col xs={9}>
+            <h4>{project.status}</h4>
+          </Col>
+          
+        </Row>
+        <Row className="mt-5">
+          <Col>
+            <h4>Fecha estimada de inicio</h4>
           </Col>
           <Col xs={9}>
             <h4>
