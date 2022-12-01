@@ -45,6 +45,8 @@ const ModalInformacionReportes = () => {
     const [sumaTiempoEstimado, setSumaTiempoEstimado] = useState(0);
     const [prueba,setPrueba] = useState([]);
 
+    const [sumaHorasProyecto, setSumaHorasProyecto] = useState(0);
+
     const handleClick =() => {
           
         const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
@@ -63,6 +65,17 @@ const ModalInformacionReportes = () => {
         .then((data) => {
             setListaTareas(data);
         });
+    }
+
+    function obtenerSumaHorasEstimadas(){
+          
+        var sumaTotalEstimativos = 0;
+
+        listaTareas.map((tarea)=>{
+            sumaTotalEstimativos += tarea.estimated_hours_effort;
+        })
+
+        return sumaTotalEstimativos;
     }
 
     function calcularSumaHoras(idTarea){
@@ -84,6 +97,21 @@ const ModalInformacionReportes = () => {
         return suma;
     }
 
+    const obtenerSumaHorasProyecto =() => {
+
+        const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId + '/tiempoTotal';
+        fetch(url)
+        .then(res=>res.json())
+        .then((result)=>{
+            setSumaHorasProyecto(result)
+            console.log(result)
+            console.log(sumaHorasProyecto)
+        })
+
+        console.log('--------------------')
+        console.log(sumaHorasProyecto)
+    }
+
     function calcularDesvio(sumaHoras, tiempoEstimado){
         let resultado = 0;
         
@@ -102,10 +130,6 @@ const ModalInformacionReportes = () => {
 
         return resultado;
     }
-
-        
-    const fecha_inferior = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
-    const fecha_superior = finishDate.getDate() + '-' + finishDate.getMonth() + '-' + finishDate.getFullYear(); /*3 setdia/mes/anio en un handleClick en datepicker */
     
 
     return (
@@ -113,12 +137,7 @@ const ModalInformacionReportes = () => {
             <div id = 'proyectoId'>
                 <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} value={proyectoId} onChange={(e)=>{setProyectoId(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
-                {show && <Modal.Footer>
-                    <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
-                    <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} />
-                    <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>
-                    <Button className="h-end" variant="primary">Confirmar</Button> {/*calcular fechas */}
-                </Modal.Footer>}
+                
                 <div id = 'Tabla'>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -132,8 +151,8 @@ const ModalInformacionReportes = () => {
                                 <TableRow id="datos">
                                     <TableCell align="center">{proyectoId}</TableCell>
                                     <TableCell align="center">{proyectoName}</TableCell>
-                                    <TableCell align="center">{sumaHorasTotales}</TableCell>
-                                    <TableCell align="center">{sumaDesvios}</TableCell>
+                                    <TableCell align="center">{obtenerSumaHorasProyecto()}</TableCell>
+                                    <TableCell align="center">{obtenerSumaHorasEstimadas()}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="center">Nombre de la tarea</TableCell>

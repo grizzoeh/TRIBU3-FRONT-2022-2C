@@ -32,7 +32,8 @@ const NavbarRecursos = () => {
                 </NavDropdown>
                 <NavDropdown title="Consultar" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/consultar-por-legajo">Cargas por legajo</NavDropdown.Item>
-                    <NavDropdown.Item href="/consultar-reportes-por-proyecto">Reportes</NavDropdown.Item>                            
+                    <NavDropdown.Item href="/consultar-reportes-por-proyecto">Reportes por proyecto</NavDropdown.Item>
+                    <NavDropdown.Item href="/consultar-reportes-por-persona">Reportes por persona</NavDropdown.Item>                            
                 </NavDropdown>
                 <NavDropdown title="Categoria" id="collasible-nav-dropdown">
                     <NavDropdown.Item href="/crear-categoria">Crear</NavDropdown.Item>
