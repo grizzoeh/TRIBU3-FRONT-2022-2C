@@ -167,19 +167,16 @@ const TicketsEnCurso = () => {
             </Snackbar>
             <Container className="container-title">
                 <Row>
-                    <Col sm={3}>
-                        <h3>Tickets en Curso</h3>
+                    <Col md="auto">
+                        <h1>Tickets en Curso</h1>
                     </Col>
-                    < Col sm={1}>
+                    < Col md="auto" className="v-center">
                         <Button size="sm" variant="primary" className="botoncrearticket" onClick={() => setShowCreacionModal(true)}> ✚ Nuevo Ticket</Button>
                     </Col>
                 </Row>
                 <Container className="spacer-line">
                     <SpacerLine className="spacer-line" color="black"></SpacerLine>
                 </Container>
-
-
-
 
                 {
                     showCreacionModal ? (
@@ -323,7 +320,7 @@ const TicketsEnCurso = () => {
 
                 {showEnTicketsEnCurso === "En Curso" ? (
 
-                    <Row className="row-cards mt-4" md={3} >
+                    <Row className="row-cards mt-4" md="auto" >
                         {ticketsEnCursoData.length > 0 && clientes ?
 
                             ticketsEnCursoData.filter(
@@ -417,7 +414,7 @@ const TicketsEnCurso = () => {
 
                     </Row>
                 ) : (
-                    <Row className="row-cards mt-4" md={3}>
+                    <Row className="row-cards mt-4" md="auto" >
                         {ticketsCerradosData.length > 0 ?
                             ticketsCerradosData.filter(
                                 (ticket) => {
@@ -426,7 +423,8 @@ const TicketsEnCurso = () => {
                                         (filters["categoria"] === "Todas" || ticket.categoria === filters["categoria"]) &&
                                         (filters["criticidad"] === "Todas" || ticket.criticidad === filters["criticidad"]) &&
                                         (filters["estado"] === "Todos" || ticket.estado === filters["estado"]) &&
-                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"])
+                                        (filters["cliente"] === "Todos" || clientes[ticket.idCliente - 1]["razon social"] === filters["cliente"]) &&
+                                        (filters["asesor"] === "Todos" || recursos.find(recurso => recurso.legajo === ticket.idAsesorResolutor).Nombre + " " + recursos.find(recurso => recurso.legajo === ticket.idAsesorResolutor).Apellido === filters["asesor"])
                                     );
                                 }
 
@@ -465,6 +463,17 @@ const TicketsEnCurso = () => {
                                                     </Col>
                                                     <Col>
                                                         {ticketCerrado.criticidad}
+                                                    </Col>
+
+                                                </Row>
+
+                                                <Row>
+                                                    <Col xs={5}>
+                                                        <h6>Asesor: </h6>
+                                                    </Col>
+                                                    <Col>
+                                                        {recursos?.find(recurso => recurso.legajo === ticketCerrado.idAsesorResolutor)["Nombre"] + " " + recursos?.find(recurso => recurso.legajo === ticketCerrado.idAsesorResolutor)["Apellido"]}
+
                                                     </Col>
 
                                                 </Row>
