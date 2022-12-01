@@ -39,7 +39,7 @@ export default function Dashboard() {
 
     const handleAssigneeFilter = (e) => {
         let assignee = assignees.find( element => element.legajo == e );
-        e==="Todos"?setAssignee(e):setAssignee(assignee.Apellido+" "+assignee.Nombre);
+        e==="Todos"?setAssignee(e):setAssignee(assignee.Nombre+" "+assignee.Apellido);
         e==="Todos"?assigneeQuery="":assigneeQuery="project_manager="+e+"&";
         getProyectos();
     };
