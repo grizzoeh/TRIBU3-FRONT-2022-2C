@@ -29,6 +29,7 @@ export default function NewProject() {
     description: null,
     projectManager: null,
     sponsor: null,
+    client: null,
     resources: [],
     stakeholders: [],
     estimated_start_date: null,
@@ -37,6 +38,7 @@ export default function NewProject() {
 
   const [sponsorButtonTitle, setSponsorButtonTitle] = useState('Seleccionar');
   const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState('Seleccionar');
+  const [clientButtonTitle, setClientButtonTitle] = useState('Seleccionar');
 
   const [projectData, setProjectData] = useState(initialProject);
 
@@ -44,6 +46,7 @@ export default function NewProject() {
   const [sponsors, setSponsors] = useState([]);
   const [resources, setResources] = useState([]);
   const [stakeholders, setStakeholders] = useState([]);
+  const [clients, setClients] = useState([]);
   
   const handleDropdownSponsorsButtonChange = (e) => {
     setProjectData({ ...projectData, sponsor: e });
@@ -57,6 +60,12 @@ export default function NewProject() {
     setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
   };
 
+  const handleDropdownClientButtonChange = (e) => {
+    setProjectData({ ...projectData, client: e });
+    let selectedClient = clients.find((client) => client.id == e);
+    setClientButtonTitle(selectedClient["razon social"]);
+  };
+
   const getResources = async () => {
     axios
       .get(SERVER_NAMES.ASSIGNEES, {})
@@ -68,6 +77,18 @@ export default function NewProject() {
       })
       .catch((err) => {
         alert('Se produjo un error al consultar los recursos', err);
+      });
+  };
+
+  const getClients = async () => {
+    axios
+      .get("/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes", {})
+      .then((res) => {
+        debugger
+        setClients(res.data);
+      })
+      .catch((err) => {
+        alert('Se produjo un error al consultar los clientes', err);
       });
   };
 
@@ -86,6 +107,7 @@ export default function NewProject() {
 
   useEffect(() => {
     getResources();
+    getClients();
   }, []);
 
   const onChangeProjectData = (e) => {
@@ -114,6 +136,8 @@ export default function NewProject() {
     <Fragment>
       <NavbarProyectos/>
       <Container className="container-title">
+        <br />
+        <br />
         <br />
         <Row>
           <Col>
@@ -204,6 +228,27 @@ export default function NewProject() {
                   return (
                     <Dropdown.Item eventKey={sponsor.legajo} name="sponsor">
                       {`${sponsor.Nombre} ${sponsor.Apellido}`}
+                    </Dropdown.Item>
+                  );
+                })}
+              </DropdownButton>
+            </Col>
+          </Row>
+
+          <Row className="mt-5">
+            <Col>
+              <h4>Cliente</h4>
+            </Col>
+            <Col xs={9}>
+              <DropdownButton
+                variant="secondary"
+                title={clientButtonTitle}
+                onSelect={handleDropdownClientButtonChange}
+              >
+                {clients.map((client) => {
+                  return (
+                    <Dropdown.Item eventKey={client.id} name="client">
+                      {client["razon social"]}
                     </Dropdown.Item>
                   );
                 })}
