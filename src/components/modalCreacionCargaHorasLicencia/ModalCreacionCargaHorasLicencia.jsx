@@ -26,7 +26,7 @@ const DIA = 24;
 const ModalCreacionCargaDeHorasLicencia = () => {
     const [value, onChange] = useState(new Date());
     const [categorias, setCategorias] = useState([])
-    const [CategoriaText, setCategoriaText] = useState('Seleccionar')
+    const [categoriaNombre, setcategoriaNombre] = useState('Seleccionar')
     const [categoria,setCategoria] = useState([])
     const [nombre, setNombre] = useState([])
     const [estado, setEstado] = useState([])
@@ -50,7 +50,7 @@ const ModalCreacionCargaDeHorasLicencia = () => {
     const handleClick =() => {
         const estado = 'Emitido';
         const fecha = startDate.getDate() + '-' + startDate.getMonth() + '-' + startDate.getFullYear();
-        const carga={cantidad_horas, categoria, estado, fecha, legajo}
+        const carga={cantidad_horas, categoria, categoriaNombre,estado, fecha, legajo}
         
         fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/`, {
             method:"POST",
@@ -61,7 +61,7 @@ const ModalCreacionCargaDeHorasLicencia = () => {
         })
     }
 
-    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" onClick={() => {setCategoria(categoria.idCategoria);setCategoriaText(categoria.nombre)}}>{categoria.nombre}</NavDropdown.Item>)
+    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" onClick={() => {setCategoria(categoria.idCategoria);setcategoriaNombre(categoria.nombre)}}>{categoria.nombre}</NavDropdown.Item>)
 
     function incrementCount() {
         if(cantidad_horas+1 <= MAXHORAS && cantidad_horas != DIA){
@@ -96,7 +96,7 @@ const ModalCreacionCargaDeHorasLicencia = () => {
         <container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo1">Seleccionar Actividad</h2> 
-                <NavDropdown title={CategoriaText} id="navBarCatego">
+                <NavDropdown title={categoriaNombre} id="navBarCatego">
                     {listCategorias}
                 </NavDropdown>
             </div>
