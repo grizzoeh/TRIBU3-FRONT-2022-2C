@@ -27,7 +27,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 
-
+var value = []
 
 const ModalInformacionReportesPersona = () => {
     const [legajo, setLegajo] = useState();
@@ -38,7 +38,7 @@ const ModalInformacionReportesPersona = () => {
     const handleShow = () => setShow(true);
     const [proyectos, setProyectos] = useState([]);
     const [fullSum, setFullSum] = useState();
-
+    const [alreadyThere, setAlreadyThere] = useState([])
     const handleClick =() => {
         const url = `https://squad920222c-production.up.railway.app/recursos/cargas/legajo/` + legajo;
         fetch(url)
@@ -48,14 +48,15 @@ const ModalInformacionReportesPersona = () => {
     })}
 
     function getProjectSum(projectId){ /*cambiar url ponerle fechas tambien */
-        const url = 'https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/' + projectId +'/tiempoTotal'
+        const url = 'https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/' + legajo + '/' + projectId + '/tiempoEstimadoLegajo?fecha_inferior=1-1-1000&fecha_superior=1-1-3000'
         fetch(url)
         .then((res) => res.json())
         .then((result) => {
             
-            setFullSum(result);
+            value.push(result)
         })
     }
+
     return (
         <container>
             <div id = 'proyectoId'>
@@ -70,14 +71,18 @@ const ModalInformacionReportesPersona = () => {
                                     <TableCell align="center">ID:</TableCell>
                                     <TableCell align="center">Suma de horas</TableCell>
                                 </TableRow>
-                               {show && proyectos.map((proyecto)=>(
+                               {show && proyectos.map((proyecto, i)=>(
+                                    console.log(value[0]),
+                                    getProjectSum(proyecto.proyectoId),
+                                    alreadyThere.includes(proyecto.proyectoId)? null : (alreadyThere.push(proyecto.proyectoId),
                                     <TableRow>
                                         <TableCell align="center">{proyecto.proyectoNombre}</TableCell>
                                         <TableCell align="center">{proyecto.proyectoId}</TableCell>
-                                        {getProjectSum(proyecto.proyectoId)}
-                                        <TableCell align="center" >{fullSum}</TableCell>
+                                        {console.log(value[i])}
+                                        <TableCell align="center" >{value[0]}</TableCell>
                                     </TableRow>
-                                ))}
+                                    
+                               )))}
                             </TableHead>
                         </Table>
                     </TableContainer>
