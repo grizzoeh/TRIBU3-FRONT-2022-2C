@@ -30,7 +30,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const ModalInformacionReportes = () => {
-    const [proyectoId,setProyectoId] = useState([]);
+    const [proyectoId,setProyectoId] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
     const [show, setShow] = useState(false);
@@ -49,11 +49,11 @@ const ModalInformacionReportes = () => {
 
     const handleClick =() => {
           
-        const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
-        fetch(url)
+        const urlProyecto = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId;
+        fetch(urlProyecto)
         .then(res=>res.json())
         .then((result)=>{
-            setProyectoNombre(result[0].proyectoNombre)
+            setProyectoNombre(result.name)
     })    
     }
 
@@ -72,7 +72,9 @@ const ModalInformacionReportes = () => {
         var sumaTotalEstimativos = 0;
 
         listaTareas.map((tarea)=>{
-            sumaTotalEstimativos += tarea.estimated_hours_effort;
+            if(tarea.estimated_hours_effort != null){
+                sumaTotalEstimativos += tarea.estimated_hours_effort;
+            }
         })
 
         return sumaTotalEstimativos;
@@ -89,56 +91,54 @@ const ModalInformacionReportes = () => {
         });
 
         cargas.map((carga) =>{
+            if(carga.cantidad_horas != null)
             suma = suma+carga.cantidad_horas
-          
+        
         })
         
         
         return suma;
     }
 
-    const obtenerSumaHorasProyecto =() => {
+    function obtenerSumaHorasProyecto(){
 
+        console.log(proyectoId.type)
+        console.log(proyectoId)
         const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId + '/tiempoTotal';
         fetch(url)
         .then(res=>res.json())
         .then((result)=>{
-            setSumaHorasProyecto(result)
             console.log(result)
-            console.log(sumaHorasProyecto)
+            setSumaHorasProyecto(result)
         })
 
-        console.log('--------------------')
-        console.log(sumaHorasProyecto)
+        return sumaHorasProyecto;
     }
 
     function calcularDesvio(sumaHoras, tiempoEstimado){
         let resultado = 0;
         
-        if (!tiempoEstimado){
-            resultado = sumaHoras;
-            
-        }else{
-            resultado = sumaHoras - tiempoEstimado;
+        if (tiempoEstimado == null){
+            return sumaHoras;
         }
-        return resultado;
+        return (sumaHoras - tiempoEstimado)
     }
 
     function horasEstimadas(horasEstimadas){
-        let resultado = 0;
-        resultado = horasEstimadas? horasEstimadas : 0
-
-        return resultado;
+        if (horasEstimadas == null){
+            return 0
+        }
+        return horasEstimadas;
     }
     
 
     return (
         <container>
             <div id = 'proyectoId'>
-                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} value={proyectoId} onChange={(e)=>{setProyectoId(e.target.value)}}/>
+                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{setProyectoId(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
                 
-                <div id = 'Tabla'>
+                <React.Fragment id = 'Tabla'>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -146,6 +146,7 @@ const ModalInformacionReportes = () => {
                                     <TableCell align="center">ID del proyecto</TableCell>
                                     <TableCell align="center">Nombre del proyecto</TableCell>
                                     <TableCell align="center">Suma de horas del proyecto</TableCell>
+                                    <TableCell align="center">Horas de esfuerzo estimadas</TableCell>
                                     <TableCell align="center">Desvio Total</TableCell>
                                 </TableRow>
                                 <TableRow id="datos">
@@ -153,6 +154,7 @@ const ModalInformacionReportes = () => {
                                     <TableCell align="center">{proyectoName}</TableCell>
                                     <TableCell align="center">{obtenerSumaHorasProyecto()}</TableCell>
                                     <TableCell align="center">{obtenerSumaHorasEstimadas()}</TableCell>
+                                    <TableCell align="center">{obtenerSumaHorasProyecto() - obtenerSumaHorasEstimadas()}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="center">Nombre de la tarea</TableCell>
@@ -175,7 +177,7 @@ const ModalInformacionReportes = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </div>
+                </React.Fragment>
             </div>
         </container>
     );
