@@ -142,19 +142,19 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
 
     const getClientes = async () => {
-        axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+        // axios
+        //     .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
 
-            })
-            .then((response) => {
-                // console.log(response);
-                setClientes(response.data);
-            }
-            )
-            .catch((error) => {
-                console.log(error);
-            });
-        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        //     })
+        //     .then((response) => {
+        //         // console.log(response);
+        //         setClientes(response.data);
+        //     }
+        //     )
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
     }
 
     const getProductos = async () => {
