@@ -23,7 +23,7 @@ const TicketsEnCurso = () => {
 
 
 
-    const [clientes, setClientes] = useState();
+    const [clientes, setClientes] = useState([]);
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
     const handleCloseCreadoExito = () => setTicketCreadoExito(false);
