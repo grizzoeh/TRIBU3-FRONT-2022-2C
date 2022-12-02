@@ -35,26 +35,40 @@ export default function DashboardTareas() {
   let priorityQuery="";
   const [assignees, setAssignees] = useState([]);
   const [assignee, setAssignee] = useState('Seleccionar');
-  const [priority, setPriority] = useState('---');
+  //const [assignee, setAssignee] = useState([]);
+  const [assigneeID, setAssigneeID] = useState([]);
+  const [priority, setPriority] = useState([]);
+  //const [priority, setPriority] = useState('---');
 
   const handleAssigneeFilter = (e) => {
     e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+    //setAssignee(e);
+    
     e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
-    getTarea();
+    setAssigneeID(e);
+    //getTarea();
   };
 
-  const handlePriorityFilter = (e) => {
-    setPriority(e.target.value);
-    e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
+  useEffect(() => {
     getTarea();
+  }, [assigneeID])
+
+  const handlePriorityFilter = (e) => {
+    //setPriority(e.target.value);
+    e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
+    setPriority(e.target.value);
+    //getTarea();
+    
   };
+  useEffect(() => {
+    getTarea();
+  }, [priority])
+
 
   const handleDropdownFilter = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
 
     console.log("filters", filters);
-
-
 };
 
   const getAssignees = async () => {
@@ -95,6 +109,8 @@ export default function DashboardTareas() {
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
+    assigneeID==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+assigneeID+"&";
+    priority==0?priorityQuery="":priorityQuery="priority="+priority+"&";
     url += priorityQuery;
     url += assigneeQuery;
     axios
