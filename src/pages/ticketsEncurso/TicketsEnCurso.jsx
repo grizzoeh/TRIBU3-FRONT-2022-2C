@@ -280,11 +280,15 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
-                                {clientes?.map((cliente) => {
-                                    return (
-                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
-                                    )
-                                })}
+                                {clientes.lenght > 0 ?
+                                    clientes.map((cliente) => {
+                                        return (
+                                            <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                        )
+                                    })
+                                    :
+                                    <></>
+                                }
 
                             </Dropdown.Menu>
                         </Dropdown>
