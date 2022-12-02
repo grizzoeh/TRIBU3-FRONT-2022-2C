@@ -106,23 +106,20 @@ const TicketsEnCurso = () => {
     }
 
     const getClientes = async () => {
-        axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+        // axios
+        //     .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
 
-            })
-            .then((response) => {
-                const arr = [];
-
-                Object.keys(response.data).forEach(key => arr.push(response.data[key]));
-                setClientes(arr);
-                // console.log((response.data));
-                // console.log(typeof (response.data));
-            }
-            )
-            .catch((error) => {
-                console.log(error);
-            });
-        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+        //     })
+        //     .then((response) => {
+        //         setClientes(response.data);
+        //         console.log((response.data));
+        //         console.log(typeof (response.data));
+        //     }
+        //     )
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
     }
 
     const getRecursos = async () => {
