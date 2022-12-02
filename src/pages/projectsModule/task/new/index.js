@@ -117,8 +117,10 @@ export default function NewTask() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (findFormErrors(projectData)) {
       createTask();
       setProjectData(initialTask);
+    }
     
   };
 
