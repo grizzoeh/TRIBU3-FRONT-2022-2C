@@ -112,11 +112,7 @@ const TicketsEnCurso = () => {
             })
             .then((response) => {
                 setClientes(response.data.data);
-                //const map = response.data;
-                //const result = Object.keys(map).map((key) => map[key]);
-                //console.log(result);
-                console.log((response.data.data));
-                // console.log(typeof (response.data));
+
             }
             )
             .catch((error) => {
@@ -133,7 +129,6 @@ const TicketsEnCurso = () => {
             .then((response) => {
                 // console.log(response);
                 setRecursos(response.data);
-                console.log("xd", typeof (response.data));
             }
             )
             .catch((error) => {
