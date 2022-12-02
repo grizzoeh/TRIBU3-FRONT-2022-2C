@@ -23,7 +23,7 @@ const TicketsEnCurso = () => {
 
 
 
-    const [clientes, setClientes] = useState();
+    const [clientes, setClientes] = useState([]);
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
     const handleCloseCreadoExito = () => setTicketCreadoExito(false);
@@ -106,20 +106,23 @@ const TicketsEnCurso = () => {
     }
 
     const getClientes = async () => {
-        // axios
-        //     .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+        axios
+            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
 
-        //     })
-        //     .then((response) => {
-        //         setClientes(response.data);
-        //         console.log((response.data));
-        //         console.log(typeof (response.data));
-        //     }
-        //     )
-        //     .catch((error) => {
-        //         console.log(error);
-        //     });
-        setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
+            })
+            .then((response) => {
+                setClientes(response.data);
+                //const map = response.data;
+                //const result = Object.keys(map).map((key) => map[key]);
+                //console.log(result);
+                // console.log((response.data));
+                // console.log(typeof (response.data));
+            }
+            )
+            .catch((error) => {
+                console.log(error);
+            });
+        //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
     }
 
     const getRecursos = async () => {
@@ -282,11 +285,12 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
-                                {clientes?.map((cliente) => {
-                                    return (
-                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
-                                    )
-                                })}
+                                {clientes.length > 0 ?
+                                    clientes.map((cliente) => {
+                                        return (
+                                            <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                        )
+                                    }) : <></>}
 
                             </Dropdown.Menu>
                         </Dropdown>
@@ -363,7 +367,9 @@ const TicketsEnCurso = () => {
                                                         <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {clientes?.find(cliente => cliente.id === ticketEnCurso.idCliente)["razon social"]}
+                                                        {clientes.length > 0 ?
+                                                            clientes.find(cliente => cliente.id === ticketEnCurso.idCliente)["razon social"]
+                                                            : <></>}
                                                     </Col>
 
                                                 </Row>
