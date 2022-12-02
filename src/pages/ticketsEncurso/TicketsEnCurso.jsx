@@ -111,11 +111,11 @@ const TicketsEnCurso = () => {
 
             })
             .then((response) => {
-                setClientes(response.data);
+                setClientes(response.data.data);
                 //const map = response.data;
                 //const result = Object.keys(map).map((key) => map[key]);
                 //console.log(result);
-                console.log((response.data));
+                console.log((response.data.data));
                 // console.log(typeof (response.data));
             }
             )

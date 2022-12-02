@@ -148,7 +148,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
             })
             .then((response) => {
                 // console.log(response);
-                setClientes(response.data);
+                setClientes(response.data.data);
             }
             )
             .catch((error) => {

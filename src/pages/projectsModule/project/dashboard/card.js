@@ -26,7 +26,7 @@ export default function CardCustom({ project }) {
             .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
             })
             .then((res) => {
-                setClients(res.data);
+                setClients(res.data.data);
             })
             .catch(() => {
                 setClients([]);

@@ -174,7 +174,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
             })
             .then((response) => {
-                setClientes(response.data);
+                setClientes(response.data.data);
             }
             )
             .catch((error) => {

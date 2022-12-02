@@ -95,7 +95,7 @@ export default function NewProject() {
       .get("https://psa-soporte-squad7.herokuapp.com/tickets/clientes", {})
       .then((res) => {
         debugger
-        setClients(res.data);
+        setClients(res.data.data);
       })
       .catch((err) => {
         alert('Se produjo un error al consultar los clientes', err);

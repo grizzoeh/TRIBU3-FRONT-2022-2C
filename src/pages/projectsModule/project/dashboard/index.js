@@ -99,7 +99,7 @@ export default function Dashboard() {
 
             })
             .then((res) => {
-                setClients(res.data);
+                setClients(res.data.data);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar los clientes', err);

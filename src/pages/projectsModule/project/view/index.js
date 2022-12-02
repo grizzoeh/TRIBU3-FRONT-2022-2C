@@ -85,7 +85,7 @@ export default function ViewProject() {
       .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
       })
       .then((res) => {
-        setClient(res.data);
+        setClient(res.data.data);
       })
       .catch(() => {
         setClient("");

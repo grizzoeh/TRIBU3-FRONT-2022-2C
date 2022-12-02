@@ -47,7 +47,7 @@ const Clientes = () => {
     const getClientes = async () => {
         axios
             .get("https://psa-soporte-squad7.herokuapp.com/tickets/clientes").then(res => {
-                const clientes = res.data;
+                const clientes = res.data.data;
                 setClientes(clientes);
             }).catch((err) => {
                 console.log(err);

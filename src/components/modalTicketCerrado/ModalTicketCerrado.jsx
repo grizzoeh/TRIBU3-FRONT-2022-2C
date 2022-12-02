@@ -47,7 +47,7 @@ const ModalTicketCerrado = ({ numeroTicket, data }) => {
 
                 })
                 .then((response) => {
-                    setClientes(response.data);
+                    setClientes(response.data.data);
                 }
                 )
                 .catch((error) => {
