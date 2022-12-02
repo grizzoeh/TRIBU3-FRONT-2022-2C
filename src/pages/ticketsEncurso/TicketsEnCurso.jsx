@@ -168,7 +168,7 @@ const TicketsEnCurso = () => {
             <Container className="container-title">
                 <Row>
                     <Col md="auto">
-                        <h1>Tickets en Curso</h1>
+                        <h1>Tickets:</h1>
                     </Col>
                     < Col md="auto" className="v-center">
                         <Button size="sm" variant="primary" className="botoncrearticket" onClick={() => setShowCreacionModal(true)}> ✚ Nuevo Ticket</Button>
