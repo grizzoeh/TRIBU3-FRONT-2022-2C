@@ -287,6 +287,7 @@ const TicketsEnCurso = () => {
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
                                 {clientes.length > 0 ?
                                     clientes.map((cliente) => {
+                                        { console.log(cliente) }
                                         return (
                                             <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
                                         )
