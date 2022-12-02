@@ -7,7 +7,10 @@ import axios from "axios";
 import * as SERVER_NAMES from "../../APIRoutes";
 
 export default function CardCustom({project}) {
-
+    {/*assignee.legajo!=project.project_manager.id?getAssignee():*/}
+    useEffect(() => {
+        getAssignee();
+}, [project]);
     const [assignee, setAssignee] = useState([]);
     const [clients, setClients] = useState([]);
     const getAssignee = async () => {
