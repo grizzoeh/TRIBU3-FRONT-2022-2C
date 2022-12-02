@@ -32,6 +32,22 @@ export default function Dashboard() {
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
+    useEffect(() => {
+        getProyectos();
+      }, [stateQuery])
+    
+    useEffect(() => {
+        getProyectos();
+      }, [assigneeQuery])
+
+    useEffect(() => {
+        getProyectos();
+      }, [typeQuery])
+
+    useEffect(() => {
+        getProyectos();
+      }, [clientQuery])
+
     const handleStateFilter = (e) => {
         handleStateFilter2(e);
     };
@@ -39,26 +55,26 @@ export default function Dashboard() {
   
         e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
         setState(statusMapping[e]);
-        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
-        setState(statusMapping[e]);
-        getProyectos();
+        //e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+        //setState(statusMapping[e]);
+        //getProyectos();
     };
 
     const handleAssigneeFilter = (e) => {
         handleAssigneeFilter2(e);
-        handleAssigneeFilter2(e);
+        //handleAssigneeFilter2(e);
     };
     const handleAssigneeFilter2 = (e) => {
         let assignee = assignees.find( element => element.legajo == e );
         e==="Todos"?setAssignee(e):setAssignee(assignee.Nombre+" "+assignee.Apellido);
         e==="Todos"?setAssigneeQuery(''):setAssigneeQuery("project_manager="+e+"&");
-        getProyectos();
+        //getProyectos();
     };
 
 
     const handlerClientFilter = (e) => {
         handlerClientFilter2(e);
-        handlerClientFilter2(e);
+        //handlerClientFilter2(e);
     };
 
 
@@ -66,20 +82,20 @@ export default function Dashboard() {
         let client = clients.find( element => element.id == e );
         e==="Todos"?setClient(e):setClient(client["razon social"]);
         e==="Todos"?setClientQuery(''):setClientQuery("client_id="+e+"&");
-        getProyectos();
+        //getProyectos();
     };
 
 
     const handleTypeFilter = (e) => {
         handleTypeFilter2(e);
-        handleTypeFilter2(e);
+        //handleTypeFilter2(e);
 
     };
 
     const handleTypeFilter2 = (e) => {
         setType(typeMapping[e]);
         e==="Todos"?setTypeQuery(''):setTypeQuery("type="+e+"&");
-        getProyectos();
+        //getProyectos();
     };
 
     const getAssignees = async () => {
@@ -120,7 +136,7 @@ export default function Dashboard() {
     };
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         getAssignees();
         getClients();
         getProyectos();
@@ -131,6 +147,11 @@ export default function Dashboard() {
 
         }, 600000);
         return () => clearInterval(interval);
+    }, []);*/
+    useEffect(() => {
+        getAssignees();
+        getClients();
+        getProyectos();
     }, []);
     var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
                 "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
