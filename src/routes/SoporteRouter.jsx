@@ -21,7 +21,7 @@ const SoporteRouter = () => {
                 <Routes>
                     <Route path="/tickets-en-curso" element={<TicketsEnCurso />} />
                     <Route path="/crear-producto-y-version" element={<CrearProductoYVersion />} />
-                    <Route path="/clientes" element={<Clientes/>} />
+                    <Route path="/clientes" element={<Clientes />} />
                     {/* <Route path="*" element={<Navigate to="/ticketsEnCurso" />} /> */}
 
                 </Routes>

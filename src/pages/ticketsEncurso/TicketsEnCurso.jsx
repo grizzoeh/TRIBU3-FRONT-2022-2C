@@ -23,7 +23,7 @@ const TicketsEnCurso = () => {
 
 
 
-    const [clientes, setClientes] = useState();
+    const [clientes, setClientes] = useState([]);
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
     const handleCloseCreadoExito = () => setTicketCreadoExito(false);
@@ -84,7 +84,7 @@ const TicketsEnCurso = () => {
 
             })
             .catch((err) => {
-                console.log("Errorxd: ", err); // FIXME TOAST
+                console.log("Error: ", err); // FIXME TOAST
             });
 
     };
@@ -107,11 +107,12 @@ const TicketsEnCurso = () => {
 
     const getClientes = async () => {
         axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
 
             })
             .then((response) => {
-                setClientes(response.data);
+                setClientes(response.data.data);
+
             }
             )
             .catch((error) => {
@@ -137,7 +138,6 @@ const TicketsEnCurso = () => {
 
 
     useEffect(() => {
-
 
 
         getDataEnCurso();
@@ -280,11 +280,13 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
-                                {clientes?.map((cliente) => {
-                                    return (
-                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
-                                    )
-                                })}
+                                {clientes.length > 0 ?
+                                    clientes.map((cliente) => {
+                                        { console.log(cliente) }
+                                        return (
+                                            <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                        )
+                                    }) : <></>}
 
                             </Dropdown.Menu>
                         </Dropdown>
@@ -361,7 +363,9 @@ const TicketsEnCurso = () => {
                                                         <h6>Cliente: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {clientes?.find(cliente => cliente.id === ticketEnCurso.idCliente)["razon social"]}
+                                                        {clientes.length > 0 ?
+                                                            clientes.find(cliente => cliente.id === ticketEnCurso.idCliente)["razon social"]
+                                                            : <></>}
                                                     </Col>
 
                                                 </Row>

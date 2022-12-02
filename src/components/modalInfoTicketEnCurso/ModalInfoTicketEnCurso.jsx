@@ -22,7 +22,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const vertical = "top"
     const horizontal = "center"
 
-    const [clientes, setClientes] = useState();
+    const [clientes, setClientes] = useState([]);
 
     const [productos, setProductos] = useState();
 
@@ -170,11 +170,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
     const getClientes = async () => {
         axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
 
             })
             .then((response) => {
-                setClientes(response.data);
+                setClientes(response.data.data);
             }
             )
             .catch((error) => {
@@ -429,14 +429,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes?.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    {clientes.length > 0 ?
+                                                        clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                        : null
 
                                                     }
 
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {clientes ?
+                                                    {clientes.length > 0 ?
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
                                                                 setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"], ['idProducto']: null, ['idVersion']: null });
@@ -466,7 +468,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6 > CUIT: </h6>
                                         </Col>
                                         <Col>
-                                            {clientes ?
+                                            {clientes.length > 0 ?
                                                 clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
 
                                                 : null}
@@ -700,7 +702,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         </Col>
                                         <Col>
 
-                                            {clientes ?
+                                            {clientes.length > 0 ?
                                                 clientes.filter(cliente => cliente.id === data.idCliente)[0]['razon social']
 
                                                 : null}
@@ -725,7 +727,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> CUIT: </h6>
                                         </Col>
                                         <Col>
-                                            {clientes ?
+                                            {clientes.length > 0 ?
                                                 clientes.filter(cliente => cliente.id === data.idCliente)[0]['CUIT']
 
                                                 : null}
