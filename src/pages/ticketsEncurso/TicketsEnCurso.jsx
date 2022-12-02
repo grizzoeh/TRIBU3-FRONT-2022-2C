@@ -23,7 +23,7 @@ const TicketsEnCurso = () => {
 
 
 
-    const [clientes, setClientes] = useState([]);
+    const [clientes, setClientes] = useState();
 
     const [ticketCreadoExito, setTicketCreadoExito] = useState(false);
     const handleCloseCreadoExito = () => setTicketCreadoExito(false);
@@ -84,7 +84,7 @@ const TicketsEnCurso = () => {
 
             })
             .catch((err) => {
-                console.log("Errorxd: ", err); // FIXME TOAST
+                console.log("Error: ", err); // FIXME TOAST
             });
 
     };
@@ -137,7 +137,6 @@ const TicketsEnCurso = () => {
 
 
     useEffect(() => {
-
 
 
         getDataEnCurso();
@@ -280,15 +279,11 @@ const TicketsEnCurso = () => {
 
                             <Dropdown.Menu>
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
-                                {clientes.lenght > 0 ?
-                                    clientes.map((cliente) => {
-                                        return (
-                                            <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
-                                        )
-                                    })
-                                    :
-                                    <></>
-                                }
+                                {clientes?.map((cliente) => {
+                                    return (
+                                        <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
+                                    )
+                                })}
 
                             </Dropdown.Menu>
                         </Dropdown>
