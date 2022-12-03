@@ -359,7 +359,7 @@ export default function NewTask() {
                 onChange={(e) => onChangeProjectData(e)}
               />
               </Col>*/}
-              <Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>
+              <Col xs={9}><h4>{tareaActual.estimated_start_date?moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</h4></Col>
               
           </Row>
 
@@ -375,7 +375,7 @@ export default function NewTask() {
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
             />*/}
-            <h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
+            <h4>{tareaActual.estimated_finalization_date?moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</h4>
             </Col>
           </Row>
 
