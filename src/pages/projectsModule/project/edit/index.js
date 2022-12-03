@@ -147,7 +147,7 @@ export default function EditProject() {
                 typeof selectedProjectManager!== 'undefined'?`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`:"Selecionar"
               );
           }
-          else setProjectManagerButtonTitle("Selecionar");
+          else setProjectManagerButtonTitle("Seleccionar");
         }
 
         if (resources.length !== 0) {
