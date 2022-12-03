@@ -48,3 +48,43 @@
     align-items: center;
     justify-content: start;
 }
+
+.Enanálisis {
+    color: white;
+    background-color: blue!important;
+}
+
+.Derivado {
+    color: white;
+    background-color: #BF42A2!important;
+}
+
+.Cancelado {
+    color: white;
+    background-color: #BF0000!important;
+}
+
+.Baja {
+    color: white;
+    background-color: #71A1AD!important;
+}
+
+.Media {
+    color: white;
+    background-color: #C9BF00!important; 
+}
+
+.Alta {
+    color: white;
+    background-color: #E67223!important; 
+}
+
+.Crítica {
+    color: white;
+    background-color: #FF0000!important; 
+}
+
+.Resuelto {
+    color: white;
+    background-color: #00BA0C!important; 
+}

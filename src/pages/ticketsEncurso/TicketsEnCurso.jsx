@@ -13,6 +13,7 @@ import axios from "axios";
 import NavbarSoporte from "../../components/navbarSoporte/NavbarSoporte";
 import Alert from 'react-bootstrap/Alert';
 import SpacerLine from "../../components/spacerLine/spacerLine";
+import Badge from 'react-bootstrap/Badge';
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -127,7 +128,6 @@ const TicketsEnCurso = () => {
 
             })
             .then((response) => {
-                // console.log(response);
                 setRecursos(response.data);
             }
             )
@@ -282,7 +282,6 @@ const TicketsEnCurso = () => {
                                 <Dropdown.Item name="cliente" onClick={(e) => { handleDropdownFilter(e) }}>Todos</Dropdown.Item>
                                 {clientes.length > 0 ?
                                     clientes.map((cliente) => {
-                                        { console.log(cliente) }
                                         return (
                                             <Dropdown.Item key={cliente["id"]} name="cliente" onClick={(e) => handleDropdownFilter(e)}>{cliente["razon social"]}</Dropdown.Item>
                                         )
@@ -371,10 +370,10 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h6>Criticidad: </h6>
+                                                        <h6>Criticidad:</h6>
                                                     </Col>
                                                     <Col>
-                                                        {ticketEnCurso.criticidad}
+                                                        <Badge className={ticketEnCurso.criticidad.replace(/\s/g, '')}>{ticketEnCurso.criticidad}</Badge>
                                                     </Col>
 
                                                 </Row>
@@ -383,9 +382,9 @@ const TicketsEnCurso = () => {
                                                         <h6>Estado: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {ticketEnCurso.estado}
+                                                        {console.log(ticketEnCurso.estado.replace(/\s/g, ''))}
+                                                        <Badge className={ticketEnCurso.estado.replace(/\s/g, '')}>{ticketEnCurso.estado}</Badge>
                                                     </Col>
-
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
@@ -461,10 +460,10 @@ const TicketsEnCurso = () => {
                                                 </Row>
                                                 <Row>
                                                     <Col xs={5}>
-                                                        <h6>Severidad: </h6>
+                                                        <h6>Criticidad: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {ticketCerrado.criticidad}
+                                                        <Badge className={ticketCerrado.criticidad.replace(/\s/g, '')}>{ticketCerrado.criticidad}</Badge>
                                                     </Col>
 
                                                 </Row>
@@ -474,7 +473,7 @@ const TicketsEnCurso = () => {
                                                         <h6>Estado: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {ticketCerrado.estado}
+                                                        <Badge className={ticketCerrado.estado.replace(/\s/g, '')}>{ticketCerrado.estado}</Badge>
                                                     </Col>
 
                                                 </Row>
