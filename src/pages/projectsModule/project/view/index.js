@@ -164,7 +164,7 @@ export default function ViewProject() {
           <Col xs={9}>
   <h4>{project.project_manager!=null?
       resources.find( element => element.legajo == project.project_manager.id)!=null?
-      resources.find( element => element.legajo == project.project_manager.id).Apellido+" "+resources.find( element => element.legajo == project.project_manager.id).Apellido
+      resources.find( element => element.legajo == project.project_manager.id).Nombre+" "+resources.find( element => element.legajo == project.project_manager.id).Apellido
       :"":""
       }</h4>
 </Col>
@@ -177,7 +177,7 @@ export default function ViewProject() {
   <h4>{project.sponsor!=null?
       resources.find( element => element.legajo == project.sponsor.id)!=null?
       resources.find( element => element.legajo == project.sponsor.id).Apellido+" "+resources.find( element => element.legajo == project.sponsor.id).Apellido
-      :"":""
+      :"":"Sin asignar"
       }</h4>
 </Col>
 
@@ -190,7 +190,7 @@ export default function ViewProject() {
             <h4>{project.client_id!=null?
       client.find( element => element.id == project.client_id)!=null?
       client.find( element => element.id == project.client_id)["razon social"]
-      :"":""
+      :"":"Sin asignar"
       }</h4>
       </Col>
         </Row>
@@ -205,7 +205,7 @@ export default function ViewProject() {
   <Col >  <h4>{
       element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
       resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
-      :"":""
+      :"":"Sin asignar"
       }</h4>
     
 </Col>)
@@ -226,7 +226,7 @@ export default function ViewProject() {
   <h4>{
       element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
       resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
-      :"":""
+      :"":"Sin asignar"
       }</h4>
 </Col>)
 })};
