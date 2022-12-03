@@ -13,6 +13,7 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
 
@@ -299,6 +300,11 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
+          <Col xs={10}>
+            <Link to={`/proyectos/${params.id}/tareas/${params.idTarea}/ver-tarea`}>
+              <Button variant="danger">Cancelar</Button>
+            </Link>
+            </Col>
             <Col></Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Crear</Button>
