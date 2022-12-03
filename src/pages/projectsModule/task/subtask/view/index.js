@@ -265,7 +265,7 @@ export default function NewTask() {
             <Col>
               <h4>Dependencias:</h4>
             </Col>
-              {tareaActual.dependencies.map((dependency) => <Col xs={2}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>)}
+              {tareaActual.dependencies.length > 0?tareaActual.dependencies.map((dependency) => <Col xs={2}><Link to={`/proyectos/${params.id}/tareas/${dependency.id}/ver-tarea/`}><Button>{dependency.name}</Button></Link></Col>):<Col xs={9}><h4>No hay dependencias asignadas</h4></Col>}
               
           </Row>}
 
@@ -282,7 +282,7 @@ export default function NewTask() {
                 placeholder="Ej: 10"
                 onChange={(e) => onChangeProjectData(e)}
         />*/}
-              <h4>{tareaActual.estimated_hours_effort}</h4>
+              <h4>{tareaActual.estimated_hours_effort?tareaActual.estimated_hours_effort:"Sin estimar"}</h4>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -298,7 +298,7 @@ export default function NewTask() {
                 placeholder="Ej: 10"
                 onChange={(e) => onChangeProjectData(e)}
         />*/}
-              <h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:null}</h4>
+              <h4>{tareaActual.real_hours_effort?tareaActual.real_hours_effort:"Sin cargar"}</h4>
             </Col>
           </Row>
           
@@ -328,7 +328,7 @@ export default function NewTask() {
               </DropdownButton>*/}
               {/*<Select isMulti options={clients} getOptionLabel={(client) => client.name}
                 getOptionValue={(client) => client.id} defaultValue={mapIDResourceToName(AssigneebuttonTitle)} />*/}
-                <Row>{mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h5>{nombre}</h5></Col>)}</Row>
+                <Row>{AssigneebuttonTitle.length > 0?mapIDResourceToName(AssigneebuttonTitle).map((nombre) => <Col><h4>{nombre}</h4></Col>):<Col xs={9}><h4>No hay empleado asignado</h4></Col>}</Row>
             </Col>
           </Row>
           <Row className="mt-5">
@@ -359,7 +359,7 @@ export default function NewTask() {
                 onChange={(e) => onChangeProjectData(e)}
               />
               </Col>*/}
-              <Col xs={9}><h4>{moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4></Col>
+              <Col xs={9}><h4>{tareaActual.estimated_start_date?moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</h4></Col>
               
           </Row>
 
@@ -375,7 +375,7 @@ export default function NewTask() {
                 placeholder="Ej: 18/12/2022"
                 onChange={(e) => onChangeProjectData(e)}
             />*/}
-            <h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>
+            <h4>{tareaActual.estimated_finalization_date?moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</h4>
             </Col>
           </Row>
 
