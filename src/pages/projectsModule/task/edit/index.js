@@ -35,7 +35,7 @@ export default function NewTask() {
   const params = useParams();
   const [tareas, setTareas] = useState([]);
   const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
-  const [StatusbuttonTitle, setStatusButtonTitle] = useState('Seleccionar');
+  const [StatusbuttonTitle, setStatusButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
@@ -75,8 +75,8 @@ export default function NewTask() {
             console.log(error);
         });
   }
-
-  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Finalizada:"finished"};
+  var StatusMapping = {pending:"Pendiente",'in_progress':"En progreso",finished:"Terminada"};
+  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Terminada:"finished"};
   useEffect(() => {
         
 
@@ -134,7 +134,7 @@ export default function NewTask() {
         }
         else setAssigneeButtonTitle("Seleccionar");
         
-        //setStatusButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).status);
+        setStatusButtonTitle(StatusMapping[res.data.find((tarea) => tarea.id == params.idTarea).status]);
         //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
         //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
         setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
@@ -484,19 +484,19 @@ export default function NewTask() {
                 inverseStatusMapping[tareaActual.status]
               />*/}
               {/*<h4>{statusMapping[tareaActual.status]}</h4>*/}
-                <Dropdown title={StatusbuttonTitle}
+                <DropdownButton variant="secondary" title={StatusbuttonTitle}
                 >
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                    </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                    {/*<Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                    </Dropdown.Toggle>*/}
+                        {/*<Dropdown.Menu>*/}
+                            {/*<Dropdown.Item eventKey={"Ninguno"} name="status">
                                 {"Ninguno"}
-                            </Dropdown.Item>
+                            </Dropdown.Item>*/}
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Pendiente</Dropdown.Item>
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>En progreso</Dropdown.Item>
-                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Finalizada</Dropdown.Item>
-                        </Dropdown.Menu>
-            </Dropdown>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Terminada</Dropdown.Item>
+                        {/*</Dropdown.Menu>*/}
+            </DropdownButton>
           </Col>
           
           </Row>
