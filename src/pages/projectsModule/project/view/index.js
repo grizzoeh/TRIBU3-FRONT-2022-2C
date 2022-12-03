@@ -176,7 +176,7 @@ export default function ViewProject() {
   <Col xs={9}>
   <h4>{project.sponsor!=null?
       resources.find( element => element.legajo == project.sponsor.id)!=null?
-      resources.find( element => element.legajo == project.sponsor.id).Apellido+" "+resources.find( element => element.legajo == project.sponsor.id).Apellido
+      resources.find( element => element.legajo == project.sponsor.id).Nombre+" "+resources.find( element => element.legajo == project.sponsor.id).Apellido
       :"":"Sin asignar"
       }</h4>
 </Col>
