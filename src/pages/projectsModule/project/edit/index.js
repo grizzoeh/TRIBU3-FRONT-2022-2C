@@ -286,15 +286,24 @@ export default function EditProject() {
               <h4>Recursos</h4>
             </Col>
             <Col xs={9}>
-              <Select
+              {resources.length>0 && <Select
                 isMulti
                 options={resources}
+                defaultValue={updatedProject.resources.map((resource) => {
+                  let name = resources.find((empleado) => empleado.legajo == resource).Nombre
+                  let surname = resources.find((empleado) => empleado.legajo == resource).Apellido
+                  let id = resources.find((empleado) => empleado.legajo == resource).legajo
+                  //let holi = {Nombre: resource.Nombre, Apellido: resource.Apellido, legajo: resource.legajo}
+                  let label = {Nombre: name, Apellido: surname, legajo: id}
+                  return label
+                })}
+                //defaultValue = {{ legajo: 1, Nombre: "John", Apellido: "lolo" }}
                 getOptionLabel={(resource) =>
                   `${resource.Nombre} ${resource.Apellido}`
                 }
                 getOptionValue={(resource) => resource.legajo}
                 onChange={handleResourcesDropdownButtonChange}
-              />
+              />}
             </Col>
           </Row>
 
