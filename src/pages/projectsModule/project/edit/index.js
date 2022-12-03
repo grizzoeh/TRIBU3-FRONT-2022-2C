@@ -12,7 +12,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from "moment";
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
@@ -352,15 +352,14 @@ export default function EditProject() {
 
 
           <Row className="mt-5">
+          <Col xs={10}>
+            <Link to={`/proyectos/${params.id}/ver-proyecto/`}>
+              <Button variant="danger">Cancelar</Button>
+            </Link>
+            </Col>
             <Col></Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Listo</Button>
-            </Col>
-          </Row>
-
-          <Row className="mt-1">
-            <Col xs={1}>
-              <Button variant="danger">Borrar</Button>
             </Col>
           </Row>
         </form>
