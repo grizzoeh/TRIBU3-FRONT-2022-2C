@@ -355,7 +355,6 @@ const TicketsEnCurso = () => {
             <Container className="container-cards">
                 {showEnTicketsEnCurso === "En Curso" ? (
                     <Row className="row-cards mt-4" md="auto" >
-                        {console.log(allTickets)}
                         {ticketsEnCursoData.concat(ticketsCerradosData).length > 0 && clientes ?
                             ticketsEnCursoData.concat(ticketsCerradosData).filter(
                                 (ticket) => {
@@ -445,11 +444,9 @@ const TicketsEnCurso = () => {
                                 </Col>
 
                             )) : <h3>Cargando...</h3>}
-
-
                     </Row>
                 ) : (
-                    <Row className="row-cards mt-4" md="auto" >
+                    <Row>
                     </Row>
                 )}
 
