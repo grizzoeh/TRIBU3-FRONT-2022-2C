@@ -23,7 +23,7 @@ import { Snackbar } from "@mui/material";
 
 
 const TicketsEnCurso = () => {
-
+    const [refreshKey, setRefreshKey] = useState(0);
 
 
     const [clientes, setClientes] = useState([]);
@@ -56,7 +56,7 @@ const TicketsEnCurso = () => {
 
     const [showCreacionModal, setShowCreacionModal] = useState(false);
 
-
+    const [allTickets, setAllTickets] = useState([]);
 
     const [showEnTicketsEnCurso, setShowEnTicketsEnCurso] = useState("En Curso");
 
@@ -152,18 +152,22 @@ const TicketsEnCurso = () => {
             });
     }
 
+    const getAllTickets = async () => {
+        getDataEnCurso();
+        getDataCerrados();
+        setAllTickets(ticketsEnCursoData.concat(ticketsCerradosData));
+        setRefreshKey(oldKey => oldKey+1);
+    }
+
+
 
     useEffect(() => {
-
-
         getDataEnCurso();
         getDataCerrados();
         getClientes();
         getRecursos();
-
-
-
-    }, []);
+        getAllTickets();
+    }, [setRefreshKey]);
 
 
 
@@ -192,7 +196,7 @@ const TicketsEnCurso = () => {
             </Container>
                 {
                     showCreacionModal ? (
-                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
+                        <ModalCreacionTicket getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} showCreacionModal={showCreacionModal} setShowCreacionModal={setShowCreacionModal} setTicketCreadoExito={setTicketCreadoExito} />
                     ) :
                         (
                             <></>
@@ -216,6 +220,9 @@ const TicketsEnCurso = () => {
                         <ToggleButtonGroup type="radio" name="options" defaultValue={"Todos"} onChange={handleChangeMostrar}>
                             <ToggleButton id="tbg-radio-1" value={"Todos"}>
                                 Cualquiera
+                            </ToggleButton>
+                            <ToggleButton id="tbg-radio-6" value={"Abierto"}>
+                                Abierto
                             </ToggleButton>
                             <ToggleButton id="tbg-radio-2" value={"En análisis"}>
                                 En análisis
@@ -267,9 +274,6 @@ const TicketsEnCurso = () => {
                                 <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Media</Dropdown.Item>
                                 <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Alta</Dropdown.Item>
                                 <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownFilter(e)}>Crítica</Dropdown.Item>
-
-
-
                             </Dropdown.Menu>
                         </Dropdown>
                     </Col>
@@ -349,12 +353,10 @@ const TicketsEnCurso = () => {
 
             </Container>
             <Container className="container-cards">
-
                 {showEnTicketsEnCurso === "En Curso" ? (
-                    
                     <Row className="row-cards mt-4" md="auto" >
+                        {console.log(allTickets)}
                         {ticketsEnCursoData.concat(ticketsCerradosData).length > 0 && clientes ?
-                            
                             ticketsEnCursoData.concat(ticketsCerradosData).filter(
                                 (ticket) => {
                                     //apply filters with categoria, criticidad and estado
@@ -432,7 +434,7 @@ const TicketsEnCurso = () => {
                                             {ticketEnCurso.estado === "Resuelto" ? (
                                                 <ModalTicketCerrado data={ticketEnCurso} numeroTicket={ticketEnCurso.id} />
                                             ):(
-                                                <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />
+                                                <ModalInfoTicketEnCurso data={ticketEnCurso} numeroTicket={ticketEnCurso.id} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} getAllData={getAllTickets} setRefreshKey={setRefreshKey}/>
                                             )}
 
                                         </Card.Body>
