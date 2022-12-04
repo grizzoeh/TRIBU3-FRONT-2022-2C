@@ -88,7 +88,7 @@ export default function NewTask() {
   };
 
   const handleDependencyDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, dependencies: [e] });
+    setProjectData({ ...projectData, parent_task: e });
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 

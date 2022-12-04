@@ -51,13 +51,13 @@ export default function NewTask() {
   const mapIDTaskToTaskObj= (task) => {
     //console.log(clients);
     //console.log(assignees);
-    
+    /*
     return tareas.map((tarea) => {
       let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
       return tareaPadre?tareaPadre:null
-    })
-    //let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
-    //return tareaPadre
+    })*/
+    let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
+    return tareaPadre
   }
 
   const handleBorrado = async () => {
@@ -257,7 +257,8 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              {mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)}
+              {/*mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${params.id}/tareas/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)*/}
+              {<Col><Link to={`/proyectos/${params.id}/tareas/${mapIDTaskToTaskObj(tareaActual).id}/ver-tarea/`}><Button>{mapIDTaskToTaskObj(tareaActual).name}</Button></Link></Col>}
             </Col>
           </Row>}
 
