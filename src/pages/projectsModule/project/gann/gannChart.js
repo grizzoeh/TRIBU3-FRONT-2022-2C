@@ -59,8 +59,8 @@ export default function GannChart() {
 });
 
 const handleAssigneeFilter = (e) => {
-  e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
-  e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+  e==="Todos"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+  e==="Todos"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
   setAssigneeID(e);
   //getTarea();
 };
@@ -83,7 +83,7 @@ useEffect(() => {
 const getTarea = async () => {
   let url = `/psa/projects/${params.id}/tasks/?`;
   setTareas([])
-  assigneeID==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+assigneeID+"&";
+  assigneeID==="Todos"?assigneeQuery="":assigneeQuery="assignee="+assigneeID+"&";
   priority==0?priorityQuery="":priorityQuery="priority="+priority+"&";
   url += priorityQuery;
   url += assigneeQuery;
@@ -190,8 +190,8 @@ return (
                             title={assignee}
                             onSelect={handleAssigneeFilter}
                         >
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
-                                {"Ninguno"}
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
                             </Dropdown.Item>
                             {assignees.map((assignee) => {
                                 return (

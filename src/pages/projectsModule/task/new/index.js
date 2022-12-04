@@ -42,7 +42,7 @@ export default function NewTask() {
     creation_date: null,
     priority: 1,
     realEffort: null,
-    parent_task: null
+    parent_task_id: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
