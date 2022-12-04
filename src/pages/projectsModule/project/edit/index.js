@@ -85,7 +85,7 @@ export default function EditProject() {
     });
   };
   const navigateProjectDashboard = () => {
-    navigate("/proyectos");
+    navigate(`/proyectos/${params.id}/ver-proyecto/`);
   };
 
   const editProject = async () => {
@@ -362,7 +362,7 @@ export default function EditProject() {
             </Col>
             <Col></Col>
             <Col xs={1}>
-              <Button onClick={handleSubmit}>Listo</Button>
+              <Button onClick={handleSubmit}>Guardar</Button>
             </Col>
           </Row>
         </form>
