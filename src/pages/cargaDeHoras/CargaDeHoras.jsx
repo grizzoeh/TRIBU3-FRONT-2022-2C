@@ -17,7 +17,7 @@ const CargaDeHoras = () => {
         <NavbarRecursos />
 
             <Container className="container-cards">
-
+                <h1 id='titulo'>Carga tus horas</h1>
                 <ModalCreacionCargaHoras />
 
             </Container>

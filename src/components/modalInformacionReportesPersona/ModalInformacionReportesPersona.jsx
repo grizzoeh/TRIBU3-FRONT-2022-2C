@@ -59,7 +59,7 @@ const ModalInformacionReportesPersona = () => {
     }
     
     return (
-        <container>
+        <Container>
             <div id = 'proyectoId'>
                 <TextField id="outlined-basic" label="Consultar Reportes por legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
@@ -89,7 +89,7 @@ const ModalInformacionReportesPersona = () => {
                     </TableContainer>
                 </div>
             </div>
-        </container>
+        </Container>
     );
 }; 
 export default ModalInformacionReportesPersona

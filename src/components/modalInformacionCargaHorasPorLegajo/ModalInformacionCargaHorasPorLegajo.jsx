@@ -46,7 +46,7 @@ const ModalInformacionCargaHorasPorLegajo = () => {
         
 
     return (
-        <container>
+        <Container>
             <div id = 'legajo'>
                 <TextField id="outlined-basic" label="Consultar Carga por Legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1" onClick={() => {handleClick();handleShow()}} id='boton'>Consultar legajo</Button></Col>
@@ -80,7 +80,7 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                 </div>
             </div>
             
-        </container>
+        </Container>
     );
 }; 
 

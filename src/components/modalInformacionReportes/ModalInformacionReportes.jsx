@@ -151,7 +151,7 @@ const ModalInformacionReportes = () => {
     }
 
     return (
-        <container>
+        <Container>
             <div id = 'proyectoId'>
                 <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{asignarProyecto(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow();cargarCargasProyecto()}} id='boton'>Consultar Proyecto</Button></Col>
@@ -200,7 +200,7 @@ const ModalInformacionReportes = () => {
                     </TableContainer>
                 </React.Fragment>
             </div>
-        </container>
+        </Container>
     );
 }; 
 

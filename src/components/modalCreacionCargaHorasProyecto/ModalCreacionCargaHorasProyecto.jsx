@@ -109,7 +109,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     }
 
     return (
-        <container>
+        <Container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo1">Seleccionar Proyecto</h2> 
                 <NavDropdown title={ProjectText} id="navBarProyectos">
@@ -142,7 +142,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                     <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
                 </div> 
             </div>
-        </container>
+        </Container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
 }; /* Si no anda Calendar -> npm install react-calendar */
 //<Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>

@@ -54,6 +54,7 @@ const ModalEliminacionCategorias = () => {
 
     return (
         <Container>
+            <h1 id='titulo'>Eliminar Categorias</h1>
             <div>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
                 <Button id = "borrar" onClick={() => {handleClick()}} >Borrar</Button> 

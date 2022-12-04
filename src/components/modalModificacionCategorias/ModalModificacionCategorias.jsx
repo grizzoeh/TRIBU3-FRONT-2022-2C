@@ -58,7 +58,8 @@ const ModalModificarCategorias = () => {
     
 
     return (
-        <container>
+        <Container>
+            <h1 id='titulo'>Modificar Categorias</h1>
             <div id = 'CategoriaId'>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>{setCatId(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar Categoria</Button></Col>
@@ -107,7 +108,7 @@ const ModalModificarCategorias = () => {
             </div>
 
             
-        </container>
+        </Container>
     );
 }; 
 
