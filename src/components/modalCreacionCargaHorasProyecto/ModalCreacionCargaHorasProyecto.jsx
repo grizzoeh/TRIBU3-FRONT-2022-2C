@@ -30,6 +30,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [ProjectText, setProjectText] = useState('Seleccionar')
     const [mostrarHoras, setMostrarHoras] = useState(false);
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
+    const [dropdownHorasText, setdropdownHorasText] = useState('Seleccionar periodo')
     let [cantidad_horas, setCount] = useState(1);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
@@ -111,6 +112,18 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         setProyectoId(proyecto.id);
     }
 
+    function escogerSemana(){
+        <DatePicker></DatePicker>
+    }
+
+    function escogerQuincena(){
+        <DatePicker></DatePicker>
+    }
+
+    function escogerMes(){
+        <DatePicker></DatePicker>
+    }
+
     return (
         <Container>
             <div id='cargar-horas-licencia'>
@@ -131,6 +144,11 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 {mostrarHoras && <div className="App">
                                     <div id="ingresar-legajo">
                                         <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+                                    </div>
+                                    <div>
+                                        <Button onClick={escogerSemana}>Semanal</Button>
+                                        <Button onClick={escogerQuincena}>Quincenal</Button>
+                                        <Button onClick={escogerMes}>Mensual</Button>
                                     </div>
                                     <div>
                                         <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>

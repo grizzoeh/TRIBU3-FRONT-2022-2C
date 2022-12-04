@@ -88,5 +88,29 @@ margin-top: 0.5%;
 margin-bottom: 0.5%;
 }
 
+#Texto-seleccionar-horas{
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  margin-top: 0.9%;
+  margin-bottom: 2%;
+  }
 
+  #botonera{
+    top:2vw;
+    width: 20vw;
+    margin: 0 auto;
+    text-align: center ;
+    position: relative;
+    }
+
+#pruebas {
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center ;
+  position: relative;
+}
 

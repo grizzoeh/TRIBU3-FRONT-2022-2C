@@ -18,9 +18,21 @@ import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
 import { render } from "@testing-library/react";
 import IconButton from '@mui/material/IconButton';
-import DatePicker from "react-datepicker";
+//import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import TextField from '@mui/material/TextField';
+import { DatePicker, Space } from 'antd';
+import { ConfigProvider } from 'antd';
+import locale from 'antd/es/locale/es_ES';
+import moment from 'moment';
+import 'moment/locale/es';
+
+
+moment.locale('es-es', {
+  week: {
+    dow: 1 /// Date offset
+  }
+});
 
 const MAXHORAS = 8;
 const MINHORAS = 1;
@@ -28,6 +40,7 @@ const DIA = 24;
 
 const ModalCreacionCargaDeHorasProyecto = () => {
     const [value, onChange] = useState(new Date());
+    const [calendarType, setCalendarType] = useState(undefined);
     const [isShown, setIsShown] = useState(false);
     const [proyectos, setProyectos] = useState([])
     const [ProjectText, setProjectText] = useState('Seleccionar')
@@ -46,6 +59,47 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [categorias, setCategorias] = useState([])
     const [categoriaNombre, setcategoriaNombre] = useState()
     const [categoria,setCategoria] = useState(-1)
+
+
+    const cambioAnt = (data) => {
+        console.log("Cambio la fecha para tipo " + calendarType)
+        if(calendarType === "month"){
+            const fecha = new Date(data.$d)
+            console.log("Busco los dias del mes " + parseInt(data.$M + 1));
+            const desde = new Date (fecha.getFullYear(), fecha.getMonth(), 1 );
+            const hasta = new Date(fecha.getFullYear(), fecha.getMonth() + 1, 0);
+            setStartDate(desde);
+            setFinishDate(hasta);
+            console.log(`Voy mensualmente desde ${desde} hasta ${hasta}`);
+        }
+        if (calendarType === "week"){
+            console.log("Elijo la semana");
+            const desde = new Date(data.$d)
+            const hasta = new Date(data.$d);
+            hasta.setDate(hasta.getDate() + 7);
+            setStartDate(desde);
+            setFinishDate(hasta);
+            console.log(`Voy semanalmente desde ${desde} hasta ${hasta}`);
+        }
+        if (calendarType === "biweekly"){
+            console.log("Quincenal");
+            const desde = new Date(data.$d);
+            let hasta = undefined;
+            if(desde.getDate() == 1){
+                hasta = new Date(data.$d);
+                hasta.setDate(hasta.getDate() + 14);
+            }
+            else{
+                hasta = new Date(desde.getFullYear(), desde.getMonth() + 1, 0);
+            }
+            setStartDate(desde);
+            setFinishDate(hasta);
+            console.log(`La quincena va desde ${desde} hasta ${hasta}`)
+
+        }
+        console.dir(data);
+        console.log(data.$D);
+    }
 
 
     function procedimientoTareaElegida(nombreTarea, tareaId){
@@ -157,8 +211,21 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         setTareaNombre();
         setTarea_id();
     }
-    
+
+    const disableDate = (current) =>{
+        return (
+            (new Date(current).getDay() !== 1)
+        );
+    }
+
+    const soloQuincena = (current) =>{
+        return (
+            (new Date(current).getDate() !== 1) && (new Date(current).getDate() !== 15)
+        );
+    }
+
     return (
+        <ConfigProvider locale={locale}>
         <Container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo1">Seleccionar Proyecto/Categoria</h2> 
@@ -179,6 +246,11 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 <div id="cargar-horas-licencia">
                     <div id="Texto-seleccionar-horas" >
                         <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
+                        <div>
+                            <Button onClick={() => setCalendarType("week")}>Semanal</Button>
+                            <Button onClick={() => setCalendarType("biweekly")}>Quincenal</Button>
+                            <Button onClick={() => setCalendarType("month")}>Mensual</Button>
+                        </div>
                         <h6 id='texto'>Seleccionar horas de actividad</h6>
                         {cantidad_horas}
                     </div>
@@ -191,21 +263,39 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                     <Button id="dia"   className="Boton-botonera" onClick={incrementDayCount}>24</Button>
                     </div> 
                 </div>             
-                
+                <div id="pruebas">
+                    {calendarType && (
+                       <>
+                            <p>{calendarType}</p>
+                            {calendarType === "week" && (
+                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={disableDate} />
+                            )}
+                            {calendarType === "month" && (
+                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={calendarType} />
+                            )}
+                            {calendarType === "biweekly" && (
+                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={soloQuincena} />
+                            )}
+
+                        </>
+                    )}
+                    
+
+                </div>
                 <div id='calendarioBoton'>
                     <Row>
-                        <Col>
+                        {/* <Col>
                             <h6>Selecciona Fecha Inicio</h6>
                             <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} maxDate={today} minDate={limiteFecha}/>                             
                             <h6>Selecciona Fecha Fin</h6>
                             <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} maxDate={today} minDate={limiteFecha}/>
-                        </Col>
+                        </Col> */}
                     </Row>
-
                     <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
                 </div> 
             </div>
         </Container>
+        </ConfigProvider>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
 }; /* Si no anda Calendar -> npm install react-calendar */
 //<Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>
