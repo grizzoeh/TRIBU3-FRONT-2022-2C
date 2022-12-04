@@ -19,7 +19,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito }) => {
+const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito, getDataCerrados }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -70,6 +70,10 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket creado");
+                    setTicketCreadoExito(true);
+                    setShowCreacionModal(false);
+                    getDataEnCurso();
+                    getDataCerrados();
                 }
             })
             .catch((error) => {
@@ -83,7 +87,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const handleConfirmarCreacion = () => {
 
-        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null) {
+        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null || TicketData.fechaCreacion === null) {
             setAlertaDatosNulos(true);
 
 
@@ -93,11 +97,6 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
             setAlertaDatosNulos(false);
             crearTicket();
-            setTicketCreadoExito(true);
-            setShowCreacionModal(false);
-            getDataEnCurso();
-            getDataEnCurso();
-
         }
 
 
@@ -337,11 +336,10 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                             </Dropdown.Toggle>
 
                                             <Dropdown.Menu>
+                                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
-
-
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Col>
