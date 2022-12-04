@@ -9,6 +9,8 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Snackbar } from "@mui/material";
+
 
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
@@ -17,7 +19,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito }) => {
+const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataEnCurso, setTicketCreadoExito, getDataCerrados }) => {
 
     const TicketNulo = {
         "titulo": null,
@@ -36,11 +38,15 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
         "idVersion": null,
     }
 
+    const vertical = "top"
+    const horizontal = "center"
+
     const [TicketData, setTicketData] = useState(TicketNulo);
 
     const [clientes, setClientes] = useState();
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+    const handleCloseAlertaDatosNulos = () => setAlertaDatosNulos(false);
 
     const [productos, setProductos] = useState();
 
@@ -64,6 +70,10 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Ticket creado");
+                    setTicketCreadoExito(true);
+                    setShowCreacionModal(false);
+                    getDataEnCurso();
+                    getDataCerrados();
                 }
             })
             .catch((error) => {
@@ -77,7 +87,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const handleConfirmarCreacion = () => {
 
-        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null) {
+        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null || TicketData.fechaCreacion === null) {
             setAlertaDatosNulos(true);
 
 
@@ -87,11 +97,6 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
             setAlertaDatosNulos(false);
             crearTicket();
-            setTicketCreadoExito(true);
-            setShowCreacionModal(false);
-            getDataEnCurso();
-            getDataEnCurso();
-
         }
 
 
@@ -137,12 +142,12 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const getClientes = async () => {
         axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
 
             })
             .then((response) => {
                 // console.log(response);
-                setClientes(response.data);
+                setClientes(response.data.data);
             }
             )
             .catch((error) => {
@@ -258,9 +263,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                 </Modal.Header>
                 <Modal.Body>
 
-                    <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                        No puedes dejar campos vacios!
-                    </Alert>
+                    <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                            No puedes dejar campos vacios!
+                        </Alert>
+                    </Snackbar>
 
                     <div className="div-body-infoticket">
 
@@ -332,10 +339,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                                <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
                                                 <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
-
-
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </Col>
@@ -548,10 +552,11 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
                 </Modal.Body>
                 <Modal.Footer>
                     <Row>
-                        <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                            No puedes dejar campos vacios!
-
-                        </Alert>
+                        <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                No puedes dejar campos vacios!
+                            </Alert>
+                        </Snackbar>
                     </Row>
                     <Row>
 
@@ -561,7 +566,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
                         <Col>
                             <Button variant="secondary" onClick={handleClose}>
-                                Close
+                                Cerrar
                             </Button>
                         </Col>
                     </Row>

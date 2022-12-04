@@ -40,54 +40,56 @@ export default function ViewProject() {
   const [resources, setResources] = useState([]);
   const [client, setClient] = useState([]);
 
-  var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
-  "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
-  var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
+  var statusMapping = {
+    "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
+    "development": "DESARROLLO", "production": "PRODUCCION", "post_production": "POST-PRODUCCION"
+  }
+  var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" }
 
   const handleBorrado = async () => {
     axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${projectId}`)
-        .then((data) => { 
-            if (data.data.ok) {
-                console.log("Proyecto borrado");
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-      }
+      .then((data) => {
+        if (data.data.ok) {
+          console.log("Proyecto borrado");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   const getProject = () => {
     axios
-      .get(SERVER_NAMES.PROJECTS+"/psa/projects/"+projectId, {})
+      .get(SERVER_NAMES.PROJECTS + "/psa/projects/" + projectId, {})
       .then((res) => {
         setProject(res.data);
       })
       .catch((err) => {
         alert("Se produjo un error al consultar el proyecto", err);
       });
-    
+
   };
-  const getProjectManager= async () => {
+  const getProjectManager = async () => {
     axios
-        .get(SERVER_NAMES.ASSIGNEES+ "/"+project.project_manager
-            , {})
-        .then((res) => {
-          setProjectManager(res.data);
-        })
-        .catch(() => {
-          setProjectManager({ Nombre: "", Apellido: "" });
-        });
+      .get(SERVER_NAMES.ASSIGNEES + "/" + project.project_manager
+        , {})
+      .then((res) => {
+        setProjectManager(res.data);
+      })
+      .catch(() => {
+        setProjectManager({ Nombre: "", Apellido: "" });
+      });
   };
   const getClient = async () => {
     axios
-    .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
-        })
-        .then((res) => {
-          setClient(res.data);
-        })
-        .catch(() => {
-          setClient("");
-        });
+      .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
+      })
+      .then((res) => {
+        setClient(res.data.data);
+      })
+      .catch(() => {
+        setClient("");
+      });
   };
 
   const getResources = async () => {
@@ -103,7 +105,7 @@ export default function ViewProject() {
   };
 
   useEffect(() => {
-    
+
     getProject();
     getResources();
     getProjectManager();
@@ -154,7 +156,7 @@ export default function ViewProject() {
             <h4>Estado</h4>
           </Col>
           <Col xs={9}>
-            <h4>{statusMapping[ project.status]}</h4>
+            <h4>{statusMapping[project.status]}</h4>
           </Col>
         </Row>
         <Row className="mt-5">
@@ -260,8 +262,8 @@ export default function ViewProject() {
             <Link to={`/proyectos`}>
               <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
             </Link>
-            </Col>
-            <Col xs={1}>
+          </Col>
+          <Col xs={1}>
             <Link to={`/proyectos/`}>
               <Button>Atrás</Button>
             </Link>

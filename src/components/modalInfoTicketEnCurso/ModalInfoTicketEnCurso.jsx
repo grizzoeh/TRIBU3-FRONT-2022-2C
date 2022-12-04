@@ -10,17 +10,19 @@ import Form from 'react-bootstrap/Form';
 import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
 import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 import Alert from 'react-bootstrap/Alert';
-
+import { Snackbar } from "@mui/material";
 
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito, setRefreshKey}) => {
 
+    const vertical = "top"
+    const horizontal = "center"
 
-    const [clientes, setClientes] = useState();
+    const [clientes, setClientes] = useState([]);
 
     const [productos, setProductos] = useState();
 
@@ -29,11 +31,13 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const [compras, setCompras] = useState();
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
+    const handleCloseEdicionExito = () => setAlertaEdicionExito(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
+    const handleCloseAlertaDatosNulos = () => setAlertaDatosNulos(false);
 
     const [alertaTareaExito, setAlertaTareaExito] = useState(false);
-
+    const handleCloseAlertaTareaExito = () => setAlertaTareaExito(false);
 
     const [ticketEditable, setTicketEditable] = useState(data);
 
@@ -86,7 +90,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
             idVersion: ticketEditable.idVersion,
         }
 
-        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.notas === null || ticketEditado.notas === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
+        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
             setAlertaDatosNulos(true);
         } else {
 
@@ -100,16 +104,30 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     console.log(error);
                 });
 
+            data.id = ticketEditable.id;
+            data.titulo = ticketEditable.titulo;
+            data.categoria = ticketEditable.categoria;
+            data.criticidad = ticketEditable.criticidad;
+            data.estado = ticketEditable.estado;
+            data.fechaCreacion = ticketEditable.fechaCreacion;
+            data.idCliente = ticketEditable.idCliente;
+            data.descripcion = ticketEditable.descripcion;
+            data.medioContactoCliente = ticketEditable.medioContactoCliente;
+            data.idProducto = ticketEditable.idProducto;
+            data.idAsesor = ticketEditable.idAsesor;
+            data.nombreAsesor = ticketEditable.nombreAsesor;
+            data.areaAsesor = ticketEditable.areaAsesor;
+            data.notas = ticketEditable.notas;
+            data.idVersion = ticketEditable.idVersion;
 
-            setEditMode(false);
+
+            
             setAlertaEdicionExito(true);
-            getDataEnCurso();
-            getDataEnCurso();
+            setRefreshKey(oldKey => oldKey +1)
+            setEditMode(false);
         }
-
-
-
     }
+
     const handleCancelarEdicion = () => {
         setEditMode(false);
         setAlertaDatosNulos(false);
@@ -128,6 +146,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
     const handleDropdownChangeRecurso = (e) => {
 
         setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
+
     }
 
     const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
@@ -145,11 +164,11 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
     const getClientes = async () => {
         axios
-            .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
 
             })
             .then((response) => {
-                setClientes(response.data);
+                setClientes(response.data.data);
             }
             )
             .catch((error) => {
@@ -236,7 +255,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
     useEffect(() => {
-
         getProductos();
         getRecursos();
         getVersiones();
@@ -245,13 +263,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
     }, []);
-
-    useEffect(() => {
-
-        //makeDictionarProductsByClient();
-    }, []);
-
-
 
     return (
         <>
@@ -262,23 +273,27 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Ticket #{numeroTicket} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Alert show={alertaEdicionExito} variant='success'>
-                        Ticket editado con exito!
+                    <Snackbar open={alertaEdicionExito} autoHideDuration={2000} onClose={handleCloseEdicionExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaEdicionExito} variant='success'>
+                            Ticket editado con exito!
+                        </Alert>
+                    </Snackbar>
 
-                    </Alert>
-
-                    <Alert show={alertaTareaExito} variant='success'>
-                        Tarea creada con exito!
-
-                    </Alert>
+                    <Snackbar open={alertaTareaExito} autoHideDuration={2000} onClose={handleCloseAlertaTareaExito} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert show={alertaTareaExito} variant='success'>
+                            Tarea creada con exito!
+                        </Alert>
+                    </Snackbar>
 
 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
-                            <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                                No puedes dejar campos vacios!
-                            </Alert>
+                            <Snackbar open={alertaDatosNulos} autoHideDuration={2000} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                                <Alert show={alertaDatosNulos} key='danger' variant='danger'>
+                                    No puedes dejar campos vacios!
+                                </Alert>
+                            </Snackbar>
                             <Row className="mt-4">
 
                                 <Col>
@@ -345,7 +360,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
@@ -400,13 +414,16 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    {clientes.length > 0 ?
+                                                        clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                        : null
+
                                                     }
 
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {clientes ?
+                                                    {clientes.length > 0 ?
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
                                                                 setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"], ['idProducto']: null, ['idVersion']: null });
@@ -436,7 +453,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6 > CUIT: </h6>
                                         </Col>
                                         <Col>
-                                            {clientes ?
+                                            {clientes.length > 0 ?
                                                 clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
 
                                                 : null}
@@ -456,7 +473,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
-                                            {Object.keys(dicci).length > 0 ?
+                                            {dicci ? (                                            Object.keys(dicci).length > 0 ?
                                                 <Dropdown >
                                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                         {ticketEditable.idProducto ?
@@ -473,25 +490,23 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                                     setIdProductoFilter(compra["idProducto"]);
                                                                 }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
                                                             )) : null} */}
-                                                        {dicci ?
+                                                        {dicci && productos ?
                                                             dicci[idClienteFilter]?.map((idProducto) => (
-                                                                <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
-                                                                    (e) => {
-                                                                        setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
-                                                                        setIdProductoFilter(idProducto);
-                                                                    }
-                                                                } >
-                                                                    {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
-
-                                                                </Dropdown.Item>
-                                                            ))
-
-
-                                                            : <></>}
+                                                                productos.filter(producto => producto.id === idProducto && producto.estado === "Activo").map((producto) =>
+                                                                    <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
+                                                                        (e) => {
+                                                                            setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
+                                                                            setIdProductoFilter(idProducto);
+                                                                        }
+                                                                    } >
+                                                                        {producto["nombre"]}
+                                                                    </Dropdown.Item>
+                                                                ))) : <></>}
 
                                                     </Dropdown.Menu>
                                                 </Dropdown>
-                                                : <></>}
+                                                : <></>) : (<></>)}
+
                                         </Col >
 
                                     </Row >
@@ -527,10 +542,15 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                 <Dropdown.Menu>
                                                     {compras && productos && versiones ?
-                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
+                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter && versiones.find(version => version.id === compra.idVersion)['estado'] === "Activa")
                                                             .map((compra) => (
-                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
+                                                                versiones.filter(version => version.id === compra.idVersion).map((version) => (
+
+                                                                    //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
+                                                                    <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}>
+                                                                        {version.nombre}
+                                                                    </Dropdown.Item>
+                                                                )))) : <></>
 
                                                     }
                                                 </Dropdown.Menu>
@@ -588,7 +608,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h5> Título: </h5>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.titulo}
+                                            {data.titulo}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -596,7 +616,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Categoría: </h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.categoria}
+                                            {data.categoria}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -604,7 +624,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Criticidad:   </h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.criticidad}
+                                            {data.criticidad}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -613,7 +633,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Estado: </h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.estado}
+                                            {data.estado}
                                         </Col>
 
                                     </Row>
@@ -624,7 +644,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6>Fecha de creación:</h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.fechaCreacion.slice(0, 10)}
+                                            {data.fechaCreacion.slice(0, 10)}
                                         </Col>
 
                                     </Row>
@@ -636,7 +656,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                     <Row className="mt-1">
                                         <Col xs={10}>
                                             <p className="linea-box">
-                                                {ticketEditable.descripcion}
+                                                {data.descripcion}
                                             </p>
                                         </Col>
                                     </Row>
@@ -648,7 +668,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                     <Row className="mt-1">
                                         <Col xs={10}>
                                             <p className="linea-box">
-                                                {ticketEditable.notas}
+                                                {data.notas}
                                             </p>
                                         </Col>
                                     </Row>
@@ -668,8 +688,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                         </Col>
                                         <Col>
 
-                                            {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                            {clientes.length > 0 ?
+                                                clientes.filter(cliente => cliente.id === data.idCliente)[0]['razon social']
 
                                                 : null}
 
@@ -682,7 +702,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Medio de Contacto: </h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.medioContactoCliente}
+                                            {data.medioContactoCliente}
                                         </Col>
 
                                     </Row>
@@ -693,8 +713,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> CUIT: </h6>
                                         </Col>
                                         <Col>
-                                            {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+                                            {clientes.length > 0 ?
+                                                clientes.filter(cliente => cliente.id === data.idCliente)[0]['CUIT']
 
                                                 : null}
 
@@ -713,8 +733,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
-                                            {productos && ticketEditable.idProducto ?
-                                                productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
+                                            {productos && data.idProducto ?
+                                                productos.filter(producto => producto.id === data.idProducto)[0]['nombre']
                                                 : null}
                                         </Col>
                                     </Row>
@@ -725,8 +745,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Versión:   </h6>
                                         </Col>
                                         <Col>
-                                            {versiones && ticketEditable.idVersion ?
-                                                versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                            {versiones && data.idVersion ?
+                                                versiones.filter(version => version.id === data.idVersion)[0]['nombre']
                                                 : null}
                                         </Col>
 
@@ -741,7 +761,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre:</h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.nombreAsesor}
+                                            {data.nombreAsesor}
                                         </Col>
                                     </Row>
 
@@ -772,14 +792,20 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
-                            <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>
+                            {ticketEditable.estado === "Cancelado" ? (
+                                <></>
+                            ) : (
+                                <>
+                                    <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
+                                    <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>  
+                                </> 
+                            )}
                             <Col xs={-1}>
-                                <Button onClick={() => setEditMode(true)}>Editar</Button>
+                                <Button onClick={() => { setTicketEditable(data); setEditMode(true) }}>Editar</Button>
                             </Col>
                             <Col xs={1}>
                                 <Button variant="secondary" onClick={handleClose}>
-                                    Close
+                                    Cerrar
                                 </Button>
                             </Col>
                         </Fragment>
@@ -788,14 +814,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     )}
 
                     {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />) :
-                        (
-                            null)}
+                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} data={data}/>) :
+                        (null)}
 
                     {showCreacionTareaModal ? (
                         <ModalCreacionTarea numeroTicket={numeroTicket} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} setAlertaTareaExito={setAlertaTareaExito} />) :
-                        (
-                            null)}
+                        (null)}
                 </Modal.Footer>
             </Modal >
         </>

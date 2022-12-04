@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
-import "./ConsultarCargaHorasPorLegajo.css";
+import "./ConsultarReportesPersona.css";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ModalInformacionCargaHorasPorLegajo from "../../components/modalInformacionCargaHorasPorLegajo/ModalInformacionCargaHorasPorLegajo";
+import ModalInformacionReportesPersona from "../../components/modalInformacionReportesPersona/ModalInformacionReportesPersona";
 import NavbarRecursos from "../../components/navbarRecursos/NavbarRecursos";
 
-const InformacionCargaDeHorasPorLegajo = () => {
+const InformacionReportesPersona = () => {
 
     return (
         <Fragment>
@@ -17,7 +17,7 @@ const InformacionCargaDeHorasPorLegajo = () => {
 
                 <Row>
                     <Col >
-                        <h1>Consultar por legajo</h1>
+                        <h1>Consultar reportes por persona</h1>
                     </Col>
 
 
@@ -28,7 +28,7 @@ const InformacionCargaDeHorasPorLegajo = () => {
 
             <Container className="container-cards">
 
-                <ModalInformacionCargaHorasPorLegajo />
+                <ModalInformacionReportesPersona />
 
             </Container>
 
@@ -38,4 +38,4 @@ const InformacionCargaDeHorasPorLegajo = () => {
     );
 
 }
-export default InformacionCargaDeHorasPorLegajo
+export default InformacionReportesPersona

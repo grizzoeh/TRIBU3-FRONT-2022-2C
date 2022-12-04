@@ -12,11 +12,12 @@ const NavbarSoporte = () => {
             <Nav className="brand" href="/HomePSa">
 
                 <NavDropdown title="PSA Soporte" id="collasible-nav-dropdown">
-                    <NavDropdown.Item href="/">
+                    <NavDropdown.Item href="/">Home</NavDropdown.Item>
+                    <NavDropdown.Item href="/proyectos">
                         Módulo Proyectos
                     </NavDropdown.Item>
 
-                    <NavDropdown.Item href="/">
+                    <NavDropdown.Item href="/cargar-horas">
                         Módulo Recursos
                     </NavDropdown.Item>
                 </NavDropdown>

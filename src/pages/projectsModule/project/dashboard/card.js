@@ -2,7 +2,7 @@ import './task.css'
 import Card from 'react-bootstrap/Card';
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button"
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -15,7 +15,7 @@ export default function CardCustom({project}) {
     const [clients, setClients] = useState([]);
     const getAssignee = async () => {
         axios
-            .get(SERVER_NAMES.ASSIGNEES+ "/"+project.project_manager.id
+            .get(SERVER_NAMES.ASSIGNEES + "/" + project.project_manager.id
                 , {})
             .then((res) => {
                 setAssignee(res.data);
@@ -26,50 +26,52 @@ export default function CardCustom({project}) {
     };
     const getClients = async () => {
         axios
-        .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
             })
             .then((res) => {
-                setClients(res.data);
+                setClients(res.data.data);
             })
             .catch(() => {
                 setClients([]);
             });
     };
     useEffect(() => {
-            getAssignee();
-            getClients();
+        getAssignee();
+        getClients();
     }, []);
-    var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
-    "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
-var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
-return (
+    var statusMapping = {
+        "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
+        "development": "DESARROLLO", "production": "PRODUCCION", "post_production": "POST-PRODUCCION"
+    }
+    var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" }
+    return (
         <Row>
-                <Card>
-                    <Card.Header as="h4">Proyecto #{project.id}</Card.Header>
-                    <Card.Body>
-                        <Card.Title>Nombre: {project.name}</Card.Title>
-                        <Card.Text>
+            <Card>
+                <Card.Header as="h4">Proyecto #{project.id}</Card.Header>
+                <Card.Body>
+                    <Card.Title>Nombre: {project.name}</Card.Title>
+                    <Card.Text>
 
-                            <ul key="atributos">
-                                <li key="description"> Cliente: {
-                                    project.client_id!=null?clients.find( element => element.id == project.client_id)!=null?clients.find( element => element.id == project.client_id)["razon social"]:"":""
-                                } </li>
-                                <li key="estado"> Estado: {statusMapping[project.status]}</li>
-                                <li key="tipo">  Tipo: {typeMapping[project.type]}</li>
-                            </ul>
+                        <ul key="atributos">
+                            <li key="description"> Cliente: {
+                                project.client_id != null ? clients.find(element => element.id == project.client_id) != null ? clients.find(element => element.id == project.client_id)["razon social"] : "" : ""
+                            } </li>
+                            <li key="estado"> Estado: {statusMapping[project.status]}</li>
+                            <li key="tipo">  Tipo: {typeMapping[project.type]}</li>
+                        </ul>
 
 
 
-                        </Card.Text>
-                         <Card.Footer> Project manager: {assignee.Nombre} {assignee.Apellido} </Card.Footer> 
+                    </Card.Text>
+                    <Card.Footer> Project manager: {assignee.Nombre} {assignee.Apellido} </Card.Footer>
 
-                         <Button variant="primary" href={`/proyectos/${project.id}/ver-tareas/`}> Ver Tareas</Button>{' '}
-                         {' '}
-                         {' '}
+                    <Button variant="primary" href={`/proyectos/${project.id}/ver-tareas/`}> Ver Tareas</Button>{' '}
+                    {' '}
+                    {' '}
 
-                         <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '}
-                    </Card.Body>
-                </Card>
+                    <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '}
+                </Card.Body>
+            </Card>
 
 
 

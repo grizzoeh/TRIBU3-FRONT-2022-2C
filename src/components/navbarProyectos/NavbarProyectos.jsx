@@ -12,8 +12,11 @@ const NavbarProyectos = () => {
             <Nav className="brand" href="/HomePSa">
 
                 <NavDropdown title="PSA Proyectos" id="collasible-nav-dropdown">
-
                     <NavDropdown.Item href="/">
+                        Home
+                    </NavDropdown.Item>
+
+                    <NavDropdown.Item href="/cargar-horas">
                         Módulo Recursos
                     </NavDropdown.Item>
 

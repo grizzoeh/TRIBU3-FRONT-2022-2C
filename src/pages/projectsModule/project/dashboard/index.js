@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./header";
 import Body from "./body";
 import axios from "axios";
@@ -12,8 +12,8 @@ import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyec
 
 
 export default function Dashboard() {
-    const states =[{"name":"Todos"},{"name":"pending"},{"name":"analysis"},{"name":"development"},{"name":"production"},{"name":"post_production"}] ;
-    const types = [{"name": "Todos"},{"name": "client"}, {"name": "support"}];
+    const states = [{ "name": "Todos" }, { "name": "pending" }, { "name": "analysis" }, { "name": "development" }, { "name": "production" }, { "name": "post_production" }];
+    const types = [{ "name": "Todos" }, { "name": "client" }, { "name": "support" }];
 
     const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
     const [proyectos, setProyectos] = useState([]);
@@ -52,8 +52,8 @@ export default function Dashboard() {
         handleStateFilter2(e);
     };
     const handleStateFilter2 = (e) => {
-  
-        e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+
+        e === "Todos" ? setStateQuery('') : setStateQuery("status=" + e + "&");
         setState(statusMapping[e]);
         //e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
         //setState(statusMapping[e]);
@@ -100,7 +100,7 @@ export default function Dashboard() {
 
     const getAssignees = async () => {
         axios
-            .get(SERVER_NAMES.ASSIGNEES , {})
+            .get(SERVER_NAMES.ASSIGNEES, {})
             .then((res) => {
                 setAssignees(res.data);
             })
@@ -111,11 +111,11 @@ export default function Dashboard() {
 
     const getClients = async () => {
         axios
-        .get('/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes', {
+            .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
 
             })
             .then((res) => {
-                setClients(res.data);
+                setClients(res.data.data);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar los clientes', err);
@@ -123,16 +123,16 @@ export default function Dashboard() {
     };
 
     const getProyectos = async () => {
-        console.log(SERVER_NAME +url+stateQuery+typeQuery+assigneeQuery+clientQuery)
+        console.log(SERVER_NAME + url + stateQuery + typeQuery + assigneeQuery + clientQuery)
         axios
-            .get(SERVER_NAME + url+stateQuery+typeQuery+assigneeQuery+clientQuery, {})
+            .get(SERVER_NAME + url + stateQuery + typeQuery + assigneeQuery + clientQuery, {})
             .then((res) => {
                 setProyectos(res.data);
             })
             .catch((err) => {
                 alert('Se produjo un error al consultar los proyectos', err);
             });
-            
+
     };
 
 
@@ -153,19 +153,21 @@ export default function Dashboard() {
         getClients();
         getProyectos();
     }, []);
-    var statusMapping ={"Todos":"Todos","pending":"PENDIENTE","analysis":"EN ANALISIS",
-                "development":"DESARROLLO","production":"PRODUCCION","post_production":"POST-PRODUCCION"}
-    var typeMapping ={"Todos":"Todos","client":"DESARROLLO","support":"SOPORTE"}
-  
- //   statusMapping[tareaActual.status]
-    
+    var statusMapping = {
+        "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
+        "development": "DESARROLLO", "production": "PRODUCCION", "post_production": "POST-PRODUCCION"
+    }
+    var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" }
+
+    //   statusMapping[tareaActual.status]
+
     return (
         <>
-        <br></br>
-        <br></br>
-        <br></br>
-            <NavbarProyectos/>
-            <Header/>
+            <br></br>
+            <br></br>
+            <br></br>
+            <NavbarProyectos />
+            <Header />
 
             <Container className="container-filters">
                 <Row className="mt-5">
@@ -213,7 +215,7 @@ export default function Dashboard() {
                     </Col>
                 </Row>
 
-                    <Row className="mt-5">
+                <Row className="mt-5">
                     <Col>
                         <h4>Tipo</h4>
                     </Col>

@@ -16,7 +16,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso, setTicketResueltoExito }) => {
+const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso, setTicketResueltoExito, dataTicket}) => {
 
 
     const [reporte, setReporte] = useState("");
@@ -56,32 +56,27 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Reporte creado");
+                    const send_data_for_delete = {
+                        id: numeroTicket,
+                        type: "enCurso"
+                    }
+                    axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
+                        .then((data) => {
+                            if (data.data.ok) {
+                                console.log("Ticket eliminado");
+                                getDataEnCurso();
+                                getDataCerrados();
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-
-        const send_data_for_delete = {
-            id: numeroTicket,
-            type: "enCurso"
-        }
-
-        axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Ticket eliminado");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-
-        getDataEnCurso();
-        getDataEnCurso();
-        getDataCerrados();
-        getDataCerrados();
+       
         setTicketResueltoExito(true);
         onChangeshowReporteFinalModal(false);
         handleCloseTicket();
@@ -102,7 +97,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
     const onChangeFechaCierre = (e) => {
         setFechaCierre(e.target.value);
-        setTicketData({ ...TicketData, ["fechaCierre"]: e.target.value });
+        setTicketData({ ...TicketData, ["fechaCierre"]: e.target.value, ["estado"]: "Resuelto" });
 
     }
 
@@ -208,7 +203,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
 
                     <Col xs={8}>
                         <Button size="xs" variant="secondary" onClick={handleClose}>
-                            Close
+                            Cerrar
                         </Button>
                     </Col>
                     <Col>
