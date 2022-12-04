@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import Select from "react-select";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import "./modalInfoTicketEnCurso.css";
@@ -7,26 +8,16 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
-import ModalReporteFinal from "../modalReporteFinal/ModalReporteFinal";
-import ModalCreacionTarea from "../modalCreacionTarea/ModalCreacionTarea";
 import Alert from 'react-bootstrap/Alert';
-
-
-import { SERVER_NAME_SOPORTE } from "../../environment";
-
+import moment from "moment";
+import * as SERVER_NAMES from "../../APIRoutes";
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
+const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
 
 
     const [clientes, setClientes] = useState();
-
-    const [productos, setProductos] = useState();
-
-    const [versiones, setVersiones] = useState();
-
-    const [compras, setCompras] = useState();
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
 
@@ -35,10 +26,9 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
     //const [alertaTareaExito, setAlertaTareaExito] = useState(false);
 
 
-    const [ticketEditable, setTicketEditable] = useState(data);
+    const [proyectoEditable, setProyectoEditable] = useState(data);
 
     const [editMode, setEditMode] = useState(false);
-
 
     const [show, setShow] = useState(false);
 
@@ -46,13 +36,15 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
 
     const [idClienteFilter, setIdClienteFilter] = useState(data.idCliente);
 
+    const [recursos, setRecursos] = useState([]);
 
-    const [idProductoFilter, setIdProductoFilter] = useState(data.idProducto);
+    const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState("Seleccionar");
 
-    const [dicci, setDicci] = useState();
+    var inverseStatusMapping = {pending:"PENDIENTE",analysis:"EN ANALISIS",development:"DESARROLLO", production: "PRODUCCION", post_production: "POST PRODUCTION"};
+    var statusMapping ={Todos:"Todos",PENDIENTE:"pending","ANALISIS":"analysis",
+    DESARROLLO:"development",PRODUCCION:"production","POST PRODUCCION":"post_production"};
 
-    const [recursos, setRecursos] = useState();
-
+    var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" };
 
 
     const handleClose = () => {
@@ -69,42 +61,42 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
     const handleConfirmarEdicion = () => {
 
         const ticketEditado = {
-            id: ticketEditable.id,
-            titulo: ticketEditable.titulo,
-            categoria: ticketEditable.categoria,
-            criticidad: ticketEditable.criticidad,
-            estado: ticketEditable.estado,
-            fechaCreacion: ticketEditable.fechaCreacion,
-            idCliente: ticketEditable.idCliente,
-            descripcion: ticketEditable.descripcion,
-            medioContactoCliente: ticketEditable.medioContactoCliente,
-            idProducto: ticketEditable.idProducto,
-            idAsesor: ticketEditable.idAsesor,
-            nombreAsesor: ticketEditable.nombreAsesor,
-            areaAsesor: ticketEditable.areaAsesor,
-            notas: ticketEditable.notas,
-            idVersion: ticketEditable.idVersion,
+            id: proyectoEditable.id,
+            name: proyectoEditable.name,
+            categoria: proyectoEditable.categoria,
+            criticidad: proyectoEditable.criticidad,
+            estado: proyectoEditable.estado,
+            fechaCreacion: proyectoEditable.fechaCreacion,
+            idCliente: proyectoEditable.idCliente,
+            descripcion: proyectoEditable.descripcion,
+            medioContactoCliente: proyectoEditable.medioContactoCliente,
+            idProducto: proyectoEditable.idProducto,
+            idAsesor: proyectoEditable.idAsesor,
+            nombreAsesor: proyectoEditable.nombreAsesor,
+            areaAsesor: proyectoEditable.areaAsesor,
+            notas: proyectoEditable.notas,
+            idVersion: proyectoEditable.idVersion,
         }
 
         if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.notas === null || ticketEditado.notas === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
             setAlertaDatosNulos(true);
         } else {
 
-            axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
-                .then((data) => {
-                    if (data.data.ok) {
-                        console.log("Ticket editado");
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            // axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
+            //     .then((data) => {
+            //         if (data.data.ok) {
+            //             console.log("Ticket editado");
+            //         }
+            //     })
+            //     .catch((error) => {
+            //         console.log(error);
+            //     });
 
 
             setEditMode(false);
             setAlertaEdicionExito(true);
-            getDataEnCurso();
-            getDataEnCurso();
+            getDataProyectos();
+            //getDataProyectos();
         }
 
 
@@ -115,20 +107,29 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
         setAlertaDatosNulos(false);
     }
 
-    const onChangeTicketEditable = (e) => {
+    const onChangeProyectoEditable = (e) => {
 
-        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.value });
+        setProyectoEditable({ ...proyectoEditable, [e.target.name]: e.target.value });
     }
 
     const handleDropdownChange = (e) => {
 
-        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML });
+        setProyectoEditable({ ...proyectoEditable, [e.target.name]: e.target.innerHTML });
     }
 
-    const handleDropdownChangeRecurso = (e) => {
+    const handleStatusChange = (e) => {
+        setProyectoEditable({
+          ...proyectoEditable,
+          [e.target.name]: statusMapping[e.target.innerHTML],
+        });
+      };
 
-        setTicketEditable({ ...ticketEditable, [e.target.name]: e.target.innerHTML, ['idAsesor']: e.target.id });
-    }
+    const handleResourcesDropdownButtonChange = (e) => {
+        setProyectoEditable({
+          ...proyectoEditable,
+          resources: e.map((item) => item.legajo),
+        });
+      };
 
     const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
 
@@ -141,6 +142,61 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
     const onChangeshowCreacionTareaModal = (newSomeState) => {
         setShowCreacionTareaModal(newSomeState);
     };
+
+    const handleDropdownProjectManagerButtonChange = (e) => {
+        setProyectoEditable({ ...proyectoEditable, project_manager: e });
+        let selectedProjectManager = recursos.find(
+          (projectManager) => projectManager.legajo === e
+        );
+        setProjectManagerButtonTitle(
+          `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
+        );
+      };
+    
+
+    const getProjectManagerButtonTitle = (resources) => {
+        if (resources.length !== 0) {
+            if (data.project_manager) {
+                let selectedProjectManager = resources.find(
+                  (projectManager) =>
+                    projectManager.legajo === data.project_manager.id
+                );
+                setProjectManagerButtonTitle(
+                  typeof selectedProjectManager!== 'undefined'?`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`:"Selecionar"
+                );
+            }
+            else setProjectManagerButtonTitle("Seleccionar");
+          }
+    }
+
+    const mapProjectResourceObjectToName = (recursos, projectResource) => {
+        return projectResource ? 
+            recursos.filter((recurso) => recurso.legajo === projectResource.id)
+                    .map((recurso) => `${recurso.Nombre} ${recurso.Apellido}`)
+            : "Sin asignar" ;
+    }
+
+    const mapProjectResourceIdToName = (recursos, projectResourceId) => {
+        let asd = recursos.filter((recurso) => recurso.legajo === projectResourceId)
+                        .map((recurso) => `${recurso.Nombre} ${recurso.Apellido}`);
+        console.log("mapeado:")
+        console.log(projectResourceId   );
+        return asd;
+    }
+
+    const getResourceNameFor = (resources, nameMapper, projectField, defaultValue) => {
+        return resources 
+            ? nameMapper(resources, projectField)
+            : defaultValue;
+    }
+
+    const getResourceNameListFor = (resources, nameMapper, projectField, tag) => {
+        if (projectField != null) {
+            return projectField.map(
+                    (field) => <li key={`${tag}-${field}`}> {nameMapper(resources, field)} </li>
+                )
+        }
+    }
 
 
     const getClientes = async () => {
@@ -158,54 +214,12 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
         //setClientes([{ "id": 1, "razon social": "FIUBA", "CUIT": "20-12345678-2" }, { "id": 2, "razon social": "FSOC", "CUIT": "20-12345678-5" }, { "id": 3, "razon social": "Macro", "CUIT": "20-12345678-3" }])
     }
 
-    const getProductos = async () => {
-        axios
-            .get(SERVER_NAME_SOPORTE + "/productos/", {
-            })
-            .then((res) => {
-                setProductos(res.data.productos);
-
-
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
-    const getVersiones = async () => {
-        axios
-            .get(SERVER_NAME_SOPORTE + "/versiones/", {
-            })
-            .then((res) => {
-                setVersiones(res.data.versiones);
-
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
-    const getCompras = async () => {
-        axios
-            .get(SERVER_NAME_SOPORTE + "/compras/", {
-            })
-            .then((res) => {
-                setCompras(res.data.compras);
-                makeDictionarProductsByClient(res.data.compras);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
-
     const getRecursos = async () => {
         axios
-            .get('https://squad920222c-production.up.railway.app/recursos/empleados/empleado', {
-
-            })
+            .get(SERVER_NAMES.ASSIGNEES, {})
             .then((response) => {
-                // console.log(response);
                 setRecursos(response.data);
+                getProjectManagerButtonTitle(response.data)
             }
             )
             .catch((error) => {
@@ -213,45 +227,12 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
             });
     }
 
-    const makeDictionarProductsByClient = async (comprasresponse) => {
-        const dict = {};
-        comprasresponse.length > 0 ?
-            comprasresponse.map((compra) => {
-                if (!dict[compra.idCliente]) {
-                    dict[compra.idCliente] = [];
-
-                }
-                if (
-                    !dict[compra.idCliente].includes(compra.idProducto)
-                ) {
-                    dict[compra.idCliente].push(compra.idProducto);
-                }
-
-
-
-
-            }) : console.log("No hay compras");
-        setDicci(dict);
-    }
-
-
     useEffect(() => {
 
-        getProductos();
         getRecursos();
-        getVersiones();
         getClientes();
-        getCompras();
-
 
     }, []);
-
-    useEffect(() => {
-
-        //makeDictionarProductsByClient();
-    }, []);
-
-
 
     return (
         <>
@@ -259,7 +240,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
 
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
-                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Proyecto #{numeroProyecto} </Modal.Title>
+                    <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Proyecto #{data.id} </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Alert show={alertaEdicionExito} variant='success'>
@@ -284,10 +265,10 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                 <Col>
                                     <Row>
                                         <Col sm={2}>
-                                            <h6 > Título: </h6>
+                                            <h6 > Nombre: </h6>
                                         </Col>
                                         <Col sm={6}>
-                                            <Form.Control size="sm" type="text" name="titulo" value={ticketEditable.titulo} onChange={(e) => onChangeTicketEditable(e)} />
+                                            <Form.Control size="sm" type="text" name="name" value={proyectoEditable.name} onChange={(e) => onChangeProyectoEditable(e)} />
                                         </Col>
 
                                     </Row>
@@ -295,50 +276,91 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                     <Row className="mt-4">
 
                                         <Col xs={3}>
-                                            <h6>Categoría:</h6>
+                                            <h6>Estado:</h6>
                                         </Col>
                                         <Col >
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {ticketEditable.categoria}
+                                                    {proyectoEditable.categoria}
+                                                    {proyectoEditable.categoria
+                                                    ? inverseStatusMapping[proyectoEditable.status]
+                                                    : "Seleccionar"}
+
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="categoria" onClick={(e) => { handleDropdownChange(e); }}>Consulta</Dropdown.Item>
-                                                    <Dropdown.Item name="categoria" onClick={(e) => handleDropdownChange(e)}>Reclamo</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PENDIENTE </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> ANALISIS </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> DESARROLLO </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PRODUCCION </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> POST PRODUCCION </Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+
+                                        <Col xs={3}>
+                                            <h6>Recursos:</h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                        {recursos.length>0 && <Select
+                                            isMulti
+                                            options={recursos}
+                                            defaultValue={proyectoEditable.resources.map((resource) => {
+                                                let name = recursos.find((empleado) => empleado.legajo === resource).Nombre
+                                                let surname = recursos.find((empleado) => empleado.legajo === resource).Apellido
+                                                let id = recursos.find((empleado) => empleado.legajo === resource).legajo
+                                                let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                return label
+                                            })}
+                                            getOptionLabel={(resource) =>
+                                            `${resource.Nombre} ${resource.Apellido}`
+                                            }
+                                            getOptionValue={(resource) => resource.legajo}
+                                            onChange={handleResourcesDropdownButtonChange}
+                                        />}
+                                        </Col>
+
                                     </Row>
 
                                     <Row className="mt-4">
                                         <Col xs={3}>
-                                            <h6>Criticidad:</h6>
+                                            <h6>Project Manager:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {ticketEditable.criticidad}
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm"
+                                                    title={projectManagerButtonTitle} 
+                                                    onSelect={handleDropdownProjectManagerButtonChange}>
                                                 </Dropdown.Toggle>
+                                                
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Baja</Dropdown.Item>
-                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Media</Dropdown.Item>
-                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Alta</Dropdown.Item>
-                                                    <Dropdown.Item name="criticidad" onClick={(e) => handleDropdownChange(e)}>Crítica</Dropdown.Item>
+                                                {recursos.map((projectManager) => {
+                                                    return (
+                                                        <Dropdown.Item
+                                                        eventKey={projectManager.legajo}
+                                                        name="projectManager"
+                                                        >
+                                                        {`${projectManager.Nombre} ${projectManager.Apellido}`}
+                                                        </Dropdown.Item>
+                                                    );
+                                                    })}
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
                                     </Row>
 
-                                    <Row className="mt-4">
+                                    {/* <Row className="mt-4">
                                         <Col xs={3}>
                                             <h6>Estado:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {ticketEditable.estado}
+                                                    {proyectoEditable.estado}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
@@ -359,7 +381,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                             <h6>Fecha de creación: </h6>
                                         </Col>
                                         <Col xs={6}>
-                                            <Form.Control type="date" name="fechaCreacion" value={ticketEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeTicketEditable(e)} />
+                                            <Form.Control type="date" name="fechaCreacion" value={proyectoEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeProyectoEditable(e)} />
 
                                         </Col>
 
@@ -371,7 +393,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                     </Row>
                                     <Row className="mt-1">
 
-                                        <textarea className="box-descripcion" name="descripcion" value={ticketEditable.descripcion} onChange={(e) => onChangeTicketEditable(e)} />
+                                        <textarea className="box-descripcion" name="descripcion" value={proyectoEditable.descripcion} onChange={(e) => onChangeProyectoEditable(e)} />
 
 
                                     </Row>
@@ -380,9 +402,9 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         <h6> Notas </h6>
                                     </Row>
                                     <Row className="mt-1">
-                                        <textarea className="box-notas" name="notas" value={ticketEditable.notas} onChange={(e) => onChangeTicketEditable(e)} />
+                                        <textarea className="box-notas" name="notas" value={proyectoEditable.notas} onChange={(e) => onChangeProyectoEditable(e)} />
 
-                                    </Row>
+                                    </Row> */}
 
                                 </Col>
 
@@ -400,7 +422,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
+                                                    {clientes.filter(cliente => cliente.id === proyectoEditable.client_id)[0]['razon social']
                                                     }
 
                                                 </Dropdown.Toggle>
@@ -409,7 +431,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                                     {clientes ?
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
-                                                                setTicketEditable({ ...ticketEditable, ['idCliente']: cliente["id"], ['idProducto']: null, ['idVersion']: null });
+                                                                setProyectoEditable({ ...proyectoEditable, ['client_id']: cliente["id"]});
                                                                 setIdClienteFilter(cliente["id"]);
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
                                                         )) : null}
@@ -418,17 +440,17 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         </Col>
                                     </Row>
 
-                                    <Row className="mt-4">
+                                    {/* <Row className="mt-4">
                                         <Col>
                                             <h6> Medio de Contacto:</h6>
                                         </Col>
                                         <Col>
-                                            <Form.Control type="text" name="medioContactoCliente" value={ticketEditable.medioContactoCliente} onChange={(e) => onChangeTicketEditable(e)} />
+                                            <Form.Control type="text" name="medioContactoCliente" value={proyectoEditable.medioContactoCliente} onChange={(e) => onChangeProyectoEditable(e)} />
 
 
                                         </Col>
 
-                                    </Row>
+                                    </Row> */}
 
                                     <Row className="mt-2">
 
@@ -437,7 +459,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         </Col>
                                         <Col>
                                             {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+                                                clientes.filter(cliente => cliente.id === proyectoEditable.idCliente)[0]['CUIT']
 
                                                 : null}
 
@@ -447,71 +469,9 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
 
 
 
-                                    <Row className="mt-4">
-                                        <h5 className="titulo-subrayado"> Información Producto: </h5>
-                                    </Row>
-
-                                    <Row className="mt-2">
-                                        <Col>
-                                            <h6> Nombre: </h6>
-                                        </Col>
-                                        <Col>
-                                            {Object.keys(dicci).length > 0 ?
-                                                <Dropdown >
-                                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                        {ticketEditable.idProducto ?
-                                                            productos?.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
-                                                            : "Seleccionar"}
-                                                    </Dropdown.Toggle>
-
-                                                    <Dropdown.Menu>
-                                                        {/* {
-                                                        productos ?
-                                                            compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
-                                                                <Dropdown.Item name="nombreProducto" onClick={(e) => {
-                                                                    setTicketEditable({ ...ticketEditable, ['idProducto']: compra["idProducto"] });
-                                                                    setIdProductoFilter(compra["idProducto"]);
-                                                                }}>{productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']}</Dropdown.Item>
-                                                            )) : null} */}
-                                                        {dicci ?
-                                                            dicci[idClienteFilter]?.map((idProducto) => (
-                                                                <Dropdown.Item key={idProducto} name="nombreProducto" onClick={
-                                                                    (e) => {
-                                                                        setTicketEditable({ ...ticketEditable, ['idProducto']: idProducto, ['idVersion']: null });
-                                                                        setIdProductoFilter(idProducto);
-                                                                    }
-                                                                } >
-                                                                    {productos.filter(producto => producto.id === idProducto)[0]['nombre']}
-
-                                                                </Dropdown.Item>
-                                                            ))
 
 
-                                                            : <></>}
-
-                                                    </Dropdown.Menu>
-                                                </Dropdown>
-                                                : <></>}
-                                        </Col >
-
-                                    </Row >
-                                    {/* <Button onClick={console.log(Array
-                                        .from(new Set(compras?.filter(compra => compra.idCliente === idClienteFilter).map((compra) => (
-                                            productos?.filter(producto => producto.id === compra["idProducto"])[0]['nombre']
-                                        )))))}>asd</Button> */}
-
-                                    {/* <Button onClick={dicci[1] ? console.log("dic", dicci[1]) :
-                                        console.log("no")
-                                    }>loll</Button> */}
-
-
-
-
-
-
-
-
-
+                                {/* 
                                     <Row className="mt-4">
                                         <Col>
                                             <h6> Versión:</h6>
@@ -519,8 +479,8 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {ticketEditable.idVersion ?
-                                                        versiones?.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
+                                                    {proyectoEditable.idVersion ?
+                                                        versiones?.filter(version => version.id === proyectoEditable.idVersion)[0]['nombre']
                                                         : "Seleccionar"
                                                     }
                                                 </Dropdown.Toggle>
@@ -530,14 +490,14 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                                         compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
                                                             .map((compra) => (
                                                                 //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setTicketEditable({ ...ticketEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
+                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setProyectoEditable({ ...proyectoEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
 
                                                     }
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
 
-                                    </Row>
+                                    </Row> */}
 
                                     <Row className="mt-5">
                                         <h5 className="titulo-subrayado"> Información asesor: </h5>
@@ -550,10 +510,10 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                         <Col>
                                             <h5> Nombre: </h5>
                                         </Col>
-                                        <Col>
+                                        {/* <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {ticketEditable.nombreAsesor}
+                                                    {proyectoEditable.nombreAsesor}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
@@ -564,7 +524,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                                         )) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>
-                                        </Col>
+                                        </Col> */}
 
                                     </Row>
 
@@ -580,55 +540,60 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                         // FUERA DE EDIT MODE BODY
                         <div className="div-body-infoticket">
                             <Row >
-
                                 <Col>
-
                                     <Row >
                                         <Col sm={4}>
-                                            <h5> Título: </h5>
+                                            <h5> Nombre: </h5>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.titulo}
+                                            {proyectoEditable.name}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
                                         <Col sm={4}>
-                                            <h6> Categoría: </h6>
+                                            <h6> Estado: </h6>
                                         </Col>
                                         <Col >
-                                            {ticketEditable.categoria}
+                                            {inverseStatusMapping[proyectoEditable.status]}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
                                         <Col sm={4} >
-                                            <h6>Criticidad:   </h6>
+                                            <h6>Tipo:   </h6>
                                         </Col>
                                         <Col>
-                                            {ticketEditable.criticidad}
+                                           {typeMapping[proyectoEditable.type]}
                                         </Col>
                                     </Row>
-                                    <Row className="mt-2">
-
-                                        <Col sm={4}>
-                                            <h6>Estado: </h6>
-                                        </Col>
-                                        <Col >
-                                            {ticketEditable.estado}
-                                        </Col>
-
-                                    </Row>
-
 
                                     <Row className="mt-3">
                                         <Col sm={4}>
-                                            <h6>Fecha de creación:</h6>
+                                            <h6>Fecha estimada de inicio:</h6>
                                         </Col>
-                                        <Col >
-                                            {ticketEditable.fechaCreacion.slice(0, 10)}
+                                        <Col>
+                                            {proyectoEditable.estimated_start_date?moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format("DD.MM.YYYY"):"Sin asignar"}
                                         </Col>
-
+                                    </Row>
+                                    <Row className="mt-3">
+                                        <Col sm={4}>
+                                            <h6>Fecha estimada de fin:</h6>
+                                        </Col>
+                                        <Col>
+                                            {proyectoEditable.estimated_finalization_date?moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format("DD.MM.YYYY"):"Sin asignar"}
+                                        </Col>
                                     </Row>
 
+                                    <Row className="mt-3">
+                                        <Col sm={4}>
+                                            <h6>Cliente:</h6>
+                                        </Col>
+                                        <Col>
+                                            {clientes ?
+                                                clientes.filter(cliente => cliente.id === proyectoEditable.client_id)[0]['razon social']
+                                                : null
+                                            }
+                                        </Col>
+                                    </Row>
 
                                     <Row className="mt-3">
                                         <h6> Descripción </h6>
@@ -636,19 +601,7 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                     <Row className="mt-1">
                                         <Col xs={10}>
                                             <p className="linea-box">
-                                                {ticketEditable.descripcion}
-                                            </p>
-                                        </Col>
-                                    </Row>
-
-
-                                    <Row className="mt-2">
-                                        <h6> Notas </h6>
-                                    </Row>
-                                    <Row className="mt-1">
-                                        <Col xs={10}>
-                                            <p className="linea-box">
-                                                {ticketEditable.notas}
+                                                {proyectoEditable.description}
                                             </p>
                                         </Col>
                                     </Row>
@@ -656,96 +609,65 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                                 </Col>
 
                                 <Col>
-
+                                    <Row className="mt-6">
+                                        <h5 className="titulo-subrayado"> Información Staff: </h5>
+                                    </Row>
 
                                     <Row >
-                                        <h5 className="titulo-subrayado"> Información Cliente: </h5>
+                                        <Col sm={4}>
+                                            <h5> Project Manager: </h5>
+                                        </Col>
+                                        <Col >
+                                            {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
+                                        </Col>
                                     </Row>
-
                                     <Row className="mt-2">
-                                        <Col>
-                                            <h6> Nombre:  </h6>
+                                        <Col sm={4}>
+                                            <h6> Sponsor: </h6>
                                         </Col>
-                                        <Col>
-
-                                            {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['razon social']
-
-                                                : null}
-
+                                        <Col >
+                                        {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
                                         </Col>
                                     </Row>
-
                                     <Row className="mt-2">
+                                        <Col sm={4} >
+                                            <h6>Recursos: </h6>
+                                        </Col>
+                                        { proyectoEditable.resources.length > 0
+                                            ?  <Row>
+                                              <Col>
+                                                { proyectoEditable.resources.length > 0 
+                                                        ? <ul key="resources-list-view">
+                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, proyectoEditable.resources, "resources-view-item")} 
+                                                        </ul>
+                                                        : "Sin asignar"
+                                                }
+                                            </Col>  
 
-                                        <Col>
-                                            <h6> Medio de Contacto: </h6>
-                                        </Col>
-                                        <Col>
-                                            {ticketEditable.medioContactoCliente}
-                                        </Col>
+                                                </Row>
+                                            : <Col> Sin asignar</Col>
+                                        }
 
                                     </Row>
-
                                     <Row className="mt-2">
-
-                                        <Col>
-                                            <h6> CUIT: </h6>
+                                        <Col sm={4} >
+                                            <h6>Stakeholders: </h6>
                                         </Col>
-                                        <Col>
-                                            {clientes ?
-                                                clientes.filter(cliente => cliente.id === ticketEditable.idCliente)[0]['CUIT']
+                                        { proyectoEditable.stake_holders.length > 0
+                                            ?  <Row>
+                                              <Col>
+                                                { proyectoEditable.stake_holders.length > 0 
+                                                        ? <ul key="stake-holder-list-view">
+                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, proyectoEditable.stake_holders, "stake-holder-view-item")} 
+                                                        </ul>
+                                                        : "Sin asignar"
+                                                }
+                                            </Col>  
 
-                                                : null}
-
-                                        </Col>
-
+                                                </Row>
+                                            : <Col> Sin asignar</Col>
+                                        }
                                     </Row>
-
-
-
-                                    <Row className="mt-4">
-                                        <h5 className="titulo-subrayado"> Información Producto: </h5>
-                                    </Row>
-
-                                    <Row className="mt-2">
-                                        <Col>
-                                            <h6> Nombre: </h6>
-                                        </Col>
-                                        <Col>
-                                            {productos && ticketEditable.idProducto ?
-                                                productos.filter(producto => producto.id === ticketEditable.idProducto)[0]['nombre']
-                                                : null}
-                                        </Col>
-                                    </Row>
-
-                                    <Row className="mt-2">
-
-                                        <Col>
-                                            <h6> Versión:   </h6>
-                                        </Col>
-                                        <Col>
-                                            {versiones && ticketEditable.idVersion ?
-                                                versiones.filter(version => version.id === ticketEditable.idVersion)[0]['nombre']
-                                                : null}
-                                        </Col>
-
-                                    </Row>
-
-                                    <Row className="mt-4">
-                                        <h5 className="titulo-subrayado"> Información asesor: </h5>
-                                    </Row>
-
-                                    <Row>
-                                        <Col>
-                                            <h6> Nombre:</h6>
-                                        </Col>
-                                        <Col>
-                                            {ticketEditable.nombreAsesor}
-                                        </Col>
-                                    </Row>
-
-
 
                                 </Col>
 
@@ -772,14 +694,14 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
-                            <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>
+                            {/* <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col> */}
+                            {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
                             <Col xs={1}>
                                 <Button variant="secondary" onClick={handleClose}>
-                                    Close
+                                    Volver
                                 </Button>
                             </Col>
                         </Fragment>
@@ -787,10 +709,10 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
 
                     )}
 
-                    {showReporteFinalModal ? (
+                    {/* {showReporteFinalModal ? (
                         <ModalReporteFinal numeroProyecto={numeroProyecto} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />) :
                         (
-                            null)}
+                            null)} */}
 
                     {/* {showCreacionTareaModal ? (
                         <ModalCreacionTarea numeroProyecto={numeroProyecto} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} setAlertaTareaExito={setAlertaTareaExito} />) :
@@ -803,5 +725,5 @@ const ModalInfoTicketEnCurso = ({ numeroProyecto, data, getDataEnCurso, getDataC
 }
 
 
-export default ModalInfoTicketEnCurso;
+export default ModalInfoProyecto;
 

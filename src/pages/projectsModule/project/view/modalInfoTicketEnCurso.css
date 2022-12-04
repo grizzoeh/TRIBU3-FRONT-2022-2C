@@ -1,0 +1,67 @@
+.metricsType {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    align-items: center;
+    margin-bottom: 3%;
+    /* margin-top: 3%; */
+}
+
+.modalContent {
+    width: 85vw;
+    /* Occupy the 90% of the screen width */
+    max-width: 95vw;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* height: 750px; */
+    width: 100vw;
+    top: 100px;
+    background-color: white;
+}
+
+.subtitle {
+    /* align-self: center; */
+    padding-bottom: 5px;
+    font-weight: bold;
+    color: "black";
+    font-size: 30px;
+}
+
+.btn-info {
+    background-color: blue;
+    color: white;
+
+}
+
+.xd {
+    white-space: nowrap;
+}
+
+.box-descripcion {
+    height: 150px;
+    width: 81%;
+
+}
+
+.box-notas {
+    height: 150px;
+    width: 81%;
+
+}
+
+.titulo-subrayado {
+    border-bottom: 1px solid black;
+    padding-bottom: 5px;
+}
+
+.linea-box {
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 7px;
+
+}
