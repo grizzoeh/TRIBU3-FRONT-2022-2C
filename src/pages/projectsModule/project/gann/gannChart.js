@@ -45,8 +45,11 @@ export default function GannChart() {
     let assigneeQuery="";
     let priorityQuery="";
     const [assignee, setAssignee] = useState('Seleccionar');
-    const [priority, setPriority] = useState('---');
-  
+    const [assigneeID, setAssigneeID] = useState([]);
+    const [priority, setPriority] = useState([]);
+    const [maxDate, setMaxDate] = useState("2030-01-01T21:18:01");
+    const [minDate, setMinDate] = useState("2001-01-01T21:18:01");
+    const [allTareas, setAllTareas] = useState(1);
    
    const [filters, setFilters] = useState({
     "Estado": "Todas",
@@ -56,20 +59,32 @@ export default function GannChart() {
 });
 
 const handleAssigneeFilter = (e) => {
-  e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
-  e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
-  getTarea();
+  e==="Todos"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+  e==="Todos"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
+  setAssigneeID(e);
+  //getTarea();
 };
 
+useEffect(() => {
+    getTarea();
+  }, [assigneeID])
+
 const handlePriorityFilter = (e) => {
-  setPriority(e.target.value);
+  
   e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
-  getTarea();
+  setPriority(e.target.value);
+  //getTarea();
 };
+
+useEffect(() => {
+    getTarea();
+  }, [priority])
 
 const getTarea = async () => {
   let url = `/psa/projects/${params.id}/tasks/?`;
   setTareas([])
+  assigneeID==="Todos"?assigneeQuery="":assigneeQuery="assignee="+assigneeID+"&";
+  priority==0?priorityQuery="":priorityQuery="priority="+priority+"&";
   url += priorityQuery;
   url += assigneeQuery;
   console.log(priorityQuery);
@@ -86,6 +101,7 @@ const getTarea = async () => {
         (tarea.estimated_finalization_date!=null && tarea.estimated_hours_effort!=null ) )|| 
         (tarea.estimated_finalization_date==null &&( tarea.estimated_start_date!=null && tarea.estimated_hours_effort!=null ) )||
         (tarea.estimated_hours_effort==null  && ( tarea.estimated_start_date!=null&& tarea.estimated_hours_effort!=null ))))
+      
   };
 
 const getAssignees = async () => {
@@ -98,6 +114,28 @@ const getAssignees = async () => {
              alert('Se produjo un error al consultar los clientes', err);
          });
 };
+
+useEffect(() => {
+  let startDate = "2030-01-01T21:18:01"
+  let finDate = "2001-01-01T21:18:01"
+  
+  if (allTareas < 2 && tareas.length > 0) {
+    setAllTareas(2);
+    tareas.forEach(tarea => {
+        if (tarea.estimated_start_date < startDate) {
+            startDate = tarea.estimated_start_date; 
+            setMaxDate(tarea.estimated_start_date);
+        }
+        if (tarea.estimated_finalization_date > finDate) {
+            finDate = tarea.estimated_finalization_date;
+            setMinDate(tarea.estimated_finalization_date);
+        }
+        setMaxDate(finDate);
+        setMinDate(startDate);
+    });
+  }
+  
+   }, [tareas]);
 useEffect(() => {
      // const interval = setInterval(() => {
      //     getAssignees();
@@ -152,8 +190,8 @@ return (
                             title={assignee}
                             onSelect={handleAssigneeFilter}
                         >
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
-                                {"Ninguno"}
+                            <Dropdown.Item eventKey={"Todos"} name="management">
+                                {"Todos"}
                             </Dropdown.Item>
                             {assignees.map((assignee) => {
                                 return (
@@ -185,14 +223,20 @@ return (
         <br></br>
 
            
-        <Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={false} data={
+        {tareas.length > 0 ?<Chart chartType="Gantt" options={options} chartLanguage="es" legendToggle={false} data={
 
             [columns,...tareas.map((tarea) => {
+                /*
+                    Si hay tareas que no tienen cargado estimated_start_date 
+                    y estimated_finalization_date entonces se les pone
+                    como fechas la estimated_finalization_date maxima
+                    y la estimated_start_date minima. Decisión de diseño
+                */
                 return [tarea.id,
                      tarea.name,
                      tarea.description,
-                     moment(tarea.estimated_start_date, "YYYY-MM-DD").toDate(),
-                     moment(tarea.estimated_finalization_date, "YYYY-MM-DD").toDate(),
+                     tarea.estimated_start_date?moment(tarea.estimated_start_date, "YYYY-MM-DD").toDate():moment(minDate, "YYYY-MM-DD").toDate(),
+                     tarea.estimated_finalization_date?moment(tarea.estimated_finalization_date, "YYYY-MM-DD").toDate():moment(maxDate, "YYYY-MM-DD").toDate(),
                      tarea.estimated_hours_effort,
                      null,
                      null
@@ -207,7 +251,7 @@ return (
                      */
                  ]
              })]
-        }/>
+        }/>:<Col class="col-xs-1" align="center"><h4>No se encontraron tareas</h4></Col>}
         
 
         </Container>

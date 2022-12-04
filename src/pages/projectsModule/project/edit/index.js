@@ -85,7 +85,7 @@ export default function EditProject() {
     });
   };
   const navigateProjectDashboard = () => {
-    navigate("/proyectos");
+    navigate(`/proyectos/${params.id}/ver-proyecto/`);
   };
 
   const editProject = async () => {
@@ -134,17 +134,20 @@ export default function EditProject() {
           stakeholders: res.data.stake_holders.map(
             (stake_holder) => stake_holder.id
           ),
-          project_manager: res.data.project_manager.id,
+          project_manager: res.data.project_manager?res.data.project_manager.id:null,
         });
 
         if (projectManagers.length !== 0) {
-          let selectedProjectManager = projectManagers.find(
-            (projectManager) =>
-              projectManager.legajo == res.data.project_manager.id
-          );
-          setProjectManagerButtonTitle(
-            `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
-          );
+          if (res.data.project_manager) {
+              let selectedProjectManager = projectManagers.find(
+                (projectManager) =>
+                  projectManager.legajo == res.data.project_manager.id
+              );
+              setProjectManagerButtonTitle(
+                typeof selectedProjectManager!== 'undefined'?`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`:"Selecionar"
+              );
+          }
+          else setProjectManagerButtonTitle("Seleccionar");
         }
 
         if (resources.length !== 0) {
@@ -359,7 +362,7 @@ export default function EditProject() {
             </Col>
             <Col></Col>
             <Col xs={1}>
-              <Button onClick={handleSubmit}>Listo</Button>
+              <Button onClick={handleSubmit}>Guardar</Button>
             </Col>
           </Row>
         </form>

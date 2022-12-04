@@ -34,8 +34,8 @@ export default function NewTask() {
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
-  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
-  const [StatusbuttonTitle, setStatusButtonTitle] = useState('Seleccionar');
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
+  const [StatusbuttonTitle, setStatusButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
@@ -75,28 +75,10 @@ export default function NewTask() {
             console.log(error);
         });
   }
-
-  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Finalizada:"finished"};
+  var StatusMapping = {pending:"Pendiente",'in_progress':"En progreso",finished:"Terminada"};
+  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Terminada:"finished"};
   useEffect(() => {
-        const getTareas = async () => {
-            axios
-            .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
-            .then((res) => {
-                setTareas(res.data);
-                setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
-                //setDependencyButtonTitle(res.data.dependencies[0]);
-                //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
-                setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees);
-                //setStatusButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).status);
-                //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
-                //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
-                setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
-                setTicket(res.data.find((tarea) => tarea.id == params.idTarea).related_ticket);
-            })
-            .catch((err) => {
-                alert('Se produjo un error al consultar las tareas para el proyecto', err);
-            });
-        };
+        
 
         const getAssignees = async () => {
           axios
@@ -124,7 +106,7 @@ export default function NewTask() {
                     alert('SSe produjo un error al consultar los clientes', err);
                 });
         };*/
-        getTareas();
+        //getTareas();
         getAssignees();
         //if (AssigneebuttonTitle !== "Seleccionar") getEmpleadoAsignado();
         //else setEmpleadoAsignado(null);
@@ -132,6 +114,39 @@ export default function NewTask() {
         //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == params.idTarea).name);
    }, [params]);
    //[params,AssigneebuttonTitle]
+   const getTareas = async () => {
+    axios
+    .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
+    .then((res) => {
+        setTareas(res.data);
+        setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
+        //setDependencyButtonTitle(res.data.dependencies[0]);
+        //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
+        
+        //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id);
+        
+        if (res.data.find((tarea) => tarea.id == params.idTarea).assignees.length > 0) {
+            let selectedAssignee = clients.find((assignee) =>
+              assignee.legajo === res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id);
+            setAssigneeButtonTitle(
+              typeof selectedAssignee!== 'undefined'?`${selectedAssignee.Nombre} ${selectedAssignee.Apellido}`:"Selecionar"
+            );
+        }
+        else setAssigneeButtonTitle("Seleccionar");
+        
+        setStatusButtonTitle(StatusMapping[res.data.find((tarea) => tarea.id == params.idTarea).status]);
+        //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
+        //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
+        setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
+        setTicket(res.data.find((tarea) => tarea.id == params.idTarea).related_ticket);
+    })
+    .catch((err) => {
+        alert('Se produjo un error al consultar las tareas para el proyecto', err);
+    });
+  };
+   useEffect(() => {
+    getTareas();
+  }, [clients,params]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -155,6 +170,7 @@ export default function NewTask() {
 
   const handleAssigneeDropdownButtonChange = (e) => {
     if (e!== "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
+    //e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).legajo);
     e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
@@ -346,7 +362,11 @@ export default function NewTask() {
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={AssigneebuttonTitle.legajo}
+                /*
+                title={clients.find((client) => client.legajo === AssigneebuttonTitle).Nombre +
+                " " + clients.find((client) => client.legajo === AssigneebuttonTitle).Apellido}
+                */
+                title ={AssigneebuttonTitle}
                 //title="Seleccionar"
                 onSelect={handleAssigneeDropdownButtonChange}
               >
@@ -464,19 +484,19 @@ export default function NewTask() {
                 inverseStatusMapping[tareaActual.status]
               />*/}
               {/*<h4>{statusMapping[tareaActual.status]}</h4>*/}
-                <Dropdown title={StatusbuttonTitle}
+                <DropdownButton variant="secondary" title={StatusbuttonTitle}
                 >
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                    </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                    {/*<Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                    </Dropdown.Toggle>*/}
+                        {/*<Dropdown.Menu>*/}
+                            {/*<Dropdown.Item eventKey={"Ninguno"} name="status">
                                 {"Ninguno"}
-                            </Dropdown.Item>
+                            </Dropdown.Item>*/}
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Pendiente</Dropdown.Item>
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>En progreso</Dropdown.Item>
-                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Finalizada</Dropdown.Item>
-                        </Dropdown.Menu>
-            </Dropdown>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Terminada</Dropdown.Item>
+                        {/*</Dropdown.Menu>*/}
+            </DropdownButton>
           </Col>
           
           </Row>

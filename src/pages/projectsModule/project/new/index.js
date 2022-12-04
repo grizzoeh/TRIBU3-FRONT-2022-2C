@@ -64,7 +64,7 @@ export default function NewProject() {
   };
 
   const handleDropdownProjectManagerButtonChange = (e) => {
-    setProjectData({ ...projectData, projectManager: e });
+    setProjectData({ ...projectData, project_manager: e });
     let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == e);
     setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
   };
