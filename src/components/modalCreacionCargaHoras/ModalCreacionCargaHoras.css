@@ -1,43 +1,92 @@
 .container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    /* height: 750px; */
-    width: 100vw;
-    top: 100px;
-    background-color: white;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* height: 750px; */
+  width: 100vw;
+  top: 100px;
+  background-color: white;
 }
 
 #titulo1{
-    text-align: center;
-    margin-top: 3vw;
-    margin-right: 12vw;
-}
-
-#collasible-dropdown{
-  border-width: 1px;
-  border: solid;
   text-align: center;
-  border: 1px solid rgb(2, 2, 2);
+  margin-top: 20px;
+  margin-bottom: 20px;
   margin: 0 auto;
-  height: 2vw;
-  width: 20vw;
+}
+
+#titulo{
+text-align: center;
+margin-top: 2%;
+margin-bottom: 2%;
+margin: 0 auto;
+}
+
+#navBarProyectos{
+border-width: 1px;
+border: solid;
+text-align: center;
+height: 2vw;
+width: 30vw;
+margin: 0 auto;
+border: 1px solid rgb(2, 2, 2);
+font-size: 1vw;
+}
+
+#navBarTareas{
+border-width: 1px;
+border: solid;
+text-align: center;
+height: 2vw;
+width: 30vw;
+margin: 0 auto;
+border: 1px solid rgb(2, 2, 2);
+font-size: 1vw; 
 }
 
 
-#dropdown-item {
-  width:20vw;
-  text-align: center ;
+
+#calendarioBoton{
+text-align: center;
+margin-top: 20px;
+margin-bottom: 20px;
+margin: 0 auto;
 }
 
-#proyecto-dropdown{
-  width: 600vw;
-  text-align: center ;
+#Calendar{
+border-width: 1px;
+border: solid;
+text-align: center;
+width: 30vw;
+top:1vw;
+margin: 0 auto;
+border: 1px solid rgb(2, 2, 2);
+text-align: center ;
+position: relative;
 }
 
-#page {
-  align-items: center;
-  text-align: center;
+#button{
+border-width: 1px;
+border: solid;
+text-align: center;
+top:2vw;
+width: 30vw;
+margin: 0 auto;
+border: 1px solid rgb(2, 2, 2);
+text-align: center ;
+position: relative;
 }
+
+#ingresar-legajo {
+top:0.5%;
+width: 20vw;
+margin: 0 auto;
+text-align: center;
+position: relative;
+margin-top: 0.5%;
+margin-bottom: 0.5%;
+}
+
+
 

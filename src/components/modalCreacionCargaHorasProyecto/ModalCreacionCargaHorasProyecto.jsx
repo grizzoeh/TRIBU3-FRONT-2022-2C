@@ -20,7 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import TextField from '@mui/material/TextField';
 
 const MAXHORAS = 8;
-const MINHORAS = 0;
+const MINHORAS = 1;
 
 
 const ModalCreacionCargaDeHorasProyecto = () => {
@@ -30,15 +30,18 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [ProjectText, setProjectText] = useState('Seleccionar')
     const [mostrarHoras, setMostrarHoras] = useState(false);
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
-    let [cantidad_horas, setCount] = useState(0);
+    let [cantidad_horas, setCount] = useState(1);
     const [startDate, setStartDate] = useState(new Date());
+    const [finishDate, setFinishDate] = useState(new Date());
     const [proyectoNombre, setProyectoNombre] = useState();
     const [legajo, setLegajo] = useState();
     let [tarea_id, setTarea_id] = useState();
     const [tareaNombre, setTareaNombre] = useState();
     const [tareas, setTareas] = useState([]);
     const [proyectoId, setProyectoId] = useState();
-   
+    const today = new Date();
+    const limiteFecha = new Date(today.getFullYear(), today.getMonth(), (today.getDate() - 7));
+
     function procedimientoTareaElegida(nombreTarea, tareaId){
         setdropdownTareaText(nombreTarea)
         setMostrarHoras(true)
@@ -138,7 +141,14 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                 </div>               
                 }
                 <div id='calendarioBoton'>
-                    <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
+                    <Row>
+                        <Col>
+                            <h6>Selecciona Fecha Inicio</h6>
+                            <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} maxDate={today} minDate={limiteFecha}/>                             
+                            <h6>Selecciona Fecha Fin</h6>
+                            <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} maxDate={today} minDate={limiteFecha}/>
+                        </Col>
+                    </Row>
                     <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
                 </div> 
             </div>

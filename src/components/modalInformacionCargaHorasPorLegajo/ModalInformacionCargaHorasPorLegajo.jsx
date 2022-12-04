@@ -57,9 +57,11 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                                 <TableRow>
                                     <TableCell align="center">Legajo</TableCell>
                                     <TableCell align="center">Proyecto</TableCell>
+                                    <TableCell align="center">Categoria</TableCell>
                                     <TableCell align="center">Tarea</TableCell>
                                     <TableCell align="center">Horas</TableCell>
-                                    <TableCell align="center">Fecha</TableCell>
+                                    <TableCell align="center">Fecha Inicio</TableCell>
+                                    <TableCell align="center">Fecha Fin</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -68,10 +70,12 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                                         key={carga.legajo}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
-                                        <TableCell align="center">{carga.proyectoNombre}</TableCell>
-                                        <TableCell align="center">{carga.tareaNombre}</TableCell>
+                                        <TableCell align="center">{!carga.proyectoNombre? "-" : carga.proyectoNombre}</TableCell>
+                                        <TableCell align="center">{!carga.categoriaNombre? 'Proyecto' : carga.categoriaNombre}</TableCell>
+                                        <TableCell align="center">{!carga.tareaNombre? '-': carga.tareaNombre}</TableCell>
                                         <TableCell align="center">{carga.cantidad_horas}</TableCell>
-                                        <TableCell align="center">{carga.fecha}</TableCell>
+                                        <TableCell align="center">{carga.fecha_inicio}</TableCell>
+                                        <TableCell align="center">{carga.fecha_fin}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
