@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import * as SERVER_NAMES from "../../APIRoutes";
 
@@ -25,11 +25,12 @@ export default function NewProject() {
   };
 
   const findFormErrors = (proyecto) => {
-    if ( !proyecto.name || proyecto.name === '' ) {
+    if (!proyecto.name || proyecto.name === '') {
       alert("El proyecto debe tener un nombre");
       navigateProjectDashboard();
-      return null;}
-    else return 1; 
+      return null;
+    }
+    else return 1;
   }
 
   const initialProject = {
@@ -56,7 +57,7 @@ export default function NewProject() {
   const [resources, setResources] = useState([]);
   const [stakeholders, setStakeholders] = useState([]);
   const [clients, setClients] = useState([]);
-  
+
   const handleDropdownSponsorsButtonChange = (e) => {
     setProjectData({ ...projectData, sponsor: e });
     let selectedSponsor = sponsors.find((sponsor) => sponsor.legajo == e);
@@ -91,10 +92,10 @@ export default function NewProject() {
 
   const getClients = async () => {
     axios
-      .get("/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes", {})
+      .get("https://psa-soporte-squad7.herokuapp.com/tickets/clientes", {})
       .then((res) => {
         debugger
-        setClients(res.data);
+        setClients(res.data.data);
       })
       .catch((err) => {
         alert('Se produjo un error al consultar los clientes', err);
@@ -149,7 +150,7 @@ export default function NewProject() {
 
   return (
     <Fragment>
-      <NavbarProyectos/>
+      <NavbarProyectos />
       <Container className="container-title">
         <br />
         <br />

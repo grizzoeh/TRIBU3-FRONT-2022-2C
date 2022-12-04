@@ -1,42 +1,87 @@
-.container {
+ .container {
     position: relative;
     display: flex;
     justify-content: center;
-    flex-direction: column;
     /* height: 750px; */
     width: 100vw;
     top: 100px;
     background-color: white;
 }
 
-#titulo{
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  /* height: 750px; */
+  width: 100vw;
+  top: 100px;
+  background-color: white;
 }
 
-#collasible-dropdown{
-  border-width: 1px;
-  border: solid;
+#titulo1{
   text-align: center;
-  width: 300px;
-  border: 1px solid rgb(2, 2, 2);
-  text-align: center ;
-  transform: translate(167%, 0);
-  
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin: 0 auto;
 }
 
-#dropdown-item {
-  width: 300px;
-  text-align: center ;
-}
-
-#tuma{
-    width: 300px;
-  text-align: center ;
-}
-
-#page {
-  align-items: center;
+#navBarCatego {
+  top:1vw;
+  width: 20vw;
+  margin: 0 auto;
   text-align: center;
+  position: relative;
+  margin-bottom: 0.9%;
 }
+
+#calendarioBoton{
+text-align: center;
+margin-bottom: 20px;
+margin: 0 auto;
+margin-top: 0.9%;
+}
+
+#Calendar{
+border-width: 1px;
+border: solid;
+text-align: center;
+width: 20vw;
+top:1vw;
+margin: 0 auto;
+border: 1px solid rgb(2, 2, 2);
+text-align: center ;
+position: relative;
+}
+
+#botonera{
+top:2vw;
+width: 20vw;
+margin: 0 auto;
+text-align: center ;
+position: relative;
+}
+
+#Texto-seleccionar-horas{
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  margin-top: 0.9%;
+  margin-bottom: 2%;
+  }
+
+.Boton-botonera{
+  margin-left: 0.9%;
+  margin-right: 0.9%;
+}
+
+#confirmar{
+  top:2vw;
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center ;
+  position: relative;
+  margin-top: 0.9%;
+  }

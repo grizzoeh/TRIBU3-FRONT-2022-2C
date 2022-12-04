@@ -1,13 +1,37 @@
 .container-title {
     position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     background-color: white;
-    padding-bottom: 2%;
-    margin-top: -6%;
+    margin-top: -30px;
+}
 
+.toggleEstados {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.end {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
+}
+
+.filtros {
+    margin-top: 15px;
+}
+
+.botoncrearticket {
+    width: 130px;
+    height: 35px;
+}
+
+.spacer-line {
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .container-filters {
@@ -17,7 +41,6 @@
     align-items: left;
     flex-direction: column;
     background-color: white;
-
 }
 
 .container-cards {
@@ -31,4 +54,61 @@
 
 .row-cards {
     padding-bottom: 3%;
+}
+
+.spacer-line {
+    margin-top: -20px;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+.v-center {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.Enanálisis {
+    color: white;
+    background-color: blue!important;
+}
+
+.Derivado {
+    color: white;
+    background-color: #BF42A2!important;
+}
+
+.Cancelado {
+    color: white;
+    background-color: #808080!important;
+}
+
+.Baja {
+    color: white;
+    background-color: #83B1E8!important;
+}
+
+.Media {
+    color: white;
+    background-color: #C9BF00!important; 
+}
+
+.Alta {
+    color: white;
+    background-color: #E67223!important; 
+}
+
+.Crítica {
+    color: white;
+    background-color: #FF0000!important; 
+}
+
+.Resuelto {
+    color: white;
+    background-color: #00BA0C!important; 
+}
+
+.Abierto {
+    color: white;
+    background-color: #754D37!important;  
 }

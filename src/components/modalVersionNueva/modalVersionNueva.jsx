@@ -8,13 +8,15 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { SERVER_NAME_SOPORTE } from "../../environment";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 
 
-function ModalVersionNueva(idProducto) {
+function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, refreshAlert }) {
 
     const VersionNula = {
         "nombre": null,
-        "idProducto": idProducto.idProducto,
+        "idProducto": idProducto,
         "estado": null,
         "fechaRelease": null,
         "fechaDeprecacion": null
@@ -24,8 +26,16 @@ function ModalVersionNueva(idProducto) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setVersionData(VersionNula);
+        setShow(true);
+    }
 
+    const vertical = "top"
+    const horizontal = "center"
+    const [showVersionError, setVersionError] = useState(false);
+    const handleCloseVersionError = () => setVersionError(false);
+    const handleShowVersionError = () => setVersionError(true);
 
 
     const onChangeVersionEditable = (e) => {
@@ -33,27 +43,47 @@ function ModalVersionNueva(idProducto) {
     }
 
     const handleDropdownChange = (e) => {
-        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML });
+        setVersionData({ ...VersionData, [e.target.name]: e.target.innerHTML}); 
     }
 
     const crearVersion = async () => {
+        const newVersion = {
+            id: VersionData.id,
+            nombre: VersionData.nombre,
+            idProducto: VersionData.idProducto,
+            estado: VersionData.estado,
+            fechaRelease: VersionData.fechaRelease,
+            fechaDeprecacion: VersionData.fechaDeprecacion
+        }
+        if (newVersion.estado === "Deprecada" && newVersion.fechaDeprecacion === null) {
+            handleShowVersionError();
+            return;
+        }
         axios.post(SERVER_NAME_SOPORTE + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version creada");
-                    window.location.reload();
+                    refreshVersiones();
+                    refreshFiltradas();
+                    refreshAlert()
                     handleClose();
                 }
             })
             .catch((error) => {
+                handleShowVersionError();
                 console.log(error);
             });
     }
 
     return (
         <>
-            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>+ Nueva version</Button></Col>
+            <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>✚ Nueva version</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
+                <>
+                    <Snackbar open={showVersionError} autoHideDuration={2000} onClose={handleCloseVersionError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                        <Alert onClose={handleCloseVersionError} variant="danger" sx={{ width: '100%' }}>Error al crear version.</Alert>
+                    </Snackbar>
+                </>
                 <Modal.Header closeButton onClick={handleClose}>
                     <Modal.Title style={{ backgroundColor: "white", color: "black" }}>Crear nueva version: </Modal.Title>
                 </Modal.Header>
@@ -80,6 +110,14 @@ function ModalVersionNueva(idProducto) {
                             </Dropdown>
                         </Col>
                     </Row>
+                    {VersionData.estado === "Deprecada" ? (
+                        <Row className="campo">
+                            <Col className="v-center"><h6>Fecha deprecacion:</h6></Col>
+                            <Col><Form.Control name="fechaDeprecacion" type="date" placeholder="Fecha de deprecacion" onChange={(e) => onChangeVersionEditable(e)} /></Col>
+                        </Row>
+                    ):(
+                        <></>
+                    )}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button className="h-end" variant="secondary" onClick={handleClose}>Cerrar</Button>

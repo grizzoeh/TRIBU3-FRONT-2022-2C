@@ -18,6 +18,8 @@ const InformacionCargaDeHorasPorLegajo = lazy(() => import("../pages/ConsultarCa
 
 const ConsultarReportes = lazy(() => import("../pages/ConsultarReportes/ConsultarReportes"));
 
+const ConsultarReportesPersona = lazy(() => import("../pages/ConsultarReportesPersona/ConsultarReportesPersona"));
+
 const EliminarCargaHoras = lazy(() => import("../pages/EliminarCargaHoras/EliminarCargaHoras"));
 
 const CrearCategoria = lazy(() => import("../pages/crearCategoria/CrearCategoria"));
@@ -38,6 +40,7 @@ const RecursosRouter = () => {
                     <Route path="/consultar-por-legajo" element={<InformacionCargaDeHorasPorLegajo />} />
                     <Route path="/eliminar-carga-horas" element={<EliminarCargaHoras />} />
                     <Route path="/consultar-reportes-por-proyecto" element={<ConsultarReportes />} />
+                    <Route path="/consultar-reportes-por-persona" element={<ConsultarReportesPersona />} />
                     <Route path="/crear-categoria" element={<CrearCategoria />} />
                     <Route path="/modificar-categoria" element={<ModificarCategoria />} />
                     <Route path="/eliminar-categoria" element={<EliminarCategoria />} />

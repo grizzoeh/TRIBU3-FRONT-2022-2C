@@ -46,8 +46,8 @@ const Clientes = () => {
 
     const getClientes = async () => {
         axios
-            .get("/mocking/api/v1/sources/exchange/assets/754f50e8-20d8-4223-bbdc-56d50131d0ae/clientes-psa/1.0.0/m/api/clientes").then(res => {
-                const clientes = res.data;
+            .get("https://psa-soporte-squad7.herokuapp.com/tickets/clientes").then(res => {
+                const clientes = res.data.data;
                 setClientes(clientes);
             }).catch((err) => {
                 console.log(err);
@@ -141,7 +141,7 @@ const Clientes = () => {
                                         <td>{cliente.id}</td>
                                         <td>{cliente["razon social"]}</td>
                                         <td>{cliente.CUIT}</td>
-                                        <td><ModalVersionesAdquiridas cliente={cliente} /></td>
+                                        <td><ModalVersionesAdquiridas cliente={cliente} refreshClientes={getClientes} /></td>
                                     </tr>
                                 )) : <Row className="centered">No se encontraron clientes para los filtros dados</Row>
                             ) : (
