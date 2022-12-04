@@ -116,6 +116,7 @@ export default function NewTask() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (findFormErrors(projectData)) {
+      if (!projectData.parent_task) projectData.parent_task = params.idTarea;
       createTask();
       setProjectData(initialTask);
     }
