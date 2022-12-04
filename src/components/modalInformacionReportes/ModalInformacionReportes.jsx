@@ -30,7 +30,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const ModalInformacionReportes = () => {
-    const [proyecto,setProyecto] = useState([]);
     const [proyectoId,setProyectoId] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
@@ -38,17 +37,26 @@ const ModalInformacionReportes = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [listaTareas,setListaTareas] = useState([]);
-    const [proyectoName,setProyectoName] = useState('');
-    const [cargasDeProyecto, setCargasDeProyecto] = useState([]);
+    const [proyectoName,setProyectoNombre] = useState([]);
+    const [cargas, setCargas] = useState([]);
     const [sumaDesvios, setSumaDesvios] = useState(0);
     const [sumaHoras, setSumaHoras] = useState(0);
     const [sumaHorasTotales, setSumaHorasTotales]  = useState(0);
     const [sumaTiempoEstimado, setSumaTiempoEstimado] = useState(0);
     const [prueba,setPrueba] = useState([]);
-
-    const [input, setInput] = useState(0)
+    const [cargasDeProyecto, setCargasProyecto] = useState([])
+    const [alreadyThere, setAlreadyThere] = useState([])
 
     const [sumaHorasProyecto, setSumaHorasProyecto] = useState(0);
+
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
+        .then(res=>res.json())
+        .then((result)=>{
+            setCargasProyecto(result);
+        })
+    },[])
 
     const handleClick =() => {
           
@@ -56,29 +64,29 @@ const ModalInformacionReportes = () => {
         fetch(urlProyecto)
         .then(res=>res.json())
         .then((result)=>{
-            setProyecto(result)
+            setProyectoNombre(result.name)
         })    
-        setProyectoName(proyecto.name)
-        console.log('----------------------------')
-        console.log(proyectoName)
-
-        const urlCargasDeProyecto = `squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
-        fetch(urlCargasDeProyecto)
-        .then(res=>res.json())
-        .then((result)=>{
-            console.log(result)
-            setCargasDeProyecto(result)
-        })
-        console.log(cargasDeProyecto)
     }
+
+
 
     const cargarListaTareas = () => {
         setListaTareas([])
-        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + '/tasks/';
+        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + "/tasks/";
         fetch(urlTareas)
         .then((res) => res.json())
         .then((data) => {
             setListaTareas(data);
+        });
+    }
+
+    const cargarCargasProyecto = () => {
+        setAlreadyThere([])
+        const urlTareas = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
+        fetch(urlTareas)
+        .then((res) => res.json())
+        .then((data) => {
+            setCargas(data);
         });
     }
 
@@ -95,33 +103,12 @@ const ModalInformacionReportes = () => {
         return sumaTotalEstimativos;
     }
 
-    function calcularSumaHoras(idTarea){
-        let suma = 0;
-        let cargas = []
-        for (let i = 0; i<cargasDeProyecto.length;i++){
-            if(cargasDeProyecto[i].tarea_id == idTarea)
-                cargas.push(cargasDeProyecto[i]);   
-        }
-
-        for(let i=0; i<cargas.length; i++){
-            if(cargas[i].proyectoId == idTarea){
-                suma += cargas[i].cantidad_horas
-            }
-        }
-        
-        
-        return suma;
-    }
 
     function obtenerSumaHorasProyecto(){
-
-        console.log(proyectoId.type)
-        console.log(proyectoId)
         const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId + '/tiempoTotal';
         fetch(url)
         .then(res=>res.json())
         .then((result)=>{
-            console.log(result)
             setSumaHorasProyecto(result)
         })
 
@@ -130,33 +117,46 @@ const ModalInformacionReportes = () => {
 
     function calcularDesvio(sumaHoras, tiempoEstimado){
         
+        
         if (tiempoEstimado == null){
             return sumaHoras;
         }
-        return (sumaHoras - tiempoEstimado)
+        return (parseInt(sumaHoras) - parseInt(tiempoEstimado))
     }
 
-    function horasEstimadas(horasEstimadas){
-        if (horasEstimadas == null){
-            return 0
+    const horasEstimadas = (tarId) => {
+        let x=0
+        for(let i=0; i<listaTareas.length; i++){
+            if(listaTareas[i].id == tarId){
+                x=listaTareas[i].estimated_hours_effort
+            }
         }
-        return horasEstimadas;
+        return x
     }
 
-    function onChangeInput(e){
-        if (e.target.value){
-            setProyectoId(e.target.value)
+    const sumaHorasTareas = (tarId) =>{
+        let x=0
+        for(let i=0; i<cargasDeProyecto.length; i++){
+            if(cargasDeProyecto[i].tarea_id == tarId){
+                x+=cargasDeProyecto[i].cantidad_horas
+            }
         }
+        return x
     }
     
+    const asignarProyecto = (valor) =>{
+        if(valor != null){
+            setProyectoId(valor)
+        }
+    }
 
     return (
         <container>
             <div id = 'proyectoId'>
-                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{setProyectoId(e.target.value)}}/>
-                <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
+                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{asignarProyecto(e.target.value)}}/>
+                <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow();cargarCargasProyecto()}} id='boton'>Consultar Proyecto</Button></Col>
                 
-                <React.Fragment id = 'Tabla'>
+                <React.Fragment>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -183,14 +183,17 @@ const ModalInformacionReportes = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {show && listaTareas.map((tarea)=>(
+                                {show && cargas.map((carga)=>(
+                                    alreadyThere.includes(carga.tarea_id) ? null : (
+                                     alreadyThere.push(carga.tarea_id),
                                     <TableRow>
-                                        <TableCell align="center">{tarea.name}</TableCell>
-                                        <TableCell align="center">{tarea.id}</TableCell>
-                                        <TableCell align="center">{calcularSumaHoras(tarea.id)}</TableCell>
-                                        <TableCell align="center">{horasEstimadas(tarea.estimated_hours_effort)}</TableCell>
-                                        <TableCell align="center">{calcularDesvio(calcularSumaHoras(tarea.id), tarea.estimated_hours_effort)}</TableCell>
+                                        <TableCell align="center">{carga.tareaNombre}</TableCell>
+                                        <TableCell align="center">{carga.tarea_id}</TableCell>
+                                        <TableCell align="center">{sumaHorasTareas(carga.tarea_id)}</TableCell>
+                                        <TableCell align="center">{horasEstimadas(carga.tarea_id)}</TableCell>
+                                        <TableCell align="center">{calcularDesvio(sumaHorasTareas(carga.tarea_id), horasEstimadas(carga.tarea_id))}</TableCell>
                                     </TableRow>
+                                )
                                 ))}
                             </TableBody>
                         </Table>
@@ -200,22 +203,5 @@ const ModalInformacionReportes = () => {
         </container>
     );
 }; 
-/*<>{setSum(proyecto.cantidad_horas)}</> */
+
 export default ModalInformacionReportes
-
-/*calcularDesvio(calcularSumaHoras(tarea.id), tarea.estimated_hours_effort */
-
-/*
-{show && reporteProyectos.map((proyecto) => (
-                                        <TableRow
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                            <TableCell align="center">{proyecto.tareaNombre}</TableCell>
-                                            <TableCell align="center">{proyecto.tarea_id}</TableCell>
-                                            <TableCell align="center">{proyecto.cantidad_horas}</TableCell>
-                                            
-                                        </TableRow>
-                                        
-                                        ))}
-
-                                        
-*/
