@@ -80,12 +80,12 @@
 
 .Cancelado {
     color: white;
-    background-color: #BF0000!important;
+    background-color: #808080!important;
 }
 
 .Baja {
     color: white;
-    background-color: #71A1AD!important;
+    background-color: #83B1E8!important;
 }
 
 .Media {
@@ -110,5 +110,5 @@
 
 .Abierto {
     color: white;
-    background-color: #B97A57!important;  
+    background-color: #754D37!important;  
 }
