@@ -17,7 +17,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito }) => {
+const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCerrados, setTicketResueltoExito, setRefreshKey}) => {
 
     const vertical = "top"
     const horizontal = "center"
@@ -121,20 +121,14 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
             data.idVersion = ticketEditable.idVersion;
 
 
-            setEditMode(false);
+            
             setAlertaEdicionExito(true);
-            getDataEnCurso();
-            getDataEnCurso();
+            setRefreshKey(oldKey => oldKey +1)
+            setEditMode(false);
         }
-
-
-
     }
+
     const handleCancelarEdicion = () => {
-
-
-        // getDataEnCurso();
-        // getDataEnCurso();
         setEditMode(false);
         setAlertaDatosNulos(false);
     }
@@ -261,7 +255,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
     useEffect(() => {
-
         getProductos();
         getRecursos();
         getVersiones();
@@ -270,13 +263,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
 
     }, []);
-
-    useEffect(() => {
-
-        //makeDictionarProductsByClient();
-    }, []);
-
-
 
     return (
         <>
@@ -374,7 +360,6 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
                                                     <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
@@ -488,7 +473,7 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                                             <h6> Nombre: </h6>
                                         </Col>
                                         <Col>
-                                            {Object.keys(dicci).length > 0 ?
+                                            {dicci ? (                                            Object.keys(dicci).length > 0 ?
                                                 <Dropdown >
                                                     <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                         {ticketEditable.idProducto ?
@@ -520,7 +505,8 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
 
                                                     </Dropdown.Menu>
                                                 </Dropdown>
-                                                : <></>}
+                                                : <></>) : (<></>)}
+
                                         </Col >
 
                                     </Row >
@@ -806,8 +792,14 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
-                            <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>
+                            {ticketEditable.estado === "Cancelado" ? (
+                                <></>
+                            ) : (
+                                <>
+                                    <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col>
+                                    <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col>  
+                                </> 
+                            )}
                             <Col xs={-1}>
                                 <Button onClick={() => { setTicketEditable(data); setEditMode(true) }}>Editar</Button>
                             </Col>
@@ -822,14 +814,12 @@ const ModalInfoTicketEnCurso = ({ numeroTicket, data, getDataEnCurso, getDataCer
                     )}
 
                     {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />) :
-                        (
-                            null)}
+                        <ModalReporteFinal numeroTicket={numeroTicket} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} data={data}/>) :
+                        (null)}
 
                     {showCreacionTareaModal ? (
                         <ModalCreacionTarea numeroTicket={numeroTicket} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} setAlertaTareaExito={setAlertaTareaExito} />) :
-                        (
-                            null)}
+                        (null)}
                 </Modal.Footer>
             </Modal >
         </>

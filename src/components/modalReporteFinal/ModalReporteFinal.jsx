@@ -16,7 +16,7 @@ import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
 
-const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso, setTicketResueltoExito }) => {
+const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handleCloseTicket, getDataCerrados, getDataEnCurso, setTicketResueltoExito, dataTicket}) => {
 
 
     const [reporte, setReporte] = useState("");
@@ -56,10 +56,16 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Reporte creado");
+                    const send_data_for_delete = {
+                        id: numeroTicket,
+                        type: "enCurso"
+                    }
                     axios.delete(SERVER_NAME_SOPORTE + "/tickets/ticket/", { data: send_data_for_delete })
                         .then((data) => {
                             if (data.data.ok) {
                                 console.log("Ticket eliminado");
+                                getDataEnCurso();
+                                getDataCerrados();
                             }
                         })
                         .catch((error) => {
@@ -70,19 +76,7 @@ const ModalReportefinal = ({ numeroTicket, onChangeshowReporteFinalModal, handle
             .catch((error) => {
                 console.log(error);
             });
-
-        const send_data_for_delete = {
-            id: numeroTicket,
-            type: "enCurso"
-        }
-
-
-
-        getDataEnCurso();
-        getDataEnCurso();
-        getDataEnCurso();
-        getDataCerrados();
-        getDataCerrados();
+       
         setTicketResueltoExito(true);
         onChangeshowReporteFinalModal(false);
         handleCloseTicket();
