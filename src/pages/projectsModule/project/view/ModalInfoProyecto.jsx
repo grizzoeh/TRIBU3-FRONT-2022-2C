@@ -2,17 +2,15 @@ import React, { Fragment, useState, useEffect } from "react";
 import Select from "react-select";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import "./modalInfoTicketEnCurso.css";
+import "./modalInfoProyecto.css";
 import axios from "axios";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import moment from "moment";
 import * as SERVER_NAMES from "../../APIRoutes";
-import e from "cors";
 
 
 
@@ -22,6 +20,8 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     const [clientes, setClientes] = useState();
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
+
+    const [alertaBorradoExito, setAlertaBorradoExito] = useState(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
     
@@ -47,6 +47,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         setEditMode(false);
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
+        setAlertaBorradoExito(false);
     };
 
 
@@ -99,6 +100,25 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         setEditMode(false);
         setAlertaDatosNulos(false);
     }
+
+    const handleBorrado = async () => {
+        axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${data.id}`)
+          .then((data) => {
+            if (data.data.ok) {
+              console.log("Proyecto borrado");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+          setAlertaBorradoExito(true);
+          getDataProyectos();
+          setTimeout(() => {
+            // After 3 seconds set the show value to false
+            handleClose()
+          }, 1000)
+      }
 
     const getIdOrNull = (propertie) => {
         return propertie? propertie.id : null;
@@ -173,7 +193,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     const getResourceNameListFor = (resources, nameMapper, projectField, tag) => {
         if (projectField != null) {
             return projectField.map(
-                    (field) => <li key={`${tag}-${field}`}> {nameMapper(resources, field)} </li>
+                    (field) => <li key={`${tag}-${field.id}`}> {nameMapper(resources, field)} </li>
                 )
         }
     }
@@ -225,6 +245,9 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                     <Alert show={alertaEdicionExito} variant='success'>
                         Proyecto editado con exito.
 
+                    </Alert>
+                    <Alert show={alertaBorradoExito} variant='success'>
+                        Proyecto borrado con exito.
                     </Alert>
 
                     {editMode ? (
@@ -581,7 +604,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            {/* <Col xs={1}><Button onClick={() => setShowReporteFinalModal(true)}> Resolver </Button> </Col> */}
+                            <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
