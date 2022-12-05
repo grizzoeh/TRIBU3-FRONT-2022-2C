@@ -115,7 +115,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
           setAlertaBorradoExito(true);
           getDataProyectos();
           setTimeout(() => {
-            // After 3 seconds set the show value to false
+            // After 1 second
             handleClose()
           }, 1000)
       }
