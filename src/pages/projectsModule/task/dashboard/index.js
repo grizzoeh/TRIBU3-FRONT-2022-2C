@@ -78,7 +78,7 @@ export default function DashboardTareas() {
             setAssignees(res.data);
         })
         .catch((err) => {
-            alert('Se produjo un error al consultar los clientes', err);
+            alert('Se produjo un error al consultar los empleados', err);
         });
   };
 
@@ -315,18 +315,24 @@ export default function DashboardTareas() {
                                     <KanbanColumn    
                                             stateName={"Pendiente"}
                                             tasks={tareas.filter((t) => t.status === "pending")}
+                                            project={proyecto}
+                                            assignees={assignees}
                                     />
                                     </Col>
                                     <Col>
                                     <KanbanColumn
                                             stateName={"En progreso"}
                                             tasks={tareas.filter((t) => t.status === "in_progress")}
+                                            project={proyecto}
+                                            assignees={assignees}
                                         />
                                     </Col>
                                     <Col>
                                     <KanbanColumn
                                             stateName={"Finalizada"}
                                             tasks={tareas.filter((t) => t.status === "finished")}
+                                            project={proyecto}
+                                            assignees={assignees}
                                         />
                                     </Col>
                                 </Row>
