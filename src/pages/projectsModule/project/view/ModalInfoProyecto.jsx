@@ -24,10 +24,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
 
     const [alertaDatosNulos, setAlertaDatosNulos] = useState(false);
-
-    //const [alertaTareaExito, setAlertaTareaExito] = useState(false);
-
-
+    
     const [proyectoEditable,    setProyectoEditable] = useState(data);
 
     const [editMode, setEditMode] = useState(false);
@@ -36,11 +33,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
 
     const handleShow = () => setShow(true);
 
-    const [idClienteFilter, setIdClienteFilter] = useState(data.idCliente);
-
     const [recursos, setRecursos] = useState([]);
-
-    const [projectManagerButtonTitle, setProjectManagerButtonTitle] = useState("Seleccionar");
 
     var inverseStatusMapping = {pending:"PENDIENTE",analysis:"EN ANALISIS",development:"DESARROLLO", production: "PRODUCCION", post_production: "POST PRODUCTION"};
     var statusMapping ={Todos:"Todos",PENDIENTE:"pending","ANALISIS":"analysis",
@@ -54,9 +47,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         setEditMode(false);
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
-        //setAlertaTareaExito(false);
-
-
     };
 
 
@@ -65,23 +55,26 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         const proyectoEditado = {
             name: proyectoEditable.name,
             status: proyectoEditable.status,
-            estimated_finalization_date: proyectoEditable.estimated_finalization_date,
-            estimated_start_date: proyectoEditable.estimated_start_date,
+            estimated_finalization_date: moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format(),
+            estimated_start_date: moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format(),
             description: proyectoEditable.description,
-            client_id: proyectoEditable.client_id,
-            project_manager: proyectoEditable.project_manager,
-            sponsor: proyectoEditable.sponsor,
-            resources: proyectoEditable.resources,
-            stakeholders: proyectoEditable.stake_holders,
+            client: proyectoEditable.client_id,
+            project_manager: getIdOrNull(proyectoEditable.project_manager),
+            sponsor: getIdOrNull(proyectoEditable.sponsor),
+            resources: proyectoEditable.resources.map(r => getIdOrNull(r)),
+            stakeholders: proyectoEditable.stake_holders.map(r => getIdOrNull(r)),
         }
 
         if (proyectoEditado.name === "" || proyectoEditado.name === null) {
             setAlertaDatosNulos(true);
         } else {
 
+
+            console.log(proyectoEditado);
+
             axios
             .patch(
-              `${SERVER_NAMES.PROJECTS}/psa/projects/${proyectoEditado.id}`,
+              `${SERVER_NAMES.PROJECTS}/psa/projects/${data.id}`,
               proyectoEditado
             )
             .then((data) => {
@@ -96,15 +89,19 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
             setEditMode(false);
             setAlertaEdicionExito(true);
             getDataProyectos();
-            //getDataProyectos();
         }
 
 
 
     }
+
     const handleCancelarEdicion = () => {
         setEditMode(false);
         setAlertaDatosNulos(false);
+    }
+
+    const getIdOrNull = (propertie) => {
+        return propertie? propertie.id : null;
     }
 
     const onChangeProyectoEditable = (e) => {
@@ -127,44 +124,23 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     const handleResourcesDropdownButtonChange = (e) => {
         setProyectoEditable({
           ...proyectoEditable,
-          resources: e.map((item) => item.legajo),
+          resources: e.map((item) => mapResourceIdToObject(item)),
         });
       };
 
     const handleStakeHolderssDropdownButtonChange = (e) => {
         setProyectoEditable({
           ...proyectoEditable,
-          stakeholders: e.map((item) => item.legajo),
+          stake_holders: e.map((item) => mapResourceIdToObject(item)),
         });
+        console.log(proyectoEditable);
+
       };
 
-    const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
+    const mapResourceIdToObject= (resource) => {
+        return {"id": resource.legajo}
+    }
 
-    const onChangeshowReporteFinalModal = (newSomeState) => {
-        setShowReporteFinalModal(newSomeState);
-    };
-
-    const [showCreacionTareaModal, setShowCreacionTareaModal] = useState(false);
-
-    const onChangeshowCreacionTareaModal = (newSomeState) => {
-        setShowCreacionTareaModal(newSomeState);
-    };
-
-    // const handleDropdownProjectManagerButtonChange = (e) => {
-    //     setProyectoEditable({ ...proyectoEditable, project_manager: e });
-
-    //     console.log("selected");
-    //     console.log(e)
-    //     let selectedProjectManager = recursos.find(
-    //       (projectManager) => projectManager.legajo === e
-    //     );
-    //     console.log(selectedProjectManager);
-
-    //     setProjectManagerButtonTitle(
-    //       `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
-    //     );
-    //   };
-    
     const handleDropdownProjectManagerButtonChange = (e) => {
         let newPm = {"id": e.legajo};
         setProyectoEditable({...proyectoEditable, project_manager: newPm});
@@ -173,23 +149,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     const handleDropdownSponsorButtonChange = (e) => {
         let newSponsor = {"id": e.legajo};
         setProyectoEditable({...proyectoEditable, sponsor: newSponsor});
-    }
-
-    
-
-    const getProjectManagerButtonTitle = (resources) => {
-        if (resources.length !== 0) {
-            if (data.project_manager) {
-                let selectedProjectManager = resources.find(
-                  (projectManager) =>
-                    projectManager.legajo === data.project_manager.id
-                );
-                setProjectManagerButtonTitle(
-                  typeof selectedProjectManager!== 'undefined'?`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`:"Selecionar"
-                );
-            }
-            else setProjectManagerButtonTitle("Seleccionar");
-          }
     }
 
     const mapProjectResourceObjectToName = (recursos, projectResource) => {
@@ -240,7 +199,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
             .get(SERVER_NAMES.ASSIGNEES, {})
             .then((response) => {
                 setRecursos(response.data);
-                getProjectManagerButtonTitle(response.data)
             }
             )
             .catch((error) => {
@@ -268,12 +226,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                         Proyecto editado con exito.
 
                     </Alert>
-
-                    {/* <Alert show={alertaTareaExito} variant='success'>
-                        Tarea creada con exito!
-
-                    </Alert> */}
-
 
                     {editMode ? (
                         //DENTRO DE EDIT MODE BODY
@@ -366,7 +318,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                                         clientes.map((cliente) => (
                                                             <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
                                                                 setProyectoEditable({ ...proyectoEditable, ['client_id']: cliente["id"]});
-                                                                setIdClienteFilter(cliente["id"]);
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
@@ -378,18 +329,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                         <h6> Descripción </h6>
                                     </Row>
                                     <Row className="mt-1">
-
                                         <textarea className="box-descripcion" name="description" value={proyectoEditable.description} onChange={(e) => onChangeProyectoEditable(e)} />
-
-
                                     </Row>
-
-
                                 </Col>
 
                                 <Col>
-
-
                                     <Row >
                                         <h5 className="titulo-subrayado"> Información Staff: </h5>
                                     </Row>
@@ -487,16 +431,9 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                                 onChange={handleStakeHolderssDropdownButtonChange}
                                             />}
                                         </Col>
-
                                     </Row>
-
                                 </Col >
-
                             </Row >
-
-
-
-
                         </div >
                     ) : (
                         // FUERA DE EDIT MODE BODY
@@ -533,7 +470,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                             <h6>Fecha estimada de inicio:</h6>
                                         </Col>
                                         <Col>
-                                            {proyectoEditable.estimated_start_date?moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format("DD.MM.YYYY"):"Sin asignar"}
+                                            {proyectoEditable.estimated_start_date?moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format("DD/MM/YYYY"):"Sin asignar"}
                                         </Col>
                                     </Row>
                                     <Row className="mt-3">
@@ -541,7 +478,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                             <h6>Fecha estimada de fin:</h6>
                                         </Col>
                                         <Col>
-                                            {proyectoEditable.estimated_finalization_date?moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format("DD.MM.YYYY"):"Sin asignar"}
+                                            {proyectoEditable.estimated_finalization_date?moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format("DD/MM/YYYY"):"Sin asignar"}
                                         </Col>
                                     </Row>
 
@@ -551,11 +488,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                         </Col>
                                         <Col>
                                             {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
-
-                                            {/* {clientes ?
-                                                clientes.filter(cliente => cliente.id === proyectoEditable.client_id)[0]['razon social']
-                                                : null
-                                            } */}
                                         </Col>
                                     </Row>
 
@@ -632,20 +564,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                             : <Col> Sin asignar</Col>
                                         }
                                     </Row>
-
                                 </Col>
-
                             </Row>
-
-
-
                         </div>
                     )
                     }
-
-
-
-
                 </Modal.Body >
                 <Modal.Footer>
                     {editMode ? (
@@ -669,8 +592,6 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                 </Button>
                             </Col>
                         </Fragment>
-
-
                     )
                     }
                 </Modal.Footer>
