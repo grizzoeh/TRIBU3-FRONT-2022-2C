@@ -55,13 +55,14 @@ export default function NewTask() {
   const mapIDTaskToTaskObj= (task) => {
     //console.log(clients);
     //console.log(assignees);
-    
+    /*
     return tareas.map((tarea) => {
       let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
       return tareaPadre?tareaPadre:null
-    })
-    //let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
-    //return tareaPadre
+    })*/
+
+    let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
+    return tareaPadre
   }
 
   const handleGuardado = async () => {
@@ -264,7 +265,7 @@ export default function NewTask() {
               
         </Row>*/}
 
-          {tareaActual.parent_task_id && <Row className="mt-5">
+          {/*tareaActual.parent_task_id && <Row className="mt-5">
             <Col>
               <h4>Tarea padre</h4>
             </Col>
@@ -285,9 +286,10 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              {mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)}
-            </Col>
-          </Row>}
+              {/*mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)*/}
+                {/*<Col><Link to={`/proyectos/${params.id}/tareas/${mapIDTaskToTaskObj(tareaActual).id}/ver-tarea/`}><Button>{mapIDTaskToTaskObj(tareaActual).name}</Button></Link></Col>*/}
+              {/*</Col>*/}
+          {/*</Row>*/}
 
           {/* <Row className="mt-5">
             <Col>
@@ -408,7 +410,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_start_date"
                 //value={tareaActual.estimated_start_date}
-                placeholder={moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
+                placeholder={tareaActual.estimated_start_date?moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}
                 onChange={(e) => onChangeProjectData(e)}
               />
               </Col>
@@ -425,7 +427,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_finalization_date"
                 //value={tareaActual.estimated_finalization_date}
-                placeholder={moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
+                placeholder={tareaActual.estimated_finalization_date?moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}
                 onChange={(e) => onChangeProjectData(e)}
             />
             {/*<h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>*/}
