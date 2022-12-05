@@ -163,9 +163,9 @@ export default function Dashboard() {
 
     return (
         <>
+            {/* <br></br>
             <br></br>
-            <br></br>
-            <br></br>
+            <br></br> */}
             <NavbarProyectos />
             <Header />
 
@@ -258,7 +258,13 @@ export default function Dashboard() {
                 </Row>
             </Container>
 
-            <Body projects={proyectos} />
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <Body projects={proyectos} getProjects={getProyectos} recursos={assignees}/>
         </>
     );
 }

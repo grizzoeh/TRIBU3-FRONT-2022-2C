@@ -5,8 +5,10 @@ import Button from "react-bootstrap/Button"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import * as SERVER_NAMES from "../../APIRoutes";
+import ModalInfoProyecto from "../view/ModalInfoProyecto";
 
-export default function CardCustom({project}) {
+
+export default function CardCustom({project, getProjects, resources}) {
     {/*assignee.legajo!=project.project_manager.id?getAssignee():*/}
     useEffect(() => {
         getAssignee();
@@ -60,8 +62,6 @@ export default function CardCustom({project}) {
                             <li key="tipo">  Tipo: {typeMapping[project.type]}</li>
                         </ul>
 
-
-
                     </Card.Text>
                     <Card.Footer> Project manager: {assignee.Nombre} {assignee.Apellido} </Card.Footer>
 
@@ -69,7 +69,8 @@ export default function CardCustom({project}) {
                     {' '}
                     {' '}
 
-                    <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '}
+                    {/* <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '} */}
+                    <ModalInfoProyecto data={project} getDataProyectos={getProjects} recursos2={resources}/>
                 </Card.Body>
             </Card>
 

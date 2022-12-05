@@ -15,12 +15,28 @@ export default function TaskCard({ task, index }) {
           ref={draggableProvider.innerRef}
           {...draggableProvider.dragHandleProps}
         >
+
+        {/* ACA EMPIEZA TODO LO DE LA CARD: 
+          * ID DE LA TASK
+          * NOMBRE
+          * PRIORIDAD
+          * FECHA ESTIMADA DE FINALIZACION:
+          * DESCRIPCION NO
+
+        */}
         <h2 className='task-name over-hide'>{task.name}</h2>
         <p className='task-details'>{task.description}</p>
         <p className='task-details'>{task.estimatedHoursEffort}</p>
         <form action={`/proyectos/${params.id}/tareas/${task.id}/ver-tarea/`} >
           <input type="submit" value="Ver tarea"/>
-        </form>      
+        </form>  
+        {/* ACA TERMINA TODO LO DE LA CARD: */}
+
+
+        {/* ACA VOY A TOCAR YO */}
+          
+        {/* ACA TERMINA LO QUE A TOCAR YO */}
+
       </div>
       )
     

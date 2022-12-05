@@ -2,15 +2,11 @@ import StateContainer from "./StateContainer";
 
 // To do: Fetch projects from API.
 
-export default function Body({projects}) {
+export default function Body({projects, getProjects, resources}) {
 
     return (
         <>
-                    <StateContainer
-                                    projects={projects}
-                    />
-
-
+            <StateContainer projects={projects} getProjects={getProjects} resources={resources}/>
         </>
     );
 }
