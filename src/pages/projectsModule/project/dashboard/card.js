@@ -69,7 +69,7 @@ export default function CardCustom({project, getProjects, resources}) {
                     {' '}
                     {' '}
 
-                    <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '}
+                    {/* <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '} */}
                     <ModalInfoProyecto data={project} getDataProyectos={getProjects} recursos2={resources}/>
                 </Card.Body>
             </Card>

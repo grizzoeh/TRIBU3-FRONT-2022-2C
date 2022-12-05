@@ -7,10 +7,12 @@ import axios from "axios";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import moment from "moment";
 import * as SERVER_NAMES from "../../APIRoutes";
+import e from "cors";
 
 
 
@@ -26,7 +28,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
     //const [alertaTareaExito, setAlertaTareaExito] = useState(false);
 
 
-    const [proyectoEditable, setProyectoEditable] = useState(data);
+    const [proyectoEditable,    setProyectoEditable] = useState(data);
 
     const [editMode, setEditMode] = useState(false);
 
@@ -60,38 +62,36 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
 
     const handleConfirmarEdicion = () => {
 
-        const ticketEditado = {
-            id: proyectoEditable.id,
+        const proyectoEditado = {
             name: proyectoEditable.name,
-            categoria: proyectoEditable.categoria,
-            criticidad: proyectoEditable.criticidad,
-            estado: proyectoEditable.estado,
-            fechaCreacion: proyectoEditable.fechaCreacion,
-            idCliente: proyectoEditable.idCliente,
-            descripcion: proyectoEditable.descripcion,
-            medioContactoCliente: proyectoEditable.medioContactoCliente,
-            idProducto: proyectoEditable.idProducto,
-            idAsesor: proyectoEditable.idAsesor,
-            nombreAsesor: proyectoEditable.nombreAsesor,
-            areaAsesor: proyectoEditable.areaAsesor,
-            notas: proyectoEditable.notas,
-            idVersion: proyectoEditable.idVersion,
+            status: proyectoEditable.status,
+            estimated_finalization_date: proyectoEditable.estimated_finalization_date,
+            estimated_start_date: proyectoEditable.estimated_start_date,
+            description: proyectoEditable.description,
+            client_id: proyectoEditable.client_id,
+            project_manager: proyectoEditable.project_manager,
+            sponsor: proyectoEditable.sponsor,
+            resources: proyectoEditable.resources,
+            stakeholders: proyectoEditable.stake_holders,
         }
 
-        if (ticketEditado.id === null || ticketEditado.id === "" || ticketEditado.titulo === null || ticketEditado.titulo === "" || ticketEditado.categoria === null || ticketEditado.categoria === "" || ticketEditado.criticidad === null || ticketEditado.criticidad === "" || ticketEditado.estado === null || ticketEditado.estado === "" || ticketEditado.fechaCreacion === null || ticketEditado.fechaCreacion === "" || ticketEditado.idCliente === null || ticketEditado.idCliente === "" || ticketEditado.descripcion === null || ticketEditado.descripcion === "" || ticketEditado.medioContactoCliente === null || ticketEditado.medioContactoCliente === "" || ticketEditado.idProducto === null || ticketEditado.idProducto === "" || ticketEditado.idAsesor === null || ticketEditado.idAsesor === "" || ticketEditado.nombreAsesor === null || ticketEditado.nombreAsesor === "" || ticketEditado.areaAsesor === null || ticketEditado.areaAsesor === "" || ticketEditado.notas === null || ticketEditado.notas === "" || ticketEditado.idVersion === null || ticketEditado.idVersion === "") {
+        if (proyectoEditado.name === "" || proyectoEditado.name === null) {
             setAlertaDatosNulos(true);
         } else {
 
-            // axios.patch(SERVER_NAME_SOPORTE + "/tickets/ticket", ticketEditado)
-            //     .then((data) => {
-            //         if (data.data.ok) {
-            //             console.log("Ticket editado");
-            //         }
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
-
+            axios
+            .patch(
+              `${SERVER_NAMES.PROJECTS}/psa/projects/${proyectoEditado.id}`,
+              proyectoEditado
+            )
+            .then((data) => {
+              if (data.status === 200) {
+                console.log("Proyecto editado");
+              }
+            })
+            .catch((err) => {
+              alert("Se produjo un error al editar el proyecto", err);
+            });
 
             setEditMode(false);
             setAlertaEdicionExito(true);
@@ -131,6 +131,13 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         });
       };
 
+    const handleStakeHolderssDropdownButtonChange = (e) => {
+        setProyectoEditable({
+          ...proyectoEditable,
+          stakeholders: e.map((item) => item.legajo),
+        });
+      };
+
     const [showReporteFinalModal, setShowReporteFinalModal] = useState(false);
 
     const onChangeshowReporteFinalModal = (newSomeState) => {
@@ -143,15 +150,31 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         setShowCreacionTareaModal(newSomeState);
     };
 
+    // const handleDropdownProjectManagerButtonChange = (e) => {
+    //     setProyectoEditable({ ...proyectoEditable, project_manager: e });
+
+    //     console.log("selected");
+    //     console.log(e)
+    //     let selectedProjectManager = recursos.find(
+    //       (projectManager) => projectManager.legajo === e
+    //     );
+    //     console.log(selectedProjectManager);
+
+    //     setProjectManagerButtonTitle(
+    //       `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
+    //     );
+    //   };
+    
     const handleDropdownProjectManagerButtonChange = (e) => {
-        setProyectoEditable({ ...proyectoEditable, project_manager: e });
-        let selectedProjectManager = recursos.find(
-          (projectManager) => projectManager.legajo === e
-        );
-        setProjectManagerButtonTitle(
-          `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
-        );
-      };
+        let newPm = {"id": e.legajo};
+        setProyectoEditable({...proyectoEditable, project_manager: newPm});
+    }
+
+    const handleDropdownSponsorButtonChange = (e) => {
+        let newSponsor = {"id": e.legajo};
+        setProyectoEditable({...proyectoEditable, sponsor: newSponsor});
+    }
+
     
 
     const getProjectManagerButtonTitle = (resources) => {
@@ -176,11 +199,9 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
             : "Sin asignar" ;
     }
 
-    const mapProjectResourceIdToName = (recursos, projectResourceId) => {
-        let asd = recursos.filter((recurso) => recurso.legajo === projectResourceId)
-                        .map((recurso) => `${recurso.Nombre} ${recurso.Apellido}`);
-        console.log("mapeado:")
-        console.log(projectResourceId   );
+    const mapClientIdToName = (clientes, projectClientId) => {
+        let asd = clientes.filter((cliente) => cliente.id === projectClientId)
+                        .map((client) => `${client["razon social"]}`);
         return asd;
     }
 
@@ -258,7 +279,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                         //DENTRO DE EDIT MODE BODY
                         <div className="div-body-infoticket">
                             <Alert show={alertaDatosNulos} key='danger' variant='danger'>
-                                No puedes dejar todos los campos vacios.
+                                No puedes dejar el nombre vacio.
                             </Alert>
                             <Row className="mt-4">
 
@@ -281,8 +302,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                         <Col >
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {proyectoEditable.categoria}
-                                                    {proyectoEditable.categoria
+                                                    {proyectoEditable.status
                                                     ? inverseStatusMapping[proyectoEditable.status]
                                                     : "Seleccionar"}
 
@@ -300,131 +320,45 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                     </Row>
 
                                     <Row className="mt-4">
-
-                                        <Col xs={3}>
-                                            <h6>Recursos:</h6>
+                                        <Col xs={4}>
+                                            <h6>Fecha estimada de inicio: </h6>
                                         </Col>
                                         <Col xs={6}>
-                                        {recursos.length>0 && <Select
-                                            isMulti
-                                            options={recursos}
-                                            defaultValue={proyectoEditable.resources.map((resource) => {
-                                                let name = recursos.find((empleado) => empleado.legajo === resource).Nombre
-                                                let surname = recursos.find((empleado) => empleado.legajo === resource).Apellido
-                                                let id = recursos.find((empleado) => empleado.legajo === resource).legajo
-                                                let label = {Nombre: name, Apellido: surname, legajo: id}
-                                                return label
-                                            })}
-                                            getOptionLabel={(resource) =>
-                                            `${resource.Nombre} ${resource.Apellido}`
-                                            }
-                                            getOptionValue={(resource) => resource.legajo}
-                                            onChange={handleResourcesDropdownButtonChange}
-                                        />}
+                                            <Form.Control 
+                                                type="date"
+                                                name="estimated_start_date"
+                                                value={proyectoEditable.estimated_start_date ? proyectoEditable.estimated_start_date.slice(0,10) : null}
+                                                onChange={(e) => onChangeProyectoEditable(e)} 
+                                            />
+
                                         </Col>
 
                                     </Row>
-
-                                    <Row className="mt-4">
-                                        <Col xs={3}>
-                                            <h6>Project Manager:</h6>
-                                        </Col>
-                                        <Col>
-                                            <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm"
-                                                    title={projectManagerButtonTitle} 
-                                                    onSelect={handleDropdownProjectManagerButtonChange}>
-                                                </Dropdown.Toggle>
-                                                
-
-                                                <Dropdown.Menu>
-                                                {recursos.map((projectManager) => {
-                                                    return (
-                                                        <Dropdown.Item
-                                                        eventKey={projectManager.legajo}
-                                                        name="projectManager"
-                                                        >
-                                                        {`${projectManager.Nombre} ${projectManager.Apellido}`}
-                                                        </Dropdown.Item>
-                                                    );
-                                                    })}
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Col>
-                                    </Row>
-
-                                    {/* <Row className="mt-4">
-                                        <Col xs={3}>
-                                            <h6>Estado:</h6>
-                                        </Col>
-                                        <Col>
-                                            <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {proyectoEditable.estado}
-                                                </Dropdown.Toggle>
-
-                                                <Dropdown.Menu>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Abierto</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>En análisis</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Derivado</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Resuelto</Dropdown.Item>
-                                                    <Dropdown.Item name="estado" onClick={(e) => handleDropdownChange(e)}>Cancelado</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Col>
-
-                                    </Row>
-
 
                                     <Row className="mt-4">
                                         <Col xs={4}>
-                                            <h6>Fecha de creación: </h6>
+                                            <h6>Fecha estimada de fin: </h6>
                                         </Col>
                                         <Col xs={6}>
-                                            <Form.Control type="date" name="fechaCreacion" value={proyectoEditable.fechaCreacion.slice(0, 10)} onChange={(e) => onChangeProyectoEditable(e)} />
+                                            <Form.Control 
+                                                type="date"
+                                                name="estimated_finalization_date"
+                                                value={proyectoEditable.estimated_finalization_date ? proyectoEditable.estimated_finalization_date.slice(0,10) : null}
+                                                onChange={(e) => onChangeProyectoEditable(e)} 
+                                            />
 
                                         </Col>
 
-                                    </Row>
-
-
-                                    <Row className="mt-4">
-                                        <h6> Descripción </h6>
-                                    </Row>
-                                    <Row className="mt-1">
-
-                                        <textarea className="box-descripcion" name="descripcion" value={proyectoEditable.descripcion} onChange={(e) => onChangeProyectoEditable(e)} />
-
-
-                                    </Row>
-
-                                    <Row className="mt-4">
-                                        <h6> Notas </h6>
-                                    </Row>
-                                    <Row className="mt-1">
-                                        <textarea className="box-notas" name="notas" value={proyectoEditable.notas} onChange={(e) => onChangeProyectoEditable(e)} />
-
-                                    </Row> */}
-
-                                </Col>
-
-                                <Col>
-
-
-                                    <Row >
-                                        <h5 className="titulo-subrayado"> Información Cliente: </h5>
                                     </Row>
 
                                     <Row className="mt-2">
                                         <Col>
-                                            <h6> Nombre:</h6>
+                                            <h6> Cliente:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {clientes.filter(cliente => cliente.id === proyectoEditable.client_id)[0]['razon social']
-                                                    }
-
+                                                    {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
@@ -440,91 +374,119 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                         </Col>
                                     </Row>
 
-                                    {/* <Row className="mt-4">
-                                        <Col>
-                                            <h6> Medio de Contacto:</h6>
-                                        </Col>
-                                        <Col>
-                                            <Form.Control type="text" name="medioContactoCliente" value={proyectoEditable.medioContactoCliente} onChange={(e) => onChangeProyectoEditable(e)} />
+                                    <Row className="mt-4">
+                                        <h6> Descripción </h6>
+                                    </Row>
+                                    <Row className="mt-1">
 
+                                        <textarea className="box-descripcion" name="description" value={proyectoEditable.description} onChange={(e) => onChangeProyectoEditable(e)} />
 
-                                        </Col>
-
-                                    </Row> */}
-
-                                    <Row className="mt-2">
-
-                                        <Col>
-                                            <h6 > CUIT: </h6>
-                                        </Col>
-                                        <Col>
-                                            {clientes ?
-                                                clientes.filter(cliente => cliente.id === proyectoEditable.idCliente)[0]['CUIT']
-
-                                                : null}
-
-                                        </Col>
 
                                     </Row>
 
 
+                                </Col>
+
+                                <Col>
 
 
-
-                                {/* 
-                                    <Row className="mt-4">
-                                        <Col>
-                                            <h6> Versión:</h6>
-                                        </Col>
-                                        <Col>
-                                            <Dropdown >
-                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {proyectoEditable.idVersion ?
-                                                        versiones?.filter(version => version.id === proyectoEditable.idVersion)[0]['nombre']
-                                                        : "Seleccionar"
-                                                    }
-                                                </Dropdown.Toggle>
-
-                                                <Dropdown.Menu>
-                                                    {compras && productos && versiones ?
-                                                        compras.filter((compra) => compra['idCliente'] === idClienteFilter && compra['idProducto'] === idProductoFilter)
-                                                            .map((compra) => (
-                                                                //console.log("cacarockaa", versiones[compra['idVersion'] - 1]['nombre']),
-                                                                <Dropdown.Item key={compra['id']} name="versionProducto" onClick={(e) => { setProyectoEditable({ ...proyectoEditable, ['idVersion']: compra['idVersion'] }); }}> {versiones.filter(version => version.id === compra['idVersion'])[0]['nombre']}</Dropdown.Item>)) : null
-
-                                                    }
-                                                </Dropdown.Menu>
-                                            </Dropdown>
-                                        </Col>
-
-                                    </Row> */}
-
-                                    <Row className="mt-5">
-                                        <h5 className="titulo-subrayado"> Información asesor: </h5>
+                                    <Row >
+                                        <h5 className="titulo-subrayado"> Información Staff: </h5>
                                     </Row>
 
-
-
                                     <Row className="mt-4">
-
-                                        <Col>
-                                            <h5> Nombre: </h5>
+                                        <Col xs={3}>
+                                            <h6>Project Manager:</h6>
                                         </Col>
-                                        {/* <Col>
+                                        <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {proyectoEditable.nombreAsesor}
+                                                    {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-
                                                     {recursos ?
-                                                        recursos.map((recurso) => (
-                                                            <Dropdown.Item name="nombreAsesor" key={recurso['legajo']} id={recurso['legajo']} onClick={(e) => { handleDropdownChangeRecurso(e); }}>{recurso['Nombre']} {recurso['Apellido']}</Dropdown.Item>
-                                                        )) : null}
+                                                        recursos.map((recurso) => {
+                                                            return <Dropdown.Item key={`dropwdown-item-pm-${recurso.legajo}`} name="project_manager" onClick={(e) => {
+                                                                handleDropdownProjectManagerButtonChange(recurso)
+                                                            }}>{`${recurso.Nombre} ${recurso.Apellido}`}</Dropdown.Item>
+}                                                       ) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>
-                                        </Col> */}
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col xs={3}>
+                                            <h6>Sponsor:</h6>
+                                        </Col>
+                                        <Col>
+                                            <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
+                                                    {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    {recursos ?
+                                                        recursos.map((recurso) => {
+                                                            return <Dropdown.Item key={`dropwdown-item-sponsor-${recurso.legajo}`} name="sponsor" onClick={(e) => {
+                                                                handleDropdownSponsorButtonChange(recurso)
+                                                            }}>{`${recurso.Nombre} ${recurso.Apellido}`}</Dropdown.Item>
+}                                                       ) : null}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+
+                                        <Col xs={3}>
+                                            <h6>Recursos:</h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            {recursos.length>0 && <Select
+                                                isMulti
+                                                options={recursos}
+                                                defaultValue={proyectoEditable.resources.map((resource) => {
+                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    return label
+                                                })}
+                                                getOptionLabel={(resource) =>
+                                                `${resource.Nombre} ${resource.Apellido}`
+                                                }
+                                                getOptionValue={(resource) => resource.legajo}
+                                                onChange={handleResourcesDropdownButtonChange}
+                                            />}
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+
+                                        <Col xs={3}>
+                                            <h6>Stakeholders:</h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            {recursos.length>0 && <Select
+                                                isMulti
+                                                options={recursos}
+                                                defaultValue={proyectoEditable.stake_holders.map((resource) => {
+                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    return label
+                                                })}
+                                                getOptionLabel={(resource) =>
+                                                `${resource.Nombre} ${resource.Apellido}`
+                                                }
+                                                getOptionValue={(resource) => resource.legajo}
+                                                onChange={handleStakeHolderssDropdownButtonChange}
+                                            />}
+                                        </Col>
 
                                     </Row>
 
@@ -588,10 +550,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                                             <h6>Cliente:</h6>
                                         </Col>
                                         <Col>
-                                            {clientes ?
+                                            {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
+
+                                            {/* {clientes ?
                                                 clientes.filter(cliente => cliente.id === proyectoEditable.client_id)[0]['razon social']
                                                 : null
-                                            }
+                                            } */}
                                         </Col>
                                     </Row>
 
@@ -707,17 +671,8 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
                         </Fragment>
 
 
-                    )}
-
-                    {/* {showReporteFinalModal ? (
-                        <ModalReporteFinal numeroProyecto={numeroProyecto} onChangeshowReporteFinalModal={onChangeshowReporteFinalModal} handleCloseTicket={handleClose} getDataEnCurso={getDataEnCurso} getDataCerrados={getDataCerrados} setTicketResueltoExito={setTicketResueltoExito} />) :
-                        (
-                            null)} */}
-
-                    {/* {showCreacionTareaModal ? (
-                        <ModalCreacionTarea numeroProyecto={numeroProyecto} onChangeshowCreacionTareaModal={onChangeshowCreacionTareaModal} setAlertaTareaExito={setAlertaTareaExito} />) :
-                        (
-                            null)} */}
+                    )
+                    }
                 </Modal.Footer>
             </Modal >
         </>
