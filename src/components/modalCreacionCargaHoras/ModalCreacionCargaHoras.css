@@ -88,6 +88,12 @@ margin-top: 0.5%;
 margin-bottom: 0.5%;
 }
 
+#search{
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
 #Texto-seleccionar-horas{
   top:2vw;
   width: 20vw;
@@ -104,6 +110,7 @@ margin-bottom: 0.5%;
     margin: 0 auto;
     text-align: center ;
     position: relative;
+    margin-bottom: 2%;
     }
 
 #pruebas {
@@ -113,4 +120,14 @@ margin-bottom: 0.5%;
   text-align: center ;
   position: relative;
 }
+
+#botonera_periodo{
+  width: 20vw;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  margin-top: 2%;
+  margin-bottom: 3%;
+  }
+
 

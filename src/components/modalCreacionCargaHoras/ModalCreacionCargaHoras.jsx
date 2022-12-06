@@ -63,6 +63,13 @@ const ModalCreacionCargaDeHorasProyecto = () => {
 
     const cambioAnt = (data) => {
         console.log("Cambio la fecha para tipo " + calendarType)
+        if(calendarType === "daily"){
+            const desde = new Date(data.$d)
+            const hasta = new Date(data.$d);
+            setStartDate(desde);
+            setFinishDate(hasta);
+            console.log(`Voy mensualmente desde ${desde} hasta ${hasta}`);
+        }
         if(calendarType === "month"){
             const fecha = new Date(data.$d)
             console.log("Busco los dias del mes " + parseInt(data.$M + 1));
@@ -218,6 +225,12 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         );
     }
 
+    const disableDailyDates = (current) =>{
+        return (
+            (new Date(current).getDay() !== 1)
+        );
+    }
+
     const soloQuincena = (current) =>{
         return (
             (new Date(current).getDate() !== 1) && (new Date(current).getDate() !== 15)
@@ -246,7 +259,8 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 <div id="cargar-horas-licencia">
                     <div id="Texto-seleccionar-horas" >
                         <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
-                        <div>
+                        <div id="botonera_periodo">
+                            <Button onClick={() => setCalendarType("daily")}>Diario</Button>
                             <Button onClick={() => setCalendarType("week")}>Semanal</Button>
                             <Button onClick={() => setCalendarType("biweekly")}>Quincenal</Button>
                             <Button onClick={() => setCalendarType("month")}>Mensual</Button>
@@ -267,6 +281,9 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                     {calendarType && (
                        <>
                             <p>{calendarType}</p>
+                            {calendarType === "daily" && (
+                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={disableDailyDates}/>
+                            )}
                             {calendarType === "week" && (
                                 <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={disableDate} />
                             )}
@@ -291,7 +308,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                             <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} maxDate={today} minDate={limiteFecha}/>
                         </Col> */}
                     </Row>
-                    <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
+                    <Button id="button" onClick={handleClick}>Confirmar</Button>
                 </div> 
             </div>
         </Container>
