@@ -487,6 +487,12 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                             <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
                             <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
+
+                            {data.dependencies.length > 0 && 
+                                <ModalInfoTask data={data.dependencies[0]} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees}/>
+                            }
+                            
+
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
