@@ -16,15 +16,19 @@ export default function CardCustom({project, getProjects, resources}) {
     const [assignee, setAssignee] = useState([]);
     const [clients, setClients] = useState([]);
     const getAssignee = async () => {
-        axios
-            .get(SERVER_NAMES.ASSIGNEES + "/" + project.project_manager.id
+        
+        if (project.project_manager != null) 
+        { axios.get(SERVER_NAMES.ASSIGNEES + "/" + project.project_manager.id
                 , {})
             .then((res) => {
                 setAssignee(res.data);
             })
             .catch(() => {
                 setAssignee({ Nombre: "", Apellido: "" });
-            });
+            })
+        } else{
+            setAssignee({ Nombre: "", Apellido: "" })
+        } 
     };
     const getClients = async () => {
         axios
@@ -56,7 +60,7 @@ export default function CardCustom({project, getProjects, resources}) {
 
                         <ul key="atributos">
                             <li key="description"> Cliente: {
-                                project.client_id != null ? clients.find(element => element.id == project.client_id) != null ? clients.find(element => element.id == project.client_id)["razon social"] : "" : ""
+                                project.client_id != null ? clients.find(element => element.id === project.client_id) != null ? clients.find(element => element.id === project.client_id)["razon social"] : "" : ""
                             } </li>
                             <li key="estado"> Estado: {statusMapping[project.status]}</li>
                             <li key="tipo">  Tipo: {typeMapping[project.type]}</li>
