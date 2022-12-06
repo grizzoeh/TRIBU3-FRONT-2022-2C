@@ -155,16 +155,15 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         .then((res) => res.json())
         .then((data) => {
             setTareas(data);
-            console.log("Tarea = "+ tareas)
         });
         setIsShown(true)
     }
 
-    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" /*proyecto.id ???????????? */
+    const listProyectos = proyectos.map(proyecto => <NavDropdown.Item id="dropdown-item" key={proyecto.id}/*proyecto.id ???????????? */
                                                     onClick={() => {funcion1(proyecto)}}>{proyecto.name}
                                                     </NavDropdown.Item>)
 
-    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" onClick={() => {handleCategoriaClick(categoria)}}>{categoria.nombre}</NavDropdown.Item>)
+    const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" key={categoria.idCategoria} onClick={() => {handleCategoriaClick(categoria)}}>{categoria.nombre}</NavDropdown.Item>)
 
     function incrementCount() {
         if(cantidad_horas+1 <= MAXHORAS){
@@ -251,7 +250,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                 {isShown && <div id='cargar-horas-licencia'>
                                 <h2 id="titulo">Seleccionar Tarea</h2>
                                 <NavDropdown title={dropdownTareaText} id="navBarTareas">
-                                    {tareas.map(tarea => <NavDropdown.Item id="dropdown-item"
+                                    {tareas.map(tarea => <NavDropdown.Item id="dropdown-item" key={tarea.id}
                                             onClick={() => {procedimientoTareaElegida(tarea.name, tarea.id);setTarea_id(tarea.id)}}>{tarea.name}</NavDropdown.Item>)}
    
                                 </NavDropdown>

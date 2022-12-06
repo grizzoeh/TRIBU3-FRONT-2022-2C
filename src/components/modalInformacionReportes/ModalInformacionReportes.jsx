@@ -77,43 +77,42 @@ const ModalInformacionReportes = () => {
         }
     }, [listaTareas])
 
-    const delay = ms => new Promise(
-        resolve => setTimeout(resolve, ms)
-      );
-
-
-      const handleClick = async () => {
-        console.log("A ver que onda el async")
+    const handleClick = async () => {
         setProyectoNombre(undefined);
         setListaTareas([]);
         setAlreadyThere([]);
-          
+        if(!proyectoId){
+            alert("Por favor ingrese un id de proyecto");
+            return;
+        }
+
         const urlProyecto = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId;
         const resNombre = await fetch(urlProyecto);
+        if(!resNombre.ok){
+            alert("No existe ese proyecto");
+            return;
+        };
         const nombre = await resNombre.json();
         setProyectoNombre(nombre.name);
-        console.log("Seteado el nombre")
 
         
         const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + "/tasks/";
         const resTareas = await fetch(urlTareas);
         const tareas = await resTareas.json();
         setListaTareas(tareas);
-        console.log("Seteadas las tareas")
 
         const urlTareas2 = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
         const resTareas2 = await fetch(urlTareas2);
+        if(!resTareas2.ok) alert("No hay carga de horas para ese proyecto");
         const tareas2 = await resTareas2.json();
-        parsearCargas(tareas2);
+        parsearCargas(tareas, tareas2);
         setCargas(tareas2);
-
-
-        console.log("Ya cargue todo amego");
     }
     
-    const parsearCargas = (cargasArray) => {
+    const parsearCargas = (tareas, cargasArray) => {
         const final = []
-        cargasArray.map(carga => {            const existente = final.find(e => e.id === carga.tarea_id)
+        cargasArray.map(carga => { 
+            const existente = final.find(e => e.id === carga.tarea_id)
             if (existente) {
                 existente.sumaHoras = existente.sumaHoras + carga.cantidad_horas;
 
@@ -125,7 +124,13 @@ const ModalInformacionReportes = () => {
             nuevaCarga.nombre = carga.tareaNombre;
             nuevaCarga.id = carga.tarea_id;
             nuevaCarga.sumaHoras = carga.cantidad_horas;
-            nuevaCarga.estimadas = sumaHorasEstimadas;
+            const tarea = tareas.find(e => e.id === nuevaCarga.id)
+            let estimadas = 0;
+            if (tarea && tarea.estimated_hours_effort) {
+                estimadas = tarea.estimated_hours_effort
+            }
+            nuevaCarga.estimadas = estimadas; 
+
             nuevaCarga.desvio = nuevaCarga.sumaHoras - nuevaCarga.estimadas;
             final.push(nuevaCarga);
         })
@@ -141,8 +146,6 @@ const ModalInformacionReportes = () => {
         .then((data) => {
             setListaTareas(data);
         });
-
-        
     }
 
     const cargarCargasProyecto = () => {
@@ -159,7 +162,6 @@ const ModalInformacionReportes = () => {
         if(!listaTareas) return;
         
         var sumaTotalEstimativos = 0;
-        console.dir(listaTareas)
 
         listaTareas.map((tarea)=>{
             if(tarea.estimated_hours_effort != null){
@@ -251,7 +253,7 @@ const ModalInformacionReportes = () => {
                             </TableHead>
                             <TableBody>
                                 {show && cargasTotales.map((carga)=>(
-                                    <TableRow>
+                                    <TableRow key={carga.id}>
                                         <TableCell align="center">{carga.nombre}</TableCell>
                                         <TableCell align="center">{carga.id}</TableCell>
                                         <TableCell align="center">{carga.sumaHoras}</TableCell>
