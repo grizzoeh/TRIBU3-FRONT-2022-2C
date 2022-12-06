@@ -30,7 +30,7 @@ const ModalCreacionSubtarea = ({parent_task/*, tasks*/, assignees, project}) => 
         creation_date: null,
         priority: 1,
         realEffort: null,
-        parent_task_id: parent_task.id
+        parent_task: parent_task.id
     }
 
     //const [proyectos, setProyectos] = useState();
