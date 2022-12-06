@@ -34,14 +34,17 @@ const ModalInformacionCargaHorasPorLegajo = () => {
     const handleShow = () => setShow(true);
 
     
-        const handleClick=() => {
+        const handleClick= async () => {
             setCargaLegajo([])
             const url = `https://squad920222c-production.up.railway.app/recursos/cargas/legajo/` + legajo; /*legajo no sirve, tirar error */
-            fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                setCargaLegajo(data);
-            });
+            const res = await fetch(url);
+            if(!res.ok){
+                alert("No existe ese legajo");
+                return;
+            };
+            const cargas = await res.json();
+            setCargaLegajo(cargas);
+
         };
         
 

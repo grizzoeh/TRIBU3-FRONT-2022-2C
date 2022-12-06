@@ -33,12 +33,18 @@ const ModalCreacionCategorias = () => {
         e.preventDefault()
         const categoria={descripcion, idCategoria,nombre}
         console.log(categoria)
+        if(nombre.length === 0){
+            alert("Requerimos que se ingrese un nombre");
+            return;
+        }
         fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, { /*si inputs en blanco, se manda array != string */
             method:"POST",
             headers:{"Content-Type": "application/json"},
             body:JSON.stringify(categoria),
         }).then(()=>{
             console.log("anda?")
+            alert("Has Creado una Categoria");
+            return;
         })
     }
 

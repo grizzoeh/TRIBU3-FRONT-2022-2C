@@ -34,7 +34,7 @@ moment.locale('es-es', {
   }
 });
 
-const MAXHORAS = 8;
+const JORNADACOMPLETA = 8
 const MINHORAS = 1;
 const DIA = 24;
 
@@ -166,18 +166,15 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const listCategorias = categorias.map(categoria => <NavDropdown.Item id="dropdown-item" key={categoria.idCategoria} onClick={() => {handleCategoriaClick(categoria)}}>{categoria.nombre}</NavDropdown.Item>)
 
     function incrementCount() {
-        if(cantidad_horas+1 <= MAXHORAS){
-            cantidad_horas = cantidad_horas + 1;
-            setCount(cantidad_horas);
-        }
-        console.log("cantidad de horas: "+cantidad_horas)
+        cantidad_horas = cantidad_horas + 1;
+        setCount(cantidad_horas);
     }
+
     function decrementCount() {
         if(cantidad_horas-1 >= MINHORAS){
             cantidad_horas = cantidad_horas - 1;
             setCount(cantidad_horas);
         }
-        console.log("cantidad de horas: "+cantidad_horas)
     }
 
     function incrementDayCount(){
@@ -186,18 +183,23 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     }
 
     function decrementDayCount(){
-        cantidad_horas -= DIA;
-        setCount(cantidad_horas);
+        if(cantidad_horas-DIA >= MINHORAS){
+            cantidad_horas -= DIA;
+            setCount(cantidad_horas);
+        }
+        
     }
 
     function incrementJornadaCount(){
-        cantidad_horas += MAXHORAS;
+        cantidad_horas += JORNADACOMPLETA;
         setCount(cantidad_horas);
     }
 
     function decrementJornadaCount(){
-        cantidad_horas -= MAXHORAS;
-        setCount(cantidad_horas);
+        if(cantidad_horas-JORNADACOMPLETA >= MINHORAS){
+            cantidad_horas -= JORNADACOMPLETA;
+            setCount(cantidad_horas);
+        }
     }
 
     function funcion1(proyecto){
@@ -219,12 +221,6 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     }
 
     const disableDate = (current) =>{
-        return (
-            (new Date(current).getDay() !== 1)
-        );
-    }
-
-    const disableDailyDates = (current) =>{
         return (
             (new Date(current).getDay() !== 1)
         );
@@ -272,8 +268,8 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                     <Button id="dia"   className="Boton-botonera" onClick={decrementJornadaCount}>-8</Button>        
                     <Button id="resta" className="Boton-botonera" onClick={decrementCount}>-1</Button>
                     <Button id="suma"  className="Boton-botonera" onClick={incrementCount}>+1</Button>
-                    <Button id="dia"   className="Boton-botonera" onClick={incrementJornadaCount}>8</Button>
-                    <Button id="dia"   className="Boton-botonera" onClick={incrementDayCount}>24</Button>
+                    <Button id="dia"   className="Boton-botonera" onClick={incrementJornadaCount}>+8</Button>
+                    <Button id="dia"   className="Boton-botonera" onClick={incrementDayCount}>+24</Button>
                     </div> 
                 </div>             
                 <div id="pruebas">
@@ -281,7 +277,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                        <>
                             <p>{calendarType}</p>
                             {calendarType === "daily" && (
-                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={disableDailyDates}/>
+                                <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"}/>
                             )}
                             {calendarType === "week" && (
                                 <DatePicker locale={"es_AR"} onChange={(e) => cambioAnt(e)} picker={"date"} disabledDate={disableDate} />

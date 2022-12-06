@@ -23,6 +23,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Input } from "@mui/material";
+import { DatePicker, Space } from 'antd';
 
 const ModalModificacionCargaHoras = () => {
     const [cargas, setCargas] = useState([])
@@ -31,7 +32,8 @@ const ModalModificacionCargaHoras = () => {
     const[cantidad_horas, setCantidadHoras]=useState([])
     const[categoria, setCategoria]=useState([])
     const[estado, setEstado]=useState([])
-
+    const [fecha_fin, setFechaFinal] = useState('')
+    const [fecha_inicio, setFechaInicial] = useState('')
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -45,15 +47,27 @@ const ModalModificacionCargaHoras = () => {
     },[])
 
     const handleClick=()=>{
-        const cargaHorasNueva={carId, fecha,cantidad_horas, estado, categoria} /* manda array si esta vacio */
+        if(!cantidad_horas || cantidad_horas <= 0){
+            alert("Intente nuevamente pero con una cantidad de horas valida");
+            return;
+        }
+        
+        const cargaHorasNueva={carId, fecha_inicio, fecha_fin,cantidad_horas, estado, categoria} /* manda array si esta vacio */
         console.log(cargaHorasNueva)
-        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?fechaNueva=' + fecha + '&horasNuevas=' + cantidad_horas + '&estado=' + estado + '&categoria=' + categoria,{
+        fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?estado=' + estado + '&fechaFinNueva=' + fecha_fin + '&fechaInicioNueva=' + fecha_inicio + '&horasNuevas=' + cantidad_horas,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
         }).then(()=>{
             window.location.reload();
         });
         
+    }
+
+    function cambioInicial(){
+
+    }
+    function cambioFinal(){
+
     }
 
     return (
@@ -67,14 +81,14 @@ const ModalModificacionCargaHoras = () => {
                     </Modal.Header>
                     <Modal.Body>
                         <Row className="campo">
-                            <Col><h6>Nueva fecha:</h6></Col>
-                            <Form.Control name="fecha" type="filtro" placeholder="Fecha" onChange={(e)=>setFecha(e.target.value)}/>
+                            <Col><h6>Nueva fecha inicial:</h6></Col>
+                            <Form.Control name="fecha inicial" type="filtro" placeholder="fecha inicial" onChange={(e)=>setFechaInicial(e.target.value)}/>
+                            <Col><h6>Nueva fecha final:</h6></Col>
+                            <Form.Control name="fecha final" type="filtro" placeholder="fecha final" onChange={(e)=>setFechaFinal(e.target.value)}/>
                             <Col><h6>Horas actualizadas:</h6></Col>
                             <Form.Control name="horas" type="filtro" placeholder="Horas" onChange={(e)=>setCantidadHoras(e.target.value)}/>
                             <Col><h6>Estado:</h6></Col>
                             <Form.Control name="estado" type="filtro" placeholder="Estado" onChange={(e)=>setEstado(e.target.value)}/>
-                            <Col><h6>Categoria:</h6></Col>
-                            <Form.Control name="categoria" type="filtro" placeholder="Categoria" onChange={(e)=>setCategoria(e.target.value)}/>
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
@@ -89,10 +103,11 @@ const ModalModificacionCargaHoras = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">Id</TableCell>
-                                <TableCell align="right">Fecha</TableCell>
+                                <TableCell align="right">Fecha inicial</TableCell>
+                                <TableCell align="right">Fecha final</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
                                 <TableCell align="right">Estado</TableCell>
-                                <TableCell align="right">Categoria nombre</TableCell>
+                                <TableCell align="right">Categoria/Proyecto nombre</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -102,7 +117,8 @@ const ModalModificacionCargaHoras = () => {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                     <TableCell align="center" component="th" scope="row">{carga.codigo_carga}</TableCell>
-                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="right">{carga.fecha_inicio}</TableCell>
+                                    <TableCell align="right">{carga.fecha_fin}</TableCell>
                                     <TableCell align="right">{carga.cantidad_horas}</TableCell>
                                     <TableCell align="right">{carga.estado}</TableCell>
                                     <TableCell align="right">{!carga.tarea_id? carga.categoriaNombre : carga.proyectoNombre}</TableCell>

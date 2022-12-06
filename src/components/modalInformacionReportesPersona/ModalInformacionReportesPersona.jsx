@@ -29,24 +29,53 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const ModalInformacionReportesPersona = () => {
     const [legajo, setLegajo] = useState();
-    const [startDate, setStartDate] = useState(new Date());
-    const [finishDate, setFinishDate] = useState(new Date());
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [proyectos, setProyectos] = useState([]);
-    const [fullSum, setFullSum] = useState();
     const [alreadyThere, setAlreadyThere] = useState([])
-    const [valor, setValor] = useState([])
-    const [tempval, setTempval] = useState()
-    
-    const handleClick =() => {
+    const [proyectosTotales, setProyectosTotales] = useState([])
+
+    useEffect( () => {
+        if(proyectos.lenght != 0){
+            setShow(true)
+        }
+        else {
+            setShow(false);
+        }
+    }, [proyectos])
+
+    const handleClick= async () => {
+        setAlreadyThere([])
         const url = `https://squad920222c-production.up.railway.app/recursos/cargas/legajo/` + legajo;
-        fetch(url)
-        .then(res=>res.json())
-        .then((result)=>{
-            setProyectos(result)
-    })}
+        const res = await fetch(url);
+        if(!res.ok){
+            alert("No existe ese legajo");
+            return;
+        };
+        const cargas = await res.json();
+        parsearProyectos(cargas)
+        setProyectos(cargas);
+    }
+    
+    const parsearProyectos = (cargas) =>{
+        const final = []
+        cargas.map(carga => { 
+            const existente = final.find(e => e.id === carga.proyectoId)
+            if (existente) {
+                existente.sumaHoras = existente.sumaHoras + carga.cantidad_horas;
+                return;
+            }
+
+            let nuevaCarga = {}
+            nuevaCarga.nombre = carga.proyectoNombre;
+            nuevaCarga.id = carga.proyectoId;
+            nuevaCarga.sumaHoras = carga.cantidad_horas;
+            
+            final.push(nuevaCarga);
+        })
+        setProyectosTotales(final);
+    }
 
     const sumaHorasTareas = (proyId) =>{
         let x=0
@@ -57,12 +86,20 @@ const ModalInformacionReportesPersona = () => {
         }
         return x
     }
+   
     
+    const asignarLegajo = (valor) =>{
+        if(valor != null){
+            setLegajo(valor)
+        }
+    }
+
     return (
         <Container>
             <div id = 'proyectoId'>
-                <TextField id="outlined-basic" label="Consultar Reportes por legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
-                <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
+                <TextField id="outlined-basic" label="Consultar Reportes por legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{asignarLegajo(e.target.value)}}/>
+                <Col className="h-end"><Button variant="primary" size="1"  onClick={handleClick} id='boton'>Consultar Proyecto</Button></Col>
+                
                 <div id = 'Tabla'>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -72,14 +109,12 @@ const ModalInformacionReportesPersona = () => {
                                     <TableCell align="center">ID:</TableCell>
                                     <TableCell align="center">Suma de horas</TableCell>
                                 </TableRow>
-                               {show && proyectos.map((proyecto)=>(
-                                    alreadyThere.includes(proyecto.proyectoId)? null : (
-                                        alreadyThere.push(proyecto.proyectoId),
+                               {show && proyectosTotales.map((proyecto)=>(
                                         <TableRow>
-                                            <TableCell align="center">{proyecto.proyectoNombre}</TableCell>
-                                            <TableCell align="center">{proyecto.proyectoId}</TableCell>
-                                            <TableCell align="center" >{sumaHorasTareas(proyecto.proyectoId)}</TableCell>
-                                        </TableRow>)
+                                            <TableCell align="center">{proyecto.nombre}</TableCell>
+                                            <TableCell align="center">{proyecto.id}</TableCell>
+                                            <TableCell align="center" >{proyecto.sumaHoras}</TableCell>
+                                        </TableRow>
                                     )
                                 )
 

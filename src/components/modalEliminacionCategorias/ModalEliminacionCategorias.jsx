@@ -39,6 +39,10 @@ const ModalEliminacionCategorias = () => {
     const handleClick=(e)=>{
         const url = "https://squad920222c-production.up.railway.app/recursos/categorias/" + catId;
         console.log(url);
+        if(catId <= 0){
+            alert("Por favor ingrese un id de categoria");
+            return;
+        }
         fetch(url, {
             method: 'DELETE',
             headers: {

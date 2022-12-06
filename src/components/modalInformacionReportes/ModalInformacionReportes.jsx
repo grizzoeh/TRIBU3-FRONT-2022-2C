@@ -222,9 +222,6 @@ const ModalInformacionReportes = () => {
             <div id = 'proyectoId'>
                 <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{asignarProyecto(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1"  onClick={handleClick} id='boton'>Consultar Proyecto</Button></Col>
-                {loadingScreen && <LoadingButton loading variant="outlined">
-                    Submit
-                </LoadingButton>}
                 <React.Fragment>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
