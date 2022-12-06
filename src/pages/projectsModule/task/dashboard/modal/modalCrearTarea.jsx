@@ -9,7 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import { Snackbar } from "@mui/material";
-import * as SERVER_NAMES from "../../APIRoutes";
+import * as SERVER_NAMES from "../../../APIRoutes";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from 'moment';
 
@@ -73,7 +73,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, proj
     };
 
     const onChangeDateData = (e) => {
-        setTaskData({ ...TaskData, [e.target.name]: moment(e.target.value, "DD/MM/YYYY").format() });
+        setTaskData({ ...TaskData, [e.target.name]: moment(e.target.value,  "YYYY-MM-DD").format() });
       };
 
     //const [cuerpoTarea, setCuerpoTarea] = useState("");
@@ -250,7 +250,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, proj
                         </Col>
                         <Col xs={3}>
                         <Form.Control
-                            type="text"
+                            type="date"
                             name="estimated_start_date"
                             placeholder="Ej: 18/12/2022"
                             onChange={(e) => onChangeDateData(e)}
@@ -266,7 +266,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, proj
                         </Col>
                         <Col xs={3}>
                             <Form.Control
-                                type="text"
+                                type="date"
                                 name="estimated_finalization_date"
                                 placeholder="Ej: 20/12/2022"
                                 onChange={(e) => onChangeDateData(e)}

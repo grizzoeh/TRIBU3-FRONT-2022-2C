@@ -15,7 +15,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
-import ModalCrearTarea from "./modalCrearTarea"
+import ModalCrearTarea from "./modal/modalCrearTarea"
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function DashboardTareas() {
