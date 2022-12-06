@@ -29,12 +29,12 @@ export default function StateContainer({ projects, getProjects, resources }) {
               {projects.length > 0 ? (
                 projects.map((project) => (
                   <tr>
-                    <td>{project.id}</td>
-                    <td>{project.name}</td>
-                    <td>{project.client_id}</td>
-                    <td>{project.status}</td>
-                    <td>{project.type}</td>
-                    <td>{project.project_manager.id}</td>
+                    <td>{project?.id}</td>
+                    <td>{project?.name}</td>
+                    <td>{project?.client_id}</td>
+                    <td>{project?.status}</td>
+                    <td>{project?.type}</td>
+                    <td>{project.project_manager?.id}</td>
                     <td>
                       <Row>
                         <Col sm={5}>
