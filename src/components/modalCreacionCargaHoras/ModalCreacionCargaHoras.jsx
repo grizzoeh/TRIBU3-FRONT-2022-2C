@@ -133,6 +133,14 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     
     
     const handleClick =() => {
+        if(!tarea_id && categoria <= -1){
+            alert("Por favor selecciona una tarea")
+            return;
+        }
+        if(legajo <= 0){
+            alert("Ingrese un legajo valido")
+            return;
+        }
         const estado = 'Emitido'
         const fecha_inicio = startDate.getDate() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getFullYear();
         const fecha_fin = finishDate.getDate() + '-' + (finishDate.getMonth() + 1) + '-' + finishDate.getFullYear();
@@ -143,7 +151,7 @@ const ModalCreacionCargaDeHorasProyecto = () => {
             body:JSON.stringify(carga),
         }).then((res)=>{
             if (res.status >= 200 && res.status <= 300) {
-                alert("Salio todo bien")
+                alert("Se cargaron las horas")
             }
             if (res.status >=400) {alert("todo mal")}
         })

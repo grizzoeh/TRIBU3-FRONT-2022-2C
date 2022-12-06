@@ -31,7 +31,7 @@ const ModalModificacionCargaHoras = () => {
     const[fecha, setFecha]=useState([])
     const[cantidad_horas, setCantidadHoras]=useState([])
     const[categoria, setCategoria]=useState([])
-    const[estado, setEstado]=useState([])
+    const[estado, setEstado]=useState('')
     const [fecha_fin, setFechaFinal] = useState('')
     const [fecha_inicio, setFechaInicial] = useState('')
     const [show, setShow] = useState(false);
@@ -52,6 +52,9 @@ const ModalModificacionCargaHoras = () => {
             return;
         }
         
+        if(estado.lenght === 0){
+            setEstado('Modificado');
+        }
         const cargaHorasNueva={carId, fecha_inicio, fecha_fin,cantidad_horas, estado, categoria} /* manda array si esta vacio */
         console.log(cargaHorasNueva)
         fetch(`https://squad920222c-production.up.railway.app/recursos/cargas/` + carId + '?estado=' + estado + '&fechaFinNueva=' + fecha_fin + '&fechaInicioNueva=' + fecha_inicio + '&horasNuevas=' + cantidad_horas,{
@@ -61,13 +64,6 @@ const ModalModificacionCargaHoras = () => {
             window.location.reload();
         });
         
-    }
-
-    function cambioInicial(){
-
-    }
-    function cambioFinal(){
-
     }
 
     return (
