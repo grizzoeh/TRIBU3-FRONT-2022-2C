@@ -13,7 +13,7 @@ import moment from "moment";
 import * as SERVER_NAMES from "../../APIRoutes";
 
 
-const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
+const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
 
 
     const [clientes, setClientes] = useState();
@@ -204,7 +204,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
 
             })
             .then((response) => {
-                setClientes(response.data);
+                //setClientes(response.data);
             }
             )
             .catch((error) => {
@@ -217,7 +217,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
         axios
             .get(SERVER_NAMES.ASSIGNEES, {})
             .then((response) => {
-                setRecursos(response.data);
+                //setRecursos(response.data);
             }
             )
             .catch((error) => {
@@ -227,9 +227,10 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2 }) => {
 
     useEffect(() => {
 
-        getRecursos();
-        getClientes();
-
+        //getRecursos();
+        //getClientes();
+        setRecursos(recursos2);
+        setClientes(clientes2);
     }, []);
 
     return (

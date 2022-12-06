@@ -8,13 +8,14 @@ import * as SERVER_NAMES from "../../APIRoutes";
 import ModalInfoProyecto from "../view/ModalInfoProyecto";
 
 
-export default function CardCustom({project, getProjects, resources}) {
+export default function CardCustom({project, getProjects, resources, clients}) {
     {/*assignee.legajo!=project.project_manager.id?getAssignee():*/}
     useEffect(() => {
-        getAssignee();
+        //getAssignee();
+        project.project_manager?setAssignee(resources.find((resource) => resource.legajo == project.project_manager.id)):setAssignee(null);
 }, [project]);
     const [assignee, setAssignee] = useState([]);
-    const [clients, setClients] = useState([]);
+    //const [clients, setClients] = useState([]);
     const getAssignee = async () => {
         
         if (project.project_manager != null) 
@@ -27,7 +28,8 @@ export default function CardCustom({project, getProjects, resources}) {
                 setAssignee({ Nombre: "", Apellido: "" });
             })
         } else{
-            setAssignee({ Nombre: "", Apellido: "" })
+            //setAssignee({ Nombre: "", Apellido: "" })
+            setAssignee(null);
         } 
     };
     const getClients = async () => {
@@ -35,16 +37,16 @@ export default function CardCustom({project, getProjects, resources}) {
             .get('https://psa-soporte-squad7.herokuapp.com/tickets/clientes', {
             })
             .then((res) => {
-                setClients(res.data.data);
+                //setClients(res.data.data);
             })
             .catch(() => {
-                setClients([]);
+                //setClients([]);
             });
     };
-    useEffect(() => {
+    /*useEffect(() => {
         getAssignee();
-        getClients();
-    }, []);
+        //getClients();
+    }, []);*/
     var statusMapping = {
         "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
         "development": "DESARROLLO", "production": "PRODUCCION", "post_production": "POST-PRODUCCION"
@@ -60,21 +62,21 @@ export default function CardCustom({project, getProjects, resources}) {
 
                         <ul key="atributos">
                             <li key="description"> Cliente: {
-                                project.client_id != null ? clients.find(element => element.id === project.client_id) != null ? clients.find(element => element.id === project.client_id)["razon social"] : "" : ""
+                                project.client_id != null ? clients.find(element => element.id === project.client_id) != null ? clients.find(element => element.id === project.client_id)["razon social"] : "" : "Sin asignar"
                             } </li>
                             <li key="estado"> Estado: {statusMapping[project.status]}</li>
                             <li key="tipo">  Tipo: {typeMapping[project.type]}</li>
                         </ul>
 
                     </Card.Text>
-                    <Card.Footer> Project manager: {assignee.Nombre} {assignee.Apellido} </Card.Footer>
+                    <Card.Footer> Project manager: {assignee?assignee.Nombre:"Sin asignar"} {assignee?assignee.Apellido:""} </Card.Footer>
 
                     <Button variant="primary" href={`/proyectos/${project.id}/ver-tareas/`}> Ver Tareas</Button>{' '}
                     {' '}
                     {' '}
 
                     {/* <Button variant="primary" href={`/proyectos/${project.id}/ver-proyecto/`}> Ver Detalles</Button>{' '} */}
-                    <ModalInfoProyecto data={project} getDataProyectos={getProjects} recursos2={resources}/>
+                    <ModalInfoProyecto data={project} getDataProyectos={getProjects} recursos2={resources} clientes2={clients}/>
                 </Card.Body>
             </Card>
 

@@ -43,9 +43,9 @@ export default function Dashboard() {
 
     useEffect(() => {
         getProyectos();
-      }, [stateQuery])
+      }, [stateQuery,assigneeQuery,typeQuery,clientQuery])
     
-    useEffect(() => {
+    /*useEffect(() => {
         getProyectos();
       }, [assigneeQuery])
 
@@ -55,7 +55,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         getProyectos();
-      }, [clientQuery])
+      }, [clientQuery])*/
 
     const handleStateFilter = (e) => {
         handleStateFilter2(e);
@@ -160,7 +160,7 @@ export default function Dashboard() {
     useEffect(() => {
         getAssignees();
         getClients();
-        getProyectos();
+        //getProyectos();
     }, []);
     var statusMapping = {
         "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
@@ -294,7 +294,7 @@ export default function Dashboard() {
             <br></br>
             <br></br>
             <br></br>
-            <Body projects={proyectos} getProjects={getProyectos} recursos={assignees}/>
+            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients}/>
         </>
     );
 }

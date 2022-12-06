@@ -50,9 +50,9 @@ export default function DashboardTareas() {
     //getTarea();
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     getTarea();
-  }, [assigneeID])
+  }, [assigneeID])*/
 
   const handlePriorityFilter = (e) => {
     //setPriority(e.target.value);
@@ -63,7 +63,7 @@ export default function DashboardTareas() {
   };
   useEffect(() => {
     getTarea();
-  }, [priority])
+  }, [priority,assigneeID])
 
 
   const handleDropdownFilter = (e) => {
@@ -148,7 +148,7 @@ export default function DashboardTareas() {
 
   useEffect(() => {
     getProyecto();
-    getTarea();
+    //getTarea();
     getAssignees();
   }, [params]);
 
