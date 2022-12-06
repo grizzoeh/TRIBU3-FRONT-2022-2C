@@ -325,6 +325,7 @@ export default function DashboardTareas() {
                                             project={proyecto}
                                             assignees={assignees}
                                             getTasks={getTarea}
+                                            allTasks={tareas}
                                     />
                                     </Col>
                                     <Col>
@@ -334,6 +335,7 @@ export default function DashboardTareas() {
                                             project={proyecto}
                                             assignees={assignees}
                                             getTasks={getTarea}
+                                            allTasks={tareas}
                                         />
                                     </Col>
                                     <Col>
@@ -343,6 +345,7 @@ export default function DashboardTareas() {
                                             project={proyecto}
                                             assignees={assignees}
                                             getTasks={getTarea}
+                                            allTasks={tareas}
                                         />
                                     </Col>
                                 </Row>
