@@ -89,7 +89,7 @@ export default function TaskCard({ task, index, project, assignees, getTasks}) {
                       </Col>
                     </Row>
                 </Card.Text>
-                <ModalInfoTask data={task} getDataProjectTask={getTasks}/>
+                <ModalInfoTask data={task} getDataProjectTask={getTasks} project={project} assignees={assignees}/>
 
                 {/*<ModalTicketCerrado data={task} numeroTarea={task.id} />*/}
             </Card.Body>

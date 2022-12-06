@@ -15,7 +15,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
-
+import ModalCrearTarea from "./modal/modalCrearTarea"
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 
 export default function DashboardTareas() {
@@ -165,9 +165,10 @@ export default function DashboardTareas() {
             </Row>
             <Row xs="auto">
             < Col>
-                <Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
+                {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
                     <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
-                </Link>
+                </Link>*/}
+                <ModalCrearTarea tasks={tareas} project={proyecto} assignees={assignees}/>
             </Col>
             < Col>
                 <Link to={`/proyectos/${proyecto.id}/gannt/`}>

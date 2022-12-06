@@ -11,9 +11,9 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import moment from "moment";
 import * as SERVER_NAMES from "../../../APIRoutes";
+import ModalCreacionSubtarea from "./modalCrearSubtask";
 
-
-const ModalInfoTask = ({ data, getDataProjectTask }) => {
+const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
 
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
@@ -486,6 +486,7 @@ const ModalInfoTask = ({ data, getDataProjectTask }) => {
                         <Fragment>
                             <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
+                            <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
