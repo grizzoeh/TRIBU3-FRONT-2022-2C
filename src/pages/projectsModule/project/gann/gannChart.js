@@ -68,7 +68,7 @@ const handleAssigneeFilter = (e) => {
 
 useEffect(() => {
     getTarea();
-  }, [assigneeID])
+  }, [assigneeID,priority])
 
 const handlePriorityFilter = (e) => {
   
@@ -77,9 +77,9 @@ const handlePriorityFilter = (e) => {
   //getTarea();
 };
 
-useEffect(() => {
+/*useEffect(() => {
     getTarea();
-  }, [priority])
+  }, [priority])*/
 
 const getTarea = async () => {
   let url = `/psa/projects/${params.id}/tasks/?`;
@@ -143,8 +143,8 @@ useEffect(() => {
      //     getTareas();
      // }, 3000);
      // return () => clearInterval(interval);
-getAssignees();
-getTarea();
+    getAssignees();
+    //getTarea();
     }, []);
 <Button variant="primary">
           Volver atrás
