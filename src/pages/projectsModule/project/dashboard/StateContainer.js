@@ -16,6 +16,7 @@ import axios from "axios";
 export default function StateContainer({ projects, getProjects, resources }) {
   const [clientes, setClientes] = useState();
   const [recursos, setRecursos] = useState([]);
+  const [proyectos, setProyectos] = useState(projects);
 
   const getClientes = async () => {
     axios
@@ -46,6 +47,10 @@ export default function StateContainer({ projects, getProjects, resources }) {
     getRecursos();
     getClientes();
   }, []);
+
+  useEffect(() => {
+    setProyectos(projects);
+  }, [projects]);
 
   var inverseStatusMapping = {
     pending: "PENDIENTE",
@@ -89,7 +94,7 @@ export default function StateContainer({ projects, getProjects, resources }) {
     <>
       <Container>
         <Row>
-          {projects.length > 0 ? (
+          {proyectos.length > 0 ? (
             <Table proyectos>
               <thead>
                 <tr>
@@ -103,7 +108,7 @@ export default function StateContainer({ projects, getProjects, resources }) {
                 </tr>
               </thead>
               <tbody>
-                {projects.length > 0 ? (
+                {proyectos.length > 0 ? (
                   projects.map((project) => (
                     <tr>
                       <td>{project?.id}</td>
@@ -154,7 +159,7 @@ export default function StateContainer({ projects, getProjects, resources }) {
               </tbody>
             </Table>
           ) : (
-            <Col className="centered"><h5>Cargando proyectos</h5></Col>
+            <Col className="centered"><h5>No hay proyectos para mostrar</h5></Col>
           )}
         </Row>
       </Container>
