@@ -434,7 +434,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                         <Col xs={3} >
                                             <h6>Responsables: </h6>
                                         </Col>
-                                        { tareaEditable.resources && tareaEditable.resources.length > 0
+                                        { tareaEditable.assignees && tareaEditable.assignees.length > 0
                                             ?  <Row>
                                               <Col>
                                                 { tareaEditable.assignees.length > 0 
