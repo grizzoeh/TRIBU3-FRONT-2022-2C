@@ -19,7 +19,8 @@ import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
 
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
-
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
+import "./gannChart.css"
 
 export default function GannChart() {
 
@@ -170,16 +171,24 @@ return (
 <br></br>
 <br></br>
 <br></br>
-<br></br>
-  <h1> Diagrama de Gantt</h1>
-  <div>
-  <Link to={`/proyectos/${params.id}/ver-tareas/`}>
+<br></br>{/*className="col-md-4 order-md-2"*/}
+  <Row>
+    <Col xs={{span: 10, order: 2 }}><h1 align="center"> Diagrama de Gantt</h1></Col>
+    <Col xs={{span: 1, order: 1 }}>
+        <Link to={`/proyectos/${params.id}/ver-tareas/`}>
             <Button variant="primary" onClick={() => console.log("click diagrama gannt")}>
                 Volver Atras
             </Button>
         </Link>     
-      </div>
-      <br></br>
+    </Col>
+    </Row>
+    <Row>
+        <Container className="spacer-line">
+            <Row>
+            <SpacerLine className="spacer-line" color="black" top="100px"></SpacerLine>
+            </Row>
+        </Container>
+    </Row>
 
       <Row className="mt-5"> <Col>
                         <h4>Empleado asignado:</h4>

@@ -11,7 +11,8 @@ import * as SERVER_NAMES from "../../APIRoutes";
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
 import Button from "react-bootstrap/Button";
 import ModalCreacionProyecto from "../new/ModalCreacionProyecto";
-
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
+import "./spacerline.css"
 
 export default function Dashboard() {
     const states = [{ "name": "Todos" }, { "name": "pending" }, { "name": "analysis" }, { "name": "development" }, { "name": "production" }, { "name": "post_production" }];
@@ -178,15 +179,19 @@ export default function Dashboard() {
 
             <Container className="container-title">
                 <Row>
-                    <Col xs={10}>
+                    <Col xxl lg="2">
                         <h1>Proyectos</h1>
                     </Col>
-                    < Col xs={2}>
+                    < Col md="auto">
                         {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
-                        <Col> <Button variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button> </Col> 
+                        <Button className="float-sm-end" variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button>
                     </Col>
                 </Row>
-
+                    <Container className="spacer-line">
+                        <Row>
+                        <SpacerLine className="spacer-line" color="black" top="100px"></SpacerLine>
+                        </Row>
+                    </Container>
                 {showCreacionProyectoModal ? (
                         <ModalCreacionProyecto clientes={clients} recursos={assignees} onChangeshowCreacionTareaModal={onChangeshowCreacionProyectoModal} />) :
                         (null)}

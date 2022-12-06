@@ -201,7 +201,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
     }
 
     useEffect(() => {
-        getRecursos();
+        //getRecursos();
     }, []);
 
     return (
@@ -316,14 +316,16 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                             <h6>Resonsables:</h6>
                                         </Col>
                                         <Col xs={6}>
-                                            {recursos.length>0 && <Select
+                                            {assignees.length>0 && <Select
                                                 isMulti
-                                                options={recursos}
+                                                options={assignees}
                                                 defaultValue={tareaEditable.assignees && tareaEditable.assignees.map((resource) => {
-                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
-                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
-                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
-                                                    let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    //let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    //let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    //let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    //let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    let assignee = assignees.find((empleado) => empleado.legajo === resource.id)
+                                                    let label = {Nombre: assignee.Nombre, Apellido: assignee.Apellido, legajo: assignee.legajo}
                                                     return label
                                                 })}
                                                 getOptionLabel={(resource) =>
@@ -437,7 +439,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                               <Col>
                                                 { tareaEditable.assignees.length > 0 
                                                         ? <ul key="resources-list-view">
-                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, tareaEditable.assignees, "resources-task-view-item")} 
+                                                            {getResourceNameListFor(assignees, mapProjectResourceObjectToName, tareaEditable.assignees, "resources-task-view-item")} 
                                                         </ul>
                                                         : "Sin asignar"
                                                 }

@@ -17,6 +17,7 @@ import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
 import ModalCrearTarea from "./modal/modalCrearTarea"
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
 
 export default function DashboardTareas() {
   const params = useParams();
@@ -163,6 +164,11 @@ export default function DashboardTareas() {
                 </Col>
 
             </Row>
+            <Container className="spacer-line">
+                <Row>
+                    <SpacerLine className="spacer-line" color="black"></SpacerLine>
+                </Row>
+            </Container>
             <Row xs="auto">
             < Col>
                 {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
