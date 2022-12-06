@@ -6,10 +6,11 @@ import Button from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
 import moment from 'moment';
+import ModalInfoTask from "./modal/ModalInfoTask";
 
-export default function TaskCard({ task, index, project, assignees}) {
+
+export default function TaskCard({ task, index, project, assignees, getTasks}) {
   const params = useParams();
   const mapIDResourceToName= (asignados) => {
     return asignados.map((assignee) => {
@@ -88,6 +89,7 @@ export default function TaskCard({ task, index, project, assignees}) {
                       </Col>
                     </Row>
                 </Card.Text>
+                <ModalInfoTask data={task} getDataProjectTask={getTasks}/>
 
                 {/*<ModalTicketCerrado data={task} numeroTarea={task.id} />*/}
             </Card.Body>
@@ -107,6 +109,7 @@ export default function TaskCard({ task, index, project, assignees}) {
 
         {/* ACA VOY A TOCAR YO */}
           
+
         {/* ACA TERMINA LO QUE A TOCAR YO */}
 
       </div>
