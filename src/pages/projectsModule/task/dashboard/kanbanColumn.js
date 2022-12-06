@@ -3,7 +3,7 @@ import './task.css'
 import { Col, Row } from "react-bootstrap";
 import { Droppable } from "react-beautiful-dnd";
 
-export default function KanbanColumn({ stateName, tasks, project, assignees, getTasks}) {
+export default function KanbanColumn({ stateName, tasks, project, assignees, getTasks, allTasks}) {
   return (
     //<section style={sectionStyle}>
     <Droppable droppableId={stateName} key={`dropable-${stateName}`}>
@@ -20,7 +20,7 @@ export default function KanbanColumn({ stateName, tasks, project, assignees, get
               <TaskCard task={task} index={index} project={project} assignees={assignees}/>
           </Row>)
           */
-          <TaskCard task={task} index={index} project={project} assignees={assignees} getTasks={getTasks}/>
+          <TaskCard task={task} index={index} project={project} assignees={assignees} getTasks={getTasks} allTasks={allTasks}/>
         )}
         {droppableProvided.placeholder}
         </Col>

@@ -13,7 +13,7 @@ import moment from "moment";
 import * as SERVER_NAMES from "../../../APIRoutes";
 import ModalCreacionSubtarea from "./modalCrearSubtask";
 
-const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
+const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name}) => {
 
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
@@ -32,11 +32,18 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
 
     const [recursos, setRecursos] = useState([]);
 
+    const [tareatest, setTareaTest] = useState([]);
+
     var inverseStatusMapping = {pending:"PENDIENTE",in_progress:"EN PROGRESO",finished:"FINALIZADO"};
     var statusMapping ={Todos:"Todos",PENDIENTE:"pending","EN PROGRESO":"in_progress",FINALIZADO:"finished"};
 
     var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" };
 
+    const mapIDTaskToTaskObj= (task) => {
+        //let tareaPadre = allTasks.find((tarea) => tarea.id == task.parent_task_id)
+        //return tareaPadre
+        return allTasks.find((tarea) => tarea.id == task.parent_task_id)
+      }
 
     const handleClose = () => {
         setShow(false);
@@ -201,12 +208,13 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
     }
 
     useEffect(() => {
-        getRecursos();
+        //getRecursos();
     }, []);
 
     return (
         <>
-            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Ver detalles</Button>
+            {name?<Button size="sm" variant="primary" onClick={() => { handleShow() }}>{data.name}</Button>
+            :<Button size="sm" variant="primary" onClick={() => { handleShow() }}>Ver detalles</Button>}
 
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
@@ -316,14 +324,16 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                             <h6>Resonsables:</h6>
                                         </Col>
                                         <Col xs={6}>
-                                            {recursos.length>0 && <Select
+                                            {assignees.length>0 && <Select
                                                 isMulti
-                                                options={recursos}
+                                                options={assignees}
                                                 defaultValue={tareaEditable.assignees && tareaEditable.assignees.map((resource) => {
-                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
-                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
-                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
-                                                    let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    //let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    //let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    //let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    //let label = {Nombre: name, Apellido: surname, legajo: id}
+                                                    let assignee = assignees.find((empleado) => empleado.legajo === resource.id)
+                                                    let label = {Nombre: assignee.Nombre, Apellido: assignee.Apellido, legajo: assignee.legajo}
                                                     return label
                                                 })}
                                                 getOptionLabel={(resource) =>
@@ -432,12 +442,12 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                         <Col xs={3} >
                                             <h6>Responsables: </h6>
                                         </Col>
-                                        { tareaEditable.resources && tareaEditable.resources.length > 0
+                                        { tareaEditable.assignees && tareaEditable.assignees.length > 0
                                             ?  <Row>
                                               <Col>
                                                 { tareaEditable.assignees.length > 0 
                                                         ? <ul key="resources-list-view">
-                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, tareaEditable.assignees, "resources-task-view-item")} 
+                                                            {getResourceNameListFor(assignees, mapProjectResourceObjectToName, tareaEditable.assignees, "resources-task-view-item")} 
                                                         </ul>
                                                         : "Sin asignar"
                                                 }
@@ -467,6 +477,22 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                                         <Col xs={6}> {`Ticket #${getIdOrNull(tareaEditable.related_ticket) ? getIdOrNull(tareaEditable.related_ticket): "Sin asignar"}`} </Col>
                                     </Row>
                                     }
+                                    {tareaEditable.parent_task_id && <Row className="mt-5">
+                                        <Col>
+                                        <h6>Tarea padre:</h6>
+                                        </Col>
+                                        <Col xs={9}>
+                                            {"Tarea #" + tareaEditable.parent_task_id }
+                                            {/*<ModalInfoTask data={mapIDTaskToTaskObj(tareaEditable)} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} allTasks={allTasks} name={1}/>*/}
+                                        </Col>
+                                    </Row>}
+
+                                    {tareaEditable.dependencies.length > 0 && <Row className="mt-5">
+                                        <Col>
+                                        <h6>Dependencias:</h6>
+                                        </Col>
+                                        {tareaEditable.dependencies.map((dependency) => <Col className="columna" xs={-1}><ModalInfoTask data={dependency} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} name={1}/></Col>)}
+                                    </Row>}
                                 </Col>
                             </Row>
                         </div>
@@ -488,9 +514,9 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees}) => {
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
                             <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
 
-                            {data.dependencies.length > 0 && 
+                            {/*data.dependencies.length > 0 && 
                                 <ModalInfoTask data={data.dependencies[0]} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees}/>
-                            }
+                            */}
                             
 
                             <Col xs={-1}>

@@ -1,0 +1,20 @@
+.spacer-line {
+    padding-left: 15%;
+    padding-right: 15%;
+    top: 4px;
+}
+
+.container-title {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    padding-top: -3px;
+}
+
+.float-sm-end {
+    position: relative;
+    display: flex;
+    justify-content: right;
+}
