@@ -72,14 +72,14 @@ export default function TaskCard({ task, index, project, assignees, getTasks}) {
                           <p><small>{task.priority?task.priority:"Sin asignar"}</small></p>
                       </Col>
                     </Row>
-                    <Row>
+                    {/*<Row>
                       <Col xs={5}>
                           <h6>Fecha estimada de finalización: </h6>
                       </Col>
                       <Col>
                         <p2>{task.estimated_finalization_date?moment(task.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</p2>
                       </Col>
-                    </Row>
+                    </Row>*/}
                     <Row>
                       <Col xs={5}>
                           <h6>Empleado asignado:</h6>
