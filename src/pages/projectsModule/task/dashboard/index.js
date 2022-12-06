@@ -318,6 +318,7 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "pending")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
                                     />
                                     </Col>
                                     <Col>
@@ -326,6 +327,7 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "in_progress")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
                                         />
                                     </Col>
                                     <Col>
@@ -334,6 +336,7 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "finished")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
                                         />
                                     </Col>
                                 </Row>
