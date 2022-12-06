@@ -6,6 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
+import { Snackbar } from "@mui/material";
+import Alert from 'react-bootstrap/Alert';
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
 
@@ -18,14 +20,23 @@ function ModalEditarProducto({producto, refreshProductos, refreshFiltradas, refr
         setNuevoNombre(producto);
         setShow(true);
     }
-
+    
+    const vertical = "top"
+    const horizontal = "center"
+    const [showCamposError, setCamposError] = useState(false);
+    const handleCloseCamposError = () => setCamposError(false);
+    const handleShowCamposError = () => setCamposError(true);
 
     const onChangeNuevoNombre = async (e) => {
         setNuevoNombre({ ...nuevoNombre, [e.target.name]: e.target.value });
     }
 
     const modificarProducto = async () => {
-        axios.patch(SERVER_NAME_SOPORTE + "/productos/producto", nuevoNombre)
+        if (nuevoNombre.nombre === "" || nuevoNombre.nombre === null) {
+            handleShowCamposError();
+        }
+        else {
+            axios.patch(SERVER_NAME_SOPORTE + "/productos/producto", nuevoNombre)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto editado");
@@ -40,10 +51,17 @@ function ModalEditarProducto({producto, refreshProductos, refreshFiltradas, refr
             .catch((error) => {
                 console.log(error);
             });
+        }
+
     }
 
     return (
         <>
+            <>
+                <Snackbar open={showCamposError} autoHideDuration={2000} onClose={handleCloseCamposError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseCamposError} variant="danger" sx={{ width: '100%' }}>No puedes dejar campos vacios!</Alert>
+                </Snackbar>
+            </>
             <Col><Button variant="outline-primary" size="sm" onClick={handleShow}>Renombrar</Button></Col>
             <Modal dialogClassName="modalContent2" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>

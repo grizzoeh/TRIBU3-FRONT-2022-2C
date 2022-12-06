@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import axios from "axios";
 import { SERVER_NAME_SOPORTE } from "../../environment";
 
-function ModalEditarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert}) {
+function ModalEditarVersion({version, refreshVersiones, refreshFiltradas, refreshAlert, camposAlert}) {
 
     const [nuevoNombre, setNuevoNombre] = useState(version)
     const [show, setShow] = useState(false);
@@ -20,7 +20,11 @@ function ModalEditarVersion({version, refreshVersiones, refreshFiltradas, refres
 
 
     const modificarVersion = async () => {
-        axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", nuevoNombre)
+        if (nuevoNombre.nombre === "" || nuevoNombre.nombre === null) {
+            camposAlert();
+        }
+        else {
+            axios.patch(SERVER_NAME_SOPORTE + "/versiones/version", nuevoNombre)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version editado");
@@ -35,6 +39,7 @@ function ModalEditarVersion({version, refreshVersiones, refreshFiltradas, refres
             .catch((error) => {
                 console.log(error);
             });
+        }
     }
 
     const onChangeNuevoNombre = async (e) => {

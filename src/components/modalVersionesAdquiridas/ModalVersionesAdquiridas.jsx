@@ -48,6 +48,11 @@ function ModalVersionesAdquiridas(cliente) {
     const handleCloseCreadaOk = () => setShowCreadaOk(false);
     const handleShowCreadaOk = () => setShowCreadaOk(true);
 
+    const [showCamposError, setCamposError] = useState(false);
+    const handleCloseCamposError = () => setCamposError(false);
+    const handleShowCamposError = () => setCamposError(true);
+
+
 
     const handleBotonFiltrado = async () => {
         setComprasFiltradas(compras);
@@ -124,6 +129,11 @@ function ModalVersionesAdquiridas(cliente) {
     return (
         <>
             <>
+                <Snackbar open={showCamposError} autoHideDuration={2000} onClose={handleCloseCamposError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseCamposError} variant="danger" sx={{ width: '100%' }}>No puedes dejar campos vacios!</Alert>
+                </Snackbar>
+            </>
+            <>
                 <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
                 </Snackbar>
@@ -158,7 +168,7 @@ function ModalVersionesAdquiridas(cliente) {
                         ) : (
                             <Col className="v-center"><Button variant="secondary" size="1" onClick={handleBotonFiltrado}>Buscar</Button></Col>
                         )}
-                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} refreshCompras={getCompras} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowCreadaOk}/></Col>
+                        <Col><ModalAsociarVersion compras={compras} cliente={cliente["cliente"]} refreshCompras={getCompras} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowCreadaOk} camposAlert={handleShowCamposError}/></Col>
                     </Row>
                     <Row>
                         <Table compras>

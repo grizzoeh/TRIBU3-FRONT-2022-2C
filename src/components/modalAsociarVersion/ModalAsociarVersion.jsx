@@ -12,7 +12,7 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 import { wait } from '@testing-library/user-event/dist/utils/misc/wait';
 
-function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas, refreshAlert}) {
+function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas, refreshAlert, camposAlert}) {
 
     const NuevaCompraVacia = {
         "producto": "",
@@ -29,7 +29,10 @@ function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas
     const [versionesFiltradas, setVersionesFiltradas] = useState([]);
     const handleClose = () => setShow(false);
     const handleShow = () => {
-        setNuevaCompra(NuevaCompraVacia);
+        nuevaCompra.producto = "";
+        nuevaCompra.version = "";
+        nuevaCompra.idProducto = null;
+        nuevaCompra.idVersion = null; 
         setShow(true);
     }
 
@@ -80,29 +83,34 @@ function ModalAsociarVersion({cliente, compras, refreshCompras, refreshFiltradas
 
     const crearCompra = async () => {
         var currentdate = new Date();
-        axios.post(SERVER_NAME_SOPORTE + "/compras", {
-            "idProducto": nuevaCompra.idProducto,
-            "idCliente": cliente.id,
-            "idVersion": nuevaCompra.idVersion,
-            "fechaCompra": currentdate
-        })
-            .then((data) => {
-                if (data.data.ok) {
-                    console.log("Compra creada");
-                    setNuevaCompra(NuevaCompraVacia)
-                    handleShowBusquedaOk();
-                    refreshCompras();
-                    if (refreshFiltradas) {
-                        refreshFiltradas();
-                    }
-                    refreshAlert();
-                    handleClose();
-                }
+        if (nuevaCompra.idProducto === "" || nuevaCompra.idProducto === null || nuevaCompra.idProducto === "Seleccionar" || nuevaCompra.idVersion === "" || nuevaCompra.idVersion === null || nuevaCompra.idVersion === "Seleccionar") {
+            camposAlert();
+        }
+        else {
+            axios.post(SERVER_NAME_SOPORTE + "/compras", {
+                "idProducto": nuevaCompra.idProducto,
+                "idCliente": cliente.id,
+                "idVersion": nuevaCompra.idVersion,
+                "fechaCompra": currentdate
             })
-            .catch((error) => {
-                console.log(error);
-                handleShowBusquedaError();
-            });
+                .then((data) => {
+                    if (data.data.ok) {
+                        console.log("Compra creada");
+                        setNuevaCompra(NuevaCompraVacia)
+                        handleShowBusquedaOk();
+                        refreshCompras();
+                        if (refreshFiltradas) {
+                            refreshFiltradas();
+                        }
+                        refreshAlert();
+                        handleClose();
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    handleShowBusquedaError();
+                });
+        }
     }
 
     useEffect(() => {

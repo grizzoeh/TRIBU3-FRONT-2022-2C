@@ -12,7 +12,7 @@ import { Snackbar } from "@mui/material";
 import Alert from 'react-bootstrap/Alert';
 
 
-function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, refreshAlert }) {
+function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, refreshAlert, camposAlert}) {
 
     const VersionNula = {
         "nombre": null,
@@ -37,7 +37,6 @@ function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, ref
     const handleCloseVersionError = () => setVersionError(false);
     const handleShowVersionError = () => setVersionError(true);
 
-
     const onChangeVersionEditable = (e) => {
         setVersionData({ ...VersionData, [e.target.name]: e.target.value });
     }
@@ -55,11 +54,14 @@ function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, ref
             fechaRelease: VersionData.fechaRelease,
             fechaDeprecacion: VersionData.fechaDeprecacion
         }
-        if (newVersion.estado === "Deprecada" && newVersion.fechaDeprecacion === null) {
-            handleShowVersionError();
-            return;
+        if (VersionData.nombre === null || VersionData.nombre === "" || VersionData.fechaRelease === null || VersionData.fechaRelease === "" || VersionData.estado === null || VersionData.estado === "" || VersionData.estado === "Seleccionar") {
+            camposAlert();
         }
-        axios.post(SERVER_NAME_SOPORTE + "/versiones", VersionData)
+        else if ((VersionData.estado === "Deprecada") && (VersionData.fechaDeprecacion === null || VersionData.fechaDeprecacion === "")) {
+            camposAlert();
+        }
+        else {
+            axios.post(SERVER_NAME_SOPORTE + "/versiones", VersionData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Version creada");
@@ -72,7 +74,8 @@ function ModalVersionNueva({ idProducto, refreshVersiones, refreshFiltradas, ref
             .catch((error) => {
                 handleShowVersionError();
                 console.log(error);
-            });
+            });       
+        }
     }
 
     return (

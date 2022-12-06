@@ -57,6 +57,10 @@ function ModalGestionVersion(producto) {
     const handleCloseBusquedaError = () => setShowBusquedaError(false);
     const handleShowBusquedaError = () => setShowBusquedaError(true);
 
+    const [showCamposError, setCamposError] = useState(false);
+    const handleCloseCamposError = () => setCamposError(false);
+    const handleShowCamposError = () => setCamposError(true);
+
 
 
     const handleClose = () => setShow(false);
@@ -121,6 +125,11 @@ function ModalGestionVersion(producto) {
     return (
         <>
             <>
+                <Snackbar open={showCamposError} autoHideDuration={2000} onClose={handleCloseCamposError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseCamposError} variant="danger" sx={{ width: '100%' }}>No puedes dejar campos vacios!</Alert>
+                </Snackbar>
+            </>
+            <>
                 <Snackbar open={showBusquedaOk} autoHideDuration={1500} onClose={handleCloseBusquedaOk} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert onClose={handleCloseBusquedaOk} variant="info" sx={{ width: '100%' }}>Busqueda realizada con exito.</Alert>
                 </Snackbar>
@@ -178,7 +187,7 @@ function ModalGestionVersion(producto) {
                         {producto["producto"].estado === "Deprecado" ? (
                             <Col className="v-center"><Button variant="primary" size="1" disabled={true}>+ Nueva version</Button></Col>
                         ) : (
-                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionCreadoOK} /></Col>
+                            <Col className="v-center" sm={3}><ModalVersionNueva className="h-end" idProducto={producto["producto"].id} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionCreadoOK} camposAlert={handleShowCamposError}/></Col>
                         )}
 
                     </Row>
@@ -206,7 +215,7 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK} /></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK} camposAlert={handleShowCamposError}/></Col>
                                                         <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionDeprecadoOK}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
@@ -220,7 +229,7 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK} /></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionEditadoOK} camposAlert={handleShowCamposError}/></Col>
                                                         <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones} refreshFiltradas={handleBotonQuitarFiltrado} refreshAlert={handleShowVersionActivadoOK}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
@@ -238,7 +247,7 @@ function ModalGestionVersion(producto) {
                                                 <td>-</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK} /></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK} camposAlert={handleShowCamposError}/></Col>
                                                         <Col sm={3}><BotonDeprecarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionDeprecadoOK}></BotonDeprecarVersion></Col>
                                                     </Row>
                                                 </td>
@@ -252,7 +261,7 @@ function ModalGestionVersion(producto) {
                                                 <td>{version.fechaDeprecacion.slice(0, 10)}</td>
                                                 <td>
                                                     <Row>
-                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK} /></Col>
+                                                        <Col sm={4}><ModalEditarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionEditadoOK} camposAlert={handleShowCamposError}/></Col>
                                                         <Col sm={2}><BotonActivarVersion version={version} refreshVersiones={getVersiones} refreshAlert={handleShowVersionActivadoOK}></BotonActivarVersion></Col>
                                                     </Row>
                                                 </td>
