@@ -9,6 +9,8 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from 'react-bootstrap/Container';
 import * as SERVER_NAMES from "../../APIRoutes";
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+import Button from "react-bootstrap/Button";
+import ModalCreacionProyecto from "../new/ModalCreacionProyecto";
 
 
 export default function Dashboard() {
@@ -31,6 +33,12 @@ export default function Dashboard() {
     const [assignee, setAssignee] = useState('Seleccionar');
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
+
+    const [showCreacionProyectoModal, setShowCreacionProyectoModal] = useState(false);
+
+    const onChangeshowCreacionProyectoModal = (newSomeState) => {
+        setShowCreacionProyectoModal(newSomeState);
+    };
 
     useEffect(() => {
         getProyectos();
@@ -167,7 +175,24 @@ export default function Dashboard() {
             <br></br>
             <br></br> */}
             <NavbarProyectos />
-            <Header />
+
+            <Container className="container-title">
+                <Row>
+                    <Col xs={10}>
+                        <h1>Proyectos</h1>
+                    </Col>
+                    < Col xs={2}>
+                        {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
+                        <Col> <Button variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button> </Col> 
+                    </Col>
+                </Row>
+
+                {showCreacionProyectoModal ? (
+                        <ModalCreacionProyecto clientes={clients} recursos={assignees} onChangeshowCreacionTareaModal={onChangeshowCreacionProyectoModal} />) :
+                        (null)}
+
+            </Container>
+
 
             <Container className="container-filters">
                 <Row className="mt-5">
