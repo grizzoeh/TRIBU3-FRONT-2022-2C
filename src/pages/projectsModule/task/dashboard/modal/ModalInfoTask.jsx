@@ -306,6 +306,71 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                     </Row>
 
                                     <Row className="mt-4">
+                                        <Col xs={4}>
+                                            <h6>Fecha real de finalizacion: </h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Form.Control 
+                                                type="date"
+                                                name="real_finalization_date"
+                                                value={tareaEditable.real_finalization_date ? tareaEditable.real_finalization_date.slice(0,10) : null}
+                                                onChange={(e) => onChangeTareaEditable(e)} 
+                                            />
+
+                                        </Col>
+
+                                    </Row>
+
+
+                                    <Row className="mt-4">
+                                        <Col xs={4}>
+                                            <h6>Prioridad: </h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Form.Control
+                                                type="number"
+                                                min="1"
+                                                name="priority"
+                                                placeholder={tareaEditable.priority}
+                                                onChange={(e) => onChangeTareaEditable(e)}
+                                            />
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col xs={4}>
+                                            <h6>Horas de esfuerzo estimadas: </h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Form.Control
+                                                type="number"
+                                                min="1"
+                                                name="estimated_hours_effort"
+                                                placeholder={tareaEditable.estimated_hours_effort}
+                                                onChange={(e) => onChangeTareaEditable(e)}
+                                            />
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col xs={4}>
+                                            <h6>Horas de esfuerzo reales: </h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                            <Form.Control
+                                                type="number"
+                                                min="1"
+                                                name="real_hours_effort"
+                                                placeholder={tareaEditable.real_hours_effort}
+                                                onChange={(e) => onChangeTareaEditable(e)}
+                                            />
+                                        </Col>
+
+                                    </Row>
+
+                                    <Row className="mt-4">
                                         <h6> Descripción </h6>
                                     </Row>
                                     <Row className="mt-1">
@@ -320,7 +385,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
                                     <Row className="mt-4">
 
-                                        <Col xs={3}>
+                                        <Col xs={4}>
                                             <h6>Resonsables:</h6>
                                         </Col>
                                         <Col xs={6}>
@@ -346,22 +411,6 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
                                     </Row>
 
-                                    <Row className="mt-4">
-                                        <Col xs={3}>
-                                            <h6>Prioridad:</h6>
-                                        </Col>
-
-                                        <Col xs={6}>
-                                            <Form.Control
-                                                type="number"
-                                                //value={tareaActual.estimated_hours_effort}
-                                                min="1"
-                                                name="priority"
-                                                placeholder={tareaEditable.priority}
-                                                onChange={(e) => onChangeTareaEditable(e)} 
-                                            />
-                                        </Col>
-                                    </Row>
                                 </Col >
                             </Row >
                         </div >
@@ -387,6 +436,24 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                         </Col>
                                     </Row>
 
+                                    <Row className="mt-2">
+                                        <Col sm={4}>
+                                            <h6> Tipo: </h6>
+                                        </Col>
+                                        <Col >
+                                            {tareaEditable.parent_task_id === null ? "Tarea": "Subtarea"}
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-3">
+                                        <Col sm={4}>
+                                            <h6>Fecha de creacion:</h6>
+                                        </Col>
+                                        <Col>
+                                            {tareaEditable.creation_date?moment(tareaEditable.creation_date, "YYYY-MM-DD").format("DD/MM/YYYY"):"Sin asignar"}
+                                        </Col>
+                                    </Row>
+
                                     <Row className="mt-3">
                                         <Col sm={4}>
                                             <h6>Fecha estimada de inicio:</h6>
@@ -405,6 +472,41 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                     </Row>
 
                                     <Row className="mt-3">
+                                        <Col sm={4}>
+                                            <h6>Fecha real de finalizacion:</h6>
+                                        </Col>
+                                        <Col>
+                                            {tareaEditable.real_finalization_date?moment(tareaEditable.real_finalization_date, "YYYY-MM-DD").format("DD/MM/YYYY"):"Sin asignar"}
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col sm={4}>
+                                            <h6>Prioridad:</h6>
+                                        </Col>
+
+                                        <Col> {tareaEditable.priority} </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col sm={4}>
+                                            <h6>Horas de esfuerzo estimadas:</h6>
+                                        </Col>
+
+                                        <Col> {tareaEditable.estimated_hours_effort ? tareaEditable.estimated_hours_effort : "Sin asignar"} </Col>
+                                    </Row>
+
+                                    <Row className="mt-4">
+                                        <Col sm={4}>
+                                            <h6>Horas de esfuerzo reales:</h6>
+                                        </Col>
+
+                                        <Col> {tareaEditable.real_hours_effort ? tareaEditable.real_hours_effort : "Sin asignar"} </Col>
+                                    </Row>
+
+                                    
+
+                                    <Row className="mt-3">
                                         <h6> Descripción </h6>
                                     </Row>
                                     <Row className="mt-1">
@@ -421,23 +523,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                     <Row className="mt-6">
                                         <h5 className="titulo-subrayado"> Relaciones: </h5>
                                     </Row>
-{/* 
-                                    <Row >
-                                        <Col sm={4}>
-                                            <h5> Project Manager: </h5>
-                                        </Col>
-                                        <Col >
-                                            {getResourceNameFor(recursos, mapProjectResourceObjectToName, tareaEditable.project_manager, "Sin asignar")}
-                                        </Col>
-                                    </Row>
-                                    <Row className="mt-2">
-                                        <Col sm={4}>
-                                            <h6> Sponsor: </h6>
-                                        </Col>
-                                        <Col >
-                                        {getResourceNameFor(recursos, mapProjectResourceObjectToName, tareaEditable.sponsor, "Sin asignar")}
-                                        </Col>
-                                    </Row> */}
+
                                     <Row className="mt-2">
                                         <Col xs={3} >
                                             <h6>Responsables: </h6>
@@ -459,40 +545,38 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
                                     </Row>
 
-                                    <Row className="mt-4">
-                                        <Col xs={3}>
-                                            <h6>Prioridad:</h6>
-                                        </Col>
-
-                                        <Col xs={6}> {tareaEditable.priority} </Col>
-                                    </Row>
-
-                                    {/* {project.type === "support" && <Row className="mt-4"> */}
-                                    {<Row className="mt-4">
-
-                                        <Col xs={3}>
-                                            <h6>Ticket relacionado:</h6>
-                                        </Col>
-
-                                        <Col xs={6}> {`Ticket #${getIdOrNull(tareaEditable.related_ticket) ? getIdOrNull(tareaEditable.related_ticket): "Sin asignar"}`} </Col>
-                                    </Row>
-                                    }
-                                    {tareaEditable.parent_task_id && <Row className="mt-5">
+                                    <Row className="mt-5">
                                         <Col>
                                         <h6>Tarea padre:</h6>
                                         </Col>
                                         <Col xs={9}>
-                                            {"Tarea #" + tareaEditable.parent_task_id }
+                                            { tareaEditable.parent_task_id ? "Tarea #" + tareaEditable.parent_task_id : "Sin asignar" }
                                             {/*<ModalInfoTask data={mapIDTaskToTaskObj(tareaEditable)} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} allTasks={allTasks} name={1}/>*/}
                                         </Col>
-                                    </Row>}
+                                    </Row>
 
-                                    {tareaEditable.dependencies.length > 0 && <Row className="mt-5">
+                                    <Row className="mt-5">
                                         <Col>
                                         <h6>Dependencias:</h6>
                                         </Col>
-                                        {tareaEditable.dependencies.map((dependency) => <Col className="columna" xs={-1}><ModalInfoTask data={dependency} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} name={1}/></Col>)}
-                                    </Row>}
+                                            { tareaEditable.dependencies.length > 0 
+                                                ? <ul> {tareaEditable.dependencies.map(
+                                                        (dependency) => <li className="columna" key={`dependency-button-view-${dependency.id}`} xs={6}><ModalInfoTask data={dependency} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} name={1}/> </li>
+                                                        )}
+                                                    </ul>
+                                                : <Col xs={9}>{"Sin asignar"}</Col>
+                                            }
+                                    </Row>
+
+                                    {project.type === "support" && <Row className="mt-4">
+
+                                    <Col>
+                                        <h6>Ticket relacionado:</h6>
+                                    </Col>
+
+                                    <Col xs={9}> {`Ticket #${getIdOrNull(tareaEditable.related_ticket) ? getIdOrNull(tareaEditable.related_ticket): "Sin asignar"}`} </Col>
+                                    </Row>
+                                    }
                                 </Col>
                             </Row>
                         </div>
