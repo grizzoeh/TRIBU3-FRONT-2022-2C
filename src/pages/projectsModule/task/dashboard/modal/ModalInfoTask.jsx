@@ -618,7 +618,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                         <h6>Ticket relacionado:</h6>
                                     </Col>
 
-                                    <Col xs={9}> {`Ticket #${getIdOrNull(tareaEditable.related_ticket) ? getIdOrNull(tareaEditable.related_ticket): "Sin asignar"}`} </Col>
+                                    <Col xs={9}> {`${getIdOrNull(tareaEditable.related_ticket) ? "Ticket #" + getIdOrNull(tareaEditable.related_ticket): "Sin asignar"}`} </Col>
                                     </Row>
                                     }
                                 </Col>
