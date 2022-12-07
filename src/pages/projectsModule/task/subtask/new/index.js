@@ -72,7 +72,7 @@ export default function NewTask() {
                   setClients(res.data);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
@@ -87,7 +87,7 @@ export default function NewTask() {
 
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, parent_task: e });
-    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id === e).name);
   };
 
   const handleDependencyDropdownButtonChange2 = (e) => {

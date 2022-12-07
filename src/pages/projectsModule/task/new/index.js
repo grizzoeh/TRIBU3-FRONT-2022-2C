@@ -71,7 +71,7 @@ export default function NewTask() {
                   setClients(res.data);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 

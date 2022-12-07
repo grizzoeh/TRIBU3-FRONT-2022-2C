@@ -12,6 +12,7 @@ import Alert from 'react-bootstrap/Alert';
 import moment from "moment";
 import * as SERVER_NAMES from "../../../APIRoutes";
 import ModalCreacionSubtarea from "./modalCrearSubtask";
+import DropdownButton from "react-bootstrap/DropdownButton";
 
 const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name}) => {
 
@@ -45,6 +46,9 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         return allTasks.find((tarea) => tarea.id == task.parent_task_id)
       }
 
+      const [dependencybuttonTitle, setDependencybuttonTitle] = useState('Seleccionar');
+
+
     const handleClose = () => {
         setShow(false);
         setEditMode(false);
@@ -55,18 +59,25 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
 
     const handleConfirmarEdicion = () => {
+        let parent_task_selected;
+        try {
+            parent_task_selected = tareaEditable.parent_task === null ? null : (tareaEditable.parent_task * 1);
+          } catch (error) {
+            console.error(error);
+            parent_task_selected = null;
+          }
 
         const tareaEditada = {
             name: tareaEditable.name,
             status: tareaEditable.status,
             estimated_finalization_date: moment(tareaEditable.estimated_finalization_date, "YYYY-MM-DD").format(),
             estimated_start_date: moment(tareaEditable.estimated_start_date, "YYYY-MM-DD").format(),
-            real_finalization_date: moment(tareaEditable.estimated_finalization_date, "YYYY-MM-DD").format(),
+            real_finalization_date: moment(tareaEditable.real_finalization_date, "YYYY-MM-DD").format(),
             description: tareaEditable.description,
             estimated_hours_effort: tareaEditable.estimated_hours_effort,
             real_hours_effort: tareaEditable.real_hours_effort,
             priority: tareaEditable.priority,
-            parent_task: tareaEditable.parent_task,
+            parent_task: isNaN(parent_task_selected) ? null : parent_task_selected,
             related_ticket: tareaEditable.related_ticket,
             assignees: tareaEditable.assignees.map(r => getIdOrNull(r)),
         }
@@ -75,6 +86,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
             setAlertaDatosNulos(true);
         } else {
 
+            console.log(tareaEditada)
             axios
             .patch(
               `${SERVER_NAMES.PROJECTS}/psa/projects/tasks/${data.id}`, tareaEditada)
@@ -125,6 +137,13 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
         setTareaEditable({ ...tareaEditable, [e.target.name]: e.target.value });
     }
+
+    const handleDependencyDropdownButtonChange = (e) => {
+        console.log("Logueo e: ")
+        console.log(e)
+        setTareaEditable({ ...tareaEditable, parent_task: e });
+        setDependencyButtonTitle(allTasks.find((tarea) => tarea.id === e).name);
+    };
 
     const handleDropdownChange = (e) => {
 
@@ -206,6 +225,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                 console.log(error);
             });
     }
+
 
     useEffect(() => {
         //getRecursos();
@@ -393,10 +413,6 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                                 isMulti
                                                 options={assignees}
                                                 defaultValue={tareaEditable.assignees && tareaEditable.assignees.map((resource) => {
-                                                    //let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
-                                                    //let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
-                                                    //let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
-                                                    //let label = {Nombre: name, Apellido: surname, legajo: id}
                                                     let assignee = assignees.find((empleado) => empleado.legajo === resource.id)
                                                     let label = {Nombre: assignee.Nombre, Apellido: assignee.Apellido, legajo: assignee.legajo}
                                                     return label
@@ -410,6 +426,44 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                         </Col>
 
                                     </Row>
+{/* 
+                                    <Row className="mt-4">
+
+                                        <Col xs={4}>
+                                            <h6>Tarea padre:</h6>
+                                        </Col>
+                                        <Col xs={6}>
+                                        <Dropdown >
+                                                <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
+                                                    {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    {clientes ?
+                                                        clientes.map((cliente) => (
+                                                            <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
+                                                                setProyectoEditable({ ...proyectoEditable, ['client_id']: cliente["id"]});
+                                                            }}>{cliente["razon social"]}</Dropdown.Item>
+                                                        )) : null}
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+
+                                            <DropdownButton
+                                                variant="secondary"
+                                                title={}                                                }
+                                                onSelect={handleDependencyDropdownButtonChange}
+                                            >
+                                                {allTasks.map((tarea) => {
+                                                    return (
+                                                        <Dropdown.Item eventKey={tarea.id} name="tarea">
+                                                        {tarea.name}
+                                                        </Dropdown.Item>
+                                                    );
+                                                })}
+                                            </DropdownButton>
+                                        </Col>
+
+                                    </Row> */}
 
                                 </Col >
                             </Row >
