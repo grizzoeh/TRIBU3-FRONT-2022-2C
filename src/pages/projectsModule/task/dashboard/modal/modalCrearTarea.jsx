@@ -65,12 +65,12 @@ const ModalCreacionTarea = ({ getDataProjectTask, onChangeshowCreacionTareaModal
 
     const handleDependencyDropdownButtonChange = (e) => {
         setTaskData({ ...TaskData, parent_task: e });
-        setDependencyButtonTitle(tasks.find((tarea) => tarea.id === e).name);
+        setDependencyButtonTitle(tasks.find((tarea) => tarea.id == e).name);
     };
 
     const handleAssigneeDropdownButtonChange = (e) => {
         if (e!== "Ninguno")  setTaskData({ ...TaskData, assignees: [e] });
-        e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(assignees.find((client) => client.legajo === e).Nombre + " " + assignees.find((client) => client.legajo === e).Apellido);
+        e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(assignees.find((client) => client.legajo == e).Nombre + " " + assignees.find((client) => client.legajo == e).Apellido);
     };
 
     const onChangeDateData = (e) => {
