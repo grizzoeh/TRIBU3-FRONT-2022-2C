@@ -57,8 +57,8 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
         const proyectoEditado = {
             name: proyectoEditable.name,
             status: proyectoEditable.status,
-            estimated_finalization_date: moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format(),
-            estimated_start_date: moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format(),
+            estimated_finalization_date: proyectoEditable.estimated_finalization_date ? moment(proyectoEditable.estimated_finalization_date, "YYYY-MM-DD").format() : null,
+            estimated_start_date: proyectoEditable.estimated_start_date ? moment(proyectoEditable.estimated_start_date, "YYYY-MM-DD").format(): null,
             description: proyectoEditable.description,
             client: proyectoEditable.client_id,
             project_manager: getIdOrNull(proyectoEditable.project_manager),
@@ -271,12 +271,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
 
                                     </Row>
 
-                                    <Row className="mt-4">
-
-                                        <Col xs={3}>
+                                    <Row className="mt-2">
+                                        <Col sm={2}>
                                             <h6>Estado:</h6>
                                         </Col>
-                                        <Col >
+                                        <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
                                                     {proyectoEditable.status
@@ -296,11 +295,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                         </Col>
                                     </Row>
 
-                                    <Row className="mt-4">
-                                        <Col xs={4}>
+                                    <Row className="mt-2">
+                                        <Col sm={4}>
                                             <h6>Fecha estimada de inicio: </h6>
                                         </Col>
-                                        <Col xs={6}>
+                                        <Col>
                                             <Form.Control 
                                                 type="date"
                                                 name="estimated_start_date"
@@ -312,11 +311,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
 
                                     </Row>
 
-                                    <Row className="mt-4">
+                                    <Row className="mt-2">
                                         <Col xs={4}>
                                             <h6>Fecha estimada de fin: </h6>
                                         </Col>
-                                        <Col xs={6}>
+                                        <Col>
                                             <Form.Control 
                                                 type="date"
                                                 name="estimated_finalization_date"
@@ -329,13 +328,13 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                     </Row>
 
                                     <Row className="mt-2">
-                                        <Col>
+                                        <Col sm={2}>
                                             <h6> Cliente:</h6>
                                         </Col>
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
+                                                    {proyectoEditable.client_id ? getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar"): "Sin asignar"}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
@@ -608,7 +607,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                         <Fragment>
                             {/* <Col><Button variant="danger" onClick={handleShow}> Borrar </Button> </Col> */}
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
-                            <ModalInfoBorrarProyecto data={data} getDataProyectos={getDataProyectos} />
+                            <Col> <ModalInfoBorrarProyecto data={data} getDataProyectos={getDataProyectos} setAlertaBorradoExito={setAlertaBorradoExito} handleClosePadre={handleClose}/> </Col>
 
                            
     

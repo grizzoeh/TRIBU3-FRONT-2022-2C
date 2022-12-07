@@ -13,6 +13,8 @@ import moment from "moment";
 import * as SERVER_NAMES from "../../../APIRoutes";
 import ModalCreacionSubtarea from "./modalCrearSubtask";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import ModalInfoBorrarTarea from "./ModalInfoBorrarTarea";
+
 
 const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name, setRefreshKey}) => {
 
@@ -116,15 +118,17 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
     }
 
     const handleBorrado = async () => {
-        axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${data.id}`)
-          .then((data) => {
-            if (data.data.ok) {
-              console.log("Tarea borrada");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        // axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${data.id}`)
+        //   .then((data) => {
+        //     if (data.data.ok) {
+        //       console.log("Tarea borrada");
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+
+          console.log("Borrado")
 
           setAlertaBorradoExito(true);
           setRefreshKey(oldKey => oldKey +1)
@@ -254,11 +258,11 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                 </Modal.Header>
                 <Modal.Body>
                     <Alert show={alertaEdicionExito} variant='success'>
-                        Proyecto editado con exito.
+                        Tarea editada con exito.
 
                     </Alert>
                     <Alert show={alertaBorradoExito} variant='success'>
-                        Proyecto borrado con exito.
+                        Tarea borrada con exito.
                     </Alert>
 
                     {editMode ? (
@@ -641,7 +645,8 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
+                            {/* <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col> */}
+                            <Col><ModalInfoBorrarTarea data={data} getDataTareas={getDataProjectTask} setRefreshKey={setRefreshKey} setAlertaBorradoExito={setAlertaBorradoExito} handleClosePadre={handleClose}>   </ModalInfoBorrarTarea></Col>
                             <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
                         
                             <Col xs={-1}>

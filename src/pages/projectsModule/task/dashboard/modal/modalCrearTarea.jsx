@@ -65,12 +65,12 @@ const ModalCreacionTarea = ({ getDataProjectTask, onChangeshowCreacionTareaModal
 
     const handleDependencyDropdownButtonChange = (e) => {
         setTaskData({ ...TaskData, parent_task: e });
-        setDependencyButtonTitle(tasks.find((tarea) => tarea.id == e).name);
+        setDependencyButtonTitle(tasks.find((tarea) => tarea.id === e).name);
     };
 
     const handleAssigneeDropdownButtonChange = (e) => {
-        if (e!= "Ninguno")  setTaskData({ ...TaskData, assignees: [e] });
-        e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(assignees.find((client) => client.legajo == e).Nombre + " " + assignees.find((client) => client.legajo == e).Apellido);
+        if (e!== "Ninguno")  setTaskData({ ...TaskData, assignees: [e] });
+        e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(assignees.find((client) => client.legajo === e).Nombre + " " + assignees.find((client) => client.legajo === e).Apellido);
     };
 
     const onChangeDateData = (e) => {
@@ -168,7 +168,7 @@ const ModalCreacionTarea = ({ getDataProjectTask, onChangeshowCreacionTareaModal
                 <Modal.Body>
                     <Snackbar open={alertaDatosNulos} autoHideDuration={1500} onClose={handleCloseAlertaDatosNulos} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                         <Alert size={"xs"} show={alertaDatosNulos} key='danger' variant='danger'>
-                            No puedes dejar campos vacios!
+                            No puedes dejar el nombre y/o descripción vacios.
                         </Alert>
                         {/*<Alert show={alertaTareaExito} variant='success'>
                             Tarea creada con exito.
