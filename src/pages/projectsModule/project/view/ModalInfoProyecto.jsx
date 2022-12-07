@@ -138,7 +138,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
     const handleStatusChange = (e) => {
         setProyectoEditable({
           ...proyectoEditable,
-          [e.target.name]: statusMapping[e.target.innerHTML],
+          status: statusMapping[e.target.innerHTML],
         });
       };
 
@@ -285,11 +285,11 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PENDIENTE </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> ANALISIS </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> DESARROLLO </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PRODUCCION </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> POST PRODUCCION </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>PENDIENTE</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>ANALISIS</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>DESARROLLO</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>PRODUCCION</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>POST PRODUCCION</Dropdown.Item>
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
