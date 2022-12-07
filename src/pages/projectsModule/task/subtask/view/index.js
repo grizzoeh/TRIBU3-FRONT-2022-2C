@@ -454,7 +454,8 @@ export default function NewTask() {
           <Row className="mt-5">
           <Col xs={7}>
             <Link to={`/proyectos/${params.id}/ver-tareas/`}>
-              <Button variant="danger" onClick={handleBorrado}>Borrar</Button>
+              <Button variant="danger" onClick={handleShow}>Borrar</Button>
+              
             </Link>
             </Col>
           <Col></Col>

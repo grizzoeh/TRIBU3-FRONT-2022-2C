@@ -604,8 +604,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
+                            <Col><Button variant="danger" onClick={handleShow}> Borrar </Button> </Col>
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
+                           
+
+                           
+    
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
@@ -616,6 +620,9 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
                             </Col>
                         </Fragment>
                     )
+
+
+
                     }
                 </Modal.Footer>
             </Modal >
