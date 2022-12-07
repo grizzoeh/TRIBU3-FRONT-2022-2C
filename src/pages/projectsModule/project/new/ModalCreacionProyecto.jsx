@@ -343,7 +343,7 @@ const ModalCreacionProyecto = ({ clientes, recursos, onChangeshowCreacionTareaMo
 
 
                     <h6 className="mt-4">Descripción</h6>
-                    <textarea className="box-reporte-final mt-4" name="description" onChange={(e) => onChangeProyectoAttributes(e)} />
+                    <textarea className="box-reporte-final mt-4" name="description" placeholder="Una descripción del proyecto..." onChange={(e) => onChangeProyectoAttributes(e)} />
 
 
                 </Modal.Body>
