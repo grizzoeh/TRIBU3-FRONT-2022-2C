@@ -14,7 +14,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from 'moment';
 
 
-const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, project, tasks, assignees, setRefreshKey }) => {
+const ModalCreacionTarea = ({ getDataProjectTask, onChangeshowCreacionTareaModal, project, tasks, assignees, setRefreshKey }) => {
 
     const vertical = "top"
     const horizontal = "center"
@@ -131,6 +131,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, proj
                     console.log(error);
                 });
 
+            getDataProjectTask();
             //setAlertaTareaExito(true);
             handleClose();
 
