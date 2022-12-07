@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 
 import CardCustom from "./card";
+
 import "./task.css";
 import "./StateContainer.css";
 import Row from "react-bootstrap/Row";
@@ -13,7 +14,7 @@ import ModalInfoProyecto from "../view/ModalInfoProyecto";
 
 import axios from "axios";
 
-export default function StateContainer({ projects, getProjects, resources }) {
+export default function StateContainer({ projects, getProjects, resources, clients }) {
   const [clientes, setClientes] = useState();
   const [recursos, setRecursos] = useState([]);
   const [proyectos, setProyectos] = useState(projects);
@@ -147,6 +148,7 @@ export default function StateContainer({ projects, getProjects, resources }) {
                               data={project}
                               getDataProyectos={getProjects}
                               recursos2={resources}
+                              clientes2={clients}
                             />
                           </Col>
                         </Row>

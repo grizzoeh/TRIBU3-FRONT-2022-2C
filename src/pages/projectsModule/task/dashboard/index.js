@@ -15,8 +15,9 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
-
+import ModalCrearTarea from "./modal/modalCrearTarea"
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
 
 export default function DashboardTareas() {
   const params = useParams();
@@ -49,9 +50,9 @@ export default function DashboardTareas() {
     //getTarea();
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     getTarea();
-  }, [assigneeID])
+  }, [assigneeID])*/
 
   const handlePriorityFilter = (e) => {
     //setPriority(e.target.value);
@@ -62,7 +63,7 @@ export default function DashboardTareas() {
   };
   useEffect(() => {
     getTarea();
-  }, [priority])
+  }, [priority,assigneeID])
 
 
   const handleDropdownFilter = (e) => {
@@ -147,7 +148,7 @@ export default function DashboardTareas() {
 
   useEffect(() => {
     getProyecto();
-    getTarea();
+    //getTarea();
     getAssignees();
   }, [params]);
 
@@ -163,11 +164,17 @@ export default function DashboardTareas() {
                 </Col>
 
             </Row>
+            <Container className="spacer-line">
+                <Row>
+                    <SpacerLine className="spacer-line" color="black"></SpacerLine>
+                </Row>
+            </Container>
             <Row xs="auto">
             < Col>
-                <Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
+                {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
                     <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
-                </Link>
+                </Link>*/}
+                <ModalCrearTarea tasks={tareas} project={proyecto} assignees={assignees}/>
             </Col>
             < Col>
                 <Link to={`/proyectos/${proyecto.id}/gannt/`}>
@@ -317,6 +324,8 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "pending")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
                                     />
                                     </Col>
                                     <Col>
@@ -325,6 +334,8 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "in_progress")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
                                         />
                                     </Col>
                                     <Col>
@@ -333,6 +344,8 @@ export default function DashboardTareas() {
                                             tasks={tareas.filter((t) => t.status === "finished")}
                                             project={proyecto}
                                             assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
                                         />
                                     </Col>
                                 </Row>
