@@ -65,11 +65,11 @@ export default function DashboardTareas() {
   };
   useEffect(() => {
     getTarea();
-  }, [priority,assigneeID])
+  }, [priority,assigneeID,refreshKey])
 
-  useEffect(() => {
+  /*useEffect(() => {
         getTarea();
-    }, [refreshKey])
+    }, [refreshKey])*/
 
 
   const handleDropdownFilter = (e) => {

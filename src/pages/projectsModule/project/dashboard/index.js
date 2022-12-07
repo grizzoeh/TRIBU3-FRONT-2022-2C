@@ -45,11 +45,11 @@ export default function Dashboard() {
 
     useEffect(() => {
         getProyectos();
-      }, [stateQuery,assigneeQuery,typeQuery,clientQuery])
+      }, [stateQuery,assigneeQuery,typeQuery,clientQuery,refreshKey])
 
-    useEffect(() => {
+    /*useEffect(() => {
         getProyectos();
-    }, [refreshKey])
+    }, [])*/
     
     /*useEffect(() => {
         getProyectos();
