@@ -13,7 +13,7 @@ import moment from "moment";
 import * as SERVER_NAMES from "../../APIRoutes";
 
 
-const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
+const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRefreshKey}) => {
 
 
     const [clientes, setClientes] = useState();
@@ -47,6 +47,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
         setAlertaBorradoExito(false);
+        setRefreshKey(oldKey => oldKey +1);
     };
 
 
