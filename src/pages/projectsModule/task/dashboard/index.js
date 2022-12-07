@@ -180,7 +180,7 @@ export default function DashboardTareas() {
                 {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
                     <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
                 </Link>*/}
-                <ModalCrearTarea tasks={tareas} project={proyecto} assignees={assignees} setRefreshKey={setRefreshKey}/>
+                <ModalCrearTarea getDataProjectTask={getTarea} tasks={tareas} project={proyecto} assignees={assignees} setRefreshKey={setRefreshKey}/>
             </Col>
             < Col>
                 <Link to={`/proyectos/${proyecto.id}/gannt/`}>
