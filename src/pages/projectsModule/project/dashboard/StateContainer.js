@@ -15,8 +15,10 @@ import ModalInfoProyecto from "../view/ModalInfoProyecto";
 import axios from "axios";
 
 export default function StateContainer({ projects, getProjects, resources, clients, setRefreshKey }) {
-  const [clientes, setClientes] = useState();
-  const [recursos, setRecursos] = useState([]);
+  //const [clientes, setClientes] = useState();
+  //const [recursos, setRecursos] = useState([]);
+  const [clientes, setClientes] = useState(clients);
+  const [recursos, setRecursos] = useState(resources);
   const [proyectos, setProyectos] = useState(projects);
 
   const getClientes = async () => {
@@ -44,14 +46,16 @@ export default function StateContainer({ projects, getProjects, resources, clien
       });
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     getRecursos();
     getClientes();
-  }, []);
+  }, []);*/
 
   useEffect(() => {
     setProyectos(projects);
-  }, [projects]);
+    setClientes(clients);
+    setRecursos(resources);
+  }, [projects,clients,resources]);
 
   var inverseStatusMapping = {
     pending: "PENDIENTE",
