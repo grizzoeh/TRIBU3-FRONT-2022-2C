@@ -24,15 +24,15 @@ const ModalInfoBorrarProyecto = ({ data, getDataProyectos, setAlertaBorradoExito
     };
 
     const handleBorrado = async () => {
-        // axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${data.id}`)
-        //   .then((data) => {
-        //     if (data.data.ok) {
-        //       console.log("Proyecto borrado");
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+        axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/${data.id}`)
+          .then((data) => {
+            if (data.data.ok) {
+              console.log("Proyecto borrado");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
           setTimeout(() => {
             // After 1 second
