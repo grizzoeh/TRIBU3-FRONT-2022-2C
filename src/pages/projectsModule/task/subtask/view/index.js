@@ -103,7 +103,7 @@ export default function NewTask() {
                   //setAssigneeButtonTitle(res.data.find((assignee) => assignee.id == tareaActual.assignees[0].id).name);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes1', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
@@ -116,7 +116,7 @@ export default function NewTask() {
                     //else setEmpleadoAsignado("Seleccionar")
                 })
                 .catch((err) => {
-                    alert('SSe produjo un error al consultar los clientes', err);
+                    alert('SSe produjo un error al consultar los empleados', err);
                 });
           };
         getTareas();
