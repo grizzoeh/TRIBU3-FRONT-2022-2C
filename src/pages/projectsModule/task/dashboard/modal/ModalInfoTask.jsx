@@ -46,7 +46,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         return allTasks.find((tarea) => tarea.id == task.parent_task_id)
       }
 
-      const [dependencybuttonTitle, setDependencybuttonTitle] = useState('Seleccionar');
+      const [dependencyButtonTitle, setDependencyButtonTitle] = useState('Seleccionar');
 
 
     const handleClose = () => {
