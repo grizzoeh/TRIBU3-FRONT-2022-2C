@@ -28,7 +28,8 @@ const ModalCreacionSubtarea = ({parent_task/*, tasks*/, assignees, project}) => 
         dependencies: [],
         assignees: [],
         creation_date: null,
-        priority: 1,
+        priority: parent_task.priority,
+        related_ticket: parent_task.related_ticket,
         realEffort: null,
         parent_task: parent_task.id
     }
