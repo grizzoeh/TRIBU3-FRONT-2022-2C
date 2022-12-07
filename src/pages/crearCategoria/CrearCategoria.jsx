@@ -15,13 +15,10 @@ const CreacionCategoria = () => {
 
             <NavbarRecursos />
 
-            <Container className="container-title">
-
-                <h2>Crear Categorias</h2>
-
-            </Container>
-
             <Container className="container-cards">
+
+                <h1>Crear Categoria</h1>
+
                 <ModalCreacionCategoria />
 
             </Container>

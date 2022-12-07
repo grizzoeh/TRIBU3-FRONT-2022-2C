@@ -67,7 +67,7 @@ const ModalEliminacionCargaHoras = () => {
                                 <TableCell align="right">Fecha</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
                                 <TableCell align="right">Estado</TableCell>
-                                <TableCell align="right">Categoria</TableCell>
+                                <TableCell align="right">Categoria/Proyecto nombre</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

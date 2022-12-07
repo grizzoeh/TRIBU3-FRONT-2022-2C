@@ -39,6 +39,10 @@ const ModalEliminacionCategorias = () => {
     const handleClick=(e)=>{
         const url = "https://squad920222c-production.up.railway.app/recursos/categorias/" + catId;
         console.log(url);
+        if(catId <= 0){
+            alert("Por favor ingrese un id de categoria");
+            return;
+        }
         fetch(url, {
             method: 'DELETE',
             headers: {
@@ -54,6 +58,7 @@ const ModalEliminacionCategorias = () => {
 
     return (
         <Container>
+            <h1 id='titulo'>Eliminar Categorias</h1>
             <div>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>setCatId(e.target.value)}/>
                 <Button id = "borrar" onClick={() => {handleClick()}} >Borrar</Button> 

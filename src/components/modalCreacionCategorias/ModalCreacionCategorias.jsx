@@ -33,18 +33,25 @@ const ModalCreacionCategorias = () => {
         e.preventDefault()
         const categoria={descripcion, idCategoria,nombre}
         console.log(categoria)
+        if(nombre.length === 0){
+            alert("Requerimos que se ingrese un nombre");
+            return;
+        }
         fetch(`https://squad920222c-production.up.railway.app/recursos/categorias`, { /*si inputs en blanco, se manda array != string */
             method:"POST",
             headers:{"Content-Type": "application/json"},
             body:JSON.stringify(categoria),
         }).then(()=>{
             console.log("anda?")
+            alert("Has Creado una Categoria");
+            return;
         })
     }
 
     return (
-        <container>
+        <Container>
             <div id = 'Titulo'>
+                <h1 id='titulo'>Crear Categorias</h1>
                 <h2 id='titulo'>Ingrese el nombre de la nueva categoria</h2>
             </div>
             <div id='top-categoria'>
@@ -57,7 +64,7 @@ const ModalCreacionCategorias = () => {
                 <TextField id="outlined-basic" label="Ingrese una descripcion" variant="outlined" sx={{ minWidth: 650 }} value={descripcion} onChange={(e)=>setDescripcion(e.target.value)}/>
             </div>
             <Button id = "click" onClick={handleClick} >Crear</Button>
-    </container>
+    </Container>
     );
 }; 
 

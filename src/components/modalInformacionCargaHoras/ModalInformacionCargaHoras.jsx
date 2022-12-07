@@ -68,7 +68,7 @@ const ModalInformacionCargaHoras = () => {
         
 
     return (
-        <container>
+        <Container>
             <div id = 'cargaId'>
                 <TextField id="outlined-basic" label="Consultar Carga por Id" variant="outlined" sx={{ minWidth: 650 }} value={carId} onChange={(e)=>{setCarId(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Consultar</Button></Col>
@@ -106,7 +106,7 @@ const ModalInformacionCargaHoras = () => {
             </div>
 
             
-        </container>
+        </Container>
     );
 }; 
 

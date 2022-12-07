@@ -34,19 +34,22 @@ const ModalInformacionCargaHorasPorLegajo = () => {
     const handleShow = () => setShow(true);
 
     
-        const handleClick=() => {
+        const handleClick= async () => {
             setCargaLegajo([])
             const url = `https://squad920222c-production.up.railway.app/recursos/cargas/legajo/` + legajo; /*legajo no sirve, tirar error */
-            fetch(url)
-            .then((res) => res.json())
-            .then((data) => {
-                setCargaLegajo(data);
-            });
+            const res = await fetch(url);
+            if(!res.ok){
+                alert("No existe ese legajo");
+                return;
+            };
+            const cargas = await res.json();
+            setCargaLegajo(cargas);
+
         };
         
 
     return (
-        <container>
+        <Container>
             <div id = 'legajo'>
                 <TextField id="outlined-basic" label="Consultar Carga por Legajo" variant="outlined" sx={{ minWidth: 650 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1" onClick={() => {handleClick();handleShow()}} id='boton'>Consultar legajo</Button></Col>
@@ -57,9 +60,11 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                                 <TableRow>
                                     <TableCell align="center">Legajo</TableCell>
                                     <TableCell align="center">Proyecto</TableCell>
+                                    <TableCell align="center">Categoria</TableCell>
                                     <TableCell align="center">Tarea</TableCell>
                                     <TableCell align="center">Horas</TableCell>
-                                    <TableCell align="center">Fecha</TableCell>
+                                    <TableCell align="center">Fecha Inicio</TableCell>
+                                    <TableCell align="center">Fecha Fin</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -68,10 +73,12 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                                         key={carga.legajo}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                         <TableCell align="center" component="th" scope="row">{carga.legajo}</TableCell>
-                                        <TableCell align="center">{carga.proyectoNombre}</TableCell>
-                                        <TableCell align="center">{carga.tareaNombre}</TableCell>
+                                        <TableCell align="center">{!carga.proyectoNombre? "-" : carga.proyectoNombre}</TableCell>
+                                        <TableCell align="center">{!carga.categoriaNombre? 'Proyecto' : carga.categoriaNombre}</TableCell>
+                                        <TableCell align="center">{!carga.tareaNombre? '-': carga.tareaNombre}</TableCell>
                                         <TableCell align="center">{carga.cantidad_horas}</TableCell>
-                                        <TableCell align="center">{carga.fecha}</TableCell>
+                                        <TableCell align="center">{carga.fecha_inicio}</TableCell>
+                                        <TableCell align="center">{carga.fecha_fin}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -80,7 +87,7 @@ const ModalInformacionCargaHorasPorLegajo = () => {
                 </div>
             </div>
             
-        </container>
+        </Container>
     );
 }; 
 
