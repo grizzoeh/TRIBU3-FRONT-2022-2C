@@ -235,7 +235,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
 
     return (
         <>
-            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Ver detalles</Button>
+            <Button size="sm" variant="outline-primary" onClick={() => { handleShow() }}>Ver detalles</Button>
 
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
