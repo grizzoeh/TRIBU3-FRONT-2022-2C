@@ -188,30 +188,36 @@ export default function GannChart() {
     },
   };
   return (
+    <>
     <Fragment>
+    <NavbarProyectos />
+
       <br></br>
       <br></br>
       <br></br>
       <br></br>
       {/*className="col-md-4 order-md-2"*/}
-      <Row>
-        <Col xs={{ span: 10, order: 2 }}>
-          <h1 align="center"> Diagrama de Gantt</h1>
-        </Col>
-      </Row>
-      <Row>
-        <Container className="spacer-line">
-          <Row>
-            <SpacerLine
-              className="spacer-line"
-              color="black"
-              top="100px"
-            ></SpacerLine>
-          </Row>
-        </Container>
-      </Row>
-      <Row>
-        <Col align="center">
+      <Container className="container-title">
+        <Row Row>
+            <Col xs={{ span: 10, order: 2 }}>
+              <h1 align="center"> Diagrama de Gantt</h1>
+            </Col>
+        </Row>
+        <Row>
+          <Container className="spacer-line">
+            <Row>
+              <SpacerLine
+                className="spacer-line"
+                color="black"
+                top="100px"
+              ></SpacerLine>
+            </Row>
+          </Container>
+        </Row>
+
+        <Container>
+        <Row>
+        <Col>
           <Link to={`/proyectos/${params.id}/ver-tareas/`}>
             <Button
               variant="primary"
@@ -222,7 +228,6 @@ export default function GannChart() {
           </Link>
         </Col>
       </Row>
-
       <Row className="mt-5">
         {" "}
         <Col>
@@ -262,7 +267,6 @@ export default function GannChart() {
         </Col>
       </Row>
 
-      <NavbarProyectos />
       <Container key="chart-container">
         <br></br>
         <br></br>
@@ -318,6 +322,11 @@ export default function GannChart() {
           </Col>
         )}
       </Container>
-    </Fragment>
+        </Container>
+      </Container>
+
+
+      </Fragment>
+    </>
   );
 }

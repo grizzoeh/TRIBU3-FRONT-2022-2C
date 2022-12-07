@@ -294,10 +294,7 @@ export default function Dashboard() {
                     </Col>
                 </Row>
             </Container>
-
-            <br></br>
-            <br></br>
-            <br></br>
+            
             <br></br>
             <br></br>
             <br></br>

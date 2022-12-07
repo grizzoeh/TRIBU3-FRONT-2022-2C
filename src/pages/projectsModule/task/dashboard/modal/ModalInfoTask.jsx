@@ -13,6 +13,8 @@ import moment from "moment";
 import * as SERVER_NAMES from "../../../APIRoutes";
 import ModalCreacionSubtarea from "./modalCrearSubtask";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import ModalInfoBorrarTarea from "./ModalInfoBorrarTarea";
+
 
 const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name, setRefreshKey}) => {
 
@@ -35,19 +37,19 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
     const [tareatest, setTareaTest] = useState([]);
 
+    const [parentTaskTitle, setParentTaskTitle] = useState('Sin asignar');
+
+
     var inverseStatusMapping = {pending:"PENDIENTE",in_progress:"EN PROGRESO",finished:"FINALIZADO"};
     var statusMapping ={Todos:"Todos",PENDIENTE:"pending","EN PROGRESO":"in_progress",FINALIZADO:"finished"};
 
     var typeMapping = { "Todos": "Todos", "client": "DESARROLLO", "support": "SOPORTE" };
 
-    const mapIDTaskToTaskObj= (task) => {
+    const mapIDTaskToTaskName= (task) => {
         //let tareaPadre = allTasks.find((tarea) => tarea.id == task.parent_task_id)
         //return tareaPadre
-        return allTasks.find((tarea) => tarea.id == task.parent_task_id)
+        return allTasks ? allTasks.find((tarea) => tarea.id === task.parent_task_id).name : "Sin Asignar"
       }
-
-      const [dependencyButtonTitle, setDependencyButtonTitle] = useState('Seleccionar');
-
 
     const handleClose = () => {
         setShow(false);
@@ -55,14 +57,18 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
         setAlertaBorradoExito(false);
-        setRefreshKey(oldKey => oldKey +1);
+        //setRefreshKey(oldKey => oldKey +1);
     };
 
 
     const handleConfirmarEdicion = () => {
+        console.log("tarea editable:")
+        console.log(tareaEditable)
+
+
         let parent_task_selected;
         try {
-            parent_task_selected = tareaEditable.parent_task === null ? null : (tareaEditable.parent_task * 1);
+            parent_task_selected = tareaEditable.parent_task_id === null ? null : (tareaEditable.parent_task_id * 1);
           } catch (error) {
             console.error(error);
             parent_task_selected = null;
@@ -71,15 +77,14 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         const tareaEditada = {
             name: tareaEditable.name,
             status: tareaEditable.status,
-            estimated_finalization_date: moment(tareaEditable.estimated_finalization_date, "YYYY-MM-DD").format(),
-            estimated_start_date: moment(tareaEditable.estimated_start_date, "YYYY-MM-DD").format(),
-            real_finalization_date: moment(tareaEditable.real_finalization_date, "YYYY-MM-DD").format(),
+            estimated_finalization_date: tareaEditable.estimated_finalization_date ? moment(tareaEditable.estimated_finalization_date, "YYYY-MM-DD").format() : null,
+            estimated_start_date: tareaEditable.estimated_start_date ? moment(tareaEditable.estimated_start_date, "YYYY-MM-DD").format(): null,
+            real_finalization_date: tareaEditable.real_finalization_date ? moment(tareaEditable.real_finalization_date, "YYYY-MM-DD").format(): null,
             description: tareaEditable.description,
             estimated_hours_effort: tareaEditable.estimated_hours_effort,
             real_hours_effort: tareaEditable.real_hours_effort,
             priority: tareaEditable.priority,
             parent_task: isNaN(parent_task_selected) ? null : parent_task_selected,
-            related_ticket: tareaEditable.related_ticket,
             assignees: tareaEditable.assignees.map(r => getIdOrNull(r)),
         }
 
@@ -101,7 +106,8 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
             setEditMode(false);
             setAlertaEdicionExito(true);
-            getDataProjectTask();
+            //setRefreshKey(oldKey => oldKey +1)
+            //getDataProjectTask();
         }
 
     }
@@ -112,17 +118,20 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
     }
 
     const handleBorrado = async () => {
-        axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${data.id}`)
-          .then((data) => {
-            if (data.data.ok) {
-              console.log("Tarea borrada");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        // axios.delete(SERVER_NAMES.PROJECTS + `/psa/projects/tasks/${data.id}`)
+        //   .then((data) => {
+        //     if (data.data.ok) {
+        //       console.log("Tarea borrada");
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+
+          console.log("Borrado")
 
           setAlertaBorradoExito(true);
+          setRefreshKey(oldKey => oldKey +1)
           getDataProjectTask();
           setTimeout(() => {
             // After 1 second
@@ -143,10 +152,11 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         console.log("Logueo e: ")
         console.log(e)
         setTareaEditable({ ...tareaEditable, parent_task: e });
-        setDependencyButtonTitle(allTasks.find((tarea) => tarea.id === e).name);
     };
 
     const handleDropdownChange = (e) => {
+        console.log(e.target.name)
+        console.log(e.target.innerHTML)
 
         setTareaEditable({ ...tareaEditable, [e.target.name]: e.target.innerHTML });
     }
@@ -161,8 +171,13 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
     const handleResourcesDropdownButtonChange = (e) => {
         setTareaEditable({
           ...tareaEditable,
-          resources: e.map((item) => mapResourceIdToObject(item)),
+          assignees: e.map((item) => mapResourceIdToObject(item)),
         });
+      };
+
+      const handlParentTaskButtonChange = (e) => {
+        handleDropdownChange(e)
+        setParentTaskTitle({});
       };
 
     const handleStakeHolderssDropdownButtonChange = (e) => {
@@ -243,11 +258,11 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                 </Modal.Header>
                 <Modal.Body>
                     <Alert show={alertaEdicionExito} variant='success'>
-                        Proyecto editado con exito.
+                        Tarea editada con exito.
 
                     </Alert>
                     <Alert show={alertaBorradoExito} variant='success'>
-                        Proyecto borrado con exito.
+                        Tarea borrada con exito.
                     </Alert>
 
                     {editMode ? (
@@ -284,11 +299,9 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PENDIENTE </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> ANALISIS </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> DESARROLLO </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> PRODUCCION </Dropdown.Item>
-                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}> POST PRODUCCION </Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>PENDIENTE</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>EN PROGRESO</Dropdown.Item>
+                                                    <Dropdown.Item name="status" onClick={(e) => handleStatusChange(e)}>FINALIZADO</Dropdown.Item>                                            
                                                 </Dropdown.Menu>
                                             </Dropdown>
                                         </Col>
@@ -321,9 +334,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                                 value={tareaEditable.estimated_finalization_date ? tareaEditable.estimated_finalization_date.slice(0,10) : null}
                                                 onChange={(e) => onChangeTareaEditable(e)} 
                                             />
-
                                         </Col>
-
                                     </Row>
 
                                     <Row className="mt-4">
@@ -407,7 +418,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                     <Row className="mt-4">
 
                                         <Col xs={4}>
-                                            <h6>Resonsables:</h6>
+                                            <h6>Responsables:</h6>
                                         </Col>
                                         <Col xs={6}>
                                             {assignees.length>0 && <Select
@@ -427,44 +438,29 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                         </Col>
 
                                     </Row>
-{/* 
-                                    <Row className="mt-4">
 
+                                    <Row className="mt-4">
                                         <Col xs={4}>
                                             <h6>Tarea padre:</h6>
                                         </Col>
                                         <Col xs={6}>
                                         <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
+                                                    {tareaEditable.parent_task_id ? mapIDTaskToTaskName(tareaEditable) : "Sin asignar"}
                                                 </Dropdown.Toggle>
 
+
                                                 <Dropdown.Menu>
-                                                    {clientes ?
-                                                        clientes.map((cliente) => (
-                                                            <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
-                                                                setProyectoEditable({ ...proyectoEditable, ['client_id']: cliente["id"]});
-                                                            }}>{cliente["razon social"]}</Dropdown.Item>
+                                                    {allTasks ?
+                                                        allTasks.map((task) => (
+                                                            <Dropdown.Item key={`dropwdown-item-parent-edit-${tareaEditable.id}-${task.id}`} name="parent_task" onClick={(e) => {
+                                                                setTareaEditable({ ...tareaEditable, ['parent_task_id']: task.id});
+                                                            }}>{`${task.name}`}</Dropdown.Item>
                                                         )) : null}
                                                 </Dropdown.Menu>
                                             </Dropdown>
-
-                                            <DropdownButton
-                                                variant="secondary"
-                                                title={}                                                }
-                                                onSelect={handleDependencyDropdownButtonChange}
-                                            >
-                                                {allTasks.map((tarea) => {
-                                                    return (
-                                                        <Dropdown.Item eventKey={tarea.id} name="tarea">
-                                                        {tarea.name}
-                                                        </Dropdown.Item>
-                                                    );
-                                                })}
-                                            </DropdownButton>
                                         </Col>
-
-                                    </Row> */}
+                                    </Row>
 
                                 </Col >
                             </Row >
@@ -649,15 +645,10 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
-                            {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
+                            {/* <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col> */}
+                            <Col><ModalInfoBorrarTarea data={data} getDataTareas={getDataProjectTask} setRefreshKey={setRefreshKey} setAlertaBorradoExito={setAlertaBorradoExito} handleClosePadre={handleClose}>   </ModalInfoBorrarTarea></Col>
                             <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
-
-                            {/*data.dependencies.length > 0 && 
-                                <ModalInfoTask data={data.dependencies[0]} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees}/>
-                            */}
-                            
-
+                        
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
