@@ -35,6 +35,8 @@ export default function Dashboard() {
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     const [showCreacionProyectoModal, setShowCreacionProyectoModal] = useState(false);
 
     const onChangeshowCreacionProyectoModal = (newSomeState) => {
@@ -44,6 +46,10 @@ export default function Dashboard() {
     useEffect(() => {
         getProyectos();
       }, [stateQuery,assigneeQuery,typeQuery,clientQuery])
+
+    useEffect(() => {
+        getProyectos();
+    }, [refreshKey])
     
     /*useEffect(() => {
         getProyectos();
@@ -295,7 +301,7 @@ export default function Dashboard() {
             <br></br>
             <br></br>
             <br></br>
-            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients}/>
+            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients} setRefreshKey={setRefreshKey}/>
         </>
     );
 }
