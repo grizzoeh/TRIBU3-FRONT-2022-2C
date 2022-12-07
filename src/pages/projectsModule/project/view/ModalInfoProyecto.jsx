@@ -11,6 +11,7 @@ import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import moment from "moment";
 import * as SERVER_NAMES from "../../APIRoutes";
+import ModalInfoBorrarProyecto from "./ModaleInfoBorrarProyecto";
 
 
 const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRefreshKey}) => {
@@ -605,8 +606,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                     ) : (
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
-                            <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
+                            {/* <Col><Button variant="danger" onClick={handleShow}> Borrar </Button> </Col> */}
                             {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
+                            <ModalInfoBorrarProyecto data={data} getDataProyectos={getDataProyectos} />
+
+                           
+    
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
@@ -617,6 +622,9 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                             </Col>
                         </Fragment>
                     )
+
+
+
                     }
                 </Modal.Footer>
             </Modal >
