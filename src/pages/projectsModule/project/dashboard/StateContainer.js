@@ -14,7 +14,7 @@ import ModalInfoProyecto from "../view/ModalInfoProyecto";
 
 import axios from "axios";
 
-export default function StateContainer({ projects, getProjects, resources, clients }) {
+export default function StateContainer({ projects, getProjects, resources, clients, setRefreshKey }) {
   const [clientes, setClientes] = useState();
   const [recursos, setRecursos] = useState([]);
   const [proyectos, setProyectos] = useState(projects);
@@ -99,7 +99,7 @@ export default function StateContainer({ projects, getProjects, resources, clien
             <Table proyectos>
               <thead>
                 <tr>
-                  <th>Número</th>
+                  <th>Id</th>
                   <th>Nombre</th>
                   <th>Cliente</th>
                   <th>Estado</th>
@@ -149,6 +149,7 @@ export default function StateContainer({ projects, getProjects, resources, clien
                               getDataProyectos={getProjects}
                               recursos2={resources}
                               clientes2={clients}
+                              setRefreshKey={setRefreshKey}
                             />
                           </Col>
                         </Row>
