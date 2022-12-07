@@ -91,23 +91,10 @@ export default function NewTask() {
                   //setAssigneeButtonTitle(res.data.find((assignee) => assignee.id == tareaActual.assignees[0].id).name);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes1', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
-        /*const getEmpleadoAsignado = async () => {
-            axios
-                .get(SERVER_NAMES.ASSIGNEES + `/${AssigneebuttonTitle}`, {})
-                .then((res) => {
-                    //if (res.data.keys().length>0)
-                        setEmpleadoAsignado(res.data);
-                    //else setEmpleadoAsignado("Seleccionar")
-                })
-                .catch((err) => {
-                    alert('SSe produjo un error al consultar los clientes', err);
-                });
-        };*/
-        //getTareas();
         getAssignees();
         //if (AssigneebuttonTitle !== "Seleccionar") getEmpleadoAsignado();
         //else setEmpleadoAsignado(null);

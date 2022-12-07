@@ -35,6 +35,8 @@ export default function Dashboard() {
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
     const [showCreacionProyectoModal, setShowCreacionProyectoModal] = useState(false);
 
     const onChangeshowCreacionProyectoModal = (newSomeState) => {
@@ -44,6 +46,10 @@ export default function Dashboard() {
     useEffect(() => {
         getProyectos();
       }, [stateQuery,assigneeQuery,typeQuery,clientQuery])
+
+    useEffect(() => {
+        getProyectos();
+    }, [refreshKey])
     
     /*useEffect(() => {
         getProyectos();
@@ -182,10 +188,7 @@ export default function Dashboard() {
                     <Col xxl lg="2">
                         <h1>Proyectos</h1>
                     </Col>
-                    < Col md="auto">
-                        {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
-                        <Button className="float-sm-end" variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button>
-                    </Col>
+                    
                 </Row>
                     <Container className="spacer-line">
                         <Row>
@@ -200,6 +203,10 @@ export default function Dashboard() {
 
 
             <Container className="container-filters">
+            <Row>< Col className="end">
+                        {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
+                        <Button className="float-sm-end" variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button>
+                    </Col></Row>
                 <Row className="mt-5">
                     <Col>
                         <h4>Estados</h4>
@@ -294,7 +301,7 @@ export default function Dashboard() {
             <br></br>
             <br></br>
             <br></br>
-            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients}/>
+            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients} setRefreshKey={setRefreshKey}/>
         </>
     );
 }

@@ -14,7 +14,7 @@ import * as SERVER_NAMES from "../../APIRoutes";
 import ModalInfoBorrarProyecto from "./ModaleInfoBorrarProyecto";
 
 
-const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
+const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRefreshKey}) => {
 
 
     const [clientes, setClientes] = useState();
@@ -48,6 +48,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
         setAlertaBorradoExito(false);
+        setRefreshKey(oldKey => oldKey +1);
     };
 
 
@@ -236,7 +237,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2}) => {
 
     return (
         <>
-            <Button size="sm" variant="primary" onClick={() => { handleShow() }}>Ver detalles</Button>
+            <Button size="sm" variant="outline-primary" onClick={() => { handleShow() }}>Ver detalles</Button>
 
             <Modal dialogClassName="modalContent" show={show} onHide={handleClose} >
                 <Modal.Header closeButton onClick={handleClose}>
