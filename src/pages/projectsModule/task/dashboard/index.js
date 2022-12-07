@@ -25,6 +25,8 @@ export default function DashboardTareas() {
   const [tareas, setTareas] = useState([]);
   const [proyecto, setProyecto] = useState([]);
 
+  const [refreshKey, setRefreshKey] = useState(0);
+
   const [filters, setFilters] = useState({
       "Estado": "Todas",
       "estado": "Todos",
@@ -64,6 +66,10 @@ export default function DashboardTareas() {
   useEffect(() => {
     getTarea();
   }, [priority,assigneeID])
+
+  useEffect(() => {
+        getTarea();
+    }, [refreshKey])
 
 
   const handleDropdownFilter = (e) => {
@@ -174,7 +180,7 @@ export default function DashboardTareas() {
                 {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
                     <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
                 </Link>*/}
-                <ModalCrearTarea tasks={tareas} project={proyecto} assignees={assignees}/>
+                <ModalCrearTarea tasks={tareas} project={proyecto} assignees={assignees} setRefreshKey={setRefreshKey}/>
             </Col>
             < Col>
                 <Link to={`/proyectos/${proyecto.id}/gannt/`}>
@@ -326,6 +332,7 @@ export default function DashboardTareas() {
                                             assignees={assignees}
                                             getTasks={getTarea}
                                             allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                     />
                                     </Col>
                                     <Col>
@@ -336,6 +343,7 @@ export default function DashboardTareas() {
                                             assignees={assignees}
                                             getTasks={getTarea}
                                             allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                         />
                                     </Col>
                                     <Col>
@@ -346,6 +354,7 @@ export default function DashboardTareas() {
                                             assignees={assignees}
                                             getTasks={getTarea}
                                             allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                         />
                                     </Col>
                                 </Row>
