@@ -423,8 +423,11 @@ const TicketsEnCurso = () => {
                                                         <h6>Asesor: </h6>
                                                     </Col>
                                                     <Col>
-                                                        {recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Nombre"] + " " + recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Apellido"]}
-
+                                                        {recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor) ? (
+                                                            recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Nombre"] + " " + recursos?.find(recurso => recurso.legajo === ticketEnCurso.idAsesor)["Apellido"]
+                                                        ):(
+                                                            ticketEnCurso.nombreAsesor
+                                                        )}
                                                     </Col>
 
                                                 </Row>
