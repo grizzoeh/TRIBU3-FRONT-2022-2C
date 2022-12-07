@@ -76,9 +76,7 @@ const ModalCreacionTarea = ({ numeroTicket, onChangeshowCreacionTareaModal, setA
 
         if (send_tarea.name === "" || send_tarea.description === "" || send_tarea.priority === "" || send_tarea.related_ticket === "" || send_tarea.name === null || send_tarea.description === null || send_tarea.priority === null || send_tarea.related_ticket === null) {
             setAlertaDatosNulos(true);
-        }
-        else if (!proyectoSeleccionadoId || !proyectoSeleccionadoNombre) {
-            setAlertaDatosNulos(true);
+
         }
         else {
 
