@@ -104,8 +104,8 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
             setEditMode(false);
             setAlertaEdicionExito(true);
-            setRefreshKey(oldKey => oldKey +1)
-            getDataProjectTask();
+            //setRefreshKey(oldKey => oldKey +1)
+            //getDataProjectTask();
         }
 
     }
@@ -167,7 +167,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
     const handleResourcesDropdownButtonChange = (e) => {
         setTareaEditable({
           ...tareaEditable,
-          resources: e.map((item) => mapResourceIdToObject(item)),
+          assignees: e.map((item) => mapResourceIdToObject(item)),
         });
       };
 
@@ -324,10 +324,13 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                             <h6>Fecha estimada de fin: </h6>
                                         </Col>
                                         <Col xs={6}>
-
-
+                                            <Form.Control 
+                                                type="date"
+                                                name="estimated_finalization_date"
+                                                value={tareaEditable.estimated_finalization_date ? tareaEditable.estimated_finalization_date.slice(0,10) : null}
+                                                onChange={(e) => onChangeTareaEditable(e)} 
+                                            />
                                         </Col>
-
                                     </Row>
 
                                     <Row className="mt-4">
@@ -411,7 +414,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                     <Row className="mt-4">
 
                                         <Col xs={4}>
-                                            <h6>Resonsables:</h6>
+                                            <h6>Responsables:</h6>
                                         </Col>
                                         <Col xs={6}>
                                             {assignees.length>0 && <Select
@@ -639,14 +642,8 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                         // FUERA DE EDIT MODE FOOTER HEADER
                         <Fragment>
                             <Col><Button variant="danger" onClick={handleBorrado}> Borrar </Button> </Col>
-                            {/* <Col> <Button onClick={() => setShowCreacionTareaModal(true)}>Crear Tarea Asociada</Button> </Col> */}
                             <ModalCreacionSubtarea parent_task={tareaEditable} project={project} assignees={assignees}/>
-
-                            {/*data.dependencies.length > 0 && 
-                                <ModalInfoTask data={data.dependencies[0]} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees}/>
-                            */}
-                            
-
+                        
                             <Col xs={-1}>
                                 <Button onClick={() => setEditMode(true)}>Editar</Button>
                             </Col>
