@@ -612,7 +612,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
                                         </Col>
                                             { tareaEditable.dependencies.length > 0 
                                                 ? <ul> {tareaEditable.dependencies.map(
-                                                        (dependency) => <li className="columna" key={`dependency-button-view-${dependency.id}`} xs={6}><ModalInfoTask data={dependency} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} name={1}/> </li>
+                                                        (dependency) => <li className="columna" key={`dependency-button-view-${dependency.id}`} xs={6}><ModalInfoTask data={dependency} getDataProjectTask={getDataProjectTask} project={project} assignees={assignees} allTasks={allTasks} setRefreshKey={setRefreshKey} name={1}/> </li>
                                                         )}
                                                     </ul>
                                                 : <Col xs={9}>{"Sin asignar"}</Col>
