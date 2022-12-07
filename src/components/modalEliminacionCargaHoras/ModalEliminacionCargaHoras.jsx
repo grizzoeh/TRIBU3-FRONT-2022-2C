@@ -64,10 +64,11 @@ const ModalEliminacionCargaHoras = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">Id</TableCell>
-                                <TableCell align="right">Fecha</TableCell>
+                                <TableCell align="right">Fecha Inicial</TableCell>
+                                <TableCell align="right">Fecha Final</TableCell>
                                 <TableCell align="right">Horas Actualizadas</TableCell>
                                 <TableCell align="right">Estado</TableCell>
-                                <TableCell align="right">Categoria</TableCell>
+                                <TableCell align="right">Categoria/Proyecto nombre</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -77,7 +78,8 @@ const ModalEliminacionCargaHoras = () => {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                     <TableCell align="center" component="th" scope="row">{carga.codigo_carga}</TableCell>
-                                    <TableCell align="right">{carga.fecha}</TableCell>
+                                    <TableCell align="right">{carga.fecha_inicio}</TableCell>
+                                    <TableCell align="right">{carga.fecha_fin}</TableCell>
                                     <TableCell align="right">{carga.cantidad_horas}</TableCell>
                                     <TableCell align="right">{carga.estado}</TableCell>
                                     <TableCell align="right">{!carga.tarea_id? carga.categoriaNombre : carga.proyectoNombre}</TableCell>

@@ -20,7 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import TextField from '@mui/material/TextField';
 
 const MAXHORAS = 8;
-const MINHORAS = 0;
+const MINHORAS = 1;
 
 
 const ModalCreacionCargaDeHorasProyecto = () => {
@@ -30,15 +30,19 @@ const ModalCreacionCargaDeHorasProyecto = () => {
     const [ProjectText, setProjectText] = useState('Seleccionar')
     const [mostrarHoras, setMostrarHoras] = useState(false);
     const [dropdownTareaText, setdropdownTareaText] = useState('Seleccionar')
-    let [cantidad_horas, setCount] = useState(0);
+    const [dropdownHorasText, setdropdownHorasText] = useState('Seleccionar periodo')
+    let [cantidad_horas, setCount] = useState(1);
     const [startDate, setStartDate] = useState(new Date());
+    const [finishDate, setFinishDate] = useState(new Date());
     const [proyectoNombre, setProyectoNombre] = useState();
     const [legajo, setLegajo] = useState();
     let [tarea_id, setTarea_id] = useState();
     const [tareaNombre, setTareaNombre] = useState();
     const [tareas, setTareas] = useState([]);
     const [proyectoId, setProyectoId] = useState();
-   
+    const today = new Date();
+    const limiteFecha = new Date(today.getFullYear(), today.getMonth(), (today.getDate() - 7));
+
     function procedimientoTareaElegida(nombreTarea, tareaId){
         setdropdownTareaText(nombreTarea)
         setMostrarHoras(true)
@@ -108,8 +112,20 @@ const ModalCreacionCargaDeHorasProyecto = () => {
         setProyectoId(proyecto.id);
     }
 
+    function escogerSemana(){
+        <DatePicker></DatePicker>
+    }
+
+    function escogerQuincena(){
+        <DatePicker></DatePicker>
+    }
+
+    function escogerMes(){
+        <DatePicker></DatePicker>
+    }
+
     return (
-        <container>
+        <Container>
             <div id='cargar-horas-licencia'>
                 <h2 id="titulo1">Seleccionar Proyecto</h2> 
                 <NavDropdown title={ProjectText} id="navBarProyectos">
@@ -130,6 +146,11 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                         <TextField id="outlined-basic" label="Ingrese legajo" variant="outlined" sx={{ minWidth: 320 }} value={legajo} onChange={(e)=>{setLegajo(e.target.value)}}/>
                                     </div>
                                     <div>
+                                        <Button onClick={escogerSemana}>Semanal</Button>
+                                        <Button onClick={escogerQuincena}>Quincenal</Button>
+                                        <Button onClick={escogerMes}>Mensual</Button>
+                                    </div>
+                                    <div>
                                         <h6 id="Texo-seleccionar-horas">Seleccionar horas trabajadas</h6>
                                         {cantidad_horas}
                                     </div>
@@ -138,11 +159,18 @@ const ModalCreacionCargaDeHorasProyecto = () => {
                                 </div>               
                 }
                 <div id='calendarioBoton'>
-                    <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} /> 
+                    <Row>
+                        <Col>
+                            <h6>Selecciona Fecha Inicio</h6>
+                            <DatePicker selected={startDate} id="Calendar" onChange={(date) => setStartDate(date)} maxDate={today} minDate={limiteFecha}/>                             
+                            <h6>Selecciona Fecha Fin</h6>
+                            <DatePicker selected={finishDate} id="Calendar" onChange={(date) => setFinishDate(date)} maxDate={today} minDate={limiteFecha}/>
+                        </Col>
+                    </Row>
                     <Button id="button" onClick={handleClick}>Boton para postear aca</Button>
                 </div> 
             </div>
-        </container>
+        </Container>
     ); /*Calendar = https://www.npmjs.com/package/react-calendar*/
 }; /* Si no anda Calendar -> npm install react-calendar */
 //<Calendar onChange={onChange} value={value} showWeekNumbers minDate={new Date(2022, 10,0)} maxDate={new Date(2022, 12,0)}onClickDay={(value, event) => alert(value)}/>

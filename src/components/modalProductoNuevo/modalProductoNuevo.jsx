@@ -30,8 +30,14 @@ function ModalProductoNuevo({ refreshProductos, refreshFiltradas, refreshAlert }
     const vertical = "top"
     const horizontal = "center"
     const [showProductoError, setProductoError] = useState(false);
+
     const handleCloseProductoError = () => setProductoError(false);
     const handleShowProductoError = () => setProductoError(true);
+
+    const [showCamposError, setCamposError] = useState(false);
+    const handleCloseCamposError = () => setCamposError(false);
+    const handleShowCamposError = () => setCamposError(true);
+
 
     const onChangeProductoEditable = (e) => {
         setProductData({ ...ProductData, [e.target.name]: e.target.value });
@@ -42,7 +48,11 @@ function ModalProductoNuevo({ refreshProductos, refreshFiltradas, refreshAlert }
     }
 
     const crearProducto = async () => {
-        axios.post(SERVER_NAME_SOPORTE + "/productos", ProductData)
+        if (ProductData.nombre === null || ProductData.nombre === "" || ProductData.estado === null || ProductData.estado === "" || ProductData.estado === "Seleccionar") {
+            handleShowCamposError()
+        }
+        else {
+            axios.post(SERVER_NAME_SOPORTE + "/productos", ProductData)
             .then((data) => {
                 if (data.data.ok) {
                     console.log("Producto creado");
@@ -56,6 +66,7 @@ function ModalProductoNuevo({ refreshProductos, refreshFiltradas, refreshAlert }
                 handleShowProductoError();
                 console.log(error);
             });
+        }
     }
 
     return (
@@ -63,6 +74,11 @@ function ModalProductoNuevo({ refreshProductos, refreshFiltradas, refreshAlert }
             <>
                 <Snackbar open={showProductoError} autoHideDuration={2000} onClose={handleCloseProductoError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
                     <Alert onClose={handleCloseProductoError} variant="danger" sx={{ width: '100%' }}>Error al crear producto.</Alert>
+                </Snackbar>
+            </>
+            <>
+                <Snackbar open={showCamposError} autoHideDuration={2000} onClose={handleCloseCamposError} anchorOrigin={{ vertical, horizontal }} key={vertical + horizontal}>
+                    <Alert onClose={handleCloseCamposError} variant="danger" sx={{ width: '100%' }}>No puedes dejar campos vacios!</Alert>
                 </Snackbar>
             </>
             <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>✚ Nuevo Producto</Button></Col>

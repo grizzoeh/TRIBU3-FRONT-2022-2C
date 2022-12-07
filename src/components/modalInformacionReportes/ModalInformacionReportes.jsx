@@ -13,7 +13,7 @@ import Dropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import 'react-calendar/dist/Calendar.css';
-
+import LoadingButton from '@mui/lab/LoadingButton';
 import TextField from '@mui/material/TextField';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -30,7 +30,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 const ModalInformacionReportes = () => {
-    const [proyecto,setProyecto] = useState([]);
     const [proyectoId,setProyectoId] = useState(0);
     const [startDate, setStartDate] = useState(new Date());
     const [finishDate, setFinishDate] = useState(new Date());
@@ -38,43 +37,110 @@ const ModalInformacionReportes = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [listaTareas,setListaTareas] = useState([]);
-    const [proyectoName,setProyectoName] = useState('');
-    const [cargasDeProyecto, setCargasDeProyecto] = useState([]);
+    const [proyectoName,setProyectoNombre] = useState(undefined);
+    const [cargas, setCargas] = useState([]);
     const [sumaDesvios, setSumaDesvios] = useState(0);
     const [sumaHoras, setSumaHoras] = useState(0);
     const [sumaHorasTotales, setSumaHorasTotales]  = useState(0);
+    const [sumaHorasEstimadas, setSumaHoraEstimadas]  = useState(0);
     const [sumaTiempoEstimado, setSumaTiempoEstimado] = useState(0);
     const [prueba,setPrueba] = useState([]);
-
-    const [input, setInput] = useState(0)
-
+    const [cargasDeProyecto, setCargasProyecto] = useState([])
+    const [alreadyThere, setAlreadyThere] = useState([])
+    const [loadingScreen, setLoadingScreen] = useState(false)
     const [sumaHorasProyecto, setSumaHorasProyecto] = useState(0);
+    const [cargasTotales, setCargasTotales] = useState([])
 
-    const handleClick =() => {
-          
-        const urlProyecto = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId;
-        fetch(urlProyecto)
+
+    useEffect(()=>{
+        fetch("https://squad920222c-production.up.railway.app/recursos/cargas")
         .then(res=>res.json())
         .then((result)=>{
-            setProyecto(result)
-        })    
-        setProyectoName(proyecto.name)
-        console.log('----------------------------')
-        console.log(proyectoName)
-
-        const urlCargasDeProyecto = `squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
-        fetch(urlCargasDeProyecto)
-        .then(res=>res.json())
-        .then((result)=>{
-            console.log(result)
-            setCargasDeProyecto(result)
+            setCargasProyecto(result);
         })
-        console.log(cargasDeProyecto)
+    },[])
+
+
+    useEffect( () => {
+        if(proyectoName && listaTareas.length != 0 && cargas.length != 0 && cargasTotales){
+            setShow(true)
+        }
+        else {
+            setShow(false);
+        }
+    }, [proyectoName, listaTareas, cargas, cargasTotales])
+
+    useEffect( () => {
+        if(listaTareas.length != 0){   
+            obtenerSumaHorasProyecto();
+            obtenerSumaHorasEstimadas();
+        }
+    }, [listaTareas])
+
+    const handleClick = async () => {
+        setProyectoNombre(undefined);
+        setListaTareas([]);
+        setAlreadyThere([]);
+        if(!proyectoId){
+            alert("Por favor ingrese un id de proyecto");
+            return;
+        }
+
+        const urlProyecto = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId;
+        const resNombre = await fetch(urlProyecto);
+        if(!resNombre.ok){
+            alert("No existe ese proyecto");
+            return;
+        };
+        const nombre = await resNombre.json();
+        setProyectoNombre(nombre.name);
+
+        
+        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + "/tasks/";
+        const resTareas = await fetch(urlTareas);
+        const tareas = await resTareas.json();
+        setListaTareas(tareas);
+
+        const urlTareas2 = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
+        const resTareas2 = await fetch(urlTareas2);
+        if(!resTareas2.ok) alert("No hay carga de horas para ese proyecto");
+        const tareas2 = await resTareas2.json();
+        parsearCargas(tareas, tareas2);
+        setCargas(tareas2);
     }
+    
+    const parsearCargas = (tareas, cargasArray) => {
+        const final = []
+        cargasArray.map(carga => { 
+            const existente = final.find(e => e.id === carga.tarea_id)
+            if (existente) {
+                existente.sumaHoras = existente.sumaHoras + carga.cantidad_horas;
+
+                existente.desvio = existente.desvio + carga.cantidad_horas;
+                return;
+            }
+
+            let nuevaCarga = {}
+            nuevaCarga.nombre = carga.tareaNombre;
+            nuevaCarga.id = carga.tarea_id;
+            nuevaCarga.sumaHoras = carga.cantidad_horas;
+            const tarea = tareas.find(e => e.id === nuevaCarga.id)
+            let estimadas = 0;
+            if (tarea && tarea.estimated_hours_effort) {
+                estimadas = tarea.estimated_hours_effort
+            }
+            nuevaCarga.estimadas = estimadas; 
+
+            nuevaCarga.desvio = nuevaCarga.sumaHoras - nuevaCarga.estimadas;
+            final.push(nuevaCarga);
+        })
+        setCargasTotales(final);
+    }
+
 
     const cargarListaTareas = () => {
         setListaTareas([])
-        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + '/tasks/';
+        const urlTareas = `https://squad-8-projects.herokuapp.com/psa/projects/` + proyectoId + "/tasks/";
         fetch(urlTareas)
         .then((res) => res.json())
         .then((data) => {
@@ -82,8 +148,19 @@ const ModalInformacionReportes = () => {
         });
     }
 
+    const cargarCargasProyecto = () => {
+        setAlreadyThere([])
+        const urlTareas = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId;
+        fetch(urlTareas)
+        .then((res) => res.json())
+        .then((data) => {
+            setCargas(data);
+        });
+    }
+
     function obtenerSumaHorasEstimadas(){
-          
+        if(!listaTareas) return;
+        
         var sumaTotalEstimativos = 0;
 
         listaTareas.map((tarea)=>{
@@ -92,71 +169,60 @@ const ModalInformacionReportes = () => {
             }
         })
 
-        return sumaTotalEstimativos;
+        setSumaHoraEstimadas(sumaTotalEstimativos);
     }
 
-    function calcularSumaHoras(idTarea){
-        let suma = 0;
-        let cargas = []
-        for (let i = 0; i<cargasDeProyecto.length;i++){
-            if(cargasDeProyecto[i].tarea_id == idTarea)
-                cargas.push(cargasDeProyecto[i]);   
-        }
-
-        for(let i=0; i<cargas.length; i++){
-            if(cargas[i].proyectoId == idTarea){
-                suma += cargas[i].cantidad_horas
-            }
-        }
-        
-        
-        return suma;
-    }
 
     function obtenerSumaHorasProyecto(){
-
-        console.log(proyectoId.type)
-        console.log(proyectoId)
         const url = `https://squad920222c-production.up.railway.app/recursos/reporte/proyecto/` + proyectoId + '/tiempoTotal';
         fetch(url)
         .then(res=>res.json())
         .then((result)=>{
-            console.log(result)
             setSumaHorasProyecto(result)
         })
-
-        return sumaHorasProyecto;
     }
 
     function calcularDesvio(sumaHoras, tiempoEstimado){
         
+        
         if (tiempoEstimado == null){
             return sumaHoras;
         }
-        return (sumaHoras - tiempoEstimado)
+        return (parseInt(sumaHoras) - parseInt(tiempoEstimado))
     }
 
-    function horasEstimadas(horasEstimadas){
-        if (horasEstimadas == null){
-            return 0
+    const horasEstimadas = (tarId) => {
+        let x=0
+        for(let i=0; i<listaTareas.length; i++){
+            if(listaTareas[i].id == tarId){
+                x= (!listaTareas[i].estimated_hours_effort?0:listaTareas[i].estimated_hours_effort)
+            }
         }
-        return horasEstimadas;
+        return x
     }
 
-    function onChangeInput(e){
-        if (e.target.value){
-            setProyectoId(e.target.value)
+    const sumaHorasTareas = (tarId) =>{
+        let x=0
+        for(let i=0; i<cargasDeProyecto.length; i++){
+            if(cargasDeProyecto[i].tarea_id == tarId){
+                x+=cargasDeProyecto[i].cantidad_horas
+            }
         }
+        return x
     }
     
+    const asignarProyecto = (valor) =>{
+        if(valor != null){
+            setProyectoId(valor)
+        }
+    }
 
     return (
-        <container>
+        <Container>
             <div id = 'proyectoId'>
-                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{setProyectoId(e.target.value)}}/>
-                <Col className="h-end"><Button variant="primary" size="1"  onClick={() => {handleClick();cargarListaTareas();handleShow()}} id='boton'>Consultar Proyecto</Button></Col>
-                
-                <React.Fragment id = 'Tabla'>
+                <TextField id="outlined-basic" label="Consultar Reportes por Proyecto" variant="outlined" sx={{ minWidth: 650 }} onChange={(e)=>{asignarProyecto(e.target.value)}}/>
+                <Col className="h-end"><Button variant="primary" size="1"  onClick={handleClick} id='boton'>Consultar Proyecto</Button></Col>
+                <React.Fragment>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
@@ -170,9 +236,9 @@ const ModalInformacionReportes = () => {
                                 <TableRow id="datos">
                                     <TableCell align="center">{proyectoId}</TableCell>
                                     <TableCell align="center">{proyectoName}</TableCell>
-                                    <TableCell align="center">{obtenerSumaHorasProyecto()}</TableCell>
-                                    <TableCell align="center">{obtenerSumaHorasEstimadas()}</TableCell>
-                                    <TableCell align="center">{obtenerSumaHorasProyecto() - obtenerSumaHorasEstimadas()}</TableCell>
+                                    <TableCell align="center">{sumaHorasProyecto}</TableCell>
+                                    <TableCell align="center">{sumaHorasEstimadas}</TableCell>
+                                    <TableCell align="center">{sumaHorasProyecto - sumaHorasEstimadas}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="center">Nombre de la tarea</TableCell>
@@ -183,13 +249,13 @@ const ModalInformacionReportes = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {show && listaTareas.map((tarea)=>(
-                                    <TableRow>
-                                        <TableCell align="center">{tarea.name}</TableCell>
-                                        <TableCell align="center">{tarea.id}</TableCell>
-                                        <TableCell align="center">{calcularSumaHoras(tarea.id)}</TableCell>
-                                        <TableCell align="center">{horasEstimadas(tarea.estimated_hours_effort)}</TableCell>
-                                        <TableCell align="center">{calcularDesvio(calcularSumaHoras(tarea.id), tarea.estimated_hours_effort)}</TableCell>
+                                {show && cargasTotales.map((carga)=>(
+                                    <TableRow key={carga.id}>
+                                        <TableCell align="center">{carga.nombre}</TableCell>
+                                        <TableCell align="center">{carga.id}</TableCell>
+                                        <TableCell align="center">{carga.sumaHoras}</TableCell>
+                                        <TableCell align="center">{carga.estimadas}</TableCell>
+                                        <TableCell align="center">{carga.desvio}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -197,25 +263,8 @@ const ModalInformacionReportes = () => {
                     </TableContainer>
                 </React.Fragment>
             </div>
-        </container>
+        </Container>
     );
 }; 
-/*<>{setSum(proyecto.cantidad_horas)}</> */
+
 export default ModalInformacionReportes
-
-/*calcularDesvio(calcularSumaHoras(tarea.id), tarea.estimated_hours_effort */
-
-/*
-{show && reporteProyectos.map((proyecto) => (
-                                        <TableRow
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                            <TableCell align="center">{proyecto.tareaNombre}</TableCell>
-                                            <TableCell align="center">{proyecto.tarea_id}</TableCell>
-                                            <TableCell align="center">{proyecto.cantidad_horas}</TableCell>
-                                            
-                                        </TableRow>
-                                        
-                                        ))}
-
-                                        
-*/

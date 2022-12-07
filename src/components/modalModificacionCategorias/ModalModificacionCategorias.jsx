@@ -32,8 +32,13 @@ const ModalModificarCategorias = () => {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+    const handleShow = () => {
+        if(catId <= 0){
+            alert("Por favor ingrese un id de categoria");
+            return;
+        }
+        setShow(true);
+    }
     useEffect(()=>{ 
         fetch("https://squad920222c-production.up.railway.app/recursos/categorias") /*no va  */
         .then(res=>res.json())
@@ -42,10 +47,13 @@ const ModalModificarCategorias = () => {
         })
     },[])
 
-    
     const handleClick=()=>{
         const categoria={nombre, catId,descripcion} /* manda array si esta vacio */
         console.log(categoria)
+        if(nombre.length === 0){
+            alert("Requerimos que se ingrese un nombre");
+            return;
+        }
         fetch(`https://squad920222c-production.up.railway.app/recursos/categorias/` + catId + '?descripcion=' + descripcion + '&nombre=' + nombre,{
             method:"PUT",
             headers:{"Content-Type": "application/json"},
@@ -58,7 +66,8 @@ const ModalModificarCategorias = () => {
     
 
     return (
-        <container>
+        <Container>
+            <h1 id='titulo'>Modificar Categorias</h1>
             <div id = 'CategoriaId'>
                 <TextField id="outlined-basic" label="Buscar Categoria por Id" variant="outlined" sx={{ minWidth: 650 }} value={catId} onChange={(e)=>{setCatId(e.target.value)}}/>
                 <Col className="h-end"><Button variant="primary" size="1" onClick={handleShow}>Modificar Categoria</Button></Col>
@@ -107,7 +116,7 @@ const ModalModificarCategorias = () => {
             </div>
 
             
-        </container>
+        </Container>
     );
 }; 
 
