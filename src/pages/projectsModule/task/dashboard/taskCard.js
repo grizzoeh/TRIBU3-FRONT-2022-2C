@@ -6,10 +6,11 @@ import Button from "react-bootstrap/Button";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
 import moment from 'moment';
+import ModalInfoTask from "./modal/ModalInfoTask";
 
-export default function TaskCard({ task, index, project, assignees}) {
+
+export default function TaskCard({ task, index, project, assignees, getTasks, allTasks}) {
   const params = useParams();
   const mapIDResourceToName= (asignados) => {
     return asignados.map((assignee) => {
@@ -71,14 +72,14 @@ export default function TaskCard({ task, index, project, assignees}) {
                           <p><small>{task.priority?task.priority:"Sin asignar"}</small></p>
                       </Col>
                     </Row>
-                    <Row>
+                    {/*<Row>
                       <Col xs={5}>
                           <h6>Fecha estimada de finalización: </h6>
                       </Col>
                       <Col>
                         <p2>{task.estimated_finalization_date?moment(task.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}</p2>
                       </Col>
-                    </Row>
+                    </Row>*/}
                     <Row>
                       <Col xs={5}>
                           <h6>Empleado asignado:</h6>
@@ -88,6 +89,7 @@ export default function TaskCard({ task, index, project, assignees}) {
                       </Col>
                     </Row>
                 </Card.Text>
+                <ModalInfoTask data={task} getDataProjectTask={getTasks} project={project} assignees={assignees} allTasks={allTasks} name={null}/>
 
                 {/*<ModalTicketCerrado data={task} numeroTarea={task.id} />*/}
             </Card.Body>
@@ -107,6 +109,7 @@ export default function TaskCard({ task, index, project, assignees}) {
 
         {/* ACA VOY A TOCAR YO */}
           
+
         {/* ACA TERMINA LO QUE A TOCAR YO */}
 
       </div>

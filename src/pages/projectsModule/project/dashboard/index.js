@@ -9,7 +9,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from 'react-bootstrap/Container';
 import * as SERVER_NAMES from "../../APIRoutes";
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
-
+import Button from "react-bootstrap/Button";
+import ModalCreacionProyecto from "../new/ModalCreacionProyecto";
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
+import "./spacerline.css"
 
 export default function Dashboard() {
     const states = [{ "name": "Todos" }, { "name": "pending" }, { "name": "analysis" }, { "name": "development" }, { "name": "production" }, { "name": "post_production" }];
@@ -32,11 +35,17 @@ export default function Dashboard() {
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
+    const [showCreacionProyectoModal, setShowCreacionProyectoModal] = useState(false);
+
+    const onChangeshowCreacionProyectoModal = (newSomeState) => {
+        setShowCreacionProyectoModal(newSomeState);
+    };
+
     useEffect(() => {
         getProyectos();
-      }, [stateQuery])
+      }, [stateQuery,assigneeQuery,typeQuery,clientQuery])
     
-    useEffect(() => {
+    /*useEffect(() => {
         getProyectos();
       }, [assigneeQuery])
 
@@ -46,7 +55,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         getProyectos();
-      }, [clientQuery])
+      }, [clientQuery])*/
 
     const handleStateFilter = (e) => {
         handleStateFilter2(e);
@@ -151,7 +160,7 @@ export default function Dashboard() {
     useEffect(() => {
         getAssignees();
         getClients();
-        getProyectos();
+        //getProyectos();
     }, []);
     var statusMapping = {
         "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
@@ -167,7 +176,28 @@ export default function Dashboard() {
             <br></br>
             <br></br> */}
             <NavbarProyectos />
-            <Header />
+
+            <Container className="container-title">
+                <Row>
+                    <Col xxl lg="2">
+                        <h1>Proyectos</h1>
+                    </Col>
+                    < Col md="auto">
+                        {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
+                        <Button className="float-sm-end" variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button>
+                    </Col>
+                </Row>
+                    <Container className="spacer-line">
+                        <Row>
+                        <SpacerLine className="spacer-line" color="black" top="100px"></SpacerLine>
+                        </Row>
+                    </Container>
+                {showCreacionProyectoModal ? (
+                        <ModalCreacionProyecto clientes={clients} recursos={assignees} onChangeshowCreacionTareaModal={onChangeshowCreacionProyectoModal} />) :
+                        (null)}
+
+            </Container>
+
 
             <Container className="container-filters">
                 <Row className="mt-5">
@@ -264,7 +294,7 @@ export default function Dashboard() {
             <br></br>
             <br></br>
             <br></br>
-            <Body projects={proyectos} getProjects={getProyectos} recursos={assignees}/>
+            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients}/>
         </>
     );
 }
