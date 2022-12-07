@@ -148,7 +148,7 @@ export default function ViewProject() {
             <h4>Tipo</h4>
           </Col>
           <Col xs={9}>
-            <h4>{typeMapping[project.type]}</h4>
+            <h4>{project.type?typeMapping[project.type]:"Sin asignar"}</h4>
           </Col>
         </Row>
         <Row className="mt-5">
@@ -164,24 +164,24 @@ export default function ViewProject() {
             <h4>Project Manager</h4>
           </Col>
           <Col xs={9}>
-            <h4>{project.project_manager != null ?
-              resources.find(element => element.legajo == project.project_manager.id) != null ?
-                resources.find(element => element.legajo == project.project_manager.id).Apellido + " " + resources.find(element => element.legajo == project.project_manager.id).Apellido
-                : "" : ""
-            }</h4>
-          </Col>
+  <h4>{project.project_manager!=null?
+      resources.find( element => element.legajo == project.project_manager.id)!=null?
+      resources.find( element => element.legajo == project.project_manager.id).Nombre+" "+resources.find( element => element.legajo == project.project_manager.id).Apellido
+      :"":"Sin asignar"
+      }</h4>
+</Col>
         </Row>
         <Row className="mt-5">
           <Col>
             <h4>Sponsors</h4>
           </Col>
-          <Col xs={9}>
-            <h4>{project.sponsor != null ?
-              resources.find(element => element.legajo == project.sponsor.id) != null ?
-                resources.find(element => element.legajo == project.sponsor.id).Apellido + " " + resources.find(element => element.legajo == project.sponsor.id).Apellido
-                : "" : ""
-            }</h4>
-          </Col>
+  <Col xs={9}>
+  <h4>{project.sponsor!=null?
+      resources.find( element => element.legajo == project.sponsor.id)!=null?
+      resources.find( element => element.legajo == project.sponsor.id).Nombre+" "+resources.find( element => element.legajo == project.sponsor.id).Apellido
+      :"":"Sin asignar"
+      }</h4>
+</Col>
 
         </Row>
         <Row className="mt-5">
@@ -189,12 +189,12 @@ export default function ViewProject() {
             <h4>Cliente</h4>
           </Col>
           <Col xs={9}>
-            <h4>{project.client_id != null ?
-              client.find(element => element.id == project.client_id) != null ?
-                client.find(element => element.id == project.client_id)["razon social"]
-                : "" : ""
-            }</h4>
-          </Col>
+            <h4>{project.client_id!=null?
+      client.find( element => element.id == project.client_id)!=null?
+      client.find( element => element.id == project.client_id)["razon social"]
+      :"":"Sin asignar"
+      }</h4>
+      </Col>
         </Row>
 
         <Row className="mt-5">
@@ -202,17 +202,17 @@ export default function ViewProject() {
             <h4>Recursos</h4>
           </Col>
           <Col xs={9}>
-            {project.resources.map(element => {
-              return (
-                <Col >  <h4>{
-                  element.id != null ? resources.find(thiselement => thiselement.legajo == element.id) != null ?
-                    resources.find(thiselement => thiselement.legajo == element.id).Apellido + " " + resources.find(thiselement => element.id == thiselement.legajo).Nombre
-                    : "" : ""
-                }</h4>
-
-                </Col>)
-            })}
-          </Col>
+{project.resources.length > 0?project.resources.map(element => {
+   return (
+  <Col >  <h4>{
+      element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
+      resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
+      :"":"Sin asignar"
+      }</h4>
+    
+</Col>)
+}):<Col><h4>Sin asignar</h4></Col> }
+             </Col>           
 
         </Row>
         <Row className="mt-5">
@@ -220,19 +220,19 @@ export default function ViewProject() {
             <h4>Stakerholders</h4>
           </Col>
 
-          {project.stake_holders.map(element => {
-            return (
-              <Col xs={9}>
-                {console.log(resources)}
+          {project.stake_holders.length > 0?project.stake_holders.map(element => {
+   return (
+  <Col xs={9}>
+    {console.log(resources)}
 
-                <h4>{
-                  element.id != null ? resources.find(thiselement => thiselement.legajo == element.id) != null ?
-                    resources.find(thiselement => thiselement.legajo == element.id).Apellido + " " + resources.find(thiselement => element.id == thiselement.legajo).Nombre
-                    : "" : ""
-                }</h4>
-              </Col>)
-          })};
-
+  <h4>{
+      element.id!=null?resources.find( thiselement => thiselement.legajo == element.id)!=null?
+      resources.find( thiselement => thiselement.legajo == element.id).Apellido+" "+resources.find( thiselement => element.id == thiselement.legajo).Nombre
+      :"":"Sin asignar"
+      }</h4>
+</Col>)
+}):<Col xs={9}><h4>Sin asignar</h4></Col>};
+          
         </Row>
         <Row className="mt-5">
           <Col>
@@ -240,9 +240,7 @@ export default function ViewProject() {
           </Col>
           <Col xs={9}>
             <h4>
-              {moment(project.estimated_start_date, "YYYY-MM-DD").format(
-                "DD.MM.YYYY"
-              )}
+              {project.estimated_start_date?moment(project.estimated_start_date, "YYYY-MM-DD").format("DD.MM.YYYY"):"Sin asignar"}
             </h4>
           </Col>
         </Row>
@@ -252,9 +250,9 @@ export default function ViewProject() {
           </Col>
           <Col xs={9}>
             <h4>
-              {moment(project.estimated_finalization_date, "YYYY-MM-DD").format(
+              {project.estimated_finalization_date?moment(project.estimated_finalization_date, "YYYY-MM-DD").format(
                 "DD.MM.YYYY"
-              )}
+              ):"Sin asignar"}
             </h4>
           </Col>
         </Row>

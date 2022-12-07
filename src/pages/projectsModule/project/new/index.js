@@ -12,7 +12,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from 'moment';
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
@@ -65,7 +65,7 @@ export default function NewProject() {
   };
 
   const handleDropdownProjectManagerButtonChange = (e) => {
-    setProjectData({ ...projectData, projectManager: e });
+    setProjectData({ ...projectData, project_manager: e });
     let selectedProjectManager = projectManagers.find((projectManager) => projectManager.legajo == e);
     setProjectManagerButtonTitle(`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`);
   };
@@ -142,8 +142,10 @@ export default function NewProject() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProject();
-    setProjectData(initialProject);
+    if (findFormErrors(projectData)) {
+      createProject();
+      setProjectData(initialProject);
+    }
   };
 
   return (
@@ -330,6 +332,11 @@ export default function NewProject() {
           </Row>
 
           <Row className="mt-5">
+          <Col xs={10}>
+            <Link to={`/proyectos/`}>
+              <Button variant="danger">Cancelar</Button>
+            </Link>
+            </Col>
             <Col></Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Crear</Button>

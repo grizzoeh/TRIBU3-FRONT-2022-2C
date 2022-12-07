@@ -1,0 +1,6 @@
+.centered {
+    padding-top: 7%;
+    display: flex;
+    align-items: flex;
+    justify-content: center;
+}

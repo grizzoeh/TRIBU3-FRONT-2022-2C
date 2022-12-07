@@ -9,7 +9,10 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from 'react-bootstrap/Container';
 import * as SERVER_NAMES from "../../APIRoutes";
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
-
+import Button from "react-bootstrap/Button";
+import ModalCreacionProyecto from "../new/ModalCreacionProyecto";
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
+import "./spacerline.css"
 
 export default function Dashboard() {
     const states = [{ "name": "Todos" }, { "name": "pending" }, { "name": "analysis" }, { "name": "development" }, { "name": "production" }, { "name": "post_production" }];
@@ -32,6 +35,34 @@ export default function Dashboard() {
     const [type, setType] = useState('Seleccionar');
     const [client, setClient] = useState('Seleccionar');
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const [showCreacionProyectoModal, setShowCreacionProyectoModal] = useState(false);
+
+    const onChangeshowCreacionProyectoModal = (newSomeState) => {
+        setShowCreacionProyectoModal(newSomeState);
+    };
+
+    useEffect(() => {
+        getProyectos();
+      }, [stateQuery,assigneeQuery,typeQuery,clientQuery,refreshKey])
+
+    /*useEffect(() => {
+        getProyectos();
+    }, [])*/
+    
+    /*useEffect(() => {
+        getProyectos();
+      }, [assigneeQuery])
+
+    useEffect(() => {
+        getProyectos();
+      }, [typeQuery])
+
+    useEffect(() => {
+        getProyectos();
+      }, [clientQuery])*/
+
     const handleStateFilter = (e) => {
         handleStateFilter2(e);
     };
@@ -39,47 +70,47 @@ export default function Dashboard() {
 
         e === "Todos" ? setStateQuery('') : setStateQuery("status=" + e + "&");
         setState(statusMapping[e]);
-        e === "Todos" ? setStateQuery('') : setStateQuery("status=" + e + "&");
-        setState(statusMapping[e]);
-        getProyectos();
+        //e==="Todos"?setStateQuery(''):setStateQuery("status="+e+"&");
+        //setState(statusMapping[e]);
+        //getProyectos();
     };
 
     const handleAssigneeFilter = (e) => {
         handleAssigneeFilter2(e);
-        handleAssigneeFilter2(e);
+        //handleAssigneeFilter2(e);
     };
     const handleAssigneeFilter2 = (e) => {
-        let assignee = assignees.find(element => element.legajo == e);
-        e === "Todos" ? setAssignee(e) : setAssignee(assignee.Nombre + " " + assignee.Apellido);
-        e === "Todos" ? setAssigneeQuery('') : setAssigneeQuery("project_manager=" + e + "&");
-        getProyectos();
+        let assignee = assignees.find( element => element.legajo == e );
+        e==="Todos"?setAssignee(e):setAssignee(assignee.Nombre+" "+assignee.Apellido);
+        e==="Todos"?setAssigneeQuery(''):setAssigneeQuery("project_manager="+e+"&");
+        //getProyectos();
     };
 
 
     const handlerClientFilter = (e) => {
         handlerClientFilter2(e);
-        handlerClientFilter2(e);
+        //handlerClientFilter2(e);
     };
 
 
     const handlerClientFilter2 = (e) => {
-        let client = clients.find(element => element.id == e);
-        e === "Todos" ? setClient(e) : setClient(client["razon social"]);
-        e === "Todos" ? setClientQuery('') : setClientQuery("client_id=" + e + "&");
-        getProyectos();
+        let client = clients.find( element => element.id == e );
+        e==="Todos"?setClient(e):setClient(client["razon social"]);
+        e==="Todos"?setClientQuery(''):setClientQuery("client_id="+e+"&");
+        //getProyectos();
     };
 
 
     const handleTypeFilter = (e) => {
         handleTypeFilter2(e);
-        handleTypeFilter2(e);
+        //handleTypeFilter2(e);
 
     };
 
     const handleTypeFilter2 = (e) => {
         setType(typeMapping[e]);
-        e === "Todos" ? setTypeQuery('') : setTypeQuery("type=" + e + "&");
-        getProyectos();
+        e==="Todos"?setTypeQuery(''):setTypeQuery("type="+e+"&");
+        //getProyectos();
     };
 
     const getAssignees = async () => {
@@ -120,7 +151,7 @@ export default function Dashboard() {
     };
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         getAssignees();
         getClients();
         getProyectos();
@@ -131,6 +162,11 @@ export default function Dashboard() {
 
         }, 600000);
         return () => clearInterval(interval);
+    }, []);*/
+    useEffect(() => {
+        getAssignees();
+        getClients();
+        //getProyectos();
     }, []);
     var statusMapping = {
         "Todos": "Todos", "pending": "PENDIENTE", "analysis": "EN ANALISIS",
@@ -142,13 +178,35 @@ export default function Dashboard() {
 
     return (
         <>
+            {/* <br></br>
             <br></br>
-            <br></br>
-            <br></br>
+            <br></br> */}
             <NavbarProyectos />
-            <Header />
+
+            <Container className="container-title">
+                <Row>
+                    <Col xxl lg="2">
+                        <h1>Proyectos</h1>
+                    </Col>
+                    
+                </Row>
+                    <Container className="spacer-line">
+                        <Row>
+                        <SpacerLine className="spacer-line" color="black" top="100px"></SpacerLine>
+                        </Row>
+                    </Container>
+                {showCreacionProyectoModal ? (
+                        <ModalCreacionProyecto clientes={clients} recursos={assignees} onChangeshowCreacionTareaModal={onChangeshowCreacionProyectoModal} />) :
+                        (null)}
+
+            </Container>
+
 
             <Container className="container-filters">
+            <Row>< Col className="end">
+                        {/* <Button variant="primary" href="/crear-proyecto">Crear Proyecto</Button> */}
+                        <Button className="float-sm-end" variant="primary" onClick={() => setShowCreacionProyectoModal(true)}>Crear Proyecto</Button>
+                    </Col></Row>
                 <Row className="mt-5">
                     <Col>
                         <h4>Estados</h4>
@@ -236,8 +294,11 @@ export default function Dashboard() {
                     </Col>
                 </Row>
             </Container>
-
-            <Body projects={proyectos} />
+            
+            <br></br>
+            <br></br>
+            <br></br>
+            <Body projects={proyectos} getProjects={getProyectos} resources={assignees} clients={clients} setRefreshKey={setRefreshKey}/>
         </>
     );
 }

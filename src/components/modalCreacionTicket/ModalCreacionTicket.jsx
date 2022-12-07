@@ -87,7 +87,7 @@ const ModalCreacionTicket = ({ showCreacionModal, setShowCreacionModal, getDataE
 
     const handleConfirmarCreacion = () => {
 
-        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null ||  TicketData.estado === null || TicketData.fechaCreacion === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null || TicketData.idVersion === null || TicketData.idAsesor == null) {
+        if (TicketData.titulo === null || TicketData.categoria === null || TicketData.criticidad === null || TicketData.descripcion === null || TicketData.idCliente === null || TicketData.medioContactoCliente === null || TicketData.idProducto === null || TicketData.fechaCreacion === null) {
             setAlertaDatosNulos(true);
 
 

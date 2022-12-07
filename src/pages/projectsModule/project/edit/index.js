@@ -12,7 +12,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Container from "react-bootstrap/Container";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import moment from "moment";
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
@@ -85,7 +85,7 @@ export default function EditProject() {
     });
   };
   const navigateProjectDashboard = () => {
-    navigate("/proyectos");
+    navigate(`/proyectos/${params.id}/ver-proyecto/`);
   };
 
   const editProject = async () => {
@@ -134,17 +134,20 @@ export default function EditProject() {
           stakeholders: res.data.stake_holders.map(
             (stake_holder) => stake_holder.id
           ),
-          project_manager: res.data.project_manager.id,
+          project_manager: res.data.project_manager?res.data.project_manager.id:null,
         });
 
         if (projectManagers.length !== 0) {
-          let selectedProjectManager = projectManagers.find(
-            (projectManager) =>
-              projectManager.legajo == res.data.project_manager.id
-          );
-          setProjectManagerButtonTitle(
-            `${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`
-          );
+          if (res.data.project_manager) {
+              let selectedProjectManager = projectManagers.find(
+                (projectManager) =>
+                  projectManager.legajo == res.data.project_manager.id
+              );
+              setProjectManagerButtonTitle(
+                typeof selectedProjectManager!== 'undefined'?`${selectedProjectManager.Nombre} ${selectedProjectManager.Apellido}`:"Selecionar"
+              );
+          }
+          else setProjectManagerButtonTitle("Seleccionar");
         }
 
         if (resources.length !== 0) {
@@ -286,15 +289,24 @@ export default function EditProject() {
               <h4>Recursos</h4>
             </Col>
             <Col xs={9}>
-              <Select
+              {resources.length>0 && <Select
                 isMulti
                 options={resources}
+                defaultValue={updatedProject.resources.map((resource) => {
+                  let name = resources.find((empleado) => empleado.legajo == resource).Nombre
+                  let surname = resources.find((empleado) => empleado.legajo == resource).Apellido
+                  let id = resources.find((empleado) => empleado.legajo == resource).legajo
+                  //let holi = {Nombre: resource.Nombre, Apellido: resource.Apellido, legajo: resource.legajo}
+                  let label = {Nombre: name, Apellido: surname, legajo: id}
+                  return label
+                })}
+                //defaultValue = {{ legajo: 1, Nombre: "John", Apellido: "lolo" }}
                 getOptionLabel={(resource) =>
                   `${resource.Nombre} ${resource.Apellido}`
                 }
                 getOptionValue={(resource) => resource.legajo}
                 onChange={handleResourcesDropdownButtonChange}
-              />
+              />}
             </Col>
           </Row>
 
@@ -343,15 +355,14 @@ export default function EditProject() {
 
 
           <Row className="mt-5">
+          <Col xs={10}>
+            <Link to={`/proyectos/${params.id}/ver-proyecto/`}>
+              <Button variant="danger">Cancelar</Button>
+            </Link>
+            </Col>
             <Col></Col>
             <Col xs={1}>
-              <Button onClick={handleSubmit}>Listo</Button>
-            </Col>
-          </Row>
-
-          <Row className="mt-1">
-            <Col xs={1}>
-              <Button variant="danger">Borrar</Button>
+              <Button onClick={handleSubmit}>Guardar</Button>
             </Col>
           </Row>
         </form>

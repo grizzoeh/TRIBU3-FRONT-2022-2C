@@ -34,8 +34,8 @@ export default function NewTask() {
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
-  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState('Seleccionar');
-  const [StatusbuttonTitle, setStatusButtonTitle] = useState('Seleccionar');
+  const [AssigneebuttonTitle, setAssigneeButtonTitle] = useState([]);
+  const [StatusbuttonTitle, setStatusButtonTitle] = useState([]);
   const [DependencybuttonTitle, setDependencyButtonTitle] = useState('Seleccionar');
   const [projectData, setProjectData] = useState(initialTask);
   const [clients, setClients] = useState([]);
@@ -55,13 +55,14 @@ export default function NewTask() {
   const mapIDTaskToTaskObj= (task) => {
     //console.log(clients);
     //console.log(assignees);
-    
+    /*
     return tareas.map((tarea) => {
       let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
       return tareaPadre?tareaPadre:null
-    })
-    //let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
-    //return tareaPadre
+    })*/
+
+    let tareaPadre = tareas.find((tarea) => tarea.id === task.parent_task_id)
+    return tareaPadre
   }
 
   const handleGuardado = async () => {
@@ -75,28 +76,10 @@ export default function NewTask() {
             console.log(error);
         });
   }
-
-  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Finalizada:"finished"};
+  var StatusMapping = {pending:"Pendiente",'in_progress':"En progreso",finished:"Terminada"};
+  var inverseStatusMapping = {Pendiente:"pending",'En progreso':"in_progress",Terminada:"finished"};
   useEffect(() => {
-        const getTareas = async () => {
-            axios
-            .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
-            .then((res) => {
-                setTareas(res.data);
-                setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
-                //setDependencyButtonTitle(res.data.dependencies[0]);
-                //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
-                setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees);
-                //setStatusButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).status);
-                //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
-                //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
-                setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
-                setTicket(res.data.find((tarea) => tarea.id == params.idTarea).related_ticket);
-            })
-            .catch((err) => {
-                alert('Se produjo un error al consultar las tareas para el proyecto', err);
-            });
-        };
+        
 
         const getAssignees = async () => {
           axios
@@ -108,23 +91,10 @@ export default function NewTask() {
                   //setAssigneeButtonTitle(res.data.find((assignee) => assignee.id == tareaActual.assignees[0].id).name);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes1', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
-        /*const getEmpleadoAsignado = async () => {
-            axios
-                .get(SERVER_NAMES.ASSIGNEES + `/${AssigneebuttonTitle}`, {})
-                .then((res) => {
-                    //if (res.data.keys().length>0)
-                        setEmpleadoAsignado(res.data);
-                    //else setEmpleadoAsignado("Seleccionar")
-                })
-                .catch((err) => {
-                    alert('SSe produjo un error al consultar los clientes', err);
-                });
-        };*/
-        getTareas();
         getAssignees();
         //if (AssigneebuttonTitle !== "Seleccionar") getEmpleadoAsignado();
         //else setEmpleadoAsignado(null);
@@ -132,6 +102,39 @@ export default function NewTask() {
         //setDependencyButtonTitle(tareas.find((tarea) => tarea.id == params.idTarea).name);
    }, [params]);
    //[params,AssigneebuttonTitle]
+   const getTareas = async () => {
+    axios
+    .get(SERVER_NAMES.PROJECTS + `/psa/projects/${params.id}/tasks/`, {})
+    .then((res) => {
+        setTareas(res.data);
+        setDependencyButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).name);
+        //setDependencyButtonTitle(res.data.dependencies[0]);
+        //let id = res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id;
+        
+        //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id);
+        
+        if (res.data.find((tarea) => tarea.id == params.idTarea).assignees.length > 0) {
+            let selectedAssignee = clients.find((assignee) =>
+              assignee.legajo === res.data.find((tarea) => tarea.id == params.idTarea).assignees[0].id);
+            setAssigneeButtonTitle(
+              typeof selectedAssignee!== 'undefined'?`${selectedAssignee.Nombre} ${selectedAssignee.Apellido}`:"Selecionar"
+            );
+        }
+        else setAssigneeButtonTitle("Seleccionar");
+        
+        setStatusButtonTitle(StatusMapping[res.data.find((tarea) => tarea.id == params.idTarea).status]);
+        //setAssigneeButtonTitle(res.data.find((tarea) => tarea.id == params.idTarea).assignees.keys().length>0?res.data.assignees[0].id:"Seleccionar");
+        //setAssigneeButtonTitle(clients.find((client) => client.id == id).name);
+        setTareaActual(res.data.find((tarea) => tarea.id == params.idTarea));
+        setTicket(res.data.find((tarea) => tarea.id == params.idTarea).related_ticket);
+    })
+    .catch((err) => {
+        alert('Se produjo un error al consultar las tareas para el proyecto', err);
+    });
+  };
+   useEffect(() => {
+    getTareas();
+  }, [clients,params]);
 
   const onChangeProjectData = (e) => {
     setProjectData({ ...projectData, [e.target.name]: e.target.value });
@@ -155,6 +158,7 @@ export default function NewTask() {
 
   const handleAssigneeDropdownButtonChange = (e) => {
     if (e!== "Ninguno")  setProjectData({ ...projectData, assignees: [e] });
+    //e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).legajo);
     e==="Ninguno"?setAssigneeButtonTitle("Ninguno"):setAssigneeButtonTitle(clients.find((client) => client.legajo == e).Nombre + " " + clients.find((client) => client.legajo == e).Apellido);
   };
 
@@ -248,7 +252,7 @@ export default function NewTask() {
               
         </Row>*/}
 
-          {tareaActual.parent_task_id && <Row className="mt-5">
+          {/*tareaActual.parent_task_id && <Row className="mt-5">
             <Col>
               <h4>Tarea padre</h4>
             </Col>
@@ -269,9 +273,10 @@ export default function NewTask() {
                   );
                 })}
               </DropdownButton>*/}
-              {mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)}
-            </Col>
-          </Row>}
+              {/*mapIDTaskToTaskObj(tareaActual).map((tarea) => <Col><Link to={`/proyectos/${tarea.id}/ver-tarea/`}><Button>{tarea.nombre}</Button></Link></Col>)*/}
+                {/*<Col><Link to={`/proyectos/${params.id}/tareas/${mapIDTaskToTaskObj(tareaActual).id}/ver-tarea/`}><Button>{mapIDTaskToTaskObj(tareaActual).name}</Button></Link></Col>*/}
+              {/*</Col>*/}
+          {/*</Row>*/}
 
           {/* <Row className="mt-5">
             <Col>
@@ -346,7 +351,11 @@ export default function NewTask() {
               {/* TODO: get clients */}
               <DropdownButton
                 variant="secondary"
-                title={AssigneebuttonTitle.legajo}
+                /*
+                title={clients.find((client) => client.legajo === AssigneebuttonTitle).Nombre +
+                " " + clients.find((client) => client.legajo === AssigneebuttonTitle).Apellido}
+                */
+                title ={AssigneebuttonTitle}
                 //title="Seleccionar"
                 onSelect={handleAssigneeDropdownButtonChange}
               >
@@ -388,7 +397,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_start_date"
                 //value={tareaActual.estimated_start_date}
-                placeholder={moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
+                placeholder={tareaActual.estimated_start_date?moment(tareaActual.estimated_start_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}
                 onChange={(e) => onChangeProjectData(e)}
               />
               </Col>
@@ -405,7 +414,7 @@ export default function NewTask() {
                 type="text"
                 name="estimated_finalization_date"
                 //value={tareaActual.estimated_finalization_date}
-                placeholder={moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}
+                placeholder={tareaActual.estimated_finalization_date?moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY'):"Sin asignar"}
                 onChange={(e) => onChangeProjectData(e)}
             />
             {/*<h4>{moment(tareaActual.estimated_finalization_date, "YYYY-MM-DD").format('DD.MM.YYYY')}</h4>*/}
@@ -464,19 +473,19 @@ export default function NewTask() {
                 inverseStatusMapping[tareaActual.status]
               />*/}
               {/*<h4>{statusMapping[tareaActual.status]}</h4>*/}
-                <Dropdown title={StatusbuttonTitle}
+                <DropdownButton variant="secondary" title={StatusbuttonTitle}
                 >
-                    <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
-                    </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item eventKey={"Ninguno"} name="management">
+                    {/*<Dropdown.Toggle variant="secondary" id="dropdown-basic" size="xl">
+                    </Dropdown.Toggle>*/}
+                        {/*<Dropdown.Menu>*/}
+                            {/*<Dropdown.Item eventKey={"Ninguno"} name="status">
                                 {"Ninguno"}
-                            </Dropdown.Item>
+                            </Dropdown.Item>*/}
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Pendiente</Dropdown.Item>
                             <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>En progreso</Dropdown.Item>
-                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Finalizada</Dropdown.Item>
-                        </Dropdown.Menu>
-            </Dropdown>
+                            <Dropdown.Item name="status" onClick={(e) => handleStatusDropdownButtonChange(e)}>Terminada</Dropdown.Item>
+                        {/*</Dropdown.Menu>*/}
+            </DropdownButton>
           </Col>
           
           </Row>

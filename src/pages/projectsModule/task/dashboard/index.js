@@ -15,14 +15,17 @@ import { DragDropContext } from 'react-beautiful-dnd';
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Form from "react-bootstrap/Form";
 import { wait } from "@testing-library/user-event/dist/utils";
-
+import ModalCrearTarea from "./modal/modalCrearTarea"
 import NavbarProyectos from "../../../../components/navbarProyectos/NavbarProyectos";
+import SpacerLine from "../../../../components/spacerLine/spacerLine";
 
 export default function DashboardTareas() {
   const params = useParams();
   const SERVER_NAME = "https://squad-8-projects.herokuapp.com";
   const [tareas, setTareas] = useState([]);
   const [proyecto, setProyecto] = useState([]);
+
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const [filters, setFilters] = useState({
       "Estado": "Todas",
@@ -35,26 +38,44 @@ export default function DashboardTareas() {
   let priorityQuery="";
   const [assignees, setAssignees] = useState([]);
   const [assignee, setAssignee] = useState('Seleccionar');
-  const [priority, setPriority] = useState('---');
+  //const [assignee, setAssignee] = useState([]);
+  const [assigneeID, setAssigneeID] = useState([]);
+  const [priority, setPriority] = useState([]);
+  //const [priority, setPriority] = useState('---');
 
   const handleAssigneeFilter = (e) => {
     e==="Ninguno"?setAssignee(e):setAssignee(assignees.find((assignee) => assignee.legajo == e).Nombre + " " + assignees.find((assignee) => assignee.legajo == e).Apellido);
+    //setAssignee(e);
+    
     e==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+e+"&";
-    getTarea();
+    setAssigneeID(e);
+    //getTarea();
   };
 
-  const handlePriorityFilter = (e) => {
-    setPriority(e.target.value);
-    e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
+  /*useEffect(() => {
     getTarea();
+  }, [assigneeID])*/
+
+  const handlePriorityFilter = (e) => {
+    //setPriority(e.target.value);
+    e.target.value==0?priorityQuery="":priorityQuery="priority="+e.target.value+"&";
+    setPriority(e.target.value);
+    //getTarea();
+    
   };
+  useEffect(() => {
+    getTarea();
+  }, [priority,assigneeID,refreshKey])
+
+  /*useEffect(() => {
+        getTarea();
+    }, [refreshKey])*/
+
 
   const handleDropdownFilter = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.innerHTML });
 
     console.log("filters", filters);
-
-
 };
 
   const getAssignees = async () => {
@@ -64,7 +85,7 @@ export default function DashboardTareas() {
             setAssignees(res.data);
         })
         .catch((err) => {
-            alert('Se produjo un error al consultar los clientes', err);
+            alert('Se produjo un error al consultar los empleados', err);
         });
   };
 
@@ -95,6 +116,8 @@ export default function DashboardTareas() {
   const getTarea = async () => {
     let url = `/psa/projects/${params.id}/tasks/?`;
     setTareas([])
+    assigneeID==="Ninguno"?assigneeQuery="":assigneeQuery="assignee="+assigneeID+"&";
+    priority==0?priorityQuery="":priorityQuery="priority="+priority+"&";
     url += priorityQuery;
     url += assigneeQuery;
     axios
@@ -131,7 +154,7 @@ export default function DashboardTareas() {
 
   useEffect(() => {
     getProyecto();
-    getTarea();
+    //getTarea();
     getAssignees();
   }, [params]);
 
@@ -147,11 +170,17 @@ export default function DashboardTareas() {
                 </Col>
 
             </Row>
+            <Container className="spacer-line">
+                <Row>
+                    <SpacerLine className="spacer-line" color="black"></SpacerLine>
+                </Row>
+            </Container>
             <Row xs="auto">
             < Col>
-                <Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
+                {/*<Link to={`/proyectos/${proyecto.id}/crear-tarea/`}>
                     <Button variant="primary" onClick={() => console.log("click crear tarea")}>Crear Tarea</Button>
-                </Link>
+                </Link>*/}
+                <ModalCrearTarea getDataProjectTask={getTarea} tasks={tareas} project={proyecto} assignees={assignees} setRefreshKey={setRefreshKey}/>
             </Col>
             < Col>
                 <Link to={`/proyectos/${proyecto.id}/gannt/`}>
@@ -299,18 +328,33 @@ export default function DashboardTareas() {
                                     <KanbanColumn    
                                             stateName={"Pendiente"}
                                             tasks={tareas.filter((t) => t.status === "pending")}
+                                            project={proyecto}
+                                            assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                     />
                                     </Col>
                                     <Col>
                                     <KanbanColumn
                                             stateName={"En progreso"}
                                             tasks={tareas.filter((t) => t.status === "in_progress")}
+                                            project={proyecto}
+                                            assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                         />
                                     </Col>
                                     <Col>
                                     <KanbanColumn
                                             stateName={"Finalizada"}
                                             tasks={tareas.filter((t) => t.status === "finished")}
+                                            project={proyecto}
+                                            assignees={assignees}
+                                            getTasks={getTarea}
+                                            allTasks={tareas}
+                                            setRefreshKey={setRefreshKey}
                                         />
                                     </Col>
                                 </Row>

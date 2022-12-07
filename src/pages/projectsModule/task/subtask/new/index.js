@@ -13,6 +13,7 @@ import Select from 'react-select'
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import {useNavigate} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import NavbarProyectos from "../../../../../components/navbarProyectos/NavbarProyectos";
 
@@ -71,7 +72,7 @@ export default function NewTask() {
                   setClients(res.data);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
@@ -86,7 +87,7 @@ export default function NewTask() {
 
   const handleDependencyDropdownButtonChange = (e) => {
     setProjectData({ ...projectData, parent_task: e });
-    setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
+    setDependencyButtonTitle(tareas.find((tarea) => tarea.id === e).name);
   };
 
   const handleDependencyDropdownButtonChange2 = (e) => {
@@ -114,7 +115,8 @@ export default function NewTask() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (findFormErrors(initialTask)) {
+    if (findFormErrors(projectData)) {
+      if (!projectData.parent_task) projectData.parent_task = params.idTarea;
       createTask();
       setProjectData(initialTask);
     }
@@ -299,6 +301,11 @@ export default function NewTask() {
           </Row>
 
           <Row className="mt-5">
+          <Col xs={10}>
+            <Link to={`/proyectos/${params.id}/tareas/${params.idTarea}/ver-tarea`}>
+              <Button variant="danger">Cancelar</Button>
+            </Link>
+            </Col>
             <Col></Col>
             <Col xs={1}>
               <Button onClick={handleSubmit}>Crear</Button>

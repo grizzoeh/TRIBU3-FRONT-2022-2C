@@ -42,7 +42,7 @@ export default function NewTask() {
     creation_date: null,
     priority: 1,
     realEffort: null,
-    parent_task: null
+    parent_task_id: null
   };
   const params = useParams();
   const [tareas, setTareas] = useState([]);
@@ -71,7 +71,7 @@ export default function NewTask() {
                   setClients(res.data);
               })
               .catch((err) => {
-                  alert('Se produjo un error al consultar los clientes', err);
+                  alert('Se produjo un error al consultar los empleados', err);
               });
         };
 
@@ -88,7 +88,7 @@ export default function NewTask() {
   };
 
   const handleDependencyDropdownButtonChange = (e) => {
-    setProjectData({ ...projectData, dependencies: [e] });
+    setProjectData({ ...projectData, parent_task: e });
     setDependencyButtonTitle(tareas.find((tarea) => tarea.id == e).name);
   };
 
@@ -117,8 +117,10 @@ export default function NewTask() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (findFormErrors(projectData)) {
       createTask();
       setProjectData(initialTask);
+    }
     
   };
 
@@ -303,7 +305,7 @@ export default function NewTask() {
           <Row className="mt-5">
           <Col xs={11}>
             <Link to={`/proyectos/${params.id}/ver-tareas/`}>
-              <Button>Cancelar</Button>
+              <Button variant="danger">Cancelar</Button>
             </Link>
             </Col>
             <Col xs={1}>
