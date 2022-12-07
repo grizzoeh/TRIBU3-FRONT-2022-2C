@@ -38,7 +38,7 @@ export default function TaskCard({ task, index, project, assignees, getTasks, al
         */}
 
         <Col key={task.id} className="mt-3">
-          <Card style={{ width: '18rem' ,border: '1px solid #ccc'}}>
+          <Card style={{ width: '16rem' ,border: '1px solid #ccc'}}>
             <Card.Body>
                 <Card.Title>
                     <Row>
