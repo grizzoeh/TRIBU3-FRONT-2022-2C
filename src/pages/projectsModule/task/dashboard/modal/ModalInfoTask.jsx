@@ -14,7 +14,7 @@ import * as SERVER_NAMES from "../../../APIRoutes";
 import ModalCreacionSubtarea from "./modalCrearSubtask";
 import DropdownButton from "react-bootstrap/DropdownButton";
 
-const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name}) => {
+const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks, name, setRefreshKey}) => {
 
 
     const [alertaEdicionExito, setAlertaEdicionExito] = useState(false);
@@ -55,6 +55,7 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         setAlertaEdicionExito(false);
         setAlertaDatosNulos(false);
         setAlertaBorradoExito(false);
+        setRefreshKey(oldKey => oldKey +1);
     };
 
 

@@ -10,7 +10,7 @@ import moment from 'moment';
 import ModalInfoTask from "./modal/ModalInfoTask";
 
 
-export default function TaskCard({ task, index, project, assignees, getTasks, allTasks}) {
+export default function TaskCard({ task, index, project, assignees, getTasks, allTasks, setRefreshKey }) {
   const params = useParams();
   const mapIDResourceToName= (asignados) => {
     return asignados.map((assignee) => {
@@ -89,7 +89,7 @@ export default function TaskCard({ task, index, project, assignees, getTasks, al
                       </Col>
                     </Row>
                 </Card.Text>
-                <ModalInfoTask data={task} getDataProjectTask={getTasks} project={project} assignees={assignees} allTasks={allTasks} name={null}/>
+                <ModalInfoTask data={task} getDataProjectTask={getTasks} project={project} assignees={assignees} allTasks={allTasks} name={null} setRefreshKey={setRefreshKey} />
 
                 {/*<ModalTicketCerrado data={task} numeroTarea={task.id} />*/}
             </Card.Body>
