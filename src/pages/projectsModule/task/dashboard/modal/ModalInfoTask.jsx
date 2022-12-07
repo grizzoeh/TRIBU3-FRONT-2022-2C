@@ -161,6 +161,10 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
         setTareaEditable({ ...tareaEditable, [e.target.name]: e.target.innerHTML });
     }
 
+    const isInDependecies = (task) => {
+         return tareaEditable.dependencies.map(t => t.id).includes(task.id)
+    }
+
     const handleStatusChange = (e) => {
         setTareaEditable({
           ...tareaEditable,
@@ -452,7 +456,8 @@ const ModalInfoTask = ({ data, getDataProjectTask, project, assignees, allTasks,
 
                                                 <Dropdown.Menu>
                                                     {allTasks ?
-                                                        allTasks.filter((task) => task.id !== tareaEditable.id).map((task) => (
+                                                        allTasks.filter((task) => (task.id !== tareaEditable.id) && !isInDependecies(task) )
+                                                        .map((task) => (
                                                             <Dropdown.Item key={`dropwdown-item-parent-edit-${tareaEditable.id}-${task.id}`} name="parent_task" onClick={(e) => {
                                                                 setTareaEditable({ ...tareaEditable, ['parent_task_id']: task.id});
                                                             }}>{`${task.name}`}</Dropdown.Item>
