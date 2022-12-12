@@ -151,8 +151,8 @@ export default function StateContainer({ projects, getProjects, resources, clien
                             <ModalInfoProyecto
                               data={project}
                               getDataProyectos={getProjects}
-                              recursos2={resources}
-                              clientes2={clients}
+                              recursos={resources}
+                              clientes={clients}
                               setRefreshKey={setRefreshKey}
                             />
                           </Col>
