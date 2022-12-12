@@ -231,8 +231,8 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
 
         //getRecursos();
         //getClientes();
-        setRecursos(recursos2);
-        setClientes(clientes2);
+        //setRecursos(recursos2);
+        //setClientes(clientes2);
     }, []);
 
     return (
@@ -334,12 +334,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {proyectoEditable.client_id ? getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar"): "Sin asignar"}
+                                                    {proyectoEditable.client_id ? getResourceNameFor(clientes2, mapClientIdToName, proyectoEditable.client_id, "Sin asignar"): "Sin asignar"}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {clientes ?
-                                                        clientes.map((cliente) => (
+                                                    {clientes2 ?
+                                                        clientes2.map((cliente) => (
                                                             <Dropdown.Item key={cliente['id']} name="nombreCliente" onClick={(e) => {
                                                                 setProyectoEditable({ ...proyectoEditable, ['client_id']: cliente["id"]});
                                                             }}>{cliente["razon social"]}</Dropdown.Item>
@@ -369,12 +369,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
+                                                    {getResourceNameFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {recursos ?
-                                                        recursos.map((recurso) => {
+                                                    {recursos2 ?
+                                                        recursos2.map((recurso) => {
                                                             return <Dropdown.Item key={`dropwdown-item-pm-${recurso.legajo}`} name="project_manager" onClick={(e) => {
                                                                 handleDropdownProjectManagerButtonChange(recurso)
                                                             }}>{`${recurso.Nombre} ${recurso.Apellido}`}</Dropdown.Item>
@@ -391,12 +391,12 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                         <Col>
                                             <Dropdown >
                                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic" size="sm">
-                                                    {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
+                                                    {getResourceNameFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
                                                 </Dropdown.Toggle>
 
                                                 <Dropdown.Menu>
-                                                    {recursos ?
-                                                        recursos.map((recurso) => {
+                                                    {recursos2 ?
+                                                        recursos2.map((recurso) => {
                                                             return <Dropdown.Item key={`dropwdown-item-sponsor-${recurso.legajo}`} name="sponsor" onClick={(e) => {
                                                                 handleDropdownSponsorButtonChange(recurso)
                                                             }}>{`${recurso.Nombre} ${recurso.Apellido}`}</Dropdown.Item>
@@ -412,13 +412,13 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                             <h6>Recursos:</h6>
                                         </Col>
                                         <Col xs={6}>
-                                            {recursos.length>0 && <Select
+                                            {recursos2.length>0 && <Select
                                                 isMulti
-                                                options={recursos}
+                                                options={recursos2}
                                                 defaultValue={proyectoEditable.resources.map((resource) => {
-                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
-                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
-                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    let name = recursos2.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    let surname = recursos2.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    let id = recursos2.find((empleado) => empleado.legajo === resource.id).legajo
                                                     let label = {Nombre: name, Apellido: surname, legajo: id}
                                                     return label
                                                 })}
@@ -438,13 +438,13 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                             <h6>Stakeholders:</h6>
                                         </Col>
                                         <Col xs={6}>
-                                            {recursos.length>0 && <Select
+                                            {recursos2.length>0 && <Select
                                                 isMulti
-                                                options={recursos}
+                                                options={recursos2}
                                                 defaultValue={proyectoEditable.stake_holders.map((resource) => {
-                                                    let name = recursos.find((empleado) => empleado.legajo === resource.id).Nombre
-                                                    let surname = recursos.find((empleado) => empleado.legajo === resource.id).Apellido
-                                                    let id = recursos.find((empleado) => empleado.legajo === resource.id).legajo
+                                                    let name = recursos2.find((empleado) => empleado.legajo === resource.id).Nombre
+                                                    let surname = recursos2.find((empleado) => empleado.legajo === resource.id).Apellido
+                                                    let id = recursos2.find((empleado) => empleado.legajo === resource.id).legajo
                                                     let label = {Nombre: name, Apellido: surname, legajo: id}
                                                     return label
                                                 })}
@@ -511,7 +511,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                             <h6>Cliente:</h6>
                                         </Col>
                                         <Col>
-                                            {getResourceNameFor(clientes, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
+                                            {getResourceNameFor(clientes2, mapClientIdToName, proyectoEditable.client_id, "Sin asignar")}
                                         </Col>
                                     </Row>
 
@@ -538,7 +538,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                             <h5> Project Manager: </h5>
                                         </Col>
                                         <Col >
-                                            {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
+                                            {getResourceNameFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.project_manager, "Sin asignar")}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -546,7 +546,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                             <h6> Sponsor: </h6>
                                         </Col>
                                         <Col >
-                                        {getResourceNameFor(recursos, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
+                                        {getResourceNameFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.sponsor, "Sin asignar")}
                                         </Col>
                                     </Row>
                                     <Row className="mt-2">
@@ -558,7 +558,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                               <Col>
                                                 { proyectoEditable.resources.length > 0 
                                                         ? <ul key="resources-list-view">
-                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, proyectoEditable.resources, "resources-view-item")} 
+                                                            {getResourceNameListFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.resources, "resources-view-item")} 
                                                         </ul>
                                                         : "Sin asignar"
                                                 }
@@ -578,7 +578,7 @@ const ModalInfoProyecto = ({ data, getDataProyectos, recursos2, clientes2, setRe
                                               <Col>
                                                 { proyectoEditable.stake_holders.length > 0 
                                                         ? <ul key="stake-holder-list-view">
-                                                            {getResourceNameListFor(recursos, mapProjectResourceObjectToName, proyectoEditable.stake_holders, "stake-holder-view-item")} 
+                                                            {getResourceNameListFor(recursos2, mapProjectResourceObjectToName, proyectoEditable.stake_holders, "stake-holder-view-item")} 
                                                         </ul>
                                                         : "Sin asignar"
                                                 }
